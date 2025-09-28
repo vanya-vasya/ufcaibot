@@ -4,13 +4,27 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 
-const pricingTiers = [
+interface PricingTier {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  originalPrice?: string;
+  discount?: string;
+  tokens: string;
+  generations?: string;
+  features: string[];
+  popular: boolean;
+  color: string;
+}
+
+const pricingTiers: PricingTier[] = [
   {
     id: "Tracker",
     name: "Cal Tracker",
     description: "For a quick start",
-    price: "£25",
-    tokens: "1,000 Tokens",
+    price: "£20",
+    tokens: "100 Tokens",
     generations: "~20 Macros Generations",
     features: [
       "~20 Macros Generations"
@@ -22,8 +36,10 @@ const pricingTiers = [
     id: "master-chef",
     name: "Master Chef",
     description: "Best value for regular use",
-    price: "£50",
-    tokens: "2,000 Tokens",
+    price: "£40",
+    originalPrice: "£44",
+    discount: "10% OFF",
+    tokens: "220 Tokens",
     generations: "~40 Recipe Generations",
     features: [
       "~20 Recipe Generations"
@@ -34,9 +50,11 @@ const pricingTiers = [
   {
     id: "master-nutritionist",
     name: "Master Nutritionist",
-    description: "Perfect for your specific needs.",
-    price: "£75",
-    tokens: "3,000 Tokens",
+    description: "Maximum value package",
+    price: "£60",
+    originalPrice: "£75",
+    discount: "20% OFF",
+    tokens: "360 Tokens",
     generations: "~120 Recipe Generations",
     features: [
       "~20 Consulting Generations"
@@ -45,12 +63,14 @@ const pricingTiers = [
     color: "from-blue-600 to-violet-600",
   },
   {
-    id: "digest",
-    name: "Digest",
-    description: "Coming soon",
+    id: "custom",
+    name: "Custom Amount",
+    description: "Perfect for your specific needs",
     price: "",
     tokens: "",
-    features: [ ],
+    features: [
+      "Pay Exactly What You Want"
+    ],
     popular: false,
     color: "from-orange-500 to-red-600",
   }
@@ -154,24 +174,48 @@ const Pricing = () => {
 
                 {/* Price */}
                 <div className="text-center space-y-1">
-                  <div 
-                    className="text-4xl font-bold text-slate-900"
-                    style={{
-                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    }}
-                  >
-                    {tier.price}
-                  </div>
-                  {tier.tokens && (
-                    <div className="space-y-1">
-                      <p 
-                        className="text-green-600 font-semibold"
+                  {tier.id !== "custom" && (
+                    <>
+                      {tier.originalPrice && (
+                        <div className="flex items-center justify-center space-x-2 mb-1">
+                          <span className="text-sm text-slate-500 line-through font-medium">
+                            {tier.originalPrice}
+                          </span>
+                          <span className="text-sm bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">
+                            {tier.discount}
+                          </span>
+                        </div>
+                      )}
+                      <div 
+                        className="text-4xl font-bold text-slate-900"
                         style={{
                           fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                         }}
                       >
-                        {tier.tokens}
-                      </p>
+                        {tier.price}
+                      </div>
+                      {tier.tokens && (
+                        <div className="space-y-1">
+                          <p 
+                            className="text-green-600 font-semibold"
+                            style={{
+                              fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                            }}
+                          >
+                            {tier.tokens}
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  )}
+                  {tier.id === "custom" && (
+                    <div 
+                      className="text-4xl font-bold text-slate-900"
+                      style={{
+                        fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                      }}
+                    >
+                      Custom
                     </div>
                   )}
                 </div>
@@ -209,50 +253,46 @@ const Pricing = () => {
                 )}
 
                 {/* Button */}
-                {tier.id !== "digest" && (
-                  <button
-                    onClick={() => handleGetStarted(tier.id)}
-                    className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
-                      tier.popular
-                        ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
-                        : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
-                    }`}
+                <button
+                  onClick={() => handleGetStarted(tier.id)}
+                  className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
+                    tier.popular
+                      ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
+                      : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
+                  }`}
+                  style={{
+                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  }}
+                >
+                  {tier.id === "custom" ? "Choose Amount" : "Begin"}
+                </button>
+
+                {/* Features */}
+                <div className="space-y-3">
+                  <h4 
+                    className="text-sm font-semibold text-slate-900 uppercase tracking-wide"
                     style={{
                       fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                     }}
                   >
-                    {tier.id === "custom" ? "Choose Amount" : "Begin"}
-                  </button>
-                )}
-
-                {/* Features */}
-                {tier.id !== "digest" && (
-                  <div className="space-y-3">
-                    <h4 
-                      className="text-sm font-semibold text-slate-900 uppercase tracking-wide"
-                      style={{
-                        fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                      }}
-                    >
-                      What&apos;s Included
-                    </h4>
-                    <ul className="space-y-2">
-                      {tier.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center space-x-3">
-                          <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <span 
-                            className="text-slate-600 text-sm"
-                            style={{
-                              fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                            }}
-                          >
-                            {feature}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                    What&apos;s Included
+                  </h4>
+                  <ul className="space-y-2">
+                    {tier.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center space-x-3">
+                        <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                        <span 
+                          className="text-slate-600 text-sm"
+                          style={{
+                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          }}
+                        >
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </motion.div>
           ))}
