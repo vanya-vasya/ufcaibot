@@ -25,7 +25,7 @@ const pricingTiers: PricingTier[] = [
     description: "For a quick start",
     price: "£20",
     tokens: "100 Tokens",
-    generations: "~20 Macros Generations",
+    generations: "20 Macros Generations",
     features: [
       "~20 Macros Generations"
     ],
@@ -37,12 +37,11 @@ const pricingTiers: PricingTier[] = [
     name: "Master Chef",
     description: "Best value for regular use",
     price: "£40",
-    originalPrice: "£44",
     discount: "10% OFF",
     tokens: "220 Tokens",
-    generations: "~40 Recipe Generations",
+    generations: "44 Recipe Generations",
     features: [
-      "~20 Recipe Generations"
+      "~44 Recipe Generations"
     ],
     popular: true,
     color: "from-green-500 to-emerald-600",
@@ -52,12 +51,11 @@ const pricingTiers: PricingTier[] = [
     name: "Master Nutritionist",
     description: "Maximum value package",
     price: "£60",
-    originalPrice: "£75",
     discount: "20% OFF",
     tokens: "360 Tokens",
-    generations: "~120 Recipe Generations",
+    generations: "72 Recipe Generations",
     features: [
-      "~20 Consulting Generations"
+      "~72 Consulting Generations"
     ],
     popular: false,
     color: "from-blue-600 to-violet-600",
@@ -173,56 +171,44 @@ const Pricing = () => {
                 </div>
 
                 {/* Price */}
-                <div className="text-center space-y-1">
-                  {tier.id !== "custom" && (
-                    <>
-                      <div 
-                        className="text-4xl font-bold text-slate-900"
-                        style={{
-                          fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                        }}
-                      >
-                        {tier.price}
-                      </div>
-                      {tier.tokens && (
-                        <div className="flex items-center justify-center space-x-2">
-                          <p 
-                            className="text-green-600 font-semibold"
-                            style={{
-                              fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                            }}
-                          >
-                            {tier.tokens}
-                          </p>
-                          {tier.originalPrice && (
-                            <div className="flex items-center space-x-2">
-                              <span className="text-xs text-slate-500 line-through font-medium">
-                                {tier.originalPrice}
-                              </span>
-                              <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">
-                                {tier.discount}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </>
-                  )}
-                  {tier.id === "custom" && (
+                {tier.id !== "custom" && (
+                  <div className="text-center space-y-1">
                     <div 
                       className="text-4xl font-bold text-slate-900"
                       style={{
                         fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                       }}
                     >
-                      Custom
+                      {tier.price}
                     </div>
-                  )}
-                </div>
+                    {tier.tokens && (
+                      <div className="flex items-center justify-center space-x-2">
+                        <p 
+                          className="text-green-600 font-semibold"
+                          style={{
+                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          }}
+                        >
+                          {tier.tokens}
+                        </p>
+                        {tier.originalPrice && (
+                          <div className="flex items-center space-x-2">
+                            <span className="text-xs text-slate-500 line-through font-medium">
+                              {tier.originalPrice}
+                            </span>
+                            <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">
+                              {tier.discount}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Custom Amount Input */}
                 {tier.id === "custom" && (
-                  <div className="space-y-3">
+                  <div className="text-center space-y-1">
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500 font-semibold">£</span>
                       <input
@@ -230,12 +216,13 @@ const Pricing = () => {
                         placeholder="25"
                         value={customAmount}
                         onChange={(e) => setCustomAmount(e.target.value)}
-                        className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-center text-2xl font-bold"
                         style={{
                           fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                         }}
                       />
                     </div>
+                    <div className="h-6"></div>
                   </div>
                 )}
 
