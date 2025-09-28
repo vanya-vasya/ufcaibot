@@ -135,7 +135,7 @@ const Pricing = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 * index }}
-              className={`relative rounded-2xl p-6 bg-white shadow-lg border-2 transition-all duration-300 hover:shadow-2xl hover:scale-105 ${
+              className={`relative rounded-2xl p-6 bg-white shadow-lg border-2 transition-all duration-300 hover:shadow-2xl hover:scale-105 h-full flex flex-col ${
                 tier.popular 
                   ? "border-green-400 ring-2 ring-green-400 ring-opacity-50" 
                   : "border-gray-200 hover:border-gray-300"
@@ -151,7 +151,7 @@ const Pricing = () => {
               )}
 
               {/* Content */}
-              <div className="space-y-6">
+              <div className="flex flex-col flex-1 space-y-6">
                 {/* Header */}
                 <div className="text-center space-y-2">
                   <h3 
@@ -176,16 +176,6 @@ const Pricing = () => {
                 <div className="text-center space-y-1">
                   {tier.id !== "custom" && (
                     <>
-                      {tier.originalPrice && (
-                        <div className="flex items-center justify-center space-x-2 mb-1">
-                          <span className="text-sm text-slate-500 line-through font-medium">
-                            {tier.originalPrice}
-                          </span>
-                          <span className="text-sm bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">
-                            {tier.discount}
-                          </span>
-                        </div>
-                      )}
                       <div 
                         className="text-4xl font-bold text-slate-900"
                         style={{
@@ -195,7 +185,7 @@ const Pricing = () => {
                         {tier.price}
                       </div>
                       {tier.tokens && (
-                        <div className="space-y-1">
+                        <div className="flex items-center justify-center space-x-2">
                           <p 
                             className="text-green-600 font-semibold"
                             style={{
@@ -204,6 +194,16 @@ const Pricing = () => {
                           >
                             {tier.tokens}
                           </p>
+                          {tier.originalPrice && (
+                            <div className="flex items-center space-x-2">
+                              <span className="text-xs text-slate-500 line-through font-medium">
+                                {tier.originalPrice}
+                              </span>
+                              <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">
+                                {tier.discount}
+                              </span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </>
@@ -236,39 +236,11 @@ const Pricing = () => {
                         }}
                       />
                     </div>
-                    <label className="flex items-center space-x-2 text-sm text-slate-600">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
-                      />
-                      <span 
-                        style={{
-                          fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                        }}
-                      >
-                        I Feel Lucky (+10-25%)
-                      </span>
-                    </label>
                   </div>
                 )}
 
-                {/* Button */}
-                <button
-                  onClick={() => handleGetStarted(tier.id)}
-                  className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
-                    tier.popular
-                      ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
-                      : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
-                  }`}
-                  style={{
-                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  }}
-                >
-                  {tier.id === "custom" ? "Choose Amount" : "Begin"}
-                </button>
-
                 {/* Features */}
-                <div className="space-y-3">
+                <div className="flex-1 space-y-3">
                   <h4 
                     className="text-sm font-semibold text-slate-900 uppercase tracking-wide"
                     style={{
@@ -293,6 +265,21 @@ const Pricing = () => {
                     ))}
                   </ul>
                 </div>
+
+                {/* Button */}
+                <button
+                  onClick={() => handleGetStarted(tier.id)}
+                  className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
+                    tier.popular
+                      ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
+                      : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
+                  }`}
+                  style={{
+                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  }}
+                >
+                  {tier.id === "custom" ? "Choose Amount" : "Begin"}
+                </button>
               </div>
             </motion.div>
           ))}
