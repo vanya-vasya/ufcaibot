@@ -26,9 +26,7 @@ const pricingTiers: PricingTier[] = [
     description: "For a quick start",
     price: "£20",
     tokens: "100 Tokens",
-    tokenRate: "£0.20 per token",
     discount: "Standard Rate",
-    generations: "20 Macros Generations",
     features: [
       "~20 Macros Generations"
     ],
@@ -41,9 +39,7 @@ const pricingTiers: PricingTier[] = [
     description: "Best value for regular use",
     price: "£40",
     tokens: "220 Tokens",
-    tokenRate: "£0.18 per token",
-    discount: "9% Token Discount",
-    generations: "44 Recipe Generations",
+    discount: "10% Token Discount",
     features: [
       "~44 Recipe Generations"
     ],
@@ -56,9 +52,7 @@ const pricingTiers: PricingTier[] = [
     description: "Maximum value package",
     price: "£60",
     tokens: "360 Tokens",
-    tokenRate: "£0.17 per token",
-    discount: "17% Token Discount",
-    generations: "72 Recipe Generations",
+    discount: "20% Token Discount",
     features: [
       "~72 Consulting Generations"
     ],
@@ -71,7 +65,7 @@ const pricingTiers: PricingTier[] = [
     description: "Perfect for your specific needs",
     price: "",
     tokens: "",
-    tokenRate: "One token is approximately £0.20.",
+    tokenRate: "£0.20 per token",
     features: [
       "Pay Exactly What You Want"
     ],
@@ -227,21 +221,51 @@ const Pricing = () => {
                 {tier.id === "custom" && (
                   <div className="text-center space-y-1">
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500 font-semibold">£</span>
+                      <label htmlFor={`custom-amount-${tier.id}`} className="sr-only">
+                        Enter custom amount in pounds
+                      </label>
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 font-semibold pointer-events-none" style={{ color: '#000' }}>£</span>
                       <input
+                        id={`custom-amount-${tier.id}`}
                         type="number"
                         placeholder="25"
                         value={customAmount}
                         onChange={(e) => setCustomAmount(e.target.value)}
-                        className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-center text-2xl font-bold"
+                        className="w-full pl-8 pr-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white focus:outline-none focus:ring-2"
                         style={{
                           fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          borderColor: '#000',
+                          color: '#000',
                         }}
+                        onFocus={(e) => {
+                          const target = e.target as HTMLInputElement;
+                          target.style.borderColor = '#000';
+                          target.style.boxShadow = '0 0 0 2px rgba(0, 0, 0, 0.2)';
+                        }}
+                        onBlur={(e) => {
+                          const target = e.target as HTMLInputElement;
+                          target.style.borderColor = '#000';
+                          target.style.boxShadow = 'none';
+                        }}
+                        onMouseOver={(e) => {
+                          const target = e.target as HTMLInputElement;
+                          if (document.activeElement !== target) {
+                            target.style.borderColor = 'rgba(0, 0, 0, 0.8)';
+                          }
+                        }}
+                        onMouseOut={(e) => {
+                          const target = e.target as HTMLInputElement;
+                          if (document.activeElement !== target) {
+                            target.style.borderColor = '#000';
+                          }
+                        }}
+                        aria-describedby={`token-rate-${tier.id}`}
                       />
                     </div>
                     <div className="space-y-2 mt-2">
                       {tier.tokenRate && (
                         <p 
+                          id={`token-rate-${tier.id}`}
                           className="text-slate-500 text-xs"
                           style={{
                             fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
