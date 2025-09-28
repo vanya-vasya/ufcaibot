@@ -12,6 +12,7 @@ interface PricingTier {
   originalPrice?: string;
   discount?: string;
   tokens: string;
+  tokenRate?: string;
   generations?: string;
   features: string[];
   popular: boolean;
@@ -25,6 +26,8 @@ const pricingTiers: PricingTier[] = [
     description: "For a quick start",
     price: "£20",
     tokens: "100 Tokens",
+    tokenRate: "£0.20 per token",
+    discount: "Standard Rate",
     generations: "20 Macros Generations",
     features: [
       "~20 Macros Generations"
@@ -37,8 +40,9 @@ const pricingTiers: PricingTier[] = [
     name: "Master Chef",
     description: "Best value for regular use",
     price: "£40",
-    discount: "10% OFF",
     tokens: "220 Tokens",
+    tokenRate: "£0.18 per token",
+    discount: "9% Token Discount",
     generations: "44 Recipe Generations",
     features: [
       "~44 Recipe Generations"
@@ -51,8 +55,9 @@ const pricingTiers: PricingTier[] = [
     name: "Master Nutritionist",
     description: "Maximum value package",
     price: "£60",
-    discount: "20% OFF",
     tokens: "360 Tokens",
+    tokenRate: "£0.17 per token",
+    discount: "17% Token Discount",
     generations: "72 Recipe Generations",
     features: [
       "~72 Consulting Generations"
@@ -66,6 +71,7 @@ const pricingTiers: PricingTier[] = [
     description: "Perfect for your specific needs",
     price: "",
     tokens: "",
+    tokenRate: "One token is approximately £0.20.",
     features: [
       "Pay Exactly What You Want"
     ],
@@ -182,24 +188,35 @@ const Pricing = () => {
                       {tier.price}
                     </div>
                     {tier.tokens && (
-                      <div className="flex items-center justify-center space-x-2">
-                        <p 
-                          className="text-green-600 font-semibold"
-                          style={{
-                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                          }}
-                        >
-                          {tier.tokens}
-                        </p>
-                        {tier.originalPrice && (
-                          <div className="flex items-center space-x-2">
-                            <span className="text-xs text-slate-500 line-through font-medium">
-                              {tier.originalPrice}
-                            </span>
-                            <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full font-semibold">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-center space-x-2">
+                          <p 
+                            className="text-green-600 font-semibold"
+                            style={{
+                              fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                            }}
+                          >
+                            {tier.tokens}
+                          </p>
+                          {tier.discount && (
+                            <span className={`text-xs px-2 py-1 rounded-full font-semibold ${
+                              tier.discount === "Standard Rate" 
+                                ? "bg-gray-100 text-gray-700"
+                                : "bg-green-100 text-green-700"
+                            }`}>
                               {tier.discount}
                             </span>
-                          </div>
+                          )}
+                        </div>
+                        {tier.tokenRate && (
+                          <p 
+                            className="text-slate-500 text-xs"
+                            style={{
+                              fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                            }}
+                          >
+                            {tier.tokenRate}
+                          </p>
                         )}
                       </div>
                     )}
@@ -222,7 +239,18 @@ const Pricing = () => {
                         }}
                       />
                     </div>
-                    <div className="h-6"></div>
+                    <div className="space-y-2 mt-2">
+                      {tier.tokenRate && (
+                        <p 
+                          className="text-slate-500 text-xs"
+                          style={{
+                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                          }}
+                        >
+                          {tier.tokenRate}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 )}
 
