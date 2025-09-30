@@ -1,5 +1,5 @@
 /**
- * Friendly Response Formatter for Master Nutritionist
+ * Friendly Response Formatter for Your Own Nutritionist
  * Transforms JSON responses into human-friendly, aesthetically pleasing format
  */
 

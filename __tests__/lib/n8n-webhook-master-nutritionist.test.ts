@@ -1,5 +1,5 @@
 /**
- * Tests for N8N Webhook Client Master Nutritionist functionality
+ * Tests for N8N Webhook Client Your Own Nutritionist functionality
  */
 
 import { N8nWebhookClient } from '@/lib/n8n-webhook';
@@ -32,7 +32,7 @@ Object.defineProperty(global, 'navigator', {
   },
 });
 
-describe('N8N Webhook Client - Master Nutritionist', () => {
+describe('N8N Webhook Client - Your Own Nutritionist', () => {
   let webhookClient: N8nWebhookClient;
 
   beforeEach(() => {
@@ -106,7 +106,7 @@ describe('N8N Webhook Client - Master Nutritionist', () => {
         },
         tool: {
           id: 'master-nutritionist',
-          name: 'Master Nutritionist',
+          name: 'Your Own Nutritionist',
           price: 0, // Should be free
           gradient: 'from-emerald-400 via-green-500 to-teal-600',
         },
@@ -329,7 +329,7 @@ describe('N8N Webhook Client - Master Nutritionist', () => {
   });
 
   describe('Tool Configuration', () => {
-    it('should have correct Master Nutritionist configuration', async () => {
+    it('should have correct Your Own Nutritionist configuration', async () => {
       const mockResponse = {
         ok: true,
         json: async () => ({ result: 'test' }),
@@ -347,7 +347,7 @@ describe('N8N Webhook Client - Master Nutritionist', () => {
 
       expect(payload.tool).toMatchObject({
         id: 'master-nutritionist',
-        name: 'Master Nutritionist',
+        name: 'Your Own Nutritionist',
         price: 0, // Free tool
         gradient: 'from-emerald-400 via-green-500 to-teal-600',
       });

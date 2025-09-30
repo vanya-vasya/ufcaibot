@@ -22,7 +22,7 @@ interface PricingTier {
 const pricingTiers: PricingTier[] = [
   {
     id: "Tracker",
-    name: "Cal Tracker",
+    name: "Your Own Tracker",
     description: "For a quick start",
     price: "£20",
     tokens: "100 Tokens",
@@ -35,7 +35,7 @@ const pricingTiers: PricingTier[] = [
   },
   {
     id: "master-chef",
-    name: "Master Chef",
+    name: "Your Own Chef",
     description: "Best value for regular use",
     price: "£40",
     tokens: "220 Tokens",
@@ -48,7 +48,7 @@ const pricingTiers: PricingTier[] = [
   },
   {
     id: "master-nutritionist",
-    name: "Master Nutritionist",
+    name: "Your Own Nutritionist",
     description: "Maximum value package",
     price: "£60",
     tokens: "360 Tokens",
@@ -78,8 +78,8 @@ const Pricing = () => {
   const [customAmount, setCustomAmount] = useState("");
 
   const handleGetStarted = (tierId: string) => {
-    // Redirect to dashboard
-    window.location.href = "https://www.yum-mi.com/dashboard";
+    // Redirect to dashboard - use relative path for local development
+    window.location.href = "/dashboard";
   };
 
   return (

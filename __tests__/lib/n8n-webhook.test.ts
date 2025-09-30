@@ -54,7 +54,7 @@ describe('N8nWebhookClient', () => {
 
   describe('buildWebhookPayload', () => {
     const mockToolConfig = {
-      title: 'Master Chef',
+      title: 'Your Own Chef',
       gradient: 'from-amber-400 via-orange-500 to-red-600',
     };
 
@@ -74,8 +74,8 @@ describe('N8nWebhookClient', () => {
         },
         tool: {
           id: 'master-chef',
-          name: 'Master Chef',
-          price: 0, // Master Chef is now free
+          name: 'Your Own Chef',
+          price: 0, // Your Own Chef is now free
           gradient: 'from-amber-400 via-orange-500 to-red-600',
         },
         user: {
@@ -137,7 +137,7 @@ describe('N8nWebhookClient', () => {
       },
       tool: {
         id: 'master-chef',
-        name: 'Master Chef',
+        name: 'Your Own Chef',
         price: 0,
         gradient: 'test-gradient',
       },
@@ -223,7 +223,7 @@ describe('N8nWebhookClient', () => {
       },
       tool: {
         id: 'master-chef',
-        name: 'Master Chef',
+        name: 'Your Own Chef',
         price: 0,
         gradient: 'test-gradient',
       },
@@ -333,7 +333,7 @@ describe('N8nWebhookClient', () => {
   describe('Integration Tests', () => {
     it('should handle complete workflow: build -> validate -> send', async () => {
       const mockToolConfig = {
-        title: 'Master Chef',
+        title: 'Your Own Chef',
         gradient: 'from-amber-400 via-orange-500 to-red-600',
       };
 
@@ -371,7 +371,7 @@ describe('N8nWebhookClient', () => {
       const mockFile = new File(['image data'], 'chicken.jpg', { type: 'image/jpeg' });
       Object.defineProperty(mockFile, 'size', { value: 2048 });
 
-      const mockToolConfig = { title: 'Cal Tracker', gradient: 'test' };
+      const mockToolConfig = { title: 'Your Own Tracker', gradient: 'test' };
 
       const payload = client.buildWebhookPayload(
         'How many calories are in this meal?',
@@ -398,7 +398,7 @@ describe('N8nWebhookClient', () => {
       },
       tool: {
         id: 'master-chef',
-        name: 'Master Chef',
+        name: 'Your Own Chef',
         price: 0,
         gradient: 'test-gradient',
       },

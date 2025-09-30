@@ -67,9 +67,9 @@ export default async function DashboardLayout({
                 color: '#0f172a'
               }}
             >
-            GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD (№15982295) <br /> Email: support@yum-mi.com{" "}
+            QUICK FIT LTD (№15995367) <br /> Email: support@yum-mi.com{" "}
               <br />
-              Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA, <br />
+              DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA, <br />
               Copyright © {new Date().getFullYear()}. All rights reserved.
             </p>
             <div className="flex space-x-4">

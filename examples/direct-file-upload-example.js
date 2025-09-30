@@ -130,7 +130,7 @@ async function uploadWithWebhookClient(file) {
 // OLD WAY (JSON with metadata only - no binary data):
 const jsonPayload = {
   message: { content: "Analyze image", role: "user" },
-  tool: { id: "master-chef", name: "Master Chef", price: 0 },
+  tool: { id: "master-chef", name: "Your Own Chef", price: 0 },
   user: { id: "user123" },
   image: {
     fileName: "food.jpg",

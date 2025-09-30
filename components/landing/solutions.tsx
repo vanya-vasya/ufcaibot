@@ -9,28 +9,28 @@ import Link from "next/link";
 
 const creativeTools = [
   {
-    title: "Master Chief",
+    title: "Your Own Chef",
     description: "Turn a photo of ingredients into a ready-to-cook recipe",
     image: "/images/resource/music/music-production.jpg",
     type: "image",
     color: "from-cyan-400 via-blue-500 to-indigo-600",
   },
   {
-    title: "Master Nutritionist", 
+    title: "Your Own Nutritionist", 
     description: "Personalized nutrition that adapts to your age, goals, and allergies",
     image: "/images/resource/video-production.jpg",
     type: "image",
     color: "from-cyan-400 via-blue-500 to-indigo-600",
   },
   {
-    title: "Cal Tracker",
+    title: "Your Own Tracker",
     description: "Computer-vision macros and calorie counts in real time",
     image: "/images/resource/tiktok.jpg",
     type: "image", 
     color: "from-cyan-400 via-blue-500 to-indigo-600",
   },
   {
-    title: "Digest",
+    title: "Your Own Digest",
     description: "Coming Soon",
     image: "/images/resource/digital_artist.jpg",
     type: "image",

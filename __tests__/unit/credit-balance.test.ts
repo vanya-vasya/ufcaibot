@@ -1,11 +1,11 @@
 /**
- * Unit tests for credit balance logic and Master Chef free tool functionality
+ * Unit tests for credit balance logic and Your Own Chef free tool functionality
  */
 
 import { N8nWebhookClient } from '@/lib/n8n-webhook';
 
 // Mock the webhook client price function for testing
-describe('Credit Balance Logic - Master Chef Free Tool', () => {
+describe('Credit Balance Logic - Your Own Chef Free Tool', () => {
   let webhookClient: N8nWebhookClient;
 
   beforeEach(() => {
@@ -43,7 +43,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
     });
   });
 
-  describe('Credit Balance Scenarios for Master Chef', () => {
+  describe('Credit Balance Scenarios for Your Own Chef', () => {
     const getMasterChefCreditLogic = (availableCredits: number, toolPrice: number = 0) => {
       // Free tools (toolPrice = 0) never have insufficient credits
       const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;
@@ -57,7 +57,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
       };
     };
 
-    it('should enable Master Chef with zero credit balance', () => {
+    it('should enable Your Own Chef with zero credit balance', () => {
       const result = getMasterChefCreditLogic(0);
       
       expect(result.shouldBeEnabled).toBe(true);
@@ -66,7 +66,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
       expect(result.availableCredits).toBe(0);
     });
 
-    it('should enable Master Chef with positive credit balance', () => {
+    it('should enable Your Own Chef with positive credit balance', () => {
       const result = getMasterChefCreditLogic(100);
       
       expect(result.shouldBeEnabled).toBe(true);
@@ -75,7 +75,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
       expect(result.availableCredits).toBe(100);
     });
 
-    it('should enable Master Chef with negative credit balance', () => {
+    it('should enable Your Own Chef with negative credit balance', () => {
       const result = getMasterChefCreditLogic(-25);
       
       expect(result.shouldBeEnabled).toBe(true);
@@ -124,7 +124,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
       };
     };
 
-    describe('Master Nutritionist (150 credits)', () => {
+    describe('Your Own Nutritionist (150 credits)', () => {
       it('should disable with insufficient credits', () => {
         const result = getPaidToolCreditLogic(100, 150);
         
@@ -154,7 +154,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
       });
     });
 
-    describe('Cal Tracker (50 credits)', () => {
+    describe('Your Own Tracker (50 credits)', () => {
       it('should disable with insufficient credits', () => {
         const result = getPaidToolCreditLogic(25, 50);
         
@@ -256,7 +256,7 @@ describe('Credit Balance Logic - Master Chef Free Tool', () => {
       return { disabled, tooltipMessage, className };
     };
 
-    it('should enable button for Master Chef with image and zero credits', () => {
+    it('should enable button for Your Own Chef with image and zero credits', () => {
       const state = getButtonState(true, false, false, false, 0, 0);
       
       expect(state.disabled).toBe(false);

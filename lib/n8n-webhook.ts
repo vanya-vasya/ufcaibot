@@ -75,11 +75,11 @@ class N8nWebhookClient {
     // Direct webhook URL for multipart/form-data uploads
     this.directWebhookUrl = 'https://vanya-vasya.app.n8n.cloud/webhook/4c6c4649-99ef-4598-b77b-6cb12ab6a102';
     
-    // Production webhook URL for Master Nutritionist (configurable via env vars)
+    // Production webhook URL for Your Own Nutritionist (configurable via env vars)
     this.productionWebhookUrl = process.env.NEXT_PUBLIC_N8N_MASTER_NUTRITIONIST_URL || 
                                 'https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9';
     
-    // Production webhook URL for Cal Tracker
+    // Production webhook URL for Your Own Tracker
     this.calTrackerWebhookUrl = 'https://vanya-vasya.app.n8n.cloud/webhook/02d7bdba-03a4-4f98-bc49-c44d32349a47';
   }
 
@@ -580,7 +580,7 @@ class N8nWebhookClient {
   }
 
   /**
-   * Send description with N8N URL for Master Nutritionist with retry logic
+   * Send description with N8N URL for Your Own Nutritionist with retry logic
    */
   async sendDescriptionToWebhookWithRetry(
     description: string,
@@ -625,7 +625,7 @@ class N8nWebhookClient {
   }
 
   /**
-   * Send description directly to N8N production webhook URL (for Master Nutritionist)
+   * Send description directly to N8N production webhook URL (for Your Own Nutritionist)
    */
   async sendDescriptionToWebhook(
     description: string,
@@ -646,7 +646,7 @@ class N8nWebhookClient {
     });
 
     try {
-      // Create JSON payload for Master Nutritionist
+      // Create JSON payload for Your Own Nutritionist
       const payload = {
         message: {
           content: description,
@@ -804,9 +804,9 @@ class N8nWebhookClient {
 
   private getToolName(toolId: string): string {
     const names = {
-      'master-chef': 'Master Chef',
-      'master-nutritionist': 'Master Nutritionist',
-      'cal-tracker': 'Cal Tracker',
+      'master-chef': 'Your Own Chef',
+      'master-nutritionist': 'Your Own Nutritionist',
+      'cal-tracker': 'Your Own Tracker',
     };
     return names[toolId as keyof typeof names] ?? 'Unknown Tool';
   }
@@ -834,7 +834,7 @@ export { N8nWebhookClient, type N8nWebhookPayload, type N8nWebhookResponse };
  *   },
  *   "tool": {
  *     "id": "master-chef",
- *     "name": "Master Chef",
+ *     "name": "Your Own Chef",
  *     "price": 100,
  *     "gradient": "from-amber-400 via-orange-500 to-red-600"
  *   },

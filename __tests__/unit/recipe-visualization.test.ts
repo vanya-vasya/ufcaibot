@@ -207,7 +207,7 @@ describe('Recipe JSON Visualization', () => {
   });
 
   describe('N8N Webhook Response Examples', () => {
-    it('should handle typical N8N Master Chef response', () => {
+    it('should handle typical N8N Your Own Chef response', () => {
       const n8nResponse = JSON.stringify({
         dish: "Mediterranean Quinoa Bowl",
         kcal: 420,

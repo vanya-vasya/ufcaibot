@@ -1,33 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import CodeSnippet from "@/components/ui/CodeSnippet"; 
-import ChatInterface from "@/components/ui/ChatInterface"; 
 import Image from 'next/image';
 import Link from "next/link";
 
-const creativeTools = [
+const products = [
   {
-    title: "Master Chef",
-    description: "Turn a photo of ingredients into a ready-to-cook recipe",
+    title: "Your Own Chef",
+    description: "Take the guesswork out of cooking with a smart service that can turn a photo of ingredients into a ready-to-cook recipe. Instantly discover the most optimal dish for your pantry staples, along with delicious variations inspired by different world cuisines. Cooking becomes simpler, fresher, and more creative starting with just one snap",
     image: "/images/resource/master-chef-transformation.jpg",
     type: "image",
   },
   {
-    title: "Master Nutritionist", 
-    description: "Personalized nutrition that adapts to your age, goals, and allergies",
+    title: "Your Own Nutritionist", 
+    description: "Discover a service that provides you with clear, tailored advice and step-by-step guidance built around your unique goals and wishes. It's like having a supportive coach in your pocket, helping you make choices that truly fit your lifestyle. Think personalized nutrition that adapts to your age, goals, and allergies, so every plan feels made just for you",
     image: "/images/resource/master-nutritionist-personalized.jpg",
     type: "image",
   },
   {
-    title: "Cal Tracker",
-    description: "Computer-vision macros and calorie counts in real time",
+    title: "Your Own Tracker",
+    description: "Snap a photo of your meal and instantly see the full nutritional breakdown with real-time macros and calorie counts. Using smart computer vision, the service helps you stay on track effortlessly by turning every plate into clear, actionable insights. Eating well has never been this simple or this quick",
     image: "/images/resource/cal-tracker-computer-vision.jpg",
     type: "image", 
   },
   {
-    title: "Digest",
+    title: "Your Own Digest",
     description: "Coming Soon",
     image: "/images/resource/digest-recommendations-coming-soon.jpg",
     type: "image",
@@ -35,235 +32,154 @@ const creativeTools = [
 ];
 
 const Products = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [autoplay, setAutoplay] = useState(true);
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout | undefined;
-    if (autoplay) {
-      interval = setInterval(() => {
-        setActiveIndex((current) => (current + 1) % creativeTools.length);
-      }, 5000);
-    }
-    return () => clearInterval(interval);
-  }, [autoplay]);
-
-  const handleDotClick = (index: number) => {
-    setActiveIndex(index);
-    setAutoplay(false);
-    // Restart autoplay after 10 seconds of inactivity
-    setTimeout(() => setAutoplay(true), 10000);
-  };
-
-  // Calculate the visible tools (current, prev, next)
-  const getPrevIndex = (index: number) =>
-    index === 0 ? creativeTools.length - 1 : index - 1;
-  const getNextIndex = (index: number) =>
-    index === creativeTools.length - 1 ? 0 : index + 1;
 
   return (
-    <section id="products"  className="relative overflow-hidden py-16 md:py-24 lg:py-32 bg-slate-50">
-      <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:30px_30px]"></div>
-
-      {/* Background elements */}
-
-      <div className="container relative mx-auto px-4">
-        <div className="mx-auto flex max-w-3xl flex-col items-center space-y-8 text-center mb-16">
+    <section id="products" className="py-16 md:py-24 lg:py-32 bg-white">
+      <div className="container mx-auto px-4">
+        {/* Section header */}
+        <div className="text-center mb-20">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6"
             style={{
               fontFamily: "var(--contact-font)",
               fontWeight: 600,
-              fontSize: '2.5rem',
               lineHeight: 1.1,
               letterSpacing: '0.01em',
-              textTransform: 'none',
-              color: '#1e293b',
-              marginBottom: '1rem'
             }}
           >
             Our Core Products
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-lg text-slate-600 max-w-2xl mx-auto mb-8"
+          >
+            Powerful AI-driven tools to transform your cooking and nutrition experience
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex justify-center"
+          >
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center px-6 py-3 bg-green-400 hover:bg-green-500 text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
+              aria-label="View all products in dashboard"
+            >
+              View All Products
+              <svg
+                className="ml-2 w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
+          </motion.div>
         </div>
 
-        {/* 3D Card Slider */}
-        <div className="relative h-[500px] w-full max-w-6xl mx-auto">
-          {creativeTools.map((tool, index) => {
-            // Determine if this card is active, previous, or next
-            const isActive = index === activeIndex;
-            const isPrev = index === getPrevIndex(activeIndex);
-            const isNext = index === getNextIndex(activeIndex);
-            const isVisible = isActive || isPrev || isNext;
-
-            if (!isVisible) return null;
-
-            let position: "center" | "left" | "right";
-            if (isActive) position = "center";
-            else if (isPrev) position = "left";
-            else position = "right";
-
+        {/* Products stack */}
+        <div className="max-w-7xl mx-auto space-y-20 lg:space-y-32">
+          {products.map((product, index) => {
+            // Apply gray background to Your Own Chef and Your Own Tracker
+            const hasGrayBackground = product.title === "Your Own Chef" || product.title === "Your Own Tracker";
+            
             return (
-              <motion.div
-                key={index}
-                initial={false}
-                animate={{
-                  x:
-                    position === "center"
-                      ? 0
-                      : position === "left"
-                      ? "-55%"
-                      : "55%",
-                  scale: position === "center" ? 1 : 0.8,
-                  opacity: position === "center" ? 1 : 0.6,
-                  zIndex: position === "center" ? 30 : 10,
-                  rotateY:
-                    position === "center" ? 0 : position === "left" ? 15 : -15,
-                }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="absolute top-0 left-0 right-0 mx-auto w-full max-w-2xl h-[500px] cursor-pointer perspective-1000"
-                onClick={() => {
-                  if (!isActive) {
-                    setActiveIndex(index);
-                    setAutoplay(false);
-                    setTimeout(() => setAutoplay(true), 10000);
-                  }
-                }}
+              <div
+                key={product.title}
+                className={hasGrayBackground ? "bg-slate-100 w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] py-16 lg:py-20" : ""}
               >
-                <div className="relative w-full h-full transform-style-3d rounded-2xl shadow-lg overflow-hidden">
-                  {/* Background content */}
-                  <div className="absolute inset-0 z-0">
-                    {tool.type === "image" && tool.image ? (
-                      <Image
-                        src={tool.image}
-                        alt={tool.title}
-                        width={800}
-                        height={600}
-                        className="absolute inset-0 h-full w-full object-cover object-center"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 h-full w-full bg-white">
-                        <ChatInterface />
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/60 to-transparent z-10"></div>
-
-                  {/* Glowing border */}
-                  <div
-                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 opacity-0 hover:opacity-20 blur transition-opacity"
-                  ></div>
-
-                  {/* Content */}
-                  <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
-                    <div className="text-left">
-                      <h3 className="mb-4 text-3xl font-extrabold leading-9 text-white sm:text-4xl sm:leading-10">
-                        {tool.title}
-                      </h3>
-
-                      <p 
-                        className="mb-6 max-w-md text-white"
-                        style={{
-                          fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-                          fontWeight: 600,
-                          fontSize: '1rem',
-                          lineHeight: 1.2,
-                          letterSpacing: '0.01em',
-                          textTransform: 'none'
-                        }}
-                      >
-                        {tool.description}
-                      </p>
-
-                      <div className="main-header__login-sing-up">
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <div className="nav-container-green">
-                            <Link
-                              href="/dashboard"
-                              className="nav-link"
-                            >
-                              Begin
-                            </Link>
-                          </div>
-                        </motion.div>
-                      </div>
-                    </div>
-                  </div>
+                <div className={hasGrayBackground ? "container mx-auto px-4" : ""}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: index * 0.2 }}
+                    className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 xl:gap-20 items-center ${
+                      index % 2 === 1 ? 'lg:grid-flow-dense' : ''
+                    } ${hasGrayBackground ? 'max-w-7xl mx-auto' : ''}`}
+                  >
+              {/* Text content */}
+              <div className={`space-y-8 ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+                <div>
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+                    {product.title}
+                  </h3>
+                  <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                    {product.description}
+                  </p>
                 </div>
-              </motion.div>
+                
+                {/* CTA Button */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-block"
+                >
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center px-6 py-3 bg-green-400 hover:bg-green-500 text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
+                    aria-label={`Try ${product.title}`}
+                  >
+                    {product.title === "Your Own Digest" ? "Coming Soon" : "Try Now"}
+                    {product.title !== "Your Own Digest" && (
+                      <svg
+                        className="ml-2 w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    )}
+                  </Link>
+                </motion.div>
+              </div>
+
+              {/* Image content */}
+              <div className={`${index % 2 === 1 ? 'lg:col-start-1' : ''}`}>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300"
+                >
+                  <Image
+                    src={product.image}
+                    alt={`${product.title} demonstration`}
+                    width={600}
+                    height={400}
+                    className="w-full h-auto object-cover"
+                    loading={index < 2 ? "eager" : "lazy"}
+                    priority={index < 2}
+                  />
+                  
+                  {/* Subtle overlay for better contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent"></div>
+                </motion.div>
+              </div>
+            </motion.div>
+                </div>
+              </div>
             );
           })}
         </div>
-
-        {/* Navigation dots */}
-        <div className="flex justify-center mt-12 space-x-4">
-          {creativeTools.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleDotClick(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === activeIndex
-                  ? "bg-white w-8"
-                  : "bg-gray-500 opacity-50 hover:opacity-75"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
       </div>
 
-      <style jsx global>{`
-        .nav-container-green {
-          display: flex;
-          background-color: #86efac;
-          border-radius: 9999px;
-          padding: 4px;
-          gap: 4px;
-        }
-
-        .nav-link {
-          font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-          font-weight: 600;
-          font-size: 16px;
-          line-height: 1.1;
-          letter-spacing: 0.01em;
-          text-transform: none;
-          color: #0f172a;
-          padding: 8px 16px;
-          border-radius: 9999px;
-          transition: all 500ms ease-in-out;
-          text-decoration: none;
-        }
-
-        .main-header__login-sing-up .nav-link {
-          font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
-          font-weight: 600 !important;
-          font-size: 16px !important;
-          line-height: 1.1 !important;
-          letter-spacing: 0.01em !important;
-          text-transform: none !important;
-          color: #0f172a !important;
-          padding: 8px 16px !important;
-          border-radius: 9999px !important;
-          border: none !important;
-        }
-
-        .nav-link:hover {
-          background: linear-gradient(to right, #10b981, #059669, #047857);
-          background-clip: text;
-          -webkit-background-clip: text;
-          color: transparent;
-          text-decoration: none;
-        }
-      `}</style>
     </section>
   );
 };

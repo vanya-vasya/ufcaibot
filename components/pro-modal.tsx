@@ -379,7 +379,7 @@ export const ProModal = () => {
               height={CardLogo.height}
             />
             <Label className="text-center font-normal text-xs text-black">
-            GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD - Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA
+            QUICK FIT LTD - DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA
             </Label>
           </>
         )}

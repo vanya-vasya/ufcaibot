@@ -1,5 +1,5 @@
 /**
- * Integration tests for Master Nutritionist conversation page
+ * Integration tests for Your Own Nutritionist conversation page
  */
 
 import React from 'react';
@@ -53,7 +53,7 @@ const mockToastError = toast.error as jest.MockedFunction<typeof toast.error>;
 // Mock fetch for credit balance
 global.fetch = jest.fn();
 
-describe('Master Nutritionist Conversation Page', () => {
+describe('Your Own Nutritionist Conversation Page', () => {
   beforeEach(() => {
     // Setup router mock
     mockUseRouter.mockReturnValue({
@@ -70,7 +70,7 @@ describe('Master Nutritionist Conversation Page', () => {
       userId: 'test-user-123',
     } as any);
 
-    // Setup search params for Master Nutritionist
+    // Setup search params for Your Own Nutritionist
     const mockSearchParams = new Map();
     mockSearchParams.set('toolId', 'master-nutritionist');
     mockUseSearchParams.mockReturnValue({
@@ -91,12 +91,12 @@ describe('Master Nutritionist Conversation Page', () => {
     jest.clearAllMocks();
   });
 
-  describe('Master Nutritionist UI', () => {
-    it('should render Master Nutritionist title and description', async () => {
+  describe('Your Own Nutritionist UI', () => {
+    it('should render Your Own Nutritionist title and description', async () => {
       render(<ConversationPage />);
 
       await waitFor(() => {
-        expect(screen.getByText('Master Nutritionist')).toBeInTheDocument();
+        expect(screen.getByText('Your Own Nutritionist')).toBeInTheDocument();
         expect(screen.getByText(/Advanced nutritional analysis/)).toBeInTheDocument();
         expect(screen.getByText(/Price: Free/)).toBeInTheDocument();
       });
@@ -112,7 +112,7 @@ describe('Master Nutritionist Conversation Page', () => {
       });
     });
 
-    it('should show correct placeholder text for Master Nutritionist', async () => {
+    it('should show correct placeholder text for Your Own Nutritionist', async () => {
       render(<ConversationPage />);
 
       await waitFor(() => {

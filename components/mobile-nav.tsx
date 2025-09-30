@@ -44,22 +44,22 @@ import Image from "next/image";
 // Product items matching the header
 const productItems = [
   {
-    name: "Master Chef",
+    name: "Your Own Chef",
     href: "/dashboard/conversation?toolId=master-chef",
     icon: Crown,
   },
   {
-    name: "Master Nutritionist",
+    name: "Your Own Nutritionist",
     href: "/dashboard/conversation?toolId=master-nutritionist",
     icon: Activity,
   },
   {
-    name: "Cal Tracker",
+    name: "Your Own Tracker",
     href: "/dashboard/conversation?toolId=cal-tracker",
     icon: Target,
   },
   {
-    name: "Digest",
+    name: "Your Own Digest",
     href: "/dashboard",
     icon: BookOpen,
     comingSoon: true,

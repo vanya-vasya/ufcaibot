@@ -4,7 +4,6 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
 
 const routes = [
   {
@@ -17,53 +16,7 @@ const routes = [
   },
 ];
 
-const productItems = [
-  {
-    name: "Master Chef",
-    href: "/dashboard",
-  },
-  {
-    name: "Master Nutritionist",
-    href: "/dashboard",
-  },
-  {
-    name: "Cal Tracker",
-    href: "/dashboard",
-  },
-  {
-    name: "Digest",
-    href: "",
-    comingSoon: true,
-  },
-];
-
 const Header = () => {
-  const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
-
-  const handleProductClick = () => {
-    setIsProductDropdownOpen(!isProductDropdownOpen);
-  };
-
-  const handleDropdownClose = () => {
-    setIsProductDropdownOpen(false);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('.dropdown-container')) {
-        setIsProductDropdownOpen(false);
-      }
-    };
-
-    if (isProductDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isProductDropdownOpen]);
 
   return (
     <header className="bg-white">
@@ -75,29 +28,12 @@ const Header = () => {
         </div>
         <div className="flex gap-x-12 ml-12">
           <div className="nav-container-light-green">
-            <div className="dropdown-container">
-              <button
-                onClick={handleProductClick}
-                className="nav-link dropdown-trigger"
-              >
-                Products
-              </button>
-              {isProductDropdownOpen && (
-                <div className="dropdown-menu">
-                  {productItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className="dropdown-item"
-                      onClick={handleDropdownClose}
-                    >
-                      {item.name}
-                      {item.comingSoon && <span className="coming-soon">Coming Soon</span>}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+            <Link
+              href="/#products"
+              className="nav-link"
+            >
+              Products
+            </Link>
             {routes.map((route) => (
               <Link
                 key={route.name}
@@ -214,58 +150,6 @@ const Header = () => {
           text-decoration: none;
         }
 
-        .dropdown-container {
-          position: relative;
-        }
-
-        .dropdown-trigger {
-          cursor: pointer;
-          background: none;
-          border: none;
-        }
-
-        .dropdown-menu {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-          padding: 8px;
-          min-width: 200px;
-          z-index: 50;
-          margin-top: 4px;
-          border: 1px solid #e5e7eb;
-        }
-
-        .dropdown-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 12px 16px;
-          font-family: var(--contact-font);
-          font-weight: 600;
-          font-size: 14px;
-          color: #0f172a;
-          text-decoration: none;
-          border-radius: 8px;
-          transition: all 300ms ease-in-out;
-          width: 100%;
-        }
-
-        .dropdown-item:hover {
-          background-color: #f8fafc;
-          color: #10b981;
-        }
-
-        .coming-soon {
-          font-size: 11px;
-          background: #f3f4f6;
-          color: #6b7280;
-          padding: 2px 6px;
-          border-radius: 4px;
-          font-weight: 500;
-        }
       `}</style>
     </header>
   );

@@ -38,11 +38,11 @@ const importantLinks = [
 
 const companyDetails = [
   {
-    name: "Company: GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD",
+    name: "Company: QUICK FIT LTD",
     icon: Building,
   },
   {
-    name: "Company Number: 15982295",
+    name: "Company Number: 15995367",
     icon: FileText,
   },
   {
@@ -50,7 +50,7 @@ const companyDetails = [
     icon: Mail,
   },
   {
-    name: `Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA`,
+    name: `DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA`,
     icon: MapPin,
   },
 ];

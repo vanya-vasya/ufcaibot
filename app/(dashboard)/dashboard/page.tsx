@@ -42,7 +42,7 @@ const item = {
 const nutritionTools = [
   {
     id: "master-chef",
-    label: "Master Chef",
+    label: "Your Own Chef",
     icon: Crown,
     description: "Snap your ingredients. We will turn them into nourishing recipes, complete with a full nutritional breakdown. Because eating well should be that simple",
     href: "/dashboard/conversation",
@@ -53,7 +53,7 @@ const nutritionTools = [
   },
   {
     id: "master-nutritionist",
-    label: "Master Nutritionist",
+    label: "Your Own Nutritionist",
     icon: Activity,
     description: "Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment",
     href: "/dashboard/conversation",
@@ -64,7 +64,7 @@ const nutritionTools = [
   },
   {
     id: "cal-tracker",
-    label: "Cal Tracker",
+    label: "Your Own Tracker",
     icon: Target,
     description: "Intelligent calorie and nutrient tracking with real-time insights, progress monitoring, and personalized recommendations",
     href: "/dashboard/conversation",

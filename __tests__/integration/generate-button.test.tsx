@@ -57,7 +57,7 @@ describe('Generate Button Integration Tests', () => {
   });
 
   describe('Credit Balance Scenarios', () => {
-    it('should enable Generate button for Master Chef even with zero credits', async () => {
+    it('should enable Generate button for Your Own Chef even with zero credits', async () => {
       // Mock API response with zero credits
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
@@ -75,7 +75,7 @@ describe('Generate Button Integration Tests', () => {
         expect(screen.getByText(/Credits: 0 available.*Free/)).toBeInTheDocument();
       });
 
-      // For Master Chef (0 credits required), button should be enabled even with zero credits
+      // For Your Own Chef (0 credits required), button should be enabled even with zero credits
       const generateButton = screen.getByRole('button', { name: /Generate/ });
       
       // Upload a mock image file to fully enable the button
@@ -130,7 +130,7 @@ describe('Generate Button Integration Tests', () => {
       });
     });
 
-    it('should enable Generate button for Master Chef with negative credits', async () => {
+    it('should enable Generate button for Your Own Chef with negative credits', async () => {
       // Mock API response with negative credit balance (edge case)
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
@@ -147,7 +147,7 @@ describe('Generate Button Integration Tests', () => {
         expect(screen.getByText(/Credits: -25 available.*Free/)).toBeInTheDocument();
       });
 
-      // Master Chef should still be enabled with negative credits
+      // Your Own Chef should still be enabled with negative credits
       const generateButton = screen.getByRole('button', { name: /Generate/ });
       
       // Upload a mock image file

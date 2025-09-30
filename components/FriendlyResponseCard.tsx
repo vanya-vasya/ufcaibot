@@ -14,7 +14,7 @@ export function FriendlyResponseCard({
   response, 
   gradient = "from-emerald-400 via-green-500 to-teal-600",
   className,
-  toolTitle = "Master Nutritionist"
+  toolTitle = "Your Own Nutritionist"
 }: FriendlyResponseCardProps) {
   return (
     <div className={cn(

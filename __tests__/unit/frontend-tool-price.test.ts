@@ -27,7 +27,7 @@ describe('Frontend Tool Price Logic', () => {
     expect(getToolPrice('unknown-tool')).toBe(100);
   });
 
-  it('should properly calculate hasInsufficientCredits for Master Chef', () => {
+  it('should properly calculate hasInsufficientCredits for Your Own Chef', () => {
     const toolPrice = getToolPrice('master-chef');
     const availableCredits = 0; // Zero credits
     const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;

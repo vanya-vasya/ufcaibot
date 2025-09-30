@@ -37,8 +37,8 @@ type ChatCompletionRequestMessage = {
   role: 'user' | 'system' | 'assistant';
   content: string;
   recipeData?: Recipe; // Optional recipe data for structured responses
-  friendlyResponse?: FriendlyResponse; // Friendly formatted response for Master Nutritionist
-  nutritionData?: NutritionData; // Simple nutritional data for Cal Tracker
+  friendlyResponse?: FriendlyResponse; // Friendly formatted response for Your Own Nutritionist
+  nutritionData?: NutritionData; // Simple nutritional data for Your Own Tracker
 };
 
 // Recipe type for structured recipe responses
@@ -51,7 +51,7 @@ type Recipe = {
   recipe: string; // markdown
 };
 
-// Nutrition data type for Cal Tracker responses
+// Nutrition data type for Your Own Tracker responses
 type NutritionData = {
   dish: string;
   kcal: number;
@@ -60,7 +60,7 @@ type NutritionData = {
   carb: number;
 };
 
-// Helper function to parse simple nutrition JSON for Cal Tracker
+// Helper function to parse simple nutrition JSON for Your Own Tracker
 const parseNutritionResponse = (response: string): { text: string; nutrition?: NutritionData } => {
   try {
     // Try to parse as JSON first
@@ -119,7 +119,7 @@ const parseRecipeResponse = (response: string): { text: string; recipe?: Recipe 
 // Конфигурация для разных типов инструментов
 const toolConfigs = {
   'master-chef': {
-    title: 'Master Chef',
+    title: 'Your Own Chef',
     description: 'Snap your ingredients. We will turn them into nourishing recipes, complete with a full nutritional breakdown. Because eating well should be that simple\nPrice: Free',
     iconName: 'Crown',
     iconColor: 'text-amber-600',
@@ -129,7 +129,7 @@ const toolConfigs = {
     placeholder: 'Ask me for meal planning, nutrition advice, dietary analysis, or healthy recipe suggestions...'
   },
   'master-nutritionist': {
-    title: 'Master Nutritionist',
+    title: 'Your Own Nutritionist',
     description: 'Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment\nPrice: Free',
     iconName: 'Activity',
     iconColor: 'text-emerald-600',
@@ -139,7 +139,7 @@ const toolConfigs = {
     placeholder: 'Tell us your challenge. We\'ll turn it into a recipe for wellness'
   },
   'cal-tracker': {
-    title: 'Cal Tracker',
+    title: 'Your Own Tracker',
     description: 'Intelligent calorie and nutrient tracking\nPrice: Free',
     iconName: 'Target',
     iconColor: 'text-blue-600',
@@ -283,7 +283,7 @@ const ConversationPage = () => {
       let userMessage: ChatCompletionRequestMessage;
 
       if (toolId === 'master-nutritionist') {
-        // Master Nutritionist - send description with N8N URL
+                // Your Own Nutritionist - send description with N8N URL
         userMessage = {
           role: "user",
           content: `[Description: ${values.description}] - Processing nutritional analysis...`,
@@ -327,7 +327,7 @@ const ConversationPage = () => {
         let assistantMessage: ChatCompletionRequestMessage;
         let successMessage: string;
 
-        // Handle Cal Tracker responses - check for simple nutrition JSON first
+        // Handle Your Own Tracker responses - check for simple nutrition JSON first
         if (toolId === 'cal-tracker') {
           const nutritionParsed = parseNutritionResponse(webhookResponse.data.response);
           
@@ -351,7 +351,7 @@ const ConversationPage = () => {
           successMessage = `🎯 Calorie tracking analysis ready in ${(webhookResponse.data.processingTime / 1000).toFixed(1)}s!`;
           
         } else if (toolId === 'master-nutritionist') {
-          // Handle Master Nutritionist responses with friendly formatting
+          // Handle Your Own Nutritionist responses with friendly formatting
           const friendlyResponse = friendlyFormatter.formatResponse(webhookResponse.data.response);
           
           assistantMessage = {
@@ -467,7 +467,7 @@ const ConversationPage = () => {
             {/* Input Section - Conditional based on tool type */}
             <div className="col-span-12">
               {toolId === 'master-nutritionist' ? (
-                // Master Nutritionist - Description Input
+                // Your Own Nutritionist - Description Input
                 <div>
                   <div className="text-center mb-4">
                     <h3 className="text-lg font-medium mb-2">Enter Analysis Description</h3>
@@ -640,7 +640,7 @@ const ConversationPage = () => {
                   {message.role === "user" && <UserAvatar />}
                 </div>
 
-                {/* Cal Tracker nutrition card for simple nutritional data */}
+                {/* Your Own Tracker nutrition card for simple nutritional data */}
                 {message.role === "assistant" && message.nutritionData && (
                   <div className="w-full">
                     <CalTrackerNutritionCard 
@@ -650,7 +650,7 @@ const ConversationPage = () => {
                   </div>
                 )}
 
-                {/* Friendly response card for Master Nutritionist and Cal Tracker */}
+                {/* Friendly response card for Your Own Nutritionist and Your Own Tracker */}
                 {message.role === "assistant" && message.friendlyResponse && !message.nutritionData && (
                   <div className="w-full">
                     <FriendlyResponseCard 
