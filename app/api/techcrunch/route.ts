@@ -125,7 +125,7 @@ async function fetchFromN8N(limit: number = 20): Promise<TechCrunchArticle[]> {
     return articles
       .slice(0, limit)
       .map(normalizeArticle)
-      .filter(article => article.title && article.url);
+      .filter((article: TechCrunchArticle) => article.title && article.url);
       
   } catch (error) {
     console.error("Error fetching from N8N endpoint:", error);
