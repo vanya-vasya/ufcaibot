@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -210,7 +210,7 @@ const ConversationPage = () => {
   });
 
   // Load credit balance on component mount
-  const loadCreditBalance = async () => {
+  const loadCreditBalance = useCallback(async () => {
     if (!userId) return;
     
     try {
@@ -239,11 +239,11 @@ const ConversationPage = () => {
     } finally {
       setIsLoadingCredits(false);
     }
-  };
+  }, [userId]);
   
   useEffect(() => {
     loadCreditBalance();
-  }, [userId]);
+  }, [userId, loadCreditBalance]);
 
   // Reset form when tool changes
   useEffect(() => {

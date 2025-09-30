@@ -146,7 +146,7 @@ const ContactPage = () => {
                 Contact Information
               </h3>
               <p className="text-lg text-gray-600 mb-8">
-                Get in touch with our team. We're here to help with your nutrition journey
+                Get in touch with our team. We&apos;re here to help with your nutrition journey
               </p>
               
               <div className="space-y-6">
@@ -183,7 +183,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 mb-1">Feedback & Ideas</h4>
-                    <p className="text-gray-600">Have an idea for a new feature? We're all ears</p>
+                    <p className="text-gray-600">Have an idea for a new feature? We&apos;re all ears</p>
                   </div>
                 </div>
               </div>
@@ -201,7 +201,7 @@ const ContactPage = () => {
                   Send us a message
                 </h3>
                 <p className="text-gray-600 mb-8">
-                  Fill out the form below and we'll get back to you as soon as possible
+                  Fill out the form below and we&apos;ll get back to you as soon as possible
                 </p>
 
                 <Form {...form}>

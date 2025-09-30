@@ -47,7 +47,7 @@ const FaqPage = () => {
                 color: '#475569'
               }}
             >
-              Find answers to common questions about Yum-mi's AI-powered nutrition platform
+              Find answers to common questions about Yum-mi&apos;s AI-powered nutrition platform
             </motion.p>
           </motion.div>
         </div>
@@ -96,7 +96,7 @@ const FaqPage = () => {
                       lineHeight: '1.7'
                     }}
                   >
-                    Say goodbye to mealtime stress! Our AI Recipe Generator turns a simple photo of your ingredients into a ready-to-cook recipe. In seconds, you'll uncover the perfect dish for what's in your kitchen, along with exciting twists inspired by cuisines from around the world. Cooking becomes easier, fresher, and way more fun starting with just one snap
+                    Say goodbye to mealtime stress! Our AI Recipe Generator turns a simple photo of your ingredients into a ready-to-cook recipe. In seconds, you&apos;ll uncover the perfect dish for what&apos;s in your kitchen, along with exciting twists inspired by cuisines from around the world. Cooking becomes easier, fresher, and way more fun starting with just one snap
                   </dd>
                 </motion.div>
 
@@ -156,7 +156,7 @@ const FaqPage = () => {
                       lineHeight: '1.7'
                     }}
                   >
-                    Turn every meal into instant insights! Just snap a photo of your food, and our AI instantly delivers a full breakdown of calories, proteins, fats, and carbs all in real time. With computer-vision magic, you'll always know exactly what's on your plate, keeping healthy eating simple, quick, and motivating
+                    Turn every meal into instant insights! Just snap a photo of your food, and our AI instantly delivers a full breakdown of calories, proteins, fats, and carbs all in real time. With computer-vision magic, you&apos;ll always know exactly what&apos;s on your plate, keeping healthy eating simple, quick, and motivating
                   </dd>
                 </motion.div>
 
@@ -216,7 +216,7 @@ const FaqPage = () => {
                       lineHeight: '1.7'
                     }}
                   >
-                    Absolutely! You can set your preferences to match your lifestyle whether you're vegan, gluten-free, or simply in the mood for Italian tonight. You can even set a maximum cooking time, so every recipe is a perfect fit for your needs
+                    Absolutely! You can set your preferences to match your lifestyle whether you&apos;re vegan, gluten-free, or simply in the mood for Italian tonight. You can even set a maximum cooking time, so every recipe is a perfect fit for your needs
                   </dd>
                 </motion.div>
 
