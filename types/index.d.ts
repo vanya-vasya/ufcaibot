@@ -149,3 +149,55 @@ declare type CreateUserParams = {
     userId: string;
     generationPrice: number;
   };
+
+  // ====== TECHCRUNCH ARTICLE TYPES
+  declare type TechCrunchArticle = {
+    id: string;
+    title: string;
+    url: string;
+    image?: string;
+    thumbnail?: string;
+    content?: string;
+    created_at: string;
+    publishedAt: Date;
+    author?: string;
+    category?: string;
+    readTime?: number;
+    summary?: string;
+  };
+
+  declare type TechCrunchApiResponse = {
+    articles: TechCrunchArticle[];
+    total: number;
+    page: number;
+    limit: number;
+    hasMore: boolean;
+  };
+
+  declare type ArticleCardProps = {
+    article: TechCrunchArticle;
+    index?: number;
+    priority?: boolean;
+  };
+
+  declare type InsightsSectionProps = {
+    articles?: TechCrunchArticle[];
+    loading?: boolean;
+    error?: string | null;
+  };
+
+  // ====== ANALYTICS TYPES
+  declare global {
+    interface Window {
+      gtag?: (
+        command: 'event' | 'config' | 'set',
+        targetId: string,
+        config?: {
+          event_category?: string;
+          event_label?: string;
+          value?: number;
+          custom_parameters?: Record<string, any>;
+        }
+      ) => void;
+    }
+  }
