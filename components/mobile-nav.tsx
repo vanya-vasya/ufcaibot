@@ -62,7 +62,6 @@ const productItems = [
     name: "Your Own Digest",
     href: "/dashboard",
     icon: BookOpen,
-    comingSoon: true,
   },
 ];
 
@@ -187,11 +186,6 @@ export function MobileNav({
                     </div>
                     <div className="flex items-center justify-between flex-1">
                       <span>{item.name}</span>
-                      {item.comingSoon && (
-                        <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded">
-                          Coming Soon
-                        </span>
-                      )}
                     </div>
                   </Link>
                 ))}

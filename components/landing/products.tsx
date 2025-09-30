@@ -121,18 +121,18 @@ const Products = () => {
                 </div>
                 
                 {/* CTA Button */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="inline-block"
-                >
-                  <Link
-                    href="/dashboard"
-                    className="inline-flex items-center px-6 py-3 bg-green-400 hover:bg-green-500 text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
-                    aria-label={`Try ${product.title}`}
+                {product.title !== "Your Own Digest" && (
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="inline-block"
                   >
-                    {product.title === "Your Own Digest" ? "Coming Soon" : "Try Now"}
-                    {product.title !== "Your Own Digest" && (
+                    <Link
+                      href="/dashboard"
+                      className="inline-flex items-center px-6 py-3 bg-green-400 hover:bg-green-500 text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
+                      aria-label={`Try ${product.title}`}
+                    >
+                      Try Now
                       <svg
                         className="ml-2 w-4 h-4"
                         fill="none"
@@ -146,9 +146,9 @@ const Products = () => {
                           d="M9 5l7 7-7 7"
                         />
                       </svg>
-                    )}
-                  </Link>
-                </motion.div>
+                    </Link>
+                  </motion.div>
+                )}
               </div>
 
               {/* Image content */}

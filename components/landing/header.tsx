@@ -14,6 +14,14 @@ const routes = [
     name: "Pricing",
     href: "/#pricing",
   },
+  {
+    name: "FAQ",
+    href: "/faq",
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+  },
 ];
 
 const Header = () => {

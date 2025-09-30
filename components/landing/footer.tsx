@@ -15,6 +15,18 @@ const routes = [
     name: "Our Story",
     href: "/story",
   },
+  {
+    name: "Pricing",
+    href: "/#pricing",
+  },
+  {
+    name: "FAQ",
+    href: "/faq",
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+  },
 ];
 
 const importantLinks = [
@@ -105,6 +117,7 @@ const Footer = () => {
                       <li key={route.name}>
                         <Link 
                           href={route.href}
+                          aria-label={`Navigate to ${route.name} page`}
                           style={{
                             fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                             fontWeight: 600,
@@ -140,6 +153,7 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link 
                           href={link.href}
+                          aria-label={`Read our ${link.name}`}
                           style={{
                             fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                             fontWeight: 600,
