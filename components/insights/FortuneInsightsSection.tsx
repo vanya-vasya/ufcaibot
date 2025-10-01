@@ -156,7 +156,7 @@ const FortuneInsightsSection = ({
               lineHeight: fortuneHealthTokens.typography.lineHeights.relaxed
             }}
           >
-            The latest health news, expert insights, and wellness trends from Fortune's health coverage.
+            The latest health news, expert insights, and wellness trends from Fortune&apos;s health coverage.
           </p>
 
           {/* Article Count */}
