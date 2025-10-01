@@ -4,55 +4,55 @@ import { NextRequest, NextResponse } from "next/server";
 const mockArticles: TechCrunchArticle[] = [
   {
     id: "1",
-    title: "AI-Powered Nutrition Apps Are Changing How We Eat",
-    url: "https://techcrunch.com/2024/ai-nutrition-apps-changing-eating",
+    title: "Some on social media say taping your mouth shut is a sleep hack. But it's not backed by science, and health risks include suffocation",
+    url: "https://fortune.com/section/health/",
     image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
-    content: "The rise of artificial intelligence in nutrition applications is revolutionizing personal health management...",
-    created_at: "2024-01-15T10:30:00Z",
-    publishedAt: new Date("2024-01-15T10:30:00Z"),
-    author: "Sarah Johnson",
-    category: "Health Tech",
+    content: "Some on social media say taping your mouth shut is a sleep hack. But it's not backed by science, and health risks include suffocation...",
+    created_at: "2024-09-27T10:30:00Z",
+    publishedAt: new Date("2024-09-27T10:30:00Z"),
+    author: "Kenya Hunter",
+    category: "Health",
     readTime: 5,
-    summary: "Exploring how AI-powered nutrition apps are transforming dietary habits and health outcomes."
+    summary: "Health experts warn against dangerous sleep hacks promoted on social media platforms."
   },
   {
     id: "2", 
-    title: "Food Tech Startups Raise $2.3B in Record Funding Round",
-    url: "https://techcrunch.com/2024/food-tech-funding-record",
+    title: "The 5 Best Testosterone Boosters of 2025: Tested and Reviewed",
+    url: "https://fortune.com/section/health/",
     image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
-    content: "The food technology sector continues its explosive growth with unprecedented investment levels...",
-    created_at: "2024-01-14T14:15:00Z",
-    publishedAt: new Date("2024-01-14T14:15:00Z"),
-    author: "Michael Chen",
-    category: "Funding",
+    content: "Our comprehensive review of the top testosterone boosters available in 2025...",
+    created_at: "2024-09-26T14:15:00Z",
+    publishedAt: new Date("2024-09-26T14:15:00Z"),
+    author: "Christina Snyder",
+    category: "Health",
     readTime: 7,
-    summary: "Record-breaking investment in food technology startups signals massive industry transformation."
+    summary: "Expert-tested review of testosterone boosters for optimal health and performance."
   },
   {
     id: "3",
-    title: "Smart Kitchen Devices: The Future of Home Cooking",
-    url: "https://techcrunch.com/2024/smart-kitchen-devices-future",
+    title: "The Best Probiotic Supplements for Women (2025): Expert Approved",
+    url: "https://fortune.com/section/health/",
     image: "https://images.unsplash.com/photo-1556909184-f23847fb0530?w=800&q=80",
-    content: "Connected kitchen appliances are making cooking more accessible and enjoyable for home chefs...",
-    created_at: "2024-01-13T09:45:00Z",
-    publishedAt: new Date("2024-01-13T09:45:00Z"),
-    author: "Lisa Park",
-    category: "Consumer Tech",
+    content: "Our experts have reviewed the best probiotic supplements specifically formulated for women...",
+    created_at: "2024-09-26T09:45:00Z",
+    publishedAt: new Date("2024-09-26T09:45:00Z"),
+    author: "Christina Snyder",
+    category: "Health",
     readTime: 4,
-    summary: "How smart kitchen technology is revolutionizing home cooking experiences."
+    summary: "Expert-approved probiotic supplements designed to support women's health and wellness."
   },
   {
     id: "4",
-    title: "Plant-Based Meat Alternatives Gain Market Traction",
-    url: "https://techcrunch.com/2024/plant-based-meat-market-growth",
+    title: "Trump told pregnant women to 'tough it out' instead of take Tylenol. A study of 2.5 million births in Sweden finds zero evidence to back him up",
+    url: "https://fortune.com/section/health/",
     image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&q=80",
-    content: "The alternative protein market shows remarkable growth as consumer preferences shift...",
-    created_at: "2024-01-12T16:20:00Z",
-    publishedAt: new Date("2024-01-12T16:20:00Z"),
-    author: "David Rodriguez",
-    category: "Food Innovation",
+    content: "A comprehensive Swedish study of 2.5 million births challenges recent political claims about Tylenol use during pregnancy...",
+    created_at: "2024-09-25T16:20:00Z",
+    publishedAt: new Date("2024-09-25T16:20:00Z"),
+    author: "Renee Gardner",
+    category: "Health",
     readTime: 6,
-    summary: "Market analysis of the rapidly expanding plant-based protein industry."
+    summary: "Large-scale Swedish study provides evidence against recent claims about Tylenol and pregnancy."
   }
 ];
 
@@ -86,7 +86,7 @@ function normalizeArticle(rawArticle: any): TechCrunchArticle {
     content,
     created_at: rawArticle.created_at || new Date().toISOString(),
     publishedAt,
-    author: rawArticle.author || "TechCrunch Staff",
+    author: rawArticle.author || "Fortune Staff",
     category: rawArticle.category || "Technology",
     readTime,
     summary: rawArticle.summary || summary

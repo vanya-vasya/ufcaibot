@@ -30,14 +30,14 @@ const mockArticles: TechCrunchArticle[] = [
   {
     id: '1',
     title: 'Article 1',
-    url: 'https://techcrunch.com/article-1',
+    url: 'https://fortune.com/section/health/',
     created_at: '2024-01-15T10:30:00Z',
     publishedAt: new Date('2024-01-15T10:30:00Z'),
   },
   {
     id: '2',
     title: 'Article 2',
-    url: 'https://techcrunch.com/article-2',
+    url: 'https://fortune.com/section/health/',
     created_at: '2024-01-14T14:15:00Z',
     publishedAt: new Date('2024-01-14T14:15:00Z'),
   },
@@ -135,7 +135,7 @@ describe('InsightsSection', () => {
       {
         id: '3',
         title: 'Article 3',
-        url: 'https://techcrunch.com/article-3',
+        url: 'https://fortune.com/section/health/',
         created_at: '2024-01-13T09:45:00Z',
         publishedAt: new Date('2024-01-13T09:45:00Z'),
       },

@@ -1,7 +1,7 @@
-# TechCrunch Latest Insights Integration
+# Fortune Health Latest Insights Integration
 
 ## Overview
-The Latest Insights section fetches and displays TechCrunch articles in a McKinsey Insights-style layout on the blog page. The integration supports real-time data fetching via N8N workflows, client-side pagination, and comprehensive error handling.
+The Latest Insights section fetches and displays Fortune health articles in a McKinsey Insights-style layout on the blog page. The integration supports real-time data fetching via N8N workflows, client-side pagination, and comprehensive error handling.
 
 ## Features
 - **McKinsey-style UI**: Professional card layout with proper typography, spacing, and hover effects
@@ -18,8 +18,8 @@ The Latest Insights section fetches and displays TechCrunch articles in a McKins
 Add these variables to your `.env.local` file:
 
 ```env
-# N8N TechCrunch Parser Endpoint
-N8N_TECHCRUNCH_ENDPOINT=https://your-n8n-instance.com/webhook/techcrunch-parser
+# N8N Fortune Health Parser Endpoint
+N8N_TECHCRUNCH_ENDPOINT=https://your-n8n-instance.com/webhook/fortune-health-parser
 
 # Optional: Configure cache settings (defaults shown)
 TECHCRUNCH_CACHE_TTL=300  # 5 minutes
@@ -33,7 +33,7 @@ The N8N workflow should return data in this format:
 [
   {
     "title": "Article Title",
-    "url": "https://techcrunch.com/article-url",
+    "url": "https://fortune.com/section/health/",
     "image": "https://image-url.jpg",
     "content": "Full article content...",
     "created_at": "2024-01-15T10:30:00Z",
@@ -95,7 +95,7 @@ Main container component featuring:
    ```
 
 3. **Test with mock data**:
-   - Without N8N endpoint configured, the API uses mock TechCrunch articles
+   - Without N8N endpoint configured, the API uses mock Fortune health articles
    - Mock data includes realistic content for testing UI components
 
 4. **Configure N8N (Optional)**:

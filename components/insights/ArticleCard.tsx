@@ -167,14 +167,14 @@ const ArticleCard = ({ article, index = 0, priority = false }: ArticleCardProps)
             datePublished: article.created_at,
             author: {
               "@type": "Person",
-              name: article.author || "TechCrunch"
+              name: article.author || "Fortune"
             },
             publisher: {
               "@type": "Organization",
-              name: "TechCrunch",
+              name: "Fortune",
               logo: {
                 "@type": "ImageObject",
-                url: "https://techcrunch.com/wp-content/uploads/2015/02/cropped-cropped-favicon-gradient.png"
+                url: "https://fortune.com/wp-content/uploads/2018/04/fortune-logo-black-square.png"
               }
             },
             image: article.image,

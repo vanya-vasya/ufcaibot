@@ -26,7 +26,7 @@ jest.mock('next/link', () => {
 const mockArticle: TechCrunchArticle = {
   id: 'test-1',
   title: 'Test Article Title',
-  url: 'https://techcrunch.com/test-article',
+  url: 'https://fortune.com/section/health/',
   image: 'https://example.com/image.jpg',
   content: 'This is test article content that should be displayed in the card.',
   created_at: '2024-01-15T10:30:00Z',
@@ -63,12 +63,12 @@ describe('ArticleCard', () => {
     expect(image).toHaveAttribute('src', 'https://example.com/image.jpg');
   });
 
-  it('creates proper external links to TechCrunch', () => {
+  it('creates proper external links to Fortune', () => {
     render(<ArticleCard article={mockArticle} />);
     
     const links = screen.getAllByRole('link');
     links.forEach(link => {
-      expect(link).toHaveAttribute('href', 'https://techcrunch.com/test-article');
+      expect(link).toHaveAttribute('href', 'https://fortune.com/section/health/');
       expect(link).toHaveAttribute('target', '_blank');
       expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     });
@@ -78,7 +78,7 @@ describe('ArticleCard', () => {
     const minimalArticle: TechCrunchArticle = {
       id: 'test-2',
       title: 'Minimal Article',
-      url: 'https://techcrunch.com/minimal',
+      url: 'https://fortune.com/section/health/',
       created_at: '2024-01-15T10:30:00Z',
       publishedAt: new Date('2024-01-15T10:30:00Z'),
     };
@@ -115,7 +115,7 @@ describe('ArticleCard', () => {
       const jsonLD = JSON.parse(structuredData.textContent || '{}');
       expect(jsonLD['@type']).toBe('Article');
       expect(jsonLD.headline).toBe('Test Article Title');
-      expect(jsonLD.url).toBe('https://techcrunch.com/test-article');
+      expect(jsonLD.url).toBe('https://fortune.com/section/health/');
       expect(jsonLD.author.name).toBe('Test Author');
     }
   });

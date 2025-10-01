@@ -56,15 +56,15 @@ describe('/api/techcrunch', () => {
   it('fetches from N8N endpoint when configured', async () => {
     process.env.N8N_TECHCRUNCH_ENDPOINT = 'https://mock-n8n.com/webhook/techcrunch';
     
-    const mockN8NResponse = [
+      const mockN8NResponse = [
       {
         title: 'N8N Test Article',
-        url: 'https://techcrunch.com/n8n-test',
+        url: 'https://fortune.com/section/health/',
         image: 'https://example.com/image.jpg',
         content: 'Test content from N8N',
         created_at: '2024-01-15T10:30:00Z',
         author: 'N8N Author',
-        category: 'Technology'
+        category: 'Health'
       }
     ];
 
@@ -159,12 +159,12 @@ describe('/api/techcrunch', () => {
     const mockN8NResponse = [
       {
         title: 'Valid Article',
-        url: 'https://techcrunch.com/valid',
+        url: 'https://fortune.com/section/health/',
         created_at: '2024-01-15T10:30:00Z',
       },
       {
         // Invalid - no title
-        url: 'https://techcrunch.com/invalid',
+        url: 'https://fortune.com/section/health/',
         created_at: '2024-01-15T10:30:00Z',
       },
       {
@@ -197,7 +197,7 @@ describe('/api/techcrunch', () => {
       data: [
         {
           title: 'Wrapped Article',
-          url: 'https://techcrunch.com/wrapped',
+          url: 'https://fortune.com/section/health/',
           created_at: '2024-01-15T10:30:00Z',
         }
       ]
