@@ -230,43 +230,37 @@ export const ImageUpload = ({
           </div>
         </div>
         
-        {/* Right side - Camera icon */}
-        <div 
+        {/* Right side - Camera icon button */}
+        <button
+          type="button"
           className={`
-            flex items-center justify-center w-6 h-6 rounded cursor-pointer
-            transition-all duration-200 hover:scale-110 focus:scale-110
+            flex items-center justify-center p-1
+            transition-all duration-200 
+            rounded-md focus:outline-none focus:ring-2 focus:ring-offset-1
             ${cameraSupported 
-              ? `bg-gradient-to-r ${gradient} bg-opacity-10 hover:bg-opacity-20 focus:bg-opacity-20` 
-              : 'bg-gray-100 opacity-50 cursor-not-allowed'
+              ? `text-gray-600 hover:text-gray-900 hover:scale-110 focus:scale-110 focus:ring-gray-400` 
+              : 'text-gray-300 cursor-not-allowed opacity-50'
             }
           `}
           onClick={cameraSupported ? handleCameraClick : undefined}
           onKeyDown={cameraSupported ? handleCameraKeyDown : undefined}
-          role="button"
+          disabled={!cameraSupported}
           tabIndex={cameraSupported ? 0 : -1}
-          aria-label={
-            isMobile && cameraSupported 
-              ? "Take photo with camera" 
-              : cameraSupported 
-              ? "Choose image from files or camera" 
-              : "Camera not supported"
-          }
+          aria-label="Open camera"
           title={
             isMobile && cameraSupported 
-              ? "Take photo with camera" 
+              ? "Open camera" 
               : cameraSupported 
-              ? "Choose image" 
+              ? "Open camera or choose image" 
               : "Camera not supported"
           }
         >
           <Camera 
-            size={12} 
-            className={`${cameraSupported 
-              ? `bg-gradient-to-r ${gradient} bg-clip-text text-transparent` 
-              : 'text-gray-400'
-            }`} 
+            size={16} 
+            className="stroke-current" 
+            strokeWidth={2}
           />
-        </div>
+        </button>
       </div>
     </div>
   );
