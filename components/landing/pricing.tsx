@@ -28,7 +28,7 @@ const pricingTiers: PricingTier[] = [
     tokens: "100 Tokens",
     discount: "Standard Rate",
     features: [
-      "~20 Macros Generations"
+      "Macros Generations"
     ],
     popular: false,
     color: "from-purple-600 to-pink-600",
@@ -41,7 +41,7 @@ const pricingTiers: PricingTier[] = [
     tokens: "220 Tokens",
     discount: "10% Token Discount",
     features: [
-      "~44 Recipe Generations"
+      "Recipe Generations"
     ],
     popular: true,
     color: "from-green-500 to-emerald-600",
@@ -54,7 +54,7 @@ const pricingTiers: PricingTier[] = [
     tokens: "360 Tokens",
     discount: "20% Token Discount",
     features: [
-      "~72 Consulting Generations"
+      "Consulting Generations"
     ],
     popular: false,
     color: "from-blue-600 to-violet-600",
