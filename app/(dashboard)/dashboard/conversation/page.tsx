@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -512,6 +513,19 @@ const ConversationPage = () => {
                 // Other tools - Image Upload
                 <div>
                   <div className="text-center mb-4">
+                    {/* Photographer Icon */}
+                    <div className="flex justify-center mb-3">
+                      <div className="relative w-16 h-16">
+                        <Image
+                          src="/images/icons/photographer-icon.png"
+                          alt="Photographer camera icon"
+                          width={64}
+                          height={64}
+                          className="object-contain"
+                          priority
+                        />
+                      </div>
+                    </div>
                     <h3 className="text-lg font-medium mb-2">Upload Food Image</h3>
                     <p className="text-sm text-gray-600 mb-4">
                       Upload an image of food and our AI will analyze it to provide nutrition data.
