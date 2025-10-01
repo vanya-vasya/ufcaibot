@@ -1,58 +1,84 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Mock data for development - replace with actual N8N endpoint data
+// Latest Fortune health articles - updated with real content
 const mockArticles: TechCrunchArticle[] = [
   {
     id: "1",
     title: "Some on social media say taping your mouth shut is a sleep hack. But it's not backed by science, and health risks include suffocation",
-    url: "https://fortune.com/section/health/",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
-    content: "Some on social media say taping your mouth shut is a sleep hack. But it's not backed by science, and health risks include suffocation...",
-    created_at: "2024-09-27T10:30:00Z",
-    publishedAt: new Date("2024-09-27T10:30:00Z"),
+    url: "https://fortune.com/2025/09/27/mouth-tape-sleep-hack-snoring-apnea-suffocation-risk/",
+    image: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800&q=80&cb=488698",
+    content: "Having your mouth taped shut is the stuff of nightmares — but some people are doing just that to themselves. And in an attempt to sleep better, no less. Doctors say don't do it. Some on social media say it's a hack for getting more and better sleep and to reduce snoring. The claims — which are not backed by science — are taking off on places like TikTok, sometimes pushed by people working for companies selling related products.",
+    created_at: "2025-09-27T10:30:00Z",
+    publishedAt: new Date("2025-09-27T10:30:00Z"),
     author: "Kenya Hunter",
     category: "Health",
     readTime: 5,
-    summary: "Health experts warn against dangerous sleep hacks promoted on social media platforms."
+    summary: "Doctors warn against the dangerous mouth-taping sleep trend promoted on social media, citing potential suffocation risks and lack of scientific backing."
   },
   {
-    id: "2", 
-    title: "The 5 Best Testosterone Boosters of 2025: Tested and Reviewed",
-    url: "https://fortune.com/section/health/",
-    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
-    content: "Our comprehensive review of the top testosterone boosters available in 2025...",
-    created_at: "2024-09-26T14:15:00Z",
-    publishedAt: new Date("2024-09-26T14:15:00Z"),
-    author: "Christina Snyder",
+    id: "2",
+    title: "NFL office shooter had low-level CTE, NYC medical examiner finds",
+    url: "https://fortune.com/2025/09/26/shane-tamura-cte-concussion-nfl-office-shooter-blackstone/",
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80&cb=488698",
+    content: "Shane Tamura, who carried out a fatal shooting attack at a Manhattan office tower housing the National Football League, showed evidence of early-stage degenerative brain disease tied to repeated blows to the head, according to New York City's chief medical examiner. The shooter had left a note at the crime scene accusing the NFL of abandoning players with head injuries and asked that his brain be examined for chronic traumatic encephalopathy.",
+    created_at: "2025-09-26T14:15:00Z",
+    publishedAt: new Date("2025-09-26T14:15:00Z"),
+    author: "Myles Miller",
     category: "Health",
     readTime: 7,
-    summary: "Expert-tested review of testosterone boosters for optimal health and performance."
+    summary: "Medical examiner confirms CTE in NFL office shooter, highlighting ongoing concerns about football-related brain injuries and their long-term effects."
   },
   {
-    id: "3",
-    title: "The Best Probiotic Supplements for Women (2025): Expert Approved",
-    url: "https://fortune.com/section/health/",
-    image: "https://images.unsplash.com/photo-1556909184-f23847fb0530?w=800&q=80",
-    content: "Our experts have reviewed the best probiotic supplements specifically formulated for women...",
-    created_at: "2024-09-26T09:45:00Z",
-    publishedAt: new Date("2024-09-26T09:45:00Z"),
-    author: "Christina Snyder",
+    id: "3", 
+    title: "The 5 Best Testosterone Boosters of 2025: Tested and Reviewed",
+    url: "https://fortune.com/article/best-testosterone-boosters/",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80&cb=488698",
+    content: "TestoPrime emerges as our top choice for testosterone booster supplements in 2025, offering a comprehensive blend of natural ingredients backed by scientific research. After thorough testing and evaluation of dozens of products, our experts have identified the most effective testosterone boosters available today.",
+    created_at: "2025-09-26T12:00:00Z",
+    publishedAt: new Date("2025-09-26T12:00:00Z"),
+    author: "Fortune Health Team",
     category: "Health",
-    readTime: 4,
-    summary: "Expert-approved probiotic supplements designed to support women's health and wellness."
+    readTime: 8,
+    summary: "Expert review of the top 5 testosterone boosters for 2025, featuring TestoPrime as the leading choice based on ingredient quality and scientific backing."
   },
   {
     id: "4",
-    title: "Trump told pregnant women to 'tough it out' instead of take Tylenol. A study of 2.5 million births in Sweden finds zero evidence to back him up",
-    url: "https://fortune.com/section/health/",
-    image: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=800&q=80",
-    content: "A comprehensive Swedish study of 2.5 million births challenges recent political claims about Tylenol use during pregnancy...",
-    created_at: "2024-09-25T16:20:00Z",
-    publishedAt: new Date("2024-09-25T16:20:00Z"),
-    author: "Renee Gardner",
+    title: "The Best Probiotic Supplements for Women (2025): Expert Approved",
+    url: "https://fortune.com/article/best-probiotics-for-women/",
+    image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&q=80&cb=488698",
+    content: "Women have unique digestive and reproductive health needs that require specific probiotic strains. Our experts have evaluated the best probiotic supplements specifically formulated for women's health, considering factors like strain diversity, CFU count, and clinical research support.",
+    created_at: "2025-09-26T09:45:00Z",
+    publishedAt: new Date("2025-09-26T09:45:00Z"),
+    author: "Fortune Health Team", 
     category: "Health",
     readTime: 6,
-    summary: "Large-scale Swedish study provides evidence against recent claims about Tylenol and pregnancy."
+    summary: "Comprehensive guide to the best probiotic supplements for women, featuring expert-approved options for digestive and reproductive health support."
+  },
+  {
+    id: "5",
+    title: "International expats in the United States are running away to Panama in retirement, enjoying the same quality of life for 40% less than back home",
+    url: "https://fortune.com/2025/09/26/international-expats-united-states-and-in-retirement-are-running-away-to-panama-enjoying-the-same-quality-of-life-affordable-living-for-40-less-than-back-home-in-the-west-savings-investment-inflation/",
+    image: "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&cb=488698",
+    content: "American retirees are increasingly looking to Panama as an affordable retirement destination, with many finding they can maintain the same quality of life for up to 40% less than what they'd spend in the United States. The country offers attractive retiree benefits and a lower cost of living.",
+    created_at: "2025-09-26T08:30:00Z",
+    publishedAt: new Date("2025-09-26T08:30:00Z"),
+    author: "Fortune Staff",
+    category: "Lifestyle",
+    readTime: 5,
+    summary: "U.S. expats are choosing Panama for retirement, finding significant cost savings while maintaining their quality of life in a welcoming environment."
+  },
+  {
+    id: "6",
+    title: "Meta's new AI dating bot is designed to combat burnout and swipe fatigue on dating apps",
+    url: "https://fortune.com/2025/09/26/meta-facebook-ai-dating-bot-burnout-swipe-fatigue/",
+    image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&q=80&cb=488698",
+    content: "Meta is developing an AI-powered dating assistant designed to help users overcome the exhaustion and burnout associated with modern dating apps. The technology aims to streamline the dating process and reduce the mental fatigue that comes from endless swiping and superficial interactions.",
+    created_at: "2025-09-26T16:45:00Z",
+    publishedAt: new Date("2025-09-26T16:45:00Z"),
+    author: "Fortune Tech Team",
+    category: "Technology",
+    readTime: 4,
+    summary: "Meta's new AI dating assistant aims to reduce swipe fatigue and burnout by providing more meaningful connections for online dating users."
   }
 ];
 

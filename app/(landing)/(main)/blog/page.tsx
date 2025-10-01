@@ -1,13 +1,13 @@
 "use client";
 
-import InsightsSection from "@/components/insights/InsightsSection";
+import FortuneInsightsSection from "@/components/insights/FortuneInsightsSection";
 
 const BlogPage = () => {
   return (
     <div className="bg-white relative" style={{'--contact-font': 'Inter, system-ui, -apple-system, sans-serif'} as React.CSSProperties & {'--contact-font': string}}>
-      {/* Latest Insights Section */}
+      {/* Fortune Health Insights Section */}
       <div style={{ marginTop: '80px' }}>
-        <InsightsSection className="bg-white pt-24" />
+        <FortuneInsightsSection className="bg-white pt-24" />
       </div>
       
       <style jsx global>{`
