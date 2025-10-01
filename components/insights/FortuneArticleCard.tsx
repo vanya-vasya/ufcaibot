@@ -1,14 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
-import { Clock, ExternalLink, Calendar, User, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { fortuneHealthTokens } from "@/lib/design-tokens/fortune-health";
 
-const FortuneArticleCard = ({ article, index = 0, priority = false }: ArticleCardProps) => {
+const FortuneArticleCard = ({ article, index = 0 }: Omit<ArticleCardProps, 'priority'>) => {
   const formattedDate = format(new Date(article.publishedAt), "MMM d, yyyy");
   
   return (
@@ -26,42 +25,13 @@ const FortuneArticleCard = ({ article, index = 0, priority = false }: ArticleCar
         fontFamily: fortuneHealthTokens.typography.fontFamilies.primary
       }}
     >
-      {/* Article Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-        {article.image ? (
-          <Link 
-            href={article.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block relative h-full w-full"
-            aria-label={`Read article: ${article.title}`}
-          >
-            <Image
-              src={article.image}
-              alt={article.title}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-              priority={priority}
-              loading={priority ? "eager" : "lazy"}
-            />
-            {/* Fortune-style overlay on hover */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
-          </Link>
-        ) : (
-          <div className="h-full w-full bg-gray-100 flex items-center justify-center">
-            <ExternalLink 
-              className="h-12 w-12" 
-              style={{ color: fortuneHealthTokens.colors.text.tertiary }} 
-            />
-          </div>
-        )}
-        
+      {/* Article Content */}
+      <div className="p-8 space-y-6">
         {/* Category Tag - Fortune style */}
         {article.category && (
-          <div className="absolute top-4 left-4 z-10">
+          <div className="mb-4">
             <span 
-              className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase bg-white text-black border border-gray-200"
+              className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase bg-black text-white"
               style={{
                 fontFamily: fortuneHealthTokens.typography.fontFamilies.primary,
                 fontSize: fortuneHealthTokens.typography.fontSizes.xs,
@@ -73,10 +43,7 @@ const FortuneArticleCard = ({ article, index = 0, priority = false }: ArticleCar
             </span>
           </div>
         )}
-      </div>
 
-      {/* Article Content */}
-      <div className="p-6 space-y-4">
         {/* Article Title - Fortune typography */}
         <h3>
           <Link
@@ -217,7 +184,6 @@ const FortuneArticleCard = ({ article, index = 0, priority = false }: ArticleCar
                 url: "https://fortune.com/wp-content/uploads/2018/04/fortune-logo-black-square.png"
               }
             },
-            image: article.image,
             articleSection: article.category
           })
         }}

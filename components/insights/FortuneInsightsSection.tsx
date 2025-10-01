@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { AlertCircle, RefreshCw, ArrowRight } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -246,10 +245,10 @@ const FortuneInsightsSection = ({
                 className="border-b border-gray-200 pb-16"
               >
                 <div 
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+                  className="max-w-4xl"
                   onClick={() => trackArticleClick(state.articles[0])}
                 >
-                  <div className="order-2 lg:order-1 space-y-6">
+                  <div className="space-y-8">
                     {/* Category */}
                     {state.articles[0].category && (
                       <span 
@@ -271,7 +270,7 @@ const FortuneInsightsSection = ({
                         href={state.articles[0].url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block text-4xl lg:text-5xl font-bold leading-tight text-black hover:text-red-600 transition-colors duration-200"
+                        className="block text-4xl lg:text-6xl font-bold leading-tight text-black hover:text-red-600 transition-colors duration-200"
                         style={{
                           fontFamily: fortuneHealthTokens.typography.fontFamilies.primary,
                           fontWeight: fortuneHealthTokens.typography.fontWeights.bold,
@@ -286,10 +285,10 @@ const FortuneInsightsSection = ({
                     {/* Featured Summary */}
                     {state.articles[0].summary && (
                       <p 
-                        className="text-xl text-gray-600 leading-relaxed"
+                        className="text-2xl text-gray-600 leading-relaxed max-w-3xl"
                         style={{
                           fontFamily: fortuneHealthTokens.typography.fontFamilies.primary,
-                          fontSize: fortuneHealthTokens.typography.fontSizes.xl,
+                          fontSize: fortuneHealthTokens.typography.fontSizes['2xl'],
                           color: fortuneHealthTokens.colors.text.secondary,
                           lineHeight: fortuneHealthTokens.typography.lineHeights.relaxed
                         }}
@@ -299,7 +298,7 @@ const FortuneInsightsSection = ({
                     )}
 
                     {/* Featured Meta */}
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-4 text-base text-gray-500 pt-4">
                       {state.articles[0].author && (
                         <span 
                           className="font-medium text-black"
@@ -319,29 +318,6 @@ const FortuneInsightsSection = ({
                       )}
                     </div>
                   </div>
-
-                  {/* Featured Image */}
-                  <div className="order-1 lg:order-2">
-                    {state.articles[0].image && (
-                      <Link
-                        href={state.articles[0].url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block relative group"
-                      >
-                        <div className="relative aspect-[4/3] overflow-hidden">
-                          <Image
-                            src={state.articles[0].image}
-                            alt={state.articles[0].title}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            priority
-                          />
-                        </div>
-                      </Link>
-                    )}
-                  </div>
                 </div>
               </motion.div>
             )}
@@ -357,7 +333,6 @@ const FortuneInsightsSection = ({
                     <FortuneArticleCard
                       article={article}
                       index={index + 1}
-                      priority={index < 2}
                     />
                   </div>
                 ))}
