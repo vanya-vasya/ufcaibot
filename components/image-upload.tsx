@@ -11,10 +11,10 @@ interface ImageUploadProps {
 }
 
 // Helper function to detect mobile devices
-const isMobileDevice = () => {
+const isMobileDevice = (): boolean => {
   if (typeof navigator === 'undefined') return false;
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-         (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+         Boolean(navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
 };
 
 export const ImageUpload = ({ 
