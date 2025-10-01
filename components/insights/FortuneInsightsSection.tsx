@@ -270,7 +270,7 @@ const FortuneInsightsSection = ({
                         href={state.articles[0].url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block text-4xl lg:text-6xl font-bold leading-tight text-black hover:text-red-600 transition-colors duration-200"
+                        className="block text-4xl lg:text-6xl font-bold leading-tight text-black transition-colors duration-200"
                         style={{
                           fontFamily: fortuneHealthTokens.typography.fontFamilies.primary,
                           fontWeight: fortuneHealthTokens.typography.fontWeights.bold,

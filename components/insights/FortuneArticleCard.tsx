@@ -52,7 +52,7 @@ const FortuneArticleCard = ({ article, index = 0 }: Omit<ArticleCardProps, 'prio
             rel="noopener noreferrer"
             className={cn(
               "block text-xl font-bold leading-tight text-black",
-              "group-hover:text-red-600 transition-colors duration-200",
+              "transition-colors duration-200",
               "line-clamp-3"
             )}
             style={{
@@ -143,15 +143,14 @@ const FortuneArticleCard = ({ article, index = 0 }: Omit<ArticleCardProps, 'prio
             rel="noopener noreferrer"
             className={cn(
               "inline-flex items-center gap-2 text-sm font-semibold",
-              "text-red-600 hover:text-red-700",
+              "text-black",
               "transition-all duration-200",
               "group-hover:gap-3"
             )}
             style={{
               fontFamily: fortuneHealthTokens.typography.fontFamilies.primary,
               fontSize: fortuneHealthTokens.typography.fontSizes.sm,
-              fontWeight: fortuneHealthTokens.typography.fontWeights.semibold,
-              color: fortuneHealthTokens.colors.brand.secondary
+              fontWeight: fortuneHealthTokens.typography.fontWeights.semibold
             }}
           >
             Read More
