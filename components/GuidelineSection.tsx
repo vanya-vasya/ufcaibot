@@ -68,15 +68,46 @@ const nutritionistGuidelineSteps: GuidelineStep[] = [
   }
 ];
 
+const trackerGuidelineSteps: GuidelineStep[] = [
+  {
+    title: "1. Take a Photo",
+    description: "Snap a clear picture of your meal—just one photo is enough.",
+    imagePath: "/images/guidelines/tracker-step-1-take-photo.png",
+    imageAlt: "Person taking a photo of their meal with smartphone camera showing grid lines for perfect framing"
+  },
+  {
+    title: "2. Upload with One Tap",
+    description: "Share the photo with our service in a single step.",
+    imagePath: "/images/guidelines/tracker-step-2-upload-tap.png",
+    imageAlt: "Food photo being uploaded to cloud service with seamless upload progress and upward arrow"
+  },
+  {
+    title: "3. Get Instant Insights",
+    description: "See the full nutritional breakdown right away, including calories, proteins, fats, and carbs.",
+    imagePath: "/images/guidelines/tracker-step-3-instant-insights.png",
+    imageAlt: "Digital nutrition dashboard displaying organized nutritional information with colorful metrics and graphs"
+  },
+  {
+    title: "4. Stay on Track Effortlessly",
+    description: "Use the clear, real-time insights to make confident food choices and enjoy a healthier lifestyle.",
+    imagePath: "/images/guidelines/tracker-step-4-stay-on-track.png",
+    imageAlt: "Happy person making healthy food choices with wellness icons showing achievement and lifestyle management"
+  }
+];
+
 export const GuidelineSection = ({ gradient, className, toolId = 'master-chef' }: GuidelineSectionProps) => {
   // Select appropriate guideline steps based on tool type
-  const guidelineSteps = toolId === 'master-nutritionist' 
+  const guidelineSteps = toolId === 'cal-tracker'
+    ? trackerGuidelineSteps
+    : toolId === 'master-nutritionist' 
     ? nutritionistGuidelineSteps 
     : chefGuidelineSteps;
   
   // Get appropriate header text based on tool type
   const headerTitle = "How It Works";
-  const headerDescription = toolId === 'master-nutritionist'
+  const headerDescription = toolId === 'cal-tracker'
+    ? "Track your nutrition and reach your health goals in four simple steps"
+    : toolId === 'master-nutritionist'
     ? "Your personalized nutrition journey in four simple steps"
     : "Transform your ingredients into delicious recipes in just four simple steps";
 
@@ -156,7 +187,9 @@ export const GuidelineSection = ({ gradient, className, toolId = 'master-chef' }
       {/* Call to Action */}
       <div className="text-center mt-12">
         <p className="text-gray-500 text-sm md:text-base">
-          {toolId === 'master-nutritionist' 
+          {toolId === 'cal-tracker'
+            ? "Ready to get started? Take a photo of your meal above!"
+            : toolId === 'master-nutritionist' 
             ? "Ready to get started? Share your health goals above!" 
             : "Ready to get started? Upload your first image above!"}
         </p>
