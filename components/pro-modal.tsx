@@ -275,41 +275,28 @@ export const ProModal = () => {
               Choose generations option
             </Label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full pt-2">
-              {[100, 220, 360].map((value) => {
-                const currentCurrency = watch("currency");
-                const currencyMultiplier = currenciesRate[currentCurrency] / currenciesRate["GBP"];
-                const bundlePrice = (bundlePrices[value] * currencyMultiplier).toFixed(2);
-                const currencySymbol = currentCurrency === "GBP" ? "£" : currentCurrency === "EUR" ? "€" : currentCurrency === "USD" ? "$" : "";
-                
-                return (
-                  <div key={value} className="flex flex-col">
-                    <Button
-                      type="button"
-                      disabled={loading}
-                      onClick={() => handleButtonClick(value)}
-                      variant="ghost"
-                      className={classNames(
-                        "!bg-white !text-gray-700 !border !border-gray-300",
-                        "!hover:bg-gray-50 !hover:text-gray-900 !hover:border-gray-400",
-                        "!focus:bg-gray-50 !focus:text-gray-900 !focus:border-gray-400",
-                        "!active:bg-gray-50 !active:text-gray-900 !active:border-gray-400",
-                        "focus:outline-none ring-0 focus:ring-0 active:ring-0 transition-all duration-300 shadow-sm",
-                        {
-                          "!bg-gradient-to-r !from-green-400 !via-green-500 !to-green-600 !text-white !border-transparent !shadow-lg":
-                            activeButton === value,
-                        }
-                      )}
-                    >
-                      <div className="flex flex-col items-center">
-                        <span>{value}</span>
-                        <span className="text-xs opacity-75">
-                          {currencySymbol}{bundlePrice}
-                        </span>
-                      </div>
-                    </Button>
-                  </div>
-                );
-              })}
+              {[100, 220, 360].map((value) => (
+                <Button
+                  key={value}
+                  type="button"
+                  disabled={loading}
+                  onClick={() => handleButtonClick(value)}
+                  variant="ghost"
+                  className={classNames(
+                    "!bg-white !text-gray-700 !border !border-gray-300",
+                    "!hover:bg-gray-50 !hover:text-gray-900 !hover:border-gray-400",
+                    "!focus:bg-gray-50 !focus:text-gray-900 !focus:border-gray-400",
+                    "!active:bg-gray-50 !active:text-gray-900 !active:border-gray-400",
+                    "focus:outline-none ring-0 focus:ring-0 active:ring-0 transition-all duration-300 shadow-sm",
+                    {
+                      "!bg-gradient-to-r !from-green-400 !via-green-500 !to-green-600 !text-white !border-transparent !shadow-lg":
+                        activeButton === value,
+                    }
+                  )}
+                >
+                  {value}
+                </Button>
+              ))}
               <Input
                 disabled={loading}
                 type="number"
