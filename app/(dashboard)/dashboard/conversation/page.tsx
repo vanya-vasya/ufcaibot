@@ -27,6 +27,7 @@ import { RecipeCard } from "@/components/RecipeCard";
 import { FriendlyResponseCard } from "@/components/FriendlyResponseCard";
 import { CalTrackerNutritionCard } from "@/components/CalTrackerNutritionCard";
 import { friendlyFormatter, FriendlyResponse } from "@/lib/friendly-response-formatter";
+import { GuidelineSection } from "@/components/GuidelineSection";
 
 import { getFormSchema } from "./constants";
 import { MODEL_GENERATIONS_PRICE, tools } from "@/constants";
@@ -618,8 +619,7 @@ const ConversationPage = () => {
             </div>
           )}
           {messages.length === 0 && !isLoading && (
-            <Empty 
-              label="No messages yet"
+            <GuidelineSection 
               gradient={currentTool.gradient}
             />
           )}
