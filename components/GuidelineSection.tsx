@@ -11,9 +11,10 @@ interface GuidelineStep {
 interface GuidelineSectionProps {
   gradient?: string;
   className?: string;
+  toolId?: string;
 }
 
-const guidelineSteps: GuidelineStep[] = [
+const chefGuidelineSteps: GuidelineStep[] = [
   {
     title: "1. Gather Your Ingredients",
     description: "Take a look at what you already have in your kitchen. No need to overthink—just grab a few pantry staples, vegetables, or any fresh items you'd like to cook with.",
@@ -40,7 +41,45 @@ const guidelineSteps: GuidelineStep[] = [
   }
 ];
 
-export const GuidelineSection = ({ gradient, className }: GuidelineSectionProps) => {
+const nutritionistGuidelineSteps: GuidelineStep[] = [
+  {
+    title: "1. Share Your Goals",
+    description: "Tell us a little about yourself—your health goals, lifestyle, and what you'd like to improve. This helps us understand what truly matters to you.",
+    imagePath: "/images/guidelines/nutritionist-step-1-share-goals.png",
+    imageAlt: "Person comfortably sharing health goals with wellness icons and supportive atmosphere"
+  },
+  {
+    title: "2. Add Your Personal Details",
+    description: "We'll gently ask about your age, activity level, and any allergies or food preferences. This ensures your plan is safe, relevant, and tailored just for you.",
+    imagePath: "/images/guidelines/nutritionist-step-2-personal-details.png",
+    imageAlt: "Friendly form interface showing personal details input with activity and dietary preference icons"
+  },
+  {
+    title: "3. Receive Your Personalized Plan",
+    description: "Based on what you share, we'll create clear, step-by-step guidance that feels easy to follow. Think of it as having your own supportive nutrition coach right in your pocket.",
+    imagePath: "/images/guidelines/nutritionist-step-3-personalized-plan.png",
+    imageAlt: "Personalized nutrition plan displaying step-by-step guidance and meal recommendations"
+  },
+  {
+    title: "4. Explore Daily Recommendations",
+    description: "From meal ideas to smart tips, you'll see suggestions designed to fit smoothly into your everyday life—no stress, no confusion.",
+    imagePath: "/images/guidelines/nutritionist-step-4-daily-recommendations.png",
+    imageAlt: "Daily routine with healthy meal suggestions and wellness guidance integrated naturally"
+  }
+];
+
+export const GuidelineSection = ({ gradient, className, toolId = 'master-chef' }: GuidelineSectionProps) => {
+  // Select appropriate guideline steps based on tool type
+  const guidelineSteps = toolId === 'master-nutritionist' 
+    ? nutritionistGuidelineSteps 
+    : chefGuidelineSteps;
+  
+  // Get appropriate header text based on tool type
+  const headerTitle = "How It Works";
+  const headerDescription = toolId === 'master-nutritionist'
+    ? "Your personalized nutrition journey in four simple steps"
+    : "Transform your ingredients into delicious recipes in just four simple steps";
+
   return (
     <div className={cn("w-full max-w-6xl mx-auto py-8 px-4", className)}>
       {/* Header */}
@@ -49,10 +88,10 @@ export const GuidelineSection = ({ gradient, className }: GuidelineSectionProps)
           "text-3xl md:text-4xl font-bold mb-4",
           gradient ? `bg-gradient-to-r ${gradient} bg-clip-text text-transparent` : "text-gray-900"
         )}>
-          How It Works
+          {headerTitle}
         </h2>
         <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Transform your ingredients into delicious recipes in just four simple steps
+          {headerDescription}
         </p>
       </div>
 
@@ -117,7 +156,9 @@ export const GuidelineSection = ({ gradient, className }: GuidelineSectionProps)
       {/* Call to Action */}
       <div className="text-center mt-12">
         <p className="text-gray-500 text-sm md:text-base">
-          Ready to get started? Upload your first image above!
+          {toolId === 'master-nutritionist' 
+            ? "Ready to get started? Share your health goals above!" 
+            : "Ready to get started? Upload your first image above!"}
         </p>
       </div>
     </div>

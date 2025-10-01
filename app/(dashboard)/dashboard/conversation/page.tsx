@@ -621,6 +621,7 @@ const ConversationPage = () => {
           {messages.length === 0 && !isLoading && (
             <GuidelineSection 
               gradient={currentTool.gradient}
+              toolId={toolId}
             />
           )}
           <div className="flex flex-col-reverse gap-y-6">
