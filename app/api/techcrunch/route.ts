@@ -79,6 +79,19 @@ const mockArticles: TechCrunchArticle[] = [
     category: "Technology",
     readTime: 4,
     summary: "Meta's new AI dating assistant aims to reduce swipe fatigue and burnout by providing more meaningful connections for online dating users."
+  },
+  {
+    id: "7",
+    title: "Telehealth for Medicare patients is on the chopping block as Congress narrows in on an extension deadline. 'The uncertainty creates a lack of trust,' healthcare CEO says",
+    url: "https://fortune.com/2025/09/25/telehealth-medicare-patients-congress-extension-deadline-distrust/",
+    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&q=80&cb=488698",
+    content: "Congress is once again closing in on a deadline to extend Medicare coverage of home telehealth services. And, again, the decision has been left until the last minute. Telehealth has had new flexibilities since the Covid-19 public health emergency began, including expanded Medicare reimbursement. If nothing is passed, on Oct. 1, many Medicare members won't be able to access telemedicine from their homes anymore. Even if an extension is passed, this uncertainty still impacts providers' businesses, leaving them struggling to plan for a potential future where they might lose a chunk of their patients.",
+    created_at: "2025-09-25T11:00:00Z",
+    publishedAt: new Date("2025-09-25T11:00:00Z"),
+    author: "Caroline Catherman",
+    category: "Health",
+    readTime: 6,
+    summary: "Congress faces a critical deadline to extend Medicare telehealth coverage, with uncertainty creating operational challenges for healthcare providers and potential access disruption for patients."
   }
 ];
 

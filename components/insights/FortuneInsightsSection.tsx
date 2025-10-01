@@ -158,19 +158,6 @@ const FortuneInsightsSection = ({
             The latest health news, expert insights, and wellness trends from Fortune&apos;s health coverage.
           </p>
 
-          {/* Article Count */}
-          {state.total > 0 && (
-            <p 
-              className="text-sm text-gray-500 border-t border-gray-200 pt-4"
-              style={{
-                fontFamily: fortuneHealthTokens.typography.fontFamilies.primary,
-                fontSize: fortuneHealthTokens.typography.fontSizes.sm,
-                color: fortuneHealthTokens.colors.text.tertiary
-              }}
-            >
-              {state.articles.length} of {state.total} articles
-            </p>
-          )}
         </motion.div>
 
         {/* Error State */}
