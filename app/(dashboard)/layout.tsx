@@ -136,7 +136,7 @@ export default async function DashboardLayout({
             </div>
           </div>
           <div className="flex justify-center mt-6">
-            <Image src="/cards.svg" alt="cards" width={300} height={100} />
+            <Image src="/cards_new.svg" alt="cards" width={300} height={100} />
           </div>
         </div>
       </footer>
