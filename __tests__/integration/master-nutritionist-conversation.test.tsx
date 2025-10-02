@@ -98,7 +98,7 @@ describe('Your Own Nutritionist Conversation Page', () => {
       await waitFor(() => {
         expect(screen.getByText('Your Own Nutritionist')).toBeInTheDocument();
         expect(screen.getByText(/Advanced nutritional analysis/)).toBeInTheDocument();
-        expect(screen.getByText(/Price: Free/)).toBeInTheDocument();
+        expect(screen.getByText(/Price: 15 tokens per generation/)).toBeInTheDocument();
       });
     });
 
@@ -124,11 +124,11 @@ describe('Your Own Nutritionist Conversation Page', () => {
       });
     });
 
-    it('should display free pricing information', async () => {
+    it('should display 15 token pricing information', async () => {
       render(<ConversationPage />);
 
       await waitFor(() => {
-        expect(screen.getByText(/Credits:.*Free/)).toBeInTheDocument();
+        expect(screen.getByText(/Credits:.*15 required/)).toBeInTheDocument();
       });
     });
   });
@@ -183,21 +183,21 @@ describe('Your Own Nutritionist Conversation Page', () => {
     });
   });
 
-  describe('Free Tool Behavior', () => {
-    it('should always enable Generate button regardless of credit balance', async () => {
+  describe('Paid Tool Behavior', () => {
+    it('should disable Generate button when insufficient credits (less than 15)', async () => {
       // Mock low credit balance
       (global.fetch as jest.Mock).mockResolvedValue({
         ok: true,
         json: async () => ({
-          available: 0, // No credits available
-          used: 100,
-          remaining: 0,
+          available: 10, // Less than 15 tokens required
+          used: 0,
+          remaining: 10,
         }),
       });
 
       render(<ConversationPage />);
 
-      const validDescription = 'Analyze: https://vanya-vasya.app.n8n.cloud/webhook/4c6c4649-99ef-4598-b77b-6cb12ab6a102';
+      const validDescription = 'Analyze my nutritional needs';
 
       await waitFor(() => {
         const textarea = screen.getByRole('textbox');
@@ -206,14 +206,48 @@ describe('Your Own Nutritionist Conversation Page', () => {
 
       await waitFor(() => {
         const generateButton = screen.getByRole('button', { name: /Generate/ });
-        expect(generateButton).toBeEnabled(); // Should be enabled despite 0 credits
+        expect(generateButton).toBeDisabled(); // Should be disabled with insufficient credits
       });
     });
 
-    it('should show Free tool tooltip', async () => {
+    it('should enable Generate button with sufficient credits (15 or more)', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          available: 50, // More than 15 tokens required
+          used: 0,
+          remaining: 50,
+        }),
+      });
+
       render(<ConversationPage />);
 
-      const validDescription = 'Analyze: https://vanya-vasya.app.n8n.cloud/webhook/4c6c4649-99ef-4598-b77b-6cb12ab6a102';
+      const validDescription = 'I need personalized nutrition guidance';
+
+      await waitFor(() => {
+        const textarea = screen.getByRole('textbox');
+        fireEvent.change(textarea, { target: { value: validDescription } });
+      });
+
+      await waitFor(() => {
+        const generateButton = screen.getByRole('button', { name: /Generate/ });
+        expect(generateButton).toBeEnabled(); // Should be enabled with sufficient credits
+      });
+    });
+
+    it('should show insufficient credits tooltip when hovering over disabled button', async () => {
+      (global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          available: 5, // Less than 15 tokens
+          used: 0,
+          remaining: 5,
+        }),
+      });
+
+      render(<ConversationPage />);
+
+      const validDescription = 'Nutrition advice needed';
 
       await waitFor(() => {
         const textarea = screen.getByRole('textbox');
@@ -225,7 +259,7 @@ describe('Your Own Nutritionist Conversation Page', () => {
       fireEvent.mouseEnter(generateButton);
 
       await waitFor(() => {
-        expect(screen.getByText(/Free tool/)).toBeInTheDocument();
+        expect(screen.getByText(/Insufficient credits.*15.*5/)).toBeInTheDocument();
       });
     });
   });
@@ -395,3 +429,4 @@ describe('Your Own Nutritionist Conversation Page', () => {
     });
   });
 });
+

@@ -132,7 +132,7 @@ const toolConfigs = {
   },
   'master-nutritionist': {
     title: 'Your Own Nutritionist',
-    description: 'Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment\nPrice: Free',
+    description: 'Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment\nPrice: 15 tokens per generation',
     iconName: 'Activity',
     iconColor: 'text-emerald-600',
     bgColor: 'bg-emerald-600/10',
@@ -173,7 +173,7 @@ const ConversationPage = () => {
   const getToolPrice = (toolId: string): number => {
     const prices = {
       'master-chef': 10, // 10 tokens per generation
-      'master-nutritionist': 0, // Free tool - always enabled regardless of credit balance
+      'master-nutritionist': 15, // 15 tokens per generation
       'cal-tracker': 0, // Free tool - always enabled regardless of credit balance
     };
     return prices[toolId as keyof typeof prices] ?? 100; // Use ?? instead of || to handle 0 values correctly
@@ -592,8 +592,10 @@ const ConversationPage = () => {
                         <p>Please enter your challenge description</p>
                       ) : hasInsufficientCredits ? (
                         <p>Insufficient credits. You need {toolPrice} but have {availableCredits} available.</p>
-                      ) : (
+                      ) : toolPrice === 0 ? (
                         <p>Click to generate nutritional analysis (Free tool)</p>
+                      ) : (
+                        <p>Click to generate nutritional analysis ({toolPrice} tokens)</p>
                       )
                     ) : (
                       !uploadedImage ? (
@@ -603,7 +605,7 @@ const ConversationPage = () => {
                       ) : toolPrice === 0 ? (
                         <p>Click to generate AI analysis (Free tool)</p>
                       ) : (
-                        <p>Click to generate AI analysis</p>
+                        <p>Click to generate AI analysis ({toolPrice} tokens)</p>
                       )
                     )}
                   </TooltipContent>
