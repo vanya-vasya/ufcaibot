@@ -227,11 +227,18 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex justify-center items-center gap-4">
           <Image
             src="/cards.svg"
-            alt="cards"
+            alt="Visa Secure and Mastercard ID Check"
             width={300}
+            height={100}
+            className=""
+          />
+          <Image
+            src="/3d-secure-logo.svg"
+            alt="3D Secure"
+            width={100}
             height={100}
             className=""
           />
