@@ -236,7 +236,7 @@ const Footer = () => {
             className=""
           />
           <Image
-            src="/3d-secure-logo.svg"
+            src="/3d-secure-logo.png"
             alt="3D Secure"
             width={100}
             height={100}

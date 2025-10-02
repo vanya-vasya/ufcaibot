@@ -135,8 +135,9 @@ export default async function DashboardLayout({
               </Link>
             </div>
           </div>
-          <div className="flex justify-center mt-6">
-            <Image src="/cards.svg" alt="cards" width={300} height={100} />
+          <div className="flex justify-center items-center gap-4 mt-6">
+            <Image src="/cards.svg" alt="Visa Secure and Mastercard ID Check" width={300} height={100} />
+            <Image src="/3d-secure-logo.png" alt="3D Secure" width={100} height={100} />
           </div>
         </div>
       </footer>
