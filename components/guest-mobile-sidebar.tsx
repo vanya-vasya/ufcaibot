@@ -1,18 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 const routes = [
-  {
-    label: "Products",
-    href: "/#products",
-  },
   {
     label: "Our Story",
     href: "/story",
@@ -35,7 +36,24 @@ const routes = [
   },
 ];
 
+const productRoutes = [
+  {
+    label: "Your Own Chef",
+    href: "/dashboard/conversation?toolId=master-chef",
+  },
+  {
+    label: "Your Own Nutritionist",
+    href: "/dashboard/conversation?toolId=master-nutritionist",
+  },
+  {
+    label: "Your Own Tracker",
+    href: "/dashboard/conversation?toolId=cal-tracker",
+  },
+];
+
 export const GuestMobileSidebar = () => {
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
+
   return (
     <Sheet>
     <SheetTrigger asChild>
@@ -52,6 +70,26 @@ export const GuestMobileSidebar = () => {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
+                  <Collapsible open={isProductsOpen} onOpenChange={setIsProductsOpen}>
+                    <CollapsibleTrigger className="-mx-3 w-full text-left block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-[#a1aac9] hover:text-white">
+                      <div className="flex items-center justify-between">
+                        <span>Products</span>
+                        <ChevronDown className={`h-4 w-4 transition-transform ${isProductsOpen ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="pl-6 space-y-2 mt-2">
+                      {productRoutes.map((product) => (
+                        <Link
+                          key={product.href}
+                          href={product.href}
+                          className="block rounded-lg px-3 py-2 text-sm font-medium leading-7 text-[#a1aac9] hover:text-white"
+                        >
+                          {product.label}
+                        </Link>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                  
                   {routes.map((route) => (
                     <Link
                       key={route.href}

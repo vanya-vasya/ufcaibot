@@ -4,6 +4,13 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const routes = [
   {
@@ -40,12 +47,38 @@ const Header = () => {
         </div>
         <div className="flex gap-x-12 ml-12">
           <div className="nav-container-light-green">
-            <Link
-              href="/#products"
-              className="nav-link"
-            >
-              Products
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="nav-link flex items-center gap-1 outline-none">
+                Products
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-white border border-green-100 shadow-lg">
+                <DropdownMenuItem asChild>
+                  <Link 
+                    href="/dashboard/conversation?toolId=master-chef"
+                    className="cursor-pointer hover:bg-green-50 transition-colors"
+                  >
+                    Your Own Chef
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link 
+                    href="/dashboard/conversation?toolId=master-nutritionist"
+                    className="cursor-pointer hover:bg-green-50 transition-colors"
+                  >
+                    Your Own Nutritionist
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link 
+                    href="/dashboard/conversation?toolId=cal-tracker"
+                    className="cursor-pointer hover:bg-green-50 transition-colors"
+                  >
+                    Your Own Tracker
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             {routes.map((route) => (
               <Link
                 key={route.name}
