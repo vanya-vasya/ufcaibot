@@ -69,6 +69,7 @@ const Header = () => {
                       className="dropdown-menu-item flex items-center gap-3 w-full"
                     >
                       <ProductIcon 
+                        icon={product.icon}
                         iconUrl={product.iconUrl}
                         fallback={product.iconFallback}
                         alt={product.label}
@@ -134,6 +135,9 @@ const Header = () => {
 
       <style jsx global>{`
         :root {
+          --header-font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          --header-font-size: 16px;
+          --header-text-color: #000000;
           --nav-font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
           --contact-font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
@@ -163,26 +167,26 @@ const Header = () => {
         }
 
         .nav-link {
-          font-family: var(--contact-font);
+          font-family: var(--header-font-family);
           font-weight: 600;
-          font-size: 16px;
+          font-size: var(--header-font-size);
           line-height: 1.1;
           letter-spacing: 0.01em;
           text-transform: none;
-          color: #0f172a;
+          color: var(--header-text-color);
           padding: 8px 16px;
           border-radius: 9999px;
           transition: all 500ms ease-in-out;
         }
 
         .main-header__login-sing-up .nav-link {
-          font-family: var(--contact-font) !important;
+          font-family: var(--header-font-family) !important;
           font-weight: 600 !important;
-          font-size: 16px !important;
+          font-size: var(--header-font-size) !important;
           line-height: 1.1 !important;
           letter-spacing: 0.01em !important;
           text-transform: none !important;
-          color: #0f172a !important;
+          color: var(--header-text-color) !important;
           padding: 8px 16px !important;
           border-radius: 9999px !important;
           border: none !important;
@@ -196,15 +200,15 @@ const Header = () => {
           text-decoration: none;
         }
 
-        /* Dropdown menu item styling - matches nav-link exactly */
+        /* Dropdown menu item styling - pure black text matching header */
         .dropdown-menu-item {
-          font-family: var(--nav-font);
+          font-family: var(--header-font-family);
           font-weight: 600;
-          font-size: 16px;
+          font-size: var(--header-font-size);
           line-height: 1.1;
           letter-spacing: 0.01em;
           text-transform: none;
-          color: #0f172a;
+          color: var(--header-text-color);
           padding: 10px 14px;
           border-radius: 8px;
           transition: all 500ms ease-in-out;
