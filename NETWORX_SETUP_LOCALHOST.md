@@ -1,7 +1,7 @@
-# Networx Pay Integration Setup for localhost:3001
+# Networx Pay Integration Setup for localhost:3000
 
 ## Overview
-Complete setup guide for integrating Networx Pay payment system with your Next.js application running on localhost:3001.
+Complete setup guide for integrating Networx Pay payment system with your Next.js application running on localhost:3000.
 
 ## ✅ Current Implementation Status
 
@@ -28,16 +28,16 @@ NETWORX_SECRET_KEY=dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378
 NETWORX_API_URL=https://gateway.networxpay.com
 NETWORX_TEST_MODE=true
 
-# localhost:3001 URLs
-NETWORX_RETURN_URL=http://localhost:3001/payment/success
-NETWORX_CANCEL_URL=http://localhost:3001/payment/cancel
-NETWORX_WEBHOOK_URL=http://localhost:3001/api/webhooks/networx
+# localhost:3000 URLs
+NETWORX_RETURN_URL=http://localhost:3000/payment/success
+NETWORX_CANCEL_URL=http://localhost:3000/payment/cancel
+NETWORX_WEBHOOK_URL=http://localhost:3000/api/webhooks/networx
 
 # Client-side variables
 NEXT_PUBLIC_NETWORX_SHOP_ID=29959
 NEXT_PUBLIC_NETWORX_TEST_MODE=true
 NEXT_PUBLIC_NETWORX_WIDGET_URL=https://checkout.networxpay.com
-NEXT_PUBLIC_APP_URL=http://localhost:3001
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 ### 2. Install Dependencies
@@ -54,11 +54,11 @@ npm install
 npm run dev
 ```
 
-This will start the server on http://localhost:3001
+This will start the server on http://localhost:3000
 
 ### 4. Test Payment Integration
 
-Visit: http://localhost:3001/payment/test
+Visit: http://localhost:3000/payment/test
 
 ## 📋 API Endpoints
 
@@ -79,17 +79,17 @@ Visit: http://localhost:3001/payment/test
 ## 🎯 Result Pages
 
 ### Success Page
-- **URL**: http://localhost:3001/payment/success
+- **URL**: http://localhost:3000/payment/success
 - **Purpose**: Displays successful payment confirmation
 - **Features**: Transaction details, navigation back to dashboard
 
 ### Cancel/Failed Page
-- **URL**: http://localhost:3001/payment/cancel  
+- **URL**: http://localhost:3000/payment/cancel  
 - **Purpose**: Handles failed or cancelled payments
 - **Features**: Error details, retry options
 
 ### Test Page
-- **URL**: http://localhost:3001/payment/test
+- **URL**: http://localhost:3000/payment/test
 - **Purpose**: Complete payment integration testing
 - **Features**: Configurable amounts, real payment processing
 
@@ -131,7 +131,7 @@ function verifyWebhookSignature(data, signature, secretKey) {
 ## 🧪 Testing Instructions
 
 ### 1. Basic Integration Test
-1. Navigate to http://localhost:3001/payment/test
+1. Navigate to http://localhost:3000/payment/test
 2. Configure test payment parameters
 3. Click "Show Payment Widget"
 4. Enter test email and create payment token
@@ -146,7 +146,7 @@ You can test the API directly:
 
 ```bash
 # Test payment creation
-curl -X POST http://localhost:3001/api/payment/networx \
+curl -X POST http://localhost:3000/api/payment/networx \
   -H "Content-Type: application/json" \
   -d '{
     "amount": 10.00,
@@ -157,7 +157,7 @@ curl -X POST http://localhost:3001/api/payment/networx \
   }'
 
 # Test webhook endpoint status
-curl http://localhost:3001/api/webhooks/networx
+curl http://localhost:3000/api/webhooks/networx
 ```
 
 ## ⚡ Component Usage
@@ -214,7 +214,7 @@ For webhook testing with external services, use ngrok:
 # Install ngrok
 npm install -g ngrok
 
-# Expose localhost:3001 
+# Expose localhost:3000 
 ngrok http 3001
 
 # Update webhook URL in .env.local
@@ -223,7 +223,7 @@ NETWORX_WEBHOOK_URL=https://your-ngrok-url.ngrok.io/api/webhooks/networx
 
 ## 🎉 Ready to Use!
 
-Your Networx Pay integration is now fully configured and ready for use on localhost:3001. The system includes:
+Your Networx Pay integration is now fully configured and ready for use on localhost:3000. The system includes:
 
 - ✅ Complete payment processing
 - ✅ Secure signature verification  
@@ -233,4 +233,4 @@ Your Networx Pay integration is now fully configured and ready for use on localh
 - ✅ Transaction status tracking
 - ✅ Comprehensive testing tools
 
-Visit http://localhost:3001/payment/test to start testing your payment integration!
+Visit http://localhost:3000/payment/test to start testing your payment integration!

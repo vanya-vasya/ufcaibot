@@ -78,7 +78,7 @@ describe('ConversationPage Generate Button Handler', () => {
       // Mock successful webhook response
       mockWebhookClient.buildWebhookPayload.mockReturnValue({
         message: { content: 'Test prompt', role: 'user', timestamp: '2024-01-01', sessionId: 'session1' },
-        tool: { id: 'master-chef', name: 'Master Chef', price: 0, gradient: 'test' },
+        tool: { id: 'master-chef', name: 'Your Own Chef', price: 0, gradient: 'test' },
         user: { sessionId: 'session1' },
         metadata: { source: 'yum-mi-web-app', version: '1.0', timestamp: '2024-01-01', userAgent: 'test' },
       });
@@ -113,7 +113,7 @@ describe('ConversationPage Generate Button Handler', () => {
           'What can I cook with chicken?',
           'master-chef',
           expect.objectContaining({
-            title: 'Master Chef',
+            title: 'Your Own Chef',
             gradient: 'from-amber-400 via-orange-500 to-red-600',
           }),
           undefined,
@@ -315,7 +315,7 @@ describe('ConversationPage Generate Button Handler', () => {
           'Track my macros',
           'master-nutritionist',
           expect.objectContaining({
-            title: 'Master Nutritionist',
+            title: 'Your Own Nutritionist',
             gradient: 'from-emerald-400 via-green-500 to-teal-600',
           }),
           undefined,

@@ -1,7 +1,7 @@
 {
   "examples": {
     "master_chef_recipe_response": {
-      "description": "Structured recipe response from N8N Master Chef workflow",
+      "description": "Structured recipe response from N8N Your Own Chef workflow",
       "expected_format": {
         "dish": "Mediterranean Quinoa Bowl",
         "kcal": 420,
@@ -60,9 +60,9 @@
       "actions": [
         "Copy recipe to clipboard with toast notification",
         "Print recipe in formatted layout",
-        "Master Chef AI branding"
+        "Your Own Chef AI branding"
       ],
-      "styling": "Responsive design with hover effects and Master Chef theme colors"
+      "styling": "Responsive design with hover effects and Your Own Chef theme colors"
     },
     
     "integration_notes": {

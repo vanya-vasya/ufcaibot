@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
 
 const company = {
   name: "Yum-mi",
-  company: "GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD",
-  address: "Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA",
+  company: "QUICK FIT LTD",
+  address: "DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA",
   website: "yum-mi.com",
   email: "support@yum-mi.com",
   logo: "./public/logos/yum-mi-onigiri-logo.png", // Official company logo
-  companyNumber: "15982295",
+  companyNumber: "15995367",
 };
 
 const Receipt = ({

@@ -46,10 +46,10 @@ const TermsAndConditions = () => {
                   <p className="career-page-top__text-1 pt-8" style={{ color: 'black' }}>
                     Welcome to yum-mi.com! These Terms and Conditions
                     (&quot;Terms&quot;) constitute a distance agreement between
-                    GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD (&quot;Company&quot;), a company registered
+                    QUICK FIT LTD (&quot;Company&quot;), a company registered
                     under the laws of England and Wales, Company Number:
-                    15982295, with its registered address at Dept 6162 43 Owston Road,
-                    Carcroft, Doncaster, United Kingdom, DN6 8DA, and you
+                    15995367, with its registered address at DEPT 2, 43 OWSTON ROAD,
+                    CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA, and you
                     (&quot;Customer&quot;).
                   </p>
                   <p className="career-page-top__text-1 pt-8" style={{ color: 'black' }}>

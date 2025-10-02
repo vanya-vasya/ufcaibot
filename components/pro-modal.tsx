@@ -56,9 +56,16 @@ export const ProModal = () => {
   const proModal = useProModal();
   const [loading, setLoading] = useState(false);
   const [generationPrice, setGenerationPrice] = useState(GENERATIONS_PRICE);
-  const [generationsCount, setGenerationsCount] = useState(50);
-  const [activeButton, setActiveButton] = useState(50);
+  const [generationsCount, setGenerationsCount] = useState(100);
+  const [activeButton, setActiveButton] = useState(100);
   const [showPaymentWidget, setShowPaymentWidget] = useState(false);
+
+  // Bundle pricing with discounts
+  const bundlePrices: Record<number, number> = {
+    100: 20.00,
+    220: 40.00,
+    360: 60.00,
+  };
 
   const {
     register,
@@ -69,8 +76,8 @@ export const ProModal = () => {
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      generations: 50,
-      currency: "EUR",
+      generations: 100,
+      currency: "GBP",
       policies: false,
     },
   });
@@ -118,6 +125,17 @@ export const ProModal = () => {
 
   const handleCheckboxChange = (checked: boolean) => {
     setValue("policies", checked); // Обновляем значение в форме
+  };
+
+  // Calculate total price based on bundle pricing or per-token pricing
+  const calculatePrice = (generations: number): number => {
+    const currentCurrency = watch("currency");
+    const currencyMultiplier = currenciesRate[currentCurrency] / currenciesRate["GBP"];
+    
+    if (bundlePrices[generations]) {
+      return bundlePrices[generations] * currencyMultiplier;
+    }
+    return generations * generationPrice;
   };
 
   // Обработчики для платежного виджета
@@ -173,12 +191,16 @@ export const ProModal = () => {
                 ← Back to Selection
               </Button>
               <div className="text-black text-sm">
-                {watch("generations")} Generations - {(watch("generations") * generationPrice).toFixed(2)} {watch("currency")}
+                {watch("generations")} Generations - {(() => {
+                  const curr = watch("currency");
+                  const symbol = curr === "GBP" ? "£" : curr === "EUR" ? "€" : curr === "USD" ? "$" : "";
+                  return `${symbol}${calculatePrice(watch("generations")).toFixed(2)}`;
+                })()}
               </div>
             </div>
             
             <NetworkPaymentWidget
-              amount={watch("generations") * generationPrice}
+              amount={calculatePrice(watch("generations"))}
               currency={watch("currency")}
               orderId={`gen_${userId}_${Date.now()}`}
               description={`Yum-mi Generations Purchase (${watch("generations")} Tokens)`}
@@ -195,7 +217,7 @@ export const ProModal = () => {
               <p className="text-sm font-medium leading-sm text-black">Price</p>
               <div className="flex gap-2 justify-end">
                 <p className="text-sm font-medium leading-sm text-end text-black">
-                  {(watch("generations") * generationPrice).toFixed(2)}
+                  {calculatePrice(watch("generations")).toFixed(2)}
                 </p>
                 <Listbox
                   {...register("currency")}
@@ -253,7 +275,7 @@ export const ProModal = () => {
               Choose generations option
             </Label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full pt-2">
-              {[50, 100, 500].map((value) => (
+              {[100, 220, 360].map((value) => (
                 <Button
                   key={value}
                   type="button"
@@ -379,7 +401,7 @@ export const ProModal = () => {
               height={CardLogo.height}
             />
             <Label className="text-center font-normal text-xs text-black">
-            GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD - Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA
+            QUICK FIT LTD - DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA
             </Label>
           </>
         )}

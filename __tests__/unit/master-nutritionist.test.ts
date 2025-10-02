@@ -1,10 +1,10 @@
 /**
- * Tests for Master Nutritionist functionality
+ * Tests for Your Own Nutritionist functionality
  */
 
 import { getFormSchema } from '@/app/(dashboard)/dashboard/conversation/constants';
 
-describe('Master Nutritionist', () => {
+describe('Your Own Nutritionist', () => {
   describe('Form Schema Validation', () => {
     it('should require description for master-nutritionist', () => {
       const schema = getFormSchema('master-nutritionist');
@@ -116,7 +116,7 @@ describe('Master Nutritionist', () => {
     });
 
     it('should calculate hasInsufficientCredits correctly for free tool', () => {
-      const toolPrice = 0; // Master Nutritionist is free
+      const toolPrice = 0; // Your Own Nutritionist is free
       const availableCredits = 0; // Even with 0 credits
       const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;
 
@@ -124,7 +124,7 @@ describe('Master Nutritionist', () => {
     });
 
     it('should allow generation even with negative credit balance for free tools', () => {
-      const toolPrice = 0; // Master Nutritionist is free
+      const toolPrice = 0; // Your Own Nutritionist is free
       const availableCredits = -10; // Negative balance
       const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;
 
@@ -168,7 +168,7 @@ describe('Master Nutritionist', () => {
     it('should have correct master-nutritionist configuration', () => {
       const toolConfigs = {
         'master-nutritionist': {
-          title: 'Master Nutritionist',
+          title: 'Your Own Nutritionist',
           description: 'Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment\nPrice: Free',
           iconName: 'Activity',
           iconColor: 'text-emerald-600',
@@ -180,7 +180,7 @@ describe('Master Nutritionist', () => {
       };
 
       const config = toolConfigs['master-nutritionist'];
-      expect(config.title).toBe('Master Nutritionist');
+      expect(config.title).toBe('Your Own Nutritionist');
       expect(config.description).toContain('Price: Free');
       expect(config.placeholder).toContain('N8N webhook URL');
     });

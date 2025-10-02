@@ -2,7 +2,7 @@
 
 ## 🎉 Current Status: SUCCESSFUL INTEGRATION
 
-Your Networx Pay integration is now **fully functional** on localhost:3001!
+Your Networx Pay integration is now **fully functional** on localhost:3000!
 
 ### ✅ What's Working:
 
@@ -32,10 +32,10 @@ Your Networx Pay integration is now **fully functional** on localhost:3001!
 ```bash
 npm run dev
 ```
-Server runs on: http://localhost:3001
+Server runs on: http://localhost:3000
 
 ### 2. Test Payment Integration
-Visit: **http://localhost:3001/payment/test**
+Visit: **http://localhost:3000/payment/test**
 
 ### 3. Full Integration Test Flow:
 1. Navigate to test page
@@ -65,13 +65,13 @@ NETWORX_SHOP_ID=29959
 NETWORX_SECRET_KEY=dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950
 NETWORX_API_URL=https://gateway.networxpay.com
 NETWORX_TEST_MODE=true
-NETWORX_RETURN_URL=http://localhost:3001/payment/success
-NETWORX_CANCEL_URL=http://localhost:3001/payment/cancel
-NETWORX_WEBHOOK_URL=http://localhost:3001/api/webhooks/networx
+NETWORX_RETURN_URL=http://localhost:3000/payment/success
+NETWORX_CANCEL_URL=http://localhost:3000/payment/cancel
+NETWORX_WEBHOOK_URL=http://localhost:3000/api/webhooks/networx
 NEXT_PUBLIC_NETWORX_SHOP_ID=29959
 NEXT_PUBLIC_NETWORX_TEST_MODE=true
 NEXT_PUBLIC_NETWORX_WIDGET_URL=https://checkout.networxpay.com
-NEXT_PUBLIC_APP_URL=http://localhost:3001
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 ## 🎯 Current Implementation:
@@ -114,7 +114,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 ### Test Payment API Directly:
 ```bash
-curl -X POST http://localhost:3001/api/payment/networx \
+curl -X POST http://localhost:3000/api/payment/networx \
   -H "Content-Type: application/json" \
   -d '{
     "amount": 10.00,
@@ -127,12 +127,12 @@ curl -X POST http://localhost:3001/api/payment/networx \
 
 ### Test Webhook Endpoint:
 ```bash
-curl http://localhost:3001/api/webhooks/networx
+curl http://localhost:3000/api/webhooks/networx
 ```
 
 ## ✨ Integration is Complete and Ready!
 
-Your Networx Pay payment system is fully implemented and working on localhost:3001. The integration includes all required components:
+Your Networx Pay payment system is fully implemented and working on localhost:3000. The integration includes all required components:
 
 - ✅ Payment token creation
 - ✅ Security signatures

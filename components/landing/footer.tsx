@@ -15,6 +15,18 @@ const routes = [
     name: "Our Story",
     href: "/story",
   },
+  {
+    name: "Pricing",
+    href: "/#pricing",
+  },
+  {
+    name: "FAQ",
+    href: "/faq",
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+  },
 ];
 
 const importantLinks = [
@@ -38,11 +50,11 @@ const importantLinks = [
 
 const companyDetails = [
   {
-    name: "Company: GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD",
+    name: "Company: QUICK FIT LTD",
     icon: Building,
   },
   {
-    name: "Company Number: 15982295",
+    name: "Company Number: 15995367",
     icon: FileText,
   },
   {
@@ -50,7 +62,7 @@ const companyDetails = [
     icon: Mail,
   },
   {
-    name: `Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA`,
+    name: `DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA`,
     icon: MapPin,
   },
 ];
@@ -105,6 +117,7 @@ const Footer = () => {
                       <li key={route.name}>
                         <Link 
                           href={route.href}
+                          aria-label={`Navigate to ${route.name} page`}
                           style={{
                             fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                             fontWeight: 600,
@@ -140,6 +153,7 @@ const Footer = () => {
                       <li key={link.name}>
                         <Link 
                           href={link.href}
+                          aria-label={`Read our ${link.name}`}
                           style={{
                             fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                             fontWeight: 600,
@@ -215,7 +229,7 @@ const Footer = () => {
         </div>
         <div className="mt-6 flex justify-center">
           <Image
-            src="/cards.svg"
+            src="/cards_new.svg"
             alt="cards"
             width={300}
             height={100}

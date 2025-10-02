@@ -1,14 +1,11 @@
-import { MainNav } from "@/components/main-nav";
-import { MobileNav } from "@/components/mobile-nav";
-import { UserButton } from "@clerk/nextjs";
 import {
   getApiUsedGenerations,
   getApiAvailableGenerations,
 } from "@/lib/api-limit";
-import { UsageProgress } from "@/components/usage-progress";
 import { AnimatedLayout, AnimatedPage } from "@/components/animated-layout";
 import Link from "next/link";
 import Image from "next/image";
+import DashboardHeader from "@/components/dashboard-header";
 
 export default async function DashboardLayout({
   children,
@@ -22,29 +19,10 @@ export default async function DashboardLayout({
     <div className="h-auto relative min-h-screen bg-white">
 
       <AnimatedLayout>
-        <div className="container flex h-20 items-center px-4 xl:px-0">
-          <MobileNav
-            initialUsedGenerations={apiUsedGenerations}
-            initialAvailableGenerations={apiAvailableGenerations}
-          />
-          <div className="hidden xl:block flex-1">
-            <MainNav
-              initialUsedGenerations={apiUsedGenerations}
-              initialAvailableGenerations={apiAvailableGenerations}
-            />
-          </div>
-          <div className="ml-auto flex items-center space-x-4">
-            <div className="hidden md:block w-[220px]">
-              <UsageProgress
-                initialUsedGenerations={apiUsedGenerations}
-                initialAvailableGenerations={apiAvailableGenerations}
-              />
-            </div>
-            <div className="rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-filter backdrop-blur-sm">
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </div>
-        </div>
+        <DashboardHeader 
+          initialUsedGenerations={apiUsedGenerations}
+          initialAvailableGenerations={apiAvailableGenerations}
+        />
       </AnimatedLayout>
 
       <main className="flex-1 py-12 lg:pt-16 relative z-10">
@@ -67,9 +45,9 @@ export default async function DashboardLayout({
                 color: '#0f172a'
               }}
             >
-            GUΑRΑΝТЕЕD GRЕΑТ SЕRVIСЕ LТD (№15982295) <br /> Email: support@yum-mi.com{" "}
+            QUICK FIT LTD (№15995367) <br /> Email: support@yum-mi.com{" "}
               <br />
-              Dept 6162 43 Owston Road, Carcroft, Doncaster, United Kingdom, DN6 8DA, <br />
+              DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA, <br />
               Copyright © {new Date().getFullYear()}. All rights reserved.
             </p>
             <div className="flex space-x-4">
@@ -136,7 +114,7 @@ export default async function DashboardLayout({
             </div>
           </div>
           <div className="flex justify-center mt-6">
-            <Image src="/cards.svg" alt="cards" width={300} height={100} />
+            <Image src="/cards_new.svg" alt="cards" width={300} height={100} />
           </div>
         </div>
       </footer>

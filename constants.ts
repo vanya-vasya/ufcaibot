@@ -52,7 +52,7 @@ interface ToolModal {
   bgColor: string;
 }
 
-export const GENERATIONS_PRICE = 0.05;
+export const GENERATIONS_PRICE = 0.20;
 
 export const MODEL_GENERATIONS_PRICE = {
   conversation: 1,

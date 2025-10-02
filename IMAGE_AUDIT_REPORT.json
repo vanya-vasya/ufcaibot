@@ -1,0 +1,66 @@
+{
+  "auditDate": "2025-10-01T10:19:12.623Z",
+  "totalArticles": 6,
+  "brokenImagesFound": 1,
+  "imagesFixed": 1,
+  "cachebustedImages": 5,
+  "articles": [
+    {
+      "id": "1",
+      "title": "Mouth taping sleep hack warning",
+      "category": "Health",
+      "imageUrl": "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800&q=80&cb=488698",
+      "status": "ok - cache-busted",
+      "action": "Added cache-busting parameter"
+    },
+    {
+      "id": "2",
+      "title": "NFL shooter CTE findings",
+      "category": "Health",
+      "imageUrl": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&q=80&cb=488698",
+      "status": "ok - cache-busted",
+      "action": "Added cache-busting parameter"
+    },
+    {
+      "id": "3",
+      "title": "Best testosterone boosters 2025",
+      "category": "Health",
+      "imageUrl": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80&cb=488698",
+      "status": "ok - cache-busted",
+      "action": "Added cache-busting parameter"
+    },
+    {
+      "id": "4",
+      "title": "Best probiotics for women",
+      "category": "Health",
+      "imageUrl": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&q=80&cb=488698",
+      "status": "ok - cache-busted",
+      "action": "Added cache-busting parameter"
+    },
+    {
+      "id": "5",
+      "title": "Expats retiring to Panama",
+      "category": "Lifestyle",
+      "imageUrl": "https://images.pexels.com/photos/1181533/pexels-photo-1181533.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&cb=488698",
+      "status": "replaced",
+      "action": "Replaced broken Unsplash image with working Pexels image",
+      "oldImageUrl": "https://images.unsplash.com/photo-1544737151607-6e4b99e82d78?w=800&q=80",
+      "error": "Original image returned 404 Not Found"
+    },
+    {
+      "id": "6",
+      "title": "Meta AI dating bot",
+      "category": "Technology",
+      "imageUrl": "https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&q=80&cb=488698",
+      "status": "ok - cache-busted",
+      "action": "Added cache-busting parameter"
+    }
+  ],
+  "recommendations": [
+    "All images now include cache-busting parameters that refresh hourly",
+    "Broken image replaced with reliable Pexels CDN image",
+    "Consider implementing image fallback mechanisms",
+    "Monitor image URLs periodically for 404 errors",
+    "Use multiple CDN sources for redundancy"
+  ]
+}

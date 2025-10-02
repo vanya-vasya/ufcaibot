@@ -50,3 +50,13 @@ Thumbs.db
 # Logs
 logs
 *.log
+
+# Playwright
+.playwright-mcp/
+playwright-report/
+test-results/
+
+# Backup files
+*.backup
+*.bak
+*~

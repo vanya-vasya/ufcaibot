@@ -10,10 +10,12 @@ import {
   Activity,
   Target,
   BookOpen,
-
   Menu,
   Banknote,
   CreditCard,
+  HelpCircle,
+  FileText,
+  Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -44,25 +46,24 @@ import Image from "next/image";
 // Product items matching the header
 const productItems = [
   {
-    name: "Master Chef",
+    name: "Your Own Chef",
     href: "/dashboard/conversation?toolId=master-chef",
     icon: Crown,
   },
   {
-    name: "Master Nutritionist",
+    name: "Your Own Nutritionist",
     href: "/dashboard/conversation?toolId=master-nutritionist",
     icon: Activity,
   },
   {
-    name: "Cal Tracker",
+    name: "Your Own Tracker",
     href: "/dashboard/conversation?toolId=cal-tracker",
     icon: Target,
   },
   {
-    name: "Digest",
+    name: "Your Own Digest",
     href: "/dashboard",
     icon: BookOpen,
-    comingSoon: true,
   },
 ];
 
@@ -77,6 +78,21 @@ const pageRoutes = [
     name: "Pricing",
     href: "/#pricing",
     icon: CreditCard,
+  },
+  {
+    name: "FAQ",
+    href: "/faq",
+    icon: HelpCircle,
+  },
+  {
+    name: "Blog",
+    href: "/blog",
+    icon: FileText,
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+    icon: Mail,
   },
 ];
 
@@ -187,11 +203,6 @@ export function MobileNav({
                     </div>
                     <div className="flex items-center justify-between flex-1">
                       <span>{item.name}</span>
-                      {item.comingSoon && (
-                        <span className="text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded">
-                          Coming Soon
-                        </span>
-                      )}
                     </div>
                   </Link>
                 ))}

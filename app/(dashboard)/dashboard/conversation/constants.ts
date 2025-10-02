@@ -3,12 +3,12 @@ import * as z from "zod";
 // Dynamic form schema based on tool type
 export const getFormSchema = (toolId: string) => {
   if (toolId === 'master-nutritionist') {
-    // Master Nutritionist uses description field for challenges
+    // Your Own Nutritionist uses description field for challenges
     return z.object({
       description: z.string()
         .min(10, { message: "Description must be at least 10 characters." })
         .max(1000, { message: "Description must be less than 1000 characters." }),
-      image: z.any().optional(), // Optional for Master Nutritionist
+      image: z.any().optional(), // Optional for Your Own Nutritionist
     });
   } else {
     // Other tools use image upload

@@ -7,9 +7,9 @@ const LandingPage = () => {
   return (
     <div className="bg-slate-50">
       <Hero />
-      <Logo />
       <Products />
       <Pricing />
+      <Logo />
     </div>
   );
 };

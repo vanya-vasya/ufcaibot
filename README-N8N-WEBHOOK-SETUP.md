@@ -25,7 +25,7 @@ The Generate button now sends the following JSON payload to your n8n webhook:
   },
   "tool": {
     "id": "master-chef",
-    "name": "Master Chef", 
+    "name": "Your Own Chef", 
     "price": 100,
     "gradient": "from-amber-400 via-orange-500 to-red-600"
   },

@@ -2,10 +2,11 @@
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ import { RecipeCard } from "@/components/RecipeCard";
 import { FriendlyResponseCard } from "@/components/FriendlyResponseCard";
 import { CalTrackerNutritionCard } from "@/components/CalTrackerNutritionCard";
 import { friendlyFormatter, FriendlyResponse } from "@/lib/friendly-response-formatter";
+import { GuidelineSection } from "@/components/GuidelineSection";
 
 import { getFormSchema } from "./constants";
 import { MODEL_GENERATIONS_PRICE, tools } from "@/constants";
@@ -37,8 +39,8 @@ type ChatCompletionRequestMessage = {
   role: 'user' | 'system' | 'assistant';
   content: string;
   recipeData?: Recipe; // Optional recipe data for structured responses
-  friendlyResponse?: FriendlyResponse; // Friendly formatted response for Master Nutritionist
-  nutritionData?: NutritionData; // Simple nutritional data for Cal Tracker
+  friendlyResponse?: FriendlyResponse; // Friendly formatted response for Your Own Nutritionist
+  nutritionData?: NutritionData; // Simple nutritional data for Your Own Tracker
 };
 
 // Recipe type for structured recipe responses
@@ -51,7 +53,7 @@ type Recipe = {
   recipe: string; // markdown
 };
 
-// Nutrition data type for Cal Tracker responses
+// Nutrition data type for Your Own Tracker responses
 type NutritionData = {
   dish: string;
   kcal: number;
@@ -60,7 +62,7 @@ type NutritionData = {
   carb: number;
 };
 
-// Helper function to parse simple nutrition JSON for Cal Tracker
+// Helper function to parse simple nutrition JSON for Your Own Tracker
 const parseNutritionResponse = (response: string): { text: string; nutrition?: NutritionData } => {
   try {
     // Try to parse as JSON first
@@ -119,8 +121,8 @@ const parseRecipeResponse = (response: string): { text: string; recipe?: Recipe 
 // Конфигурация для разных типов инструментов
 const toolConfigs = {
   'master-chef': {
-    title: 'Master Chef',
-    description: 'Snap your ingredients. We will turn them into nourishing recipes, complete with a full nutritional breakdown. Because eating well should be that simple\nPrice: Free',
+    title: 'Your Own Chef',
+    description: 'Snap your ingredients. We will turn them into nourishing recipes, complete with a full nutritional breakdown. Because eating well should be that simple\nPrice: 10 tokens per generation',
     iconName: 'Crown',
     iconColor: 'text-amber-600',
     bgColor: 'bg-amber-600/10',
@@ -129,8 +131,8 @@ const toolConfigs = {
     placeholder: 'Ask me for meal planning, nutrition advice, dietary analysis, or healthy recipe suggestions...'
   },
   'master-nutritionist': {
-    title: 'Master Nutritionist',
-    description: 'Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment\nPrice: Free',
+    title: 'Your Own Nutritionist',
+    description: 'Advanced nutritional analysis and meal optimization with scientific precision, macro tracking, and health goal alignment\nPrice: 15 tokens per generation',
     iconName: 'Activity',
     iconColor: 'text-emerald-600',
     bgColor: 'bg-emerald-600/10',
@@ -139,8 +141,8 @@ const toolConfigs = {
     placeholder: 'Tell us your challenge. We\'ll turn it into a recipe for wellness'
   },
   'cal-tracker': {
-    title: 'Cal Tracker',
-    description: 'Intelligent calorie and nutrient tracking\nPrice: Free',
+    title: 'Your Own Tracker',
+    description: 'Intelligent calorie and nutrient tracking\nPrice: 5 tokens per generation',
     iconName: 'Target',
     iconColor: 'text-blue-600',
     bgColor: 'bg-blue-600/10',
@@ -170,9 +172,9 @@ const ConversationPage = () => {
   // Get tool price from the price mapping in webhook client
   const getToolPrice = (toolId: string): number => {
     const prices = {
-      'master-chef': 0, // Free tool - always enabled regardless of credit balance
-      'master-nutritionist': 0, // Free tool - always enabled regardless of credit balance
-      'cal-tracker': 0, // Free tool - always enabled regardless of credit balance
+      'master-chef': 10, // 10 tokens per generation
+      'master-nutritionist': 15, // 15 tokens per generation
+      'cal-tracker': 5, // 5 tokens per generation
     };
     return prices[toolId as keyof typeof prices] ?? 100; // Use ?? instead of || to handle 0 values correctly
   };
@@ -210,7 +212,7 @@ const ConversationPage = () => {
   });
 
   // Load credit balance on component mount
-  const loadCreditBalance = async () => {
+  const loadCreditBalance = useCallback(async () => {
     if (!userId) return;
     
     try {
@@ -239,11 +241,11 @@ const ConversationPage = () => {
     } finally {
       setIsLoadingCredits(false);
     }
-  };
+  }, [userId]);
   
   useEffect(() => {
     loadCreditBalance();
-  }, [userId]);
+  }, [userId, loadCreditBalance]);
 
   // Reset form when tool changes
   useEffect(() => {
@@ -283,7 +285,7 @@ const ConversationPage = () => {
       let userMessage: ChatCompletionRequestMessage;
 
       if (toolId === 'master-nutritionist') {
-        // Master Nutritionist - send description with N8N URL
+                // Your Own Nutritionist - send description with N8N URL
         userMessage = {
           role: "user",
           content: `[Description: ${values.description}] - Processing nutritional analysis...`,
@@ -327,7 +329,7 @@ const ConversationPage = () => {
         let assistantMessage: ChatCompletionRequestMessage;
         let successMessage: string;
 
-        // Handle Cal Tracker responses - check for simple nutrition JSON first
+        // Handle Your Own Tracker responses - check for simple nutrition JSON first
         if (toolId === 'cal-tracker') {
           const nutritionParsed = parseNutritionResponse(webhookResponse.data.response);
           
@@ -351,7 +353,7 @@ const ConversationPage = () => {
           successMessage = `🎯 Calorie tracking analysis ready in ${(webhookResponse.data.processingTime / 1000).toFixed(1)}s!`;
           
         } else if (toolId === 'master-nutritionist') {
-          // Handle Master Nutritionist responses with friendly formatting
+          // Handle Your Own Nutritionist responses with friendly formatting
           const friendlyResponse = friendlyFormatter.formatResponse(webhookResponse.data.response);
           
           assistantMessage = {
@@ -467,7 +469,7 @@ const ConversationPage = () => {
             {/* Input Section - Conditional based on tool type */}
             <div className="col-span-12">
               {toolId === 'master-nutritionist' ? (
-                // Master Nutritionist - Description Input
+                // Your Own Nutritionist - Description Input
                 <div>
                   <div className="text-center mb-4">
                     <h3 className="text-lg font-medium mb-2">Enter Analysis Description</h3>
@@ -512,6 +514,19 @@ const ConversationPage = () => {
                 // Other tools - Image Upload
                 <div>
                   <div className="text-center mb-4">
+                    {/* Photographer Icon */}
+                    <div className="flex justify-center mb-3">
+                      <div className="relative w-16 h-16">
+                        <Image
+                          src="/images/icons/photographer-icon.png"
+                          alt="Photographer camera icon"
+                          width={64}
+                          height={64}
+                          className="object-contain"
+                          priority
+                        />
+                      </div>
+                    </div>
                     <h3 className="text-lg font-medium mb-2">Upload Food Image</h3>
                     <p className="text-sm text-gray-600 mb-4">
                       Upload an image of food and our AI will analyze it to provide nutrition data.
@@ -577,8 +592,10 @@ const ConversationPage = () => {
                         <p>Please enter your challenge description</p>
                       ) : hasInsufficientCredits ? (
                         <p>Insufficient credits. You need {toolPrice} but have {availableCredits} available.</p>
-                      ) : (
+                      ) : toolPrice === 0 ? (
                         <p>Click to generate nutritional analysis (Free tool)</p>
+                      ) : (
+                        <p>Click to generate nutritional analysis ({toolPrice} tokens)</p>
                       )
                     ) : (
                       !uploadedImage ? (
@@ -588,7 +605,7 @@ const ConversationPage = () => {
                       ) : toolPrice === 0 ? (
                         <p>Click to generate AI analysis (Free tool)</p>
                       ) : (
-                        <p>Click to generate AI analysis</p>
+                        <p>Click to generate AI analysis ({toolPrice} tokens)</p>
                       )
                     )}
                   </TooltipContent>
@@ -604,9 +621,9 @@ const ConversationPage = () => {
             </div>
           )}
           {messages.length === 0 && !isLoading && (
-            <Empty 
-              label="No messages yet"
+            <GuidelineSection 
               gradient={currentTool.gradient}
+              toolId={toolId}
             />
           )}
           <div className="flex flex-col-reverse gap-y-6">
@@ -640,7 +657,7 @@ const ConversationPage = () => {
                   {message.role === "user" && <UserAvatar />}
                 </div>
 
-                {/* Cal Tracker nutrition card for simple nutritional data */}
+                {/* Your Own Tracker nutrition card for simple nutritional data */}
                 {message.role === "assistant" && message.nutritionData && (
                   <div className="w-full">
                     <CalTrackerNutritionCard 
@@ -650,7 +667,7 @@ const ConversationPage = () => {
                   </div>
                 )}
 
-                {/* Friendly response card for Master Nutritionist and Cal Tracker */}
+                {/* Friendly response card for Your Own Nutritionist and Your Own Tracker */}
                 {message.role === "assistant" && message.friendlyResponse && !message.nutritionData && (
                   <div className="w-full">
                     <FriendlyResponseCard 
