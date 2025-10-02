@@ -142,7 +142,7 @@ const toolConfigs = {
   },
   'cal-tracker': {
     title: 'Your Own Tracker',
-    description: 'Intelligent calorie and nutrient tracking\nPrice: Free',
+    description: 'Intelligent calorie and nutrient tracking\nPrice: 5 tokens per generation',
     iconName: 'Target',
     iconColor: 'text-blue-600',
     bgColor: 'bg-blue-600/10',
@@ -174,7 +174,7 @@ const ConversationPage = () => {
     const prices = {
       'master-chef': 10, // 10 tokens per generation
       'master-nutritionist': 15, // 15 tokens per generation
-      'cal-tracker': 0, // Free tool - always enabled regardless of credit balance
+      'cal-tracker': 5, // 5 tokens per generation
     };
     return prices[toolId as keyof typeof prices] ?? 100; // Use ?? instead of || to handle 0 values correctly
   };

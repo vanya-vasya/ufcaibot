@@ -24,17 +24,17 @@ describe('Credit Balance Logic - Your Own Chef Free Tool', () => {
       );
     };
 
-    it('should return 0 credits for master-chef tool', () => {
+    it('should return 10 credits for master-chef tool', () => {
       const payload = createMockPayload('master-chef');
-      expect(payload.tool.price).toBe(0);
+      expect(payload.tool.price).toBe(10);
     });
 
     it('should return correct credits for other tools', () => {
       const nutritionistPayload = createMockPayload('master-nutritionist');
-      expect(nutritionistPayload.tool.price).toBe(150);
+      expect(nutritionistPayload.tool.price).toBe(15);
 
       const calTrackerPayload = createMockPayload('cal-tracker');
-      expect(calTrackerPayload.tool.price).toBe(50);
+      expect(calTrackerPayload.tool.price).toBe(5);
     });
 
     it('should return default 100 credits for unknown tools', () => {
@@ -44,8 +44,8 @@ describe('Credit Balance Logic - Your Own Chef Free Tool', () => {
   });
 
   describe('Credit Balance Scenarios for Your Own Chef', () => {
-    const getMasterChefCreditLogic = (availableCredits: number, toolPrice: number = 0) => {
-      // Free tools (toolPrice = 0) never have insufficient credits
+    const getMasterChefCreditLogic = (availableCredits: number, toolPrice: number = 10) => {
+      // Check if insufficient credits for paid tool
       const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;
       const shouldBeEnabled = !hasInsufficientCredits;
       
@@ -57,30 +57,30 @@ describe('Credit Balance Logic - Your Own Chef Free Tool', () => {
       };
     };
 
-    it('should enable Your Own Chef with zero credit balance', () => {
-      const result = getMasterChefCreditLogic(0);
+    it('should disable Your Own Chef with insufficient credit balance', () => {
+      const result = getMasterChefCreditLogic(5); // Less than 10 required
       
-      expect(result.shouldBeEnabled).toBe(true);
-      expect(result.hasInsufficientCredits).toBe(false);
-      expect(result.toolPrice).toBe(0);
-      expect(result.availableCredits).toBe(0);
+      expect(result.shouldBeEnabled).toBe(false);
+      expect(result.hasInsufficientCredits).toBe(true);
+      expect(result.toolPrice).toBe(10);
+      expect(result.availableCredits).toBe(5);
     });
 
-    it('should enable Your Own Chef with positive credit balance', () => {
+    it('should enable Your Own Chef with sufficient credit balance', () => {
       const result = getMasterChefCreditLogic(100);
       
       expect(result.shouldBeEnabled).toBe(true);
       expect(result.hasInsufficientCredits).toBe(false);
-      expect(result.toolPrice).toBe(0);
+      expect(result.toolPrice).toBe(10);
       expect(result.availableCredits).toBe(100);
     });
 
-    it('should enable Your Own Chef with negative credit balance', () => {
+    it('should disable Your Own Chef with negative credit balance', () => {
       const result = getMasterChefCreditLogic(-25);
       
-      expect(result.shouldBeEnabled).toBe(true);
-      expect(result.hasInsufficientCredits).toBe(false);
-      expect(result.toolPrice).toBe(0);
+      expect(result.shouldBeEnabled).toBe(false);
+      expect(result.hasInsufficientCredits).toBe(true);
+      expect(result.toolPrice).toBe(10);
       expect(result.availableCredits).toBe(-25);
     });
 

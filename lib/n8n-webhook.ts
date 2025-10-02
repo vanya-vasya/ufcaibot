@@ -793,9 +793,9 @@ class N8nWebhookClient {
 
   private getToolPrice(toolId: string): number {
     const prices = {
-      'master-chef': 0, // Free tool - always enabled regardless of credit balance
-      'master-nutritionist': 0, // Free tool - always enabled regardless of credit balance
-      'cal-tracker': 0, // Free tool - always enabled regardless of credit balance
+      'master-chef': 10, // 10 tokens per generation
+      'master-nutritionist': 15, // 15 tokens per generation
+      'cal-tracker': 5, // 5 tokens per generation
     };
     
     // Use nullish coalescing to allow 0 values (|| would treat 0 as falsy)

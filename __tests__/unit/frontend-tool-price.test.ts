@@ -8,7 +8,7 @@ describe('Frontend Tool Price Logic', () => {
     const prices = {
       'master-chef': 10, // 10 tokens per generation
       'master-nutritionist': 15, // 15 tokens per generation
-      'cal-tracker': 0, // Free tool - always enabled regardless of credit balance
+      'cal-tracker': 5, // 5 tokens per generation
     };
     return prices[toolId as keyof typeof prices] ?? 100; // Use ?? instead of || to handle 0 values correctly
   };
@@ -23,21 +23,30 @@ describe('Frontend Tool Price Logic', () => {
     expect(getToolPrice('master-chef')).toBe(10);
   });
 
-  it('should return 0 for free tool (cal-tracker)', () => {
-    expect(getToolPrice('cal-tracker')).toBe(0);
+  it('should return 5 for cal-tracker', () => {
+    expect(getToolPrice('cal-tracker')).toBe(5);
   });
 
   it('should return default 100 for unknown tools', () => {
     expect(getToolPrice('unknown-tool')).toBe(100);
   });
 
-  it('should properly calculate hasInsufficientCredits for cal-tracker (free tool)', () => {
+  it('should properly calculate hasInsufficientCredits for cal-tracker with insufficient credits', () => {
     const toolPrice = getToolPrice('cal-tracker');
-    const availableCredits = 0; // Zero credits
+    const availableCredits = 3; // Less than 5 tokens required
     const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;
     
-    expect(toolPrice).toBe(0);
-    expect(hasInsufficientCredits).toBe(false); // Should be false even with 0 credits
+    expect(toolPrice).toBe(5);
+    expect(hasInsufficientCredits).toBe(true); // Should be true with insufficient credits
+  });
+
+  it('should properly calculate hasInsufficientCredits for cal-tracker with sufficient credits', () => {
+    const toolPrice = getToolPrice('cal-tracker');
+    const availableCredits = 10; // More than 5 tokens required
+    const hasInsufficientCredits = toolPrice > 0 && availableCredits < toolPrice;
+    
+    expect(toolPrice).toBe(5);
+    expect(hasInsufficientCredits).toBe(false); // Should be false with sufficient credits
   });
 
   it('should properly calculate hasInsufficientCredits for master-chef', () => {
@@ -59,20 +68,22 @@ describe('Frontend Tool Price Logic', () => {
   });
 
   it('should demonstrate the bug if using || instead of ??', () => {
-    // This is what was happening before the fix
+    // This is what was happening before the fix with free tools
     const buggyGetToolPrice = (toolId: string): number => {
       const prices = {
         'master-chef': 10,
         'master-nutritionist': 15,
-        'cal-tracker': 0,
+        'cal-tracker': 0, // Hypothetical free tool
       };
       return prices[toolId as keyof typeof prices] || 100; // BUG: || treats 0 as falsy
     };
 
-    // This would return 100 instead of 0 (the bug) for cal-tracker
+    // This would return 100 instead of 0 (the bug) for a hypothetical free tool
     expect(buggyGetToolPrice('cal-tracker')).toBe(100);
     
-    // The fixed version returns 0 correctly for cal-tracker
-    expect(getToolPrice('cal-tracker')).toBe(0);
+    // The fixed version using ?? returns correct values for all tools
+    expect(getToolPrice('cal-tracker')).toBe(5);
+    expect(getToolPrice('master-chef')).toBe(10);
+    expect(getToolPrice('master-nutritionist')).toBe(15);
   });
 });
