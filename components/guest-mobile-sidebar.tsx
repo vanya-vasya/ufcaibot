@@ -10,24 +10,28 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 
 const routes = [
   {
-    label: "Home",
-    href: "#home",
+    label: "Products",
+    href: "/#products",
   },
   {
-    label: "Features",
-    href: "#features",
+    label: "Our Story",
+    href: "/story",
+  },
+  {
+    label: "Pricing",
+    href: "/#pricing",
   },
   {
     label: "FAQ",
-    href: "#faq",
+    href: "/faq",
   },
   {
-    label: "Products",
-    href: "#products",
+    label: "Blog",
+    href: "/blog",
   },
   {
-    label: "Testimonials",
-    href: "#testimonials",
+    label: "Contact",
+    href: "/contact",
   },
 ];
 

@@ -10,10 +10,12 @@ import {
   Activity,
   Target,
   BookOpen,
-
   Menu,
   Banknote,
   CreditCard,
+  HelpCircle,
+  FileText,
+  Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -76,6 +78,21 @@ const pageRoutes = [
     name: "Pricing",
     href: "/#pricing",
     icon: CreditCard,
+  },
+  {
+    name: "FAQ",
+    href: "/faq",
+    icon: HelpCircle,
+  },
+  {
+    name: "Blog",
+    href: "/blog",
+    icon: FileText,
+  },
+  {
+    name: "Contact",
+    href: "/contact",
+    icon: Mail,
   },
 ];
 
