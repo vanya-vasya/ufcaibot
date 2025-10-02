@@ -229,7 +229,7 @@ const Footer = () => {
         </div>
         <div className="mt-6 flex justify-center">
           <Image
-            src="/cards.png"
+            src="/cards.svg"
             alt="cards"
             width={300}
             height={100}
