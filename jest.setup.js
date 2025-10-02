@@ -29,6 +29,17 @@ jest.mock('@clerk/nextjs', () => ({
     isLoaded: true,
     isSignedIn: true,
   })),
+  useUser: jest.fn(() => ({
+    user: {
+      id: 'test-user-id',
+      emailAddresses: [{ emailAddress: 'test@example.com' }],
+      firstName: 'Test',
+      lastName: 'User',
+      imageUrl: 'https://example.com/avatar.jpg',
+    },
+    isLoaded: true,
+    isSignedIn: true,
+  })),
   auth: jest.fn(() => ({
     userId: 'test-user-id',
   })),
@@ -79,3 +90,19 @@ global.FileReader = class MockFileReader {
     }, 0)
   }
 }
+
+// Mock react-markdown to avoid ESM issues
+jest.mock('react-markdown', () => {
+  return {
+    __esModule: true,
+    default: ({ children }) => <div>{children}</div>,
+  }
+})
+
+// Mock remark-gfm
+jest.mock('remark-gfm', () => {
+  return {
+    __esModule: true,
+    default: () => {},
+  }
+})

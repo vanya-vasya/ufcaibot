@@ -122,7 +122,7 @@ const parseRecipeResponse = (response: string): { text: string; recipe?: Recipe 
 const toolConfigs = {
   'master-chef': {
     title: 'Your Own Chef',
-    description: 'Snap your ingredients. We will turn them into nourishing recipes, complete with a full nutritional breakdown. Because eating well should be that simple\nPrice: Free',
+    description: 'Snap your ingredients. We will turn them into nourishing recipes, complete with a full nutritional breakdown. Because eating well should be that simple\nPrice: 10 tokens per generation',
     iconName: 'Crown',
     iconColor: 'text-amber-600',
     bgColor: 'bg-amber-600/10',
@@ -172,7 +172,7 @@ const ConversationPage = () => {
   // Get tool price from the price mapping in webhook client
   const getToolPrice = (toolId: string): number => {
     const prices = {
-      'master-chef': 0, // Free tool - always enabled regardless of credit balance
+      'master-chef': 10, // 10 tokens per generation
       'master-nutritionist': 0, // Free tool - always enabled regardless of credit balance
       'cal-tracker': 0, // Free tool - always enabled regardless of credit balance
     };
