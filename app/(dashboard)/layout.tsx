@@ -4,6 +4,7 @@ import {
 } from "@/lib/api-limit";
 import { AnimatedLayout, AnimatedPage } from "@/components/animated-layout";
 import Link from "next/link";
+import Image from "next/image";
 import DashboardHeader from "@/components/dashboard-header";
 
 export default async function DashboardLayout({
