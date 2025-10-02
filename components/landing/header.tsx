@@ -11,6 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PRODUCT_ITEMS } from "@/constants/product-navigation";
+import { ProductIcon } from "@/components/shared/ProductIcon";
 
 const routes = [
   {
@@ -52,31 +54,30 @@ const Header = () => {
                 Products
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="bg-white border border-green-100 shadow-lg">
-                <DropdownMenuItem asChild>
-                  <Link 
-                    href="/dashboard/conversation?toolId=master-chef"
-                    className="cursor-pointer hover:bg-green-50 transition-colors"
+              <DropdownMenuContent 
+                align="start" 
+                className="bg-white border border-green-100 shadow-lg min-w-[240px] p-1"
+              >
+                {PRODUCT_ITEMS.map((product) => (
+                  <DropdownMenuItem 
+                    key={product.href} 
+                    asChild
+                    className="focus:bg-transparent focus:text-inherit"
                   >
-                    Your Own Chef
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link 
-                    href="/dashboard/conversation?toolId=master-nutritionist"
-                    className="cursor-pointer hover:bg-green-50 transition-colors"
-                  >
-                    Your Own Nutritionist
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link 
-                    href="/dashboard/conversation?toolId=cal-tracker"
-                    className="cursor-pointer hover:bg-green-50 transition-colors"
-                  >
-                    Your Own Tracker
-                  </Link>
-                </DropdownMenuItem>
+                    <Link 
+                      href={product.href}
+                      className="dropdown-menu-item flex items-center gap-3 w-full"
+                    >
+                      <ProductIcon 
+                        iconUrl={product.iconUrl}
+                        fallback={product.iconFallback}
+                        alt={product.label}
+                        size={20}
+                      />
+                      <span className="flex-1">{product.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
             {routes.map((route) => (
@@ -193,6 +194,42 @@ const Header = () => {
           -webkit-background-clip: text;
           color: transparent;
           text-decoration: none;
+        }
+
+        /* Dropdown menu item styling - matches nav-link exactly */
+        .dropdown-menu-item {
+          font-family: var(--nav-font);
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 1.1;
+          letter-spacing: 0.01em;
+          text-transform: none;
+          color: #0f172a;
+          padding: 10px 14px;
+          border-radius: 8px;
+          transition: all 500ms ease-in-out;
+          text-decoration: none;
+        }
+
+        .dropdown-menu-item:hover {
+          background: linear-gradient(to right, #10b981, #059669, #047857);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+          .nav-container-light-green {
+            display: none;
+          }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+          .dropdown-menu-item {
+            color: #f1f5f9;
+          }
         }
 
       `}</style>

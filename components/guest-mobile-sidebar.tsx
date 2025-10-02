@@ -12,6 +12,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { PRODUCT_ITEMS } from "@/constants/product-navigation";
+import { ProductIcon } from "@/components/shared/ProductIcon";
 
 const routes = [
   {
@@ -33,21 +35,6 @@ const routes = [
   {
     label: "Contact",
     href: "/contact",
-  },
-];
-
-const productRoutes = [
-  {
-    label: "Your Own Chef",
-    href: "/dashboard/conversation?toolId=master-chef",
-  },
-  {
-    label: "Your Own Nutritionist",
-    href: "/dashboard/conversation?toolId=master-nutritionist",
-  },
-  {
-    label: "Your Own Tracker",
-    href: "/dashboard/conversation?toolId=cal-tracker",
   },
 ];
 
@@ -78,13 +65,19 @@ export const GuestMobileSidebar = () => {
                       </div>
                     </CollapsibleTrigger>
                     <CollapsibleContent className="pl-6 space-y-2 mt-2">
-                      {productRoutes.map((product) => (
+                      {PRODUCT_ITEMS.map((product) => (
                         <Link
                           key={product.href}
                           href={product.href}
-                          className="block rounded-lg px-3 py-2 text-sm font-medium leading-7 text-[#a1aac9] hover:text-white"
+                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium leading-7 text-[#a1aac9] hover:text-white transition-colors"
                         >
-                          {product.label}
+                          <ProductIcon 
+                            iconUrl={product.iconUrl}
+                            fallback={product.iconFallback}
+                            alt={product.label}
+                            size={18}
+                          />
+                          <span>{product.label}</span>
                         </Link>
                       ))}
                     </CollapsibleContent>
