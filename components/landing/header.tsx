@@ -62,7 +62,7 @@ const Header = () => {
                   <DropdownMenuItem 
                     key={product.href} 
                     asChild
-                    className="focus:bg-transparent focus:text-inherit"
+                    className="focus:bg-transparent hover:bg-transparent data-[highlighted]:bg-transparent"
                   >
                     <Link 
                       href={product.href}
@@ -192,7 +192,8 @@ const Header = () => {
           border: none !important;
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link:focus-visible {
           background: linear-gradient(to right, #10b981, #059669, #047857);
           background-clip: text;
           -webkit-background-clip: text;
@@ -200,7 +201,18 @@ const Header = () => {
           text-decoration: none;
         }
 
-        /* Dropdown menu item styling - pure black text matching header */
+        /* Ensure dropdown trigger inherits nav-link hover styles */
+        button.nav-link:hover,
+        button.nav-link:focus-visible,
+        button.nav-link[data-state="open"] {
+          background: linear-gradient(to right, #10b981, #059669, #047857);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          text-decoration: none;
+        }
+
+        /* Dropdown menu item styling - solid black text, green gradient on hover */
         .dropdown-menu-item {
           font-family: var(--header-font-family);
           font-weight: 600;
@@ -208,18 +220,27 @@ const Header = () => {
           line-height: 1.1;
           letter-spacing: 0.01em;
           text-transform: none;
-          color: var(--header-text-color);
+          color: #000000 !important;
           padding: 10px 14px;
           border-radius: 8px;
-          transition: all 500ms ease-in-out;
           text-decoration: none;
+          transition: all 500ms ease-in-out;
         }
 
-        .dropdown-menu-item:hover {
-          background: linear-gradient(to right, #10b981, #059669, #047857);
-          background-clip: text;
-          -webkit-background-clip: text;
-          color: transparent;
+        /* Override any inherited or conflicting text colors */
+        .dropdown-menu-item *,
+        .dropdown-menu-item span {
+          color: inherit;
+        }
+
+        .dropdown-menu-item:hover,
+        .dropdown-menu-item:focus-visible,
+        .dropdown-menu-item:active {
+          background: linear-gradient(to right, #10b981, #059669, #047857) !important;
+          background-clip: text !important;
+          -webkit-background-clip: text !important;
+          color: transparent !important;
+          text-decoration: none;
         }
 
         /* Responsive adjustments */
