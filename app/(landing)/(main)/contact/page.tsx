@@ -1,70 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-hot-toast";
-import { Mail, MapPin, Phone, Clock, Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
-
-import { FormData, formSchema } from "@/components/landing/constants";
-import { sendContactForm } from "@/lib/api";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-
-type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
+import { Mail, Phone, Clock } from "lucide-react";
 
 const ContactPage = () => {
-  const [submitState, setSubmitState] = useState<SubmitState>('idle');
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      message: "",
-    },
-  });
-
-  const handleSubmit = async (data: FormData) => {
-    try {
-      setSubmitState('submitting');
-      
-      // Add reCAPTCHA token (you would implement this in production)
-      const formDataWithCaptcha = {
-        name: `${data.firstName} ${data.lastName}`,
-        email: data.email,
-        message: data.message,
-        captchaToken: "placeholder_token", // Replace with actual reCAPTCHA implementation
-      };
-
-      await sendContactForm(formDataWithCaptcha);
-      
-      setSubmitState('success');
-      form.reset();
-      toast.success("Message sent successfully! We'll get back to you soon.");
-      
-      // Reset success state after 3 seconds
-      setTimeout(() => setSubmitState('idle'), 3000);
-      
-    } catch (error) {
-      setSubmitState('error');
-      toast.error("Failed to send message. Please try again later or contact us directly.");
-      
-      // Reset error state after 3 seconds
-      setTimeout(() => setSubmitState('idle'), 3000);
-    }
-  };
 
   return (
     <div className="bg-white relative" style={{'--contact-font': 'Inter, system-ui, -apple-system, sans-serif'} as React.CSSProperties & {'--contact-font': string}}>
@@ -131,16 +70,16 @@ const ContactPage = () => {
 
       {/* Contact Section */}
       <div className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div className="mx-auto max-w-3xl">
+          <div className="flex justify-center">
             
             {/* Contact Information */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="lg:pr-8"
+              className="w-full"
             >
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
                 Contact Information
@@ -186,158 +125,6 @@ const ContactPage = () => {
                     <p className="text-gray-600">Have an idea for a new feature? We&apos;re all ears</p>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 px-8 py-10 shadow-lg">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Send us a message
-                </h3>
-                <p className="text-gray-600 mb-8">
-                  Fill out the form below and we&apos;ll get back to you as soon as possible
-                </p>
-
-                <Form {...form}>
-                  <form 
-                    onSubmit={form.handleSubmit(handleSubmit)} 
-                    className="space-y-6"
-                    noValidate
-                  >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="firstName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-sm font-semibold text-gray-700">
-                              First name *
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="Enter your first name"
-                                className="h-12 bg-white border-gray-300 focus-visible:ring-emerald-500 focus-visible:border-emerald-500"
-                                aria-required="true"
-                                disabled={submitState === 'submitting'}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={form.control}
-                        name="lastName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className="text-sm font-semibold text-gray-700">
-                              Last name *
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                {...field}
-                                placeholder="Enter your last name"
-                                className="h-12 bg-white border-gray-300 focus-visible:ring-emerald-500 focus-visible:border-emerald-500"
-                                aria-required="true"
-                                disabled={submitState === 'submitting'}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm font-semibold text-gray-700">
-                            Email *
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              type="email"
-                              placeholder="Enter your email address"
-                              className="h-12 bg-white border-gray-300 focus-visible:ring-emerald-500 focus-visible:border-emerald-500"
-                              aria-required="true"
-                              disabled={submitState === 'submitting'}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="message"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-sm font-semibold text-gray-700">
-                            Message *
-                          </FormLabel>
-                          <FormControl>
-                            <Textarea
-                              {...field}
-                              placeholder="Tell us how we can help you..."
-                              className="min-h-[120px] bg-white border-gray-300 focus-visible:ring-emerald-500 focus-visible:border-emerald-500 resize-none"
-                              aria-required="true"
-                              disabled={submitState === 'submitting'}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <Button
-                      type="submit"
-                      size="lg"
-                      disabled={submitState === 'submitting'}
-                      className={`w-full h-12 font-semibold text-white transition-all duration-300 ${
-                        submitState === 'success'
-                          ? 'bg-emerald-500 hover:bg-emerald-500'
-                          : submitState === 'error'
-                          ? 'bg-red-500 hover:bg-red-500'
-                          : 'bg-emerald-600 hover:bg-emerald-700 hover:scale-[1.02] active:scale-[0.98]'
-                      } shadow-lg hover:shadow-xl focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2`}
-                      aria-label="Send message to Yum-mi team"
-                    >
-                      {submitState === 'submitting' && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
-                      {submitState === 'success' && (
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                      )}
-                      {submitState === 'error' && (
-                        <AlertCircle className="mr-2 h-4 w-4" />
-                      )}
-                      {submitState === 'submitting'
-                        ? 'Sending...'
-                        : submitState === 'success'
-                        ? 'Message Sent!'
-                        : submitState === 'error'
-                        ? 'Try Again'
-                        : (
-                          <>
-                            <Send className="mr-2 h-4 w-4" />
-                            Send Message
-                          </>
-                        )}
-                    </Button>
-                  </form>
-                </Form>
               </div>
             </motion.div>
           </div>
