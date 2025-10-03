@@ -70,6 +70,7 @@ export async function POST(req: Request) {
       firstName: first_name,
       lastName: last_name,
       photo: image_url,
+      availableGenerations: 10, // Initialize new users with 10 tokens
     };
 
     const newUser = await createUser(user);
