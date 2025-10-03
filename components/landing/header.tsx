@@ -4,6 +4,15 @@ import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { PRODUCT_ITEMS } from "@/constants/product-navigation";
+import { ProductIcon } from "@/components/shared/ProductIcon";
 
 const routes = [
   {
@@ -40,12 +49,38 @@ const Header = () => {
         </div>
         <div className="flex gap-x-12 ml-12">
           <div className="nav-container-light-green">
-            <Link
-              href="/#products"
-              className="nav-link"
-            >
-              Products
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="nav-link flex items-center gap-1 outline-none">
+                Products
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="start" 
+                className="bg-white border border-green-100 shadow-lg min-w-[240px] p-1"
+              >
+                {PRODUCT_ITEMS.map((product) => (
+                  <DropdownMenuItem 
+                    key={product.href} 
+                    asChild
+                    className="focus:bg-transparent hover:bg-transparent data-[highlighted]:bg-transparent"
+                  >
+                    <Link 
+                      href={product.href}
+                      className="dropdown-menu-item flex items-center gap-3 w-full"
+                    >
+                      <ProductIcon 
+                        icon={product.icon}
+                        iconUrl={product.iconUrl}
+                        fallback={product.iconFallback}
+                        alt={product.label}
+                        size={20}
+                      />
+                      <span className="flex-1">{product.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             {routes.map((route) => (
               <Link
                 key={route.name}
@@ -100,6 +135,9 @@ const Header = () => {
 
       <style jsx global>{`
         :root {
+          --header-font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          --header-font-size: 16px;
+          --header-text-color: #000000;
           --nav-font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
           --contact-font: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
@@ -129,37 +167,94 @@ const Header = () => {
         }
 
         .nav-link {
-          font-family: var(--contact-font);
+          font-family: var(--header-font-family);
           font-weight: 600;
-          font-size: 16px;
+          font-size: var(--header-font-size);
           line-height: 1.1;
           letter-spacing: 0.01em;
           text-transform: none;
-          color: #0f172a;
+          color: var(--header-text-color);
           padding: 8px 16px;
           border-radius: 9999px;
           transition: all 500ms ease-in-out;
         }
 
         .main-header__login-sing-up .nav-link {
-          font-family: var(--contact-font) !important;
+          font-family: var(--header-font-family) !important;
           font-weight: 600 !important;
-          font-size: 16px !important;
+          font-size: var(--header-font-size) !important;
           line-height: 1.1 !important;
           letter-spacing: 0.01em !important;
           text-transform: none !important;
-          color: #0f172a !important;
+          color: var(--header-text-color) !important;
           padding: 8px 16px !important;
           border-radius: 9999px !important;
           border: none !important;
         }
 
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link:focus-visible {
           background: linear-gradient(to right, #10b981, #059669, #047857);
           background-clip: text;
           -webkit-background-clip: text;
           color: transparent;
           text-decoration: none;
+        }
+
+        /* Ensure dropdown trigger inherits nav-link hover styles */
+        button.nav-link:hover,
+        button.nav-link:focus-visible,
+        button.nav-link[data-state="open"] {
+          background: linear-gradient(to right, #10b981, #059669, #047857);
+          background-clip: text;
+          -webkit-background-clip: text;
+          color: transparent;
+          text-decoration: none;
+        }
+
+        /* Dropdown menu item styling - solid black text, green gradient on hover */
+        .dropdown-menu-item {
+          font-family: var(--header-font-family);
+          font-weight: 600;
+          font-size: var(--header-font-size);
+          line-height: 1.1;
+          letter-spacing: 0.01em;
+          text-transform: none;
+          color: #000000 !important;
+          padding: 10px 14px;
+          border-radius: 8px;
+          text-decoration: none;
+          transition: all 500ms ease-in-out;
+        }
+
+        /* Override any inherited or conflicting text colors */
+        .dropdown-menu-item *,
+        .dropdown-menu-item span {
+          color: inherit;
+        }
+
+        .dropdown-menu-item:hover,
+        .dropdown-menu-item:focus-visible,
+        .dropdown-menu-item:active {
+          background: linear-gradient(to right, #10b981, #059669, #047857) !important;
+          background-clip: text !important;
+          -webkit-background-clip: text !important;
+          color: transparent !important;
+          text-decoration: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+          .nav-container-light-green {
+            display: none;
+          }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+          .dropdown-menu-item {
+            color: #f1f5f9;
+          }
         }
 
       `}</style>
