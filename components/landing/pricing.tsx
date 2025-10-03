@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface PricingTier {
   id: string;
@@ -76,10 +77,11 @@ const pricingTiers: PricingTier[] = [
 
 const Pricing = () => {
   const [customAmount, setCustomAmount] = useState("");
+  const proModal = useProModal();
 
   const handleGetStarted = (tierId: string) => {
-    // Redirect to dashboard - use relative path for local development
-    window.location.href = "/dashboard";
+    // Open the Buy More modal
+    proModal.onOpen();
   };
 
   return (
