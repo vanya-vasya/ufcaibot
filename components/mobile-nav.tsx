@@ -59,11 +59,6 @@ const productItems = [
     href: "/dashboard/conversation?toolId=cal-tracker",
     icon: Target,
   },
-  {
-    name: "Your Own Digest",
-    href: "/dashboard",
-    icon: BookOpen,
-  },
 ];
 
 // Page routes matching the header

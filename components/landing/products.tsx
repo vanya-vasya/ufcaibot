@@ -23,12 +23,6 @@ const products = [
     image: "/images/resource/cal-tracker-computer-vision.jpg",
     type: "image", 
   },
-  {
-    title: "Your Own Digest",
-    description: "Coming Soon",
-    image: "/images/resource/digest-recommendations-coming-soon.jpg",
-    type: "image",
-  },
 ];
 
 const Products = () => {
@@ -121,34 +115,32 @@ const Products = () => {
                 </div>
                 
                 {/* CTA Button */}
-                {product.title !== "Your Own Digest" && (
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="inline-block"
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-block"
+                >
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center px-6 py-3 bg-green-400 hover:bg-green-500 text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
+                    aria-label={`Try ${product.title}`}
                   >
-                    <Link
-                      href="/dashboard"
-                      className="inline-flex items-center px-6 py-3 bg-green-400 hover:bg-green-500 text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg"
-                      aria-label={`Try ${product.title}`}
+                    Try Now
+                    <svg
+                      className="ml-2 w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      Try Now
-                      <svg
-                        className="ml-2 w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  </motion.div>
-                )}
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                </motion.div>
               </div>
 
               {/* Image content */}

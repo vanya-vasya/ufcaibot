@@ -29,13 +29,6 @@ const creativeTools = [
     type: "image", 
     color: "from-cyan-400 via-blue-500 to-indigo-600",
   },
-  {
-    title: "Your Own Digest",
-    description: "Coming Soon",
-    image: "/images/resource/digital_artist.jpg",
-    type: "image",
-    color: "from-cyan-400 via-blue-500 to-indigo-600",
-  },
 ];
 
 const Products = () => {
