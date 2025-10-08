@@ -14,7 +14,6 @@ import {
   Banknote,
   CreditCard,
   HelpCircle,
-  FileText,
   Mail,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -83,11 +82,6 @@ const pageRoutes = [
     name: "FAQ",
     href: "/faq",
     icon: HelpCircle,
-  },
-  {
-    name: "Blog",
-    href: "/blog",
-    icon: FileText,
   },
   {
     name: "Contact",

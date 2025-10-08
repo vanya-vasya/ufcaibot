@@ -28,10 +28,6 @@ const routes = [
     href: "/faq",
   },
   {
-    label: "Blog",
-    href: "/blog",
-  },
-  {
     label: "Contact",
     href: "/contact",
   },
