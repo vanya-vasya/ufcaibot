@@ -92,10 +92,17 @@ export const ProModal = () => {
   };
 
   // Calculate total price based on token count
+  // GENERATIONS_PRICE is 0.20 GBP per token
   const calculatePrice = (tokens: number): number => {
     const currentCurrency = watch("currency");
-    const currencyMultiplier = currenciesRate[currentCurrency] / currenciesRate["GBP"];
-    return tokens * tokenPrice * currencyMultiplier / currenciesRate["GBP"];
+    // For GBP, use the base price directly (0.20 per token)
+    // For other currencies, convert from GBP to the target currency
+    if (currentCurrency === "GBP") {
+      return tokens * GENERATIONS_PRICE;
+    }
+    // Convert GBP price to other currency using exchange rates
+    const priceInEUR = GENERATIONS_PRICE / currenciesRate["GBP"]; // Convert GBP to EUR base
+    return tokens * priceInEUR * currenciesRate[currentCurrency];
   };
 
   // Обработчики для платежного виджета
