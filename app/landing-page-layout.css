@@ -1,0 +1,238 @@
+/**
+ * Landing Page Layout - Shared Styles
+ * 
+ * This file contains centralized styles for header positioning and dropdown behavior
+ * across all landing pages (Home, Our Story, FAQ, Contact).
+ * 
+ * Key Features:
+ * - Fixed header with proper z-index stacking
+ * - Dropdown menu positioning below header
+ * - Cross-browser compatibility
+ * - Prevents overflow clipping issues
+ */
+
+/* ============================================================================
+   HEADER POSITIONING & Z-INDEX
+   ============================================================================ */
+
+/**
+ * Fixed header positioning
+ * - position: sticky for better performance than fixed
+ * - z-index: 9998 ensures header stays above content but below dropdowns
+ * - Creates new stacking context for proper layering
+ */
+header {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 9998 !important;
+  background: white !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  isolation: isolate; /* Creates new stacking context */
+}
+
+/* Ensure header navigation has proper overflow */
+header nav {
+  overflow: visible !important;
+  position: relative !important;
+  z-index: inherit;
+}
+
+/* ============================================================================
+   DROPDOWN MENU POSITIONING
+   ============================================================================ */
+
+/**
+ * Dropdown menu - renders via Portal
+ * - z-index: 9999 ensures it appears above the fixed header
+ * - Portal rendering places it at document root, avoiding parent overflow issues
+ * - Positioned absolutely to avoid layout shift
+ */
+
+/* Radix Portal container */
+[data-radix-portal] {
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+/* DropdownMenu content */
+[role="menu"],
+[data-radix-dropdown-menu-content] {
+  z-index: 9999 !important;
+  position: absolute !important;
+  /* Ensure dropdown appears below header */
+  margin-top: 4px !important;
+}
+
+/* Prevent dropdown from being clipped by overflow: hidden parents */
+.nav-container,
+.nav-container-light-green,
+.nav-container-green {
+  overflow: visible !important;
+}
+
+/* ============================================================================
+   BODY & CONTENT AREA
+   ============================================================================ */
+
+/**
+ * Body padding to account for fixed header
+ * - No padding-top needed with sticky positioning
+ * - Smooth scroll behavior for anchor links
+ */
+body {
+  padding-top: 0 !important;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Main content area should not create stacking context issues */
+main {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+}
+
+/* ============================================================================
+   NAVIGATION LINKS
+   ============================================================================ */
+
+/**
+ * Ensure all nav links are clickable and properly styled
+ */
+.nav-link {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Dropdown trigger should not create stacking context */
+button.nav-link {
+  position: relative;
+  z-index: auto;
+}
+
+/* ============================================================================
+   CROSS-BROWSER COMPATIBILITY
+   ============================================================================ */
+
+/**
+ * Safari-specific fixes
+ * - Webkit transform creates stacking context, so ensure proper z-index
+ * - Prevent 3D transform issues
+ */
+@supports (-webkit-appearance: none) {
+  header {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  [data-radix-dropdown-menu-content] {
+    -webkit-transform: translateZ(1px);
+    transform: translateZ(1px);
+  }
+}
+
+/**
+ * Firefox-specific fixes
+ * - Ensure proper stacking with -moz- prefixes where needed
+ */
+@-moz-document url-prefix() {
+  header {
+    position: -moz-sticky !important;
+  }
+}
+
+/**
+ * iOS Safari fixes
+ * - Fixed positioning behaves differently on iOS
+ * - Use sticky for better mobile compatibility
+ */
+@supports (-webkit-touch-callout: none) {
+  header {
+    position: -webkit-sticky !important;
+  }
+}
+
+/* ============================================================================
+   RESPONSIVE BEHAVIOR
+   ============================================================================ */
+
+/**
+ * Mobile (< 1024px) - Ensure dropdown works on mobile
+ */
+@media (max-width: 1024px) {
+  /* Hide desktop nav container on mobile */
+  .nav-container-light-green {
+    display: none;
+  }
+  
+  /* Mobile hamburger menu should work properly */
+  [role="dialog"] {
+    z-index: 10000 !important;
+  }
+}
+
+/**
+ * Desktop (>= 1024px) - Ensure dropdown positions correctly
+ */
+@media (min-width: 1024px) {
+  /* Dropdown should appear directly below the Products button */
+  [data-radix-dropdown-menu-content] {
+    /* Account for header height (approximately 80px) */
+    min-width: 240px;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+
+/**
+ * Ensure dropdown menu is accessible
+ * - Visible when open
+ * - Proper focus states
+ */
+[data-radix-dropdown-menu-content][data-state="open"] {
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+[data-radix-dropdown-menu-content][data-state="closed"] {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Focus states for keyboard navigation */
+[data-radix-dropdown-menu-content]:focus-visible,
+[data-radix-dropdown-menu-item]:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   DEBUGGING HELPERS (Comment out in production)
+   ============================================================================ */
+
+/* Uncomment to debug stacking contexts */
+/*
+header {
+  outline: 2px solid red !important;
+}
+
+[data-radix-portal] {
+  outline: 2px solid blue !important;
+}
+
+[data-radix-dropdown-menu-content] {
+  outline: 2px solid green !important;
+}
+*/
+

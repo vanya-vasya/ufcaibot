@@ -229,6 +229,9 @@ body,
 
 @import url("../assets/css/responsive.css");
 
+/* Landing page layout - header and dropdown positioning */
+@import url("./landing-page-layout.css");
+
 /*** 
 ====================================================================
 	
