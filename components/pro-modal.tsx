@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { currencies, currenciesRate, Currency } from "@/constants/index";
 import Image from "next/image";
-import CardLogo from "@/public/payment-cards-logo.png";
+import CardLogo from "@/public/card-logo.png";
 import { z } from "zod";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
