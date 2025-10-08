@@ -22,7 +22,6 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { currencies, currenciesRate, Currency } from "@/constants/index";
 import Image from "next/image";
-import CardLogo from "@/public/card-logo.png";
 import { z } from "zod";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
@@ -349,11 +348,11 @@ export const ProModal = () => {
         {!showPaymentWidget && (
           <>
             <Image
-              alt="cards logo"
-              className="w-48 m-auto mt-1"
-              src={CardLogo.src}
-              width={CardLogo.width}
-              height={CardLogo.height}
+              alt="Visa, Visa Secure, Mastercard, ID Check, 3D Secure payment logos"
+              className="w-full max-w-md m-auto mt-1"
+              src="/cards_new.svg"
+              width={1554}
+              height={191}
             />
             <Label className="text-center font-normal text-xs text-black">
             QUICK FIT LTD - DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA
