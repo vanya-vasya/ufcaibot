@@ -227,12 +227,6 @@ export const ProModal = () => {
                 </Listbox>
               </div>
             </div>
-            <div className="grid grid-cols-2 pb-2 text-black">
-              <p className="text-sm font-medium leading-sm">Tokens</p>
-              <p className="text-sm font-medium leading-sm text-end">
-                {watch("tokens")} Tokens
-              </p>
-            </div>
             <Label htmlFor="tokens" className="text-black">
               Enter token amount
             </Label>
