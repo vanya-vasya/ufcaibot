@@ -3,17 +3,24 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 
+/**
+ * AnimatedLayout - Wraps header with animation
+ * 
+ * Note: This component wraps the DashboardHeader with motion animations.
+ * It uses a <motion.div> instead of <motion.header> to avoid nested headers,
+ * since DashboardHeader already has its own <header> tag.
+ */
 export function AnimatedLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <motion.header
+      <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 py-4"
+        className="sticky top-0 z-50 w-full"
       >
         {children}
-      </motion.header>
+      </motion.div>
     </>
   );
 }
