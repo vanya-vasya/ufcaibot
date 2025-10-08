@@ -45,8 +45,9 @@ export async function POST(request: NextRequest) {
     const secretKey = process.env.NETWORX_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
     // Use checkout.networxpay.com - verified working endpoint
     const apiUrl = process.env.NETWORX_API_URL || 'https://checkout.networxpay.com';
-    const returnUrl = process.env.NETWORX_RETURN_URL || 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/success';
-    const notificationUrl = process.env.NETWORX_WEBHOOK_URL || 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/api/webhooks/networx';
+    // Force correct URLs (override old env variables)
+    const returnUrl = 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/success';
+    const notificationUrl = 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/api/webhooks/networx';
     const testMode = process.env.NETWORX_TEST_MODE === 'true'; // Use test mode based on env variable
     
     console.log('Environment variables:', {
@@ -102,8 +103,10 @@ export async function POST(request: NextRequest) {
     }
     
     // Make real API call to Networx Pay (Production mode)
-    const networxApiUrl = `${apiUrl}/ctp/api/checkouts`;  // Correct endpoint for hosted payment page
+    // Try widget API endpoint instead of CTP
+    const networxApiUrl = `${apiUrl}/api/v1/payment/init`;  // Widget HPP API endpoint (attempt)
     console.log('Making request to:', networxApiUrl);
+    console.log('NOTE: Trying Widget HPP API endpoint - may need adjustment based on Networx docs');
 
     try {
       const networxResponse = await fetch(networxApiUrl, {
