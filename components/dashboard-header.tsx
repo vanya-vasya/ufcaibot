@@ -106,9 +106,7 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
                 initialAvailableGenerations={initialAvailableGenerations}
               />
             </div>
-            <div className="rounded-full bg-indigo-500/10 border border-indigo-500/20 backdrop-filter backdrop-blur-sm">
-              <UserButton afterSignOutUrl="/" />
-            </div>
+            <UserButton afterSignOutUrl="/" />
           </div>
           <GuestMobileSidebar />
         </div>
