@@ -175,70 +175,112 @@ export const ProModal = () => {
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full items-center gap-1.5">
-            <div className="grid grid-cols-2">
-              <p className="text-sm font-medium leading-sm text-black">Price</p>
-              <div className="flex gap-2 justify-end">
-                <p className="text-sm font-medium leading-sm text-end text-black">
-                  {calculatePrice(watch("tokens")).toFixed(2)}
-                </p>
-                <Listbox
-                  {...register("currency")}
-                  value={watch("currency")}
-                  onChange={handleCurrencyChange}
-                  disabled={loading}
+            {/* Price Display Section */}
+            <div className="text-center space-y-4 mb-6">
+              <div className="relative">
+                <span 
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-4xl font-bold pointer-events-none" 
+                  style={{ 
+                    color: '#000',
+                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                  }}
                 >
-                  <div className="relative">
-                    <ListboxButton
-                      className={`w-[60px] h-[24px] text-center rounded-md sm:rounded-lg
-                      border text-sm font-medium flex items-center justify-center
-                      bg-white text-black
-                      ${
-                        watch("currency")
-                          ? "border-green-500"
-                          : "border-gray-300"
-                      }
-                      outline-none ring-0 focus:outline-none focus:ring-0 active:ring-0
-                      hover:outline-none hover:ring-0 hover:border-gray-400 hover:bg-gray-50
-                      focus:border-gray-400 active:border-gray-400
-                      transition-all duration-200 appearance-none shadow-sm`}
-                    >
-                      {watch("currency")}
-                    </ListboxButton>
-                    <ListboxOptions className="absolute left-0 z-10 mt-1 grid w-full origin-top-right gap-0.5 rounded-md sm:rounded-lg border border-gray-300 bg-white p-1 shadow-lg outline-none">
-                      {currencies.map((currency, idx) => (
-                        <ListboxOption
-                          key={idx}
-                          className={({ active }) =>
-                            `flex cursor-pointer items-center justify-center rounded-md text-sm transition
-                            bg-white text-black
-                            ${
-                              active
-                                ? "bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-medium"
-                                : "border border-transparent hover:bg-gray-50"
-                            }`
-                          }
-                          value={currency}
-                        >
-                          {currency}
-                        </ListboxOption>
-                      ))}
-                    </ListboxOptions>
-                  </div>
-                </Listbox>
+                  {watch("currency") === "GBP" ? "£" : watch("currency") === "EUR" ? "€" : watch("currency") === "USD" ? "$" : ""}
+                </span>
+                <div 
+                  className="text-4xl font-bold text-center py-2"
+                  style={{
+                    color: '#000',
+                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                  }}
+                >
+                  {calculatePrice(watch("tokens")).toFixed(2)}
+                </div>
               </div>
+              
+              <Listbox
+                {...register("currency")}
+                value={watch("currency")}
+                onChange={handleCurrencyChange}
+                disabled={loading}
+              >
+                <div className="relative flex justify-center">
+                  <ListboxButton
+                    className="w-[80px] h-[32px] text-center rounded-lg border-2 text-sm font-medium flex items-center justify-center bg-white transition-all duration-200 appearance-none shadow-sm hover:border-gray-400 focus:outline-none focus:ring-2"
+                    style={{
+                      borderColor: '#000',
+                      color: '#000',
+                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                    }}
+                  >
+                    {watch("currency")}
+                  </ListboxButton>
+                  <ListboxOptions className="absolute top-full left-1/2 transform -translate-x-1/2 z-10 mt-1 grid w-[80px] origin-top gap-0.5 rounded-lg border border-gray-300 bg-white p-1 shadow-lg outline-none">
+                    {currencies.map((currency, idx) => (
+                      <ListboxOption
+                        key={idx}
+                        className={({ active }) =>
+                          `flex cursor-pointer items-center justify-center rounded-md text-sm transition py-1
+                          bg-white text-black
+                          ${
+                            active
+                              ? "bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-medium"
+                              : "border border-transparent hover:bg-gray-50"
+                          }`
+                        }
+                        value={currency}
+                        style={{
+                          fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                        }}
+                      >
+                        {currency}
+                      </ListboxOption>
+                    ))}
+                  </ListboxOptions>
+                </div>
+              </Listbox>
             </div>
-            <Label htmlFor="tokens" className="text-black">
+
+            {/* Token Amount Input */}
+            <Label htmlFor="tokens" className="text-black mb-2 block" style={{fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'}}>
               Enter token amount
             </Label>
-            <div className="w-full pt-2">
-              <Input
+            <div className="w-full">
+              <input
                 disabled={loading}
                 type="number"
                 id="tokens"
-                placeholder="Enter number of tokens"
+                placeholder="100"
                 {...register("tokens", { valueAsNumber: true })}
                 min={1}
-                className="text-center py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 focus:bg-gray-50 focus:text-gray-900 focus:border-gray-400 focus:outline-none ring-0 focus:ring-0 active:ring-0 transition-all duration-300 shadow-sm"
+                className="w-full px-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white focus:outline-none focus:ring-2"
+                style={{
+                  fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  borderColor: '#000',
+                  color: '#000',
+                }}
+                onFocus={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  target.style.borderColor = '#000';
+                  target.style.boxShadow = '0 0 0 2px rgba(0, 0, 0, 0.2)';
+                }}
+                onBlur={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  target.style.borderColor = '#000';
+                  target.style.boxShadow = 'none';
+                }}
+                onMouseOver={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  if (document.activeElement !== target) {
+                    target.style.borderColor = 'rgba(0, 0, 0, 0.8)';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  if (document.activeElement !== target) {
+                    target.style.borderColor = '#000';
+                  }
+                }}
               />
             </div>
             {errors.tokens && (
