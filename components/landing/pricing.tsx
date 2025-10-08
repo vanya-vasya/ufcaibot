@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
-import { useProModal } from "@/hooks/use-pro-modal";
+import Link from "next/link";
 
 interface PricingTier {
   id: string;
@@ -77,12 +77,6 @@ const pricingTiers: PricingTier[] = [
 
 const Pricing = () => {
   const [customAmount, setCustomAmount] = useState("");
-  const proModal = useProModal();
-
-  const handleGetStarted = (tierId: string) => {
-    // Open the Buy More modal
-    proModal.onOpen();
-  };
 
   return (
     <section
@@ -308,19 +302,22 @@ const Pricing = () => {
                 </div>
 
                 {/* Button */}
-                <button
-                  onClick={() => handleGetStarted(tier.id)}
-                  className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
-                    tier.popular
-                      ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
-                      : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
-                  }`}
-                  style={{
-                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  }}
-                >
-                  {tier.id === "custom" ? "Choose Amount" : "Begin"}
-                </button>
+                <Link href="/dashboard">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 ${
+                      tier.popular
+                        ? "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg"
+                        : "bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
+                    }`}
+                    style={{
+                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                    }}
+                  >
+                    {tier.id === "custom" ? "Choose Amount" : "Begin"}
+                  </motion.button>
+                </Link>
               </div>
             </motion.div>
           ))}
