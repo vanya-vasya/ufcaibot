@@ -49,6 +49,12 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
         </div>
         <div className="flex gap-x-12 ml-12">
           <div className="nav-container-light-green">
+            <Link
+              href="/"
+              className="nav-link"
+            >
+              Home
+            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger className="nav-link flex items-center gap-1 outline-none">
                 Products
