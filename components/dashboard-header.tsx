@@ -236,6 +236,37 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
           }
         }
 
+        /* UserButton hover state override - remove gray background */
+        .cl-userButtonTrigger:hover,
+        .cl-userButtonTrigger:focus,
+        .cl-userButtonTrigger:active {
+          background-color: transparent !important;
+          background: transparent !important;
+        }
+
+        /* Ensure UserButton maintains accessibility with focus outline */
+        .cl-userButtonTrigger:focus-visible {
+          outline: 2px solid #10b981 !important;
+          outline-offset: 2px !important;
+          border-radius: 50% !important;
+        }
+
+        /* Remove any default button hover effects from Clerk */
+        .cl-userButtonBox:hover,
+        .cl-userButtonBox:focus,
+        .cl-userButtonBox:active {
+          background-color: transparent !important;
+          background: transparent !important;
+        }
+
+        /* Override any inherited hover styles */
+        [data-clerk-element="userButton"]:hover,
+        [data-clerk-element="userButton"]:focus,
+        [data-clerk-element="userButton"]:active {
+          background-color: transparent !important;
+          background: transparent !important;
+        }
+
       `}</style>
     </header>
   );
