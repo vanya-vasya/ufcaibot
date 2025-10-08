@@ -244,7 +244,7 @@ export const ProModal = () => {
                 placeholder="0"
                 {...register("tokens", { valueAsNumber: true })}
                 min={0}
-                step={0.2}
+                step={1}
                 className="w-full px-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white focus:outline-none focus:ring-2"
                 style={{
                   fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
