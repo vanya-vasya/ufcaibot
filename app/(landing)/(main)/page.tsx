@@ -1,7 +1,6 @@
 import Hero from "@/components/landing/hero";
 import Products from "@/components/landing/products";
 import Pricing from "@/components/landing/pricing";
-import Logo from "@/components/landing/logo";
 
 const LandingPage = () => {
   return (
@@ -9,7 +8,6 @@ const LandingPage = () => {
       <Hero />
       <Products />
       <Pricing />
-      <Logo />
     </div>
   );
 };
