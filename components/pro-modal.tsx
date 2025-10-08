@@ -244,6 +244,7 @@ export const ProModal = () => {
                 placeholder="0"
                 {...register("tokens", { valueAsNumber: true })}
                 min={0}
+                step={0.2}
                 className="w-full px-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white focus:outline-none focus:ring-2"
                 style={{
                   fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -302,7 +303,8 @@ export const ProModal = () => {
                 </svg>
               </Checkbox>
               <Label
-                className={"text-sm leading-loose tracking-tight text-gray-700"}
+                className="text-black mb-2 block"
+                style={{fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'}}
               >
                 I agree to the{" "}
                 <a
@@ -354,7 +356,7 @@ export const ProModal = () => {
               width={2537}
               height={394}
             />
-            <Label className="text-center font-normal text-xs text-black">
+            <Label className="text-center text-black mb-2 block" style={{fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'}}>
             QUICK FIT LTD - DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA
             </Label>
           </>
