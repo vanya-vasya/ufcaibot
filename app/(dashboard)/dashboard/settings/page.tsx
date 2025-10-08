@@ -19,7 +19,7 @@ const SettingsPage = async () => {
       />
       <div className="px-4 lg:px-8 space-y-4">
         <div className="text-muted-foreground text-sm">
-          You have {apiAvailableGenerations-apiUsedGenerations} available generations.
+          You have {apiAvailableGenerations-apiUsedGenerations} available tokens.
         </div>
         <BuyGenerationsButton/>
       </div>

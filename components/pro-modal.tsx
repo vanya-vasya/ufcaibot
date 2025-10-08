@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { Zap } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { motion } from "framer-motion";
-import classNames from "classnames";  
+import { motion } from "framer-motion";  
 import {
   Dialog,
   DialogContent,
@@ -23,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { currencies, currenciesRate, Currency } from "@/constants/index";
 import Image from "next/image";
-import CardLogo from "@/public/card-logo.png";
+import CardLogo from "@/public/payment-cards-logo.png";
 import { z } from "zod";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
@@ -39,10 +38,10 @@ import {
 } from "@headlessui/react";
 
 const formSchema = z.object({
-  generations: z
+  tokens: z
     .number()
-    .positive({ message: "Generations count must be positive" })
-    .min(1, { message: "At least one generation is required" }),
+    .positive({ message: "Token count must be positive" })
+    .min(1, { message: "At least one token is required" }),
   currency: z.enum(currencies),
   policies: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
@@ -55,17 +54,8 @@ export const ProModal = () => {
   const { user } = useUser();
   const proModal = useProModal();
   const [loading, setLoading] = useState(false);
-  const [generationPrice, setGenerationPrice] = useState(GENERATIONS_PRICE);
-  const [generationsCount, setGenerationsCount] = useState(100);
-  const [activeButton, setActiveButton] = useState(100);
+  const [tokenPrice, setTokenPrice] = useState(GENERATIONS_PRICE);
   const [showPaymentWidget, setShowPaymentWidget] = useState(false);
-
-  // Bundle pricing with discounts
-  const bundlePrices: Record<number, number> = {
-    100: 20.00,
-    220: 40.00,
-    360: 60.00,
-  };
 
   const {
     register,
@@ -76,7 +66,7 @@ export const ProModal = () => {
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      generations: 100,
+      tokens: 100,
       currency: "GBP",
       policies: false,
     },
@@ -96,46 +86,18 @@ export const ProModal = () => {
 
   const handleCurrencyChange = (currency: Currency) => {
     setValue("currency", currency);
-    setGenerationPrice(GENERATIONS_PRICE * currenciesRate[currency]);
-  };
-
-  const handleButtonClick = (value: number) => {
-    setActiveButton(value);
-    setValue("generations", value); // Обновляем значение в форме
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(e.target.value);
-    if (!isNaN(value) && value > 0) {
-      setValue("generations", value); // Обновляем значение в форме
-    } else {
-      setValue("generations", 1); // Установите значение по умолчанию, если значение некорректно
-    }
-  };
-
-  const handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
-    setActiveButton(999);
-    if ((e.target as HTMLInputElement).value) {
-      const value = Number((e.target as HTMLInputElement).value);
-      if (!isNaN(value)) {
-        setValue("generations", value); // Обновляем значение в форме
-      }
-    }
+    setTokenPrice(GENERATIONS_PRICE * currenciesRate[currency]);
   };
 
   const handleCheckboxChange = (checked: boolean) => {
-    setValue("policies", checked); // Обновляем значение в форме
+    setValue("policies", checked);
   };
 
-  // Calculate total price based on bundle pricing or per-token pricing
-  const calculatePrice = (generations: number): number => {
+  // Calculate total price based on token count
+  const calculatePrice = (tokens: number): number => {
     const currentCurrency = watch("currency");
     const currencyMultiplier = currenciesRate[currentCurrency] / currenciesRate["GBP"];
-    
-    if (bundlePrices[generations]) {
-      return bundlePrices[generations] * currencyMultiplier;
-    }
-    return generations * generationPrice;
+    return tokens * tokenPrice * currencyMultiplier / currenciesRate["GBP"];
   };
 
   // Обработчики для платежного виджета
@@ -144,7 +106,7 @@ export const ProModal = () => {
     proModal.onClose();
     setShowPaymentWidget(false);
     router.refresh();
-    toast.success("Generations added successfully!");
+    toast.success("Tokens added successfully!");
   };
 
   const handlePaymentError = (error: any) => {
@@ -191,19 +153,19 @@ export const ProModal = () => {
                 ← Back to Selection
               </Button>
               <div className="text-black text-sm">
-                {watch("generations")} Generations - {(() => {
+                {watch("tokens")} Tokens - {(() => {
                   const curr = watch("currency");
                   const symbol = curr === "GBP" ? "£" : curr === "EUR" ? "€" : curr === "USD" ? "$" : "";
-                  return `${symbol}${calculatePrice(watch("generations")).toFixed(2)}`;
+                  return `${symbol}${calculatePrice(watch("tokens")).toFixed(2)}`;
                 })()}
               </div>
             </div>
             
             <NetworkPaymentWidget
-              amount={calculatePrice(watch("generations"))}
+              amount={calculatePrice(watch("tokens"))}
               currency={watch("currency")}
               orderId={`gen_${userId}_${Date.now()}`}
-              description={`Yum-mi Generations Purchase (${watch("generations")} Tokens)`}
+              description={`Yum-mi Tokens Purchase (${watch("tokens")} Tokens)`}
               customerEmail={user?.emailAddresses[0].emailAddress || ""}
               onSuccess={handlePaymentSuccess}
               onError={handlePaymentError}
@@ -217,7 +179,7 @@ export const ProModal = () => {
               <p className="text-sm font-medium leading-sm text-black">Price</p>
               <div className="flex gap-2 justify-end">
                 <p className="text-sm font-medium leading-sm text-end text-black">
-                  {calculatePrice(watch("generations")).toFixed(2)}
+                  {calculatePrice(watch("tokens")).toFixed(2)}
                 </p>
                 <Listbox
                   {...register("currency")}
@@ -266,63 +228,28 @@ export const ProModal = () => {
               </div>
             </div>
             <div className="grid grid-cols-2 pb-2 text-black">
-              <p className="text-sm font-medium leading-sm">Generations</p>
+              <p className="text-sm font-medium leading-sm">Tokens</p>
               <p className="text-sm font-medium leading-sm text-end">
-                {watch("generations")} Generations
+                {watch("tokens")} Tokens
               </p>
             </div>
-            <Label htmlFor="generations" className="text-black">
-              Choose generations option
+            <Label htmlFor="tokens" className="text-black">
+              Enter token amount
             </Label>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full pt-2">
-              {[100, 220, 360].map((value) => (
-                <Button
-                  key={value}
-                  type="button"
-                  disabled={loading}
-                  onClick={() => handleButtonClick(value)}
-                  variant="ghost"
-                  className={classNames(
-                    "!bg-white !text-gray-700 !border !border-gray-300",
-                    "!hover:bg-gray-50 !hover:text-gray-900 !hover:border-gray-400",
-                    "!focus:bg-gray-50 !focus:text-gray-900 !focus:border-gray-400",
-                    "!active:bg-gray-50 !active:text-gray-900 !active:border-gray-400",
-                    "focus:outline-none ring-0 focus:ring-0 active:ring-0 transition-all duration-300 shadow-sm",
-                    {
-                      "!bg-gradient-to-r !from-green-400 !via-green-500 !to-green-600 !text-white !border-transparent !shadow-lg":
-                        activeButton === value,
-                    }
-                  )}
-                >
-                  {value}
-                </Button>
-              ))}
+            <div className="w-full pt-2">
               <Input
                 disabled={loading}
                 type="number"
-                id="generations"
-                placeholder="Other"
-                {...register("generations", { valueAsNumber: true })}
-                onClick={handleInputClick}
-                onChange={handleInputChange}
+                id="tokens"
+                placeholder="Enter number of tokens"
+                {...register("tokens", { valueAsNumber: true })}
                 min={1}
-                className={classNames(
-                  "text-center pl-6 py-2 text-sm font-medium",
-                  "!bg-white !text-gray-700 !border !border-gray-300",
-                  "!hover:bg-gray-50 !hover:text-gray-900 !hover:border-gray-400",
-                  "!focus:bg-gray-50 !focus:text-gray-900 !focus:border-gray-400",
-                  "!active:bg-gray-50 !active:text-gray-900 !active:border-gray-400",
-                  "focus:outline-none ring-0 focus:ring-0 active:ring-0 transition-all duration-300 shadow-sm",
-                  {
-                    "!bg-gradient-to-r !from-green-400 !via-green-500 !to-green-600 !text-white !border-transparent !shadow-lg":
-                      activeButton === 999,
-                  }
-                )}
+                className="text-center py-2 text-sm font-medium bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:text-gray-900 hover:border-gray-400 focus:bg-gray-50 focus:text-gray-900 focus:border-gray-400 focus:outline-none ring-0 focus:ring-0 active:ring-0 transition-all duration-300 shadow-sm"
               />
             </div>
-            {errors.generations && (
+            {errors.tokens && (
               <p className="text-red-600 text-sm pt-1">
-                {errors.generations.message}
+                {errors.tokens.message}
               </p>
             )}
           </div>
@@ -383,7 +310,7 @@ export const ProModal = () => {
                 type="submit"
                 className="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:via-green-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
-                Buy Generations
+                Buy Tokens
                 <Zap className="w-4 h-4 ml-2 fill-white" />
               </Button>
             </motion.div>

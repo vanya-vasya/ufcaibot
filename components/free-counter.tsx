@@ -31,7 +31,7 @@ export const FreeCounter = ({
           <div className="text-center text-sm text-white mb-4 space-y-2">
             <p>
               {apiUsedGenerations} / {apiAvailableGenerations} Available
-              Generations
+              Tokens
             </p>
             <Progress
               className="h-3"
