@@ -40,8 +40,7 @@ import {
 const formSchema = z.object({
   tokens: z
     .number()
-    .positive({ message: "Token count must be positive" })
-    .min(1, { message: "At least one token is required" }),
+    .min(0, { message: "Token count must be zero or greater" }),
   currency: z.enum(currencies),
   policies: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
@@ -66,7 +65,7 @@ export const ProModal = () => {
   } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tokens: 100,
+      tokens: 0,
       currency: "GBP",
       policies: false,
     },
@@ -176,19 +175,54 @@ export const ProModal = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full items-center gap-1.5">
             {/* Price Display Section */}
-            <div className="text-center space-y-4 mb-6">
-              <div className="relative">
-                <span 
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-4xl font-bold pointer-events-none" 
-                  style={{ 
-                    color: '#000',
-                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                  }}
+            <div className="mb-6">
+              <div className="flex items-center justify-center gap-3">
+                {/* Currency Selector on the Left */}
+                <Listbox
+                  {...register("currency")}
+                  value={watch("currency")}
+                  onChange={handleCurrencyChange}
+                  disabled={loading}
                 >
-                  {watch("currency") === "GBP" ? "£" : watch("currency") === "EUR" ? "€" : watch("currency") === "USD" ? "$" : ""}
-                </span>
+                  <div className="relative">
+                    <ListboxButton
+                      className="w-[80px] h-[52px] text-center rounded-lg border-2 text-sm font-medium flex items-center justify-center bg-white transition-all duration-200 appearance-none shadow-sm hover:border-gray-400 focus:outline-none focus:ring-2"
+                      style={{
+                        borderColor: '#000',
+                        color: '#000',
+                        fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                      }}
+                    >
+                      {watch("currency")}
+                    </ListboxButton>
+                    <ListboxOptions className="absolute top-full left-0 z-10 mt-1 grid w-[80px] origin-top gap-0.5 rounded-lg border border-gray-300 bg-white p-1 shadow-lg outline-none">
+                      {currencies.map((currency, idx) => (
+                        <ListboxOption
+                          key={idx}
+                          className={({ active }) =>
+                            `flex cursor-pointer items-center justify-center rounded-md text-sm transition py-1
+                            bg-white text-black
+                            ${
+                              active
+                                ? "bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-medium"
+                                : "border border-transparent hover:bg-gray-50"
+                            }`
+                          }
+                          value={currency}
+                          style={{
+                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                          }}
+                        >
+                          {currency}
+                        </ListboxOption>
+                      ))}
+                    </ListboxOptions>
+                  </div>
+                </Listbox>
+
+                {/* Price Display on the Right */}
                 <div 
-                  className="text-4xl font-bold text-center py-2"
+                  className="text-4xl font-bold py-2"
                   style={{
                     color: '#000',
                     fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
@@ -197,48 +231,6 @@ export const ProModal = () => {
                   {calculatePrice(watch("tokens")).toFixed(2)}
                 </div>
               </div>
-              
-              <Listbox
-                {...register("currency")}
-                value={watch("currency")}
-                onChange={handleCurrencyChange}
-                disabled={loading}
-              >
-                <div className="relative flex justify-center">
-                  <ListboxButton
-                    className="w-[80px] h-[32px] text-center rounded-lg border-2 text-sm font-medium flex items-center justify-center bg-white transition-all duration-200 appearance-none shadow-sm hover:border-gray-400 focus:outline-none focus:ring-2"
-                    style={{
-                      borderColor: '#000',
-                      color: '#000',
-                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                    }}
-                  >
-                    {watch("currency")}
-                  </ListboxButton>
-                  <ListboxOptions className="absolute top-full left-1/2 transform -translate-x-1/2 z-10 mt-1 grid w-[80px] origin-top gap-0.5 rounded-lg border border-gray-300 bg-white p-1 shadow-lg outline-none">
-                    {currencies.map((currency, idx) => (
-                      <ListboxOption
-                        key={idx}
-                        className={({ active }) =>
-                          `flex cursor-pointer items-center justify-center rounded-md text-sm transition py-1
-                          bg-white text-black
-                          ${
-                            active
-                              ? "bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-medium"
-                              : "border border-transparent hover:bg-gray-50"
-                          }`
-                        }
-                        value={currency}
-                        style={{
-                          fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                        }}
-                      >
-                        {currency}
-                      </ListboxOption>
-                    ))}
-                  </ListboxOptions>
-                </div>
-              </Listbox>
             </div>
 
             {/* Token Amount Input */}
@@ -250,9 +242,9 @@ export const ProModal = () => {
                 disabled={loading}
                 type="number"
                 id="tokens"
-                placeholder="100"
+                placeholder="0"
                 {...register("tokens", { valueAsNumber: true })}
-                min={1}
+                min={0}
                 className="w-full px-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white focus:outline-none focus:ring-2"
                 style={{
                   fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
