@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
     // Networx Pay API credentials and configuration
     const shopId = process.env.NETWORX_SHOP_ID || '29959';
     const secretKey = process.env.NETWORX_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
-    // Use gateway.networxpay.com as per Networx documentation
-    const apiUrl = process.env.NETWORX_API_URL || 'https://gateway.networxpay.com';
+    // Use checkout.networxpay.com - verified working endpoint
+    const apiUrl = process.env.NETWORX_API_URL || 'https://checkout.networxpay.com';
     const returnUrl = process.env.NETWORX_RETURN_URL || 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/success';
     const notificationUrl = process.env.NETWORX_WEBHOOK_URL || 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/api/webhooks/networx';
     const testMode = process.env.NETWORX_TEST_MODE === 'true'; // Use test mode based on env variable
@@ -190,7 +190,7 @@ export async function GET(request: NextRequest) {
 
     const shopId = process.env.NETWORX_SHOP_ID || '29959';
     const secretKey = process.env.NETWORX_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
-    const apiUrl = process.env.NETWORX_API_URL || 'https://gateway.networxpay.com'; // API URL
+    const apiUrl = process.env.NETWORX_API_URL || 'https://checkout.networxpay.com'; // API URL
 
     // Send request to Networx HPP API for status check
     const networxResponse = await fetch(`${apiUrl}/ctp/api/checkouts/${token}`, {

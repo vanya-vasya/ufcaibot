@@ -23,8 +23,9 @@ Files Changed: 3 files, 181 insertions(+), 10 deletions(-)
 ## 🔧 What Was Fixed
 
 ### 1. API Endpoint
-**Before:** `https://checkout.networxpay.com`  
-**After:** `https://gateway.networxpay.com` ✅
+**Initial:** `https://checkout.networxpay.com`  
+**Tried:** `https://gateway.networxpay.com` (route doesn't exist)  
+**Final:** `https://checkout.networxpay.com` ✅ (verified working)
 
 ### 2. Test Mode Consistency
 **Before:** `testMode = false` but sent `test: true` in request ❌  
@@ -57,7 +58,7 @@ Add/Update these variables:
 ```bash
 NETWORX_SHOP_ID=29959
 NETWORX_SECRET_KEY=dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950
-NETWORX_API_URL=https://gateway.networxpay.com
+NETWORX_API_URL=https://checkout.networxpay.com
 NETWORX_TEST_MODE=false
 NETWORX_RETURN_URL=https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/success
 NETWORX_CANCEL_URL=https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/cancel
@@ -149,7 +150,7 @@ Check `NETWORX_ACCESS_DENIED_FIX.md` for detailed troubleshooting steps.
 
 ## 🎉 Summary
 
-✅ Fixed API endpoint (gateway.networxpay.com)  
+✅ Fixed API endpoint (checkout.networxpay.com - verified working)  
 ✅ Fixed test mode consistency  
 ✅ Updated all URLs to Vercel deployment  
 ✅ Added public key for client integration  

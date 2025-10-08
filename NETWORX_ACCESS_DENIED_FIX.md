@@ -56,7 +56,7 @@ Now all settings respect environment variables:
 All Networx credentials and URLs have been updated:
 
 **API Endpoint:**
-- ✅ Using: `https://gateway.networxpay.com`
+- ✅ Using: `https://checkout.networxpay.com` (verified working)
 
 **Credentials Verified:**
 - Shop ID: `29959`

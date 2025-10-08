@@ -10,7 +10,7 @@ For production deployment on Vercel, add these environment variables to your Ver
 ```
 NETWORX_SHOP_ID=29959
 NETWORX_SECRET_KEY=dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950
-NETWORX_API_URL=https://gateway.networxpay.com
+NETWORX_API_URL=https://checkout.networxpay.com
 NETWORX_TEST_MODE=false
 NETWORX_RETURN_URL=https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/success
 NETWORX_CANCEL_URL=https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/cancel
