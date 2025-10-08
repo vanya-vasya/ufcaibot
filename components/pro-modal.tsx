@@ -351,8 +351,8 @@ export const ProModal = () => {
               alt="Visa, Visa Secure, Mastercard, ID Check, 3D Secure payment logos"
               className="w-full max-w-md m-auto mt-1"
               src="/cards_new.svg"
-              width={1554}
-              height={191}
+              width={2537}
+              height={394}
             />
             <Label className="text-center font-normal text-xs text-black">
             QUICK FIT LTD - DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA
