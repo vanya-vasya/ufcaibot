@@ -43,11 +43,11 @@ export async function POST(request: NextRequest) {
     // Networx Pay API credentials and configuration
     const shopId = process.env.NETWORX_SHOP_ID || '29959';
     const secretKey = process.env.NETWORX_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
-    // Force correct API URL for hosted payment page - override any incorrect environment variable
-    const apiUrl = 'https://checkout.networxpay.com';  // Correct API URL for hosted payment page
-    const returnUrl = process.env.NETWORX_RETURN_URL || 'https://yum-mi.com/payment/success';
-    const notificationUrl = process.env.NETWORX_WEBHOOK_URL || 'https://yum-mi.com/api/webhooks/networx';
-    const testMode = false; // Use real NetworkX Pay API
+    // Use gateway.networxpay.com as per Networx documentation
+    const apiUrl = process.env.NETWORX_API_URL || 'https://gateway.networxpay.com';
+    const returnUrl = process.env.NETWORX_RETURN_URL || 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/payment/success';
+    const notificationUrl = process.env.NETWORX_WEBHOOK_URL || 'https://website-3-gesry583g-vladis-projects-8c520e18.vercel.app/api/webhooks/networx';
+    const testMode = process.env.NETWORX_TEST_MODE === 'true'; // Use test mode based on env variable
     
     console.log('Environment variables:', {
       shopId: shopId ? 'SET' : 'MISSING',
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     // Request structure for hosted payment page according to working NetworkX Pay example
     const requestData = {
       checkout: {
-        test: true, // Always use NetworkX Pay test mode for development
+        test: testMode, // Use test mode from environment variable
         transaction_type: "payment",
         order: {
           amount: amount * 100, // Amount in cents (EUR 2.50 = 250)
@@ -190,7 +190,7 @@ export async function GET(request: NextRequest) {
 
     const shopId = process.env.NETWORX_SHOP_ID || '29959';
     const secretKey = process.env.NETWORX_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
-    const apiUrl = 'https://checkout.networxpay.com'; // HPP API URL
+    const apiUrl = process.env.NETWORX_API_URL || 'https://gateway.networxpay.com'; // API URL
 
     // Send request to Networx HPP API for status check
     const networxResponse = await fetch(`${apiUrl}/ctp/api/checkouts/${token}`, {
