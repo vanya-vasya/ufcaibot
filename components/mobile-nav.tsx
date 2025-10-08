@@ -97,6 +97,37 @@ export function MobileNav({
 
   const pathname = usePathname();
 
+  // Auto-close menu when route changes (client-side navigation)
+  React.useEffect(() => {
+    setIsOpen(false);
+    setProductsOpen(false);
+  }, [pathname]);
+
+  // Prevent background scroll when menu is open
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      // Store original padding to prevent layout shift
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+  }, [isOpen]);
+
+  // Handle menu item click
+  const handleLinkClick = () => {
+    setIsOpen(false);
+    setProductsOpen(false);
+  };
+
 
 
   return (
@@ -114,6 +145,8 @@ export function MobileNav({
             style={{
               fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
             <Menu className="h-5 w-5 text-green-600" />
             <span className="sr-only">Toggle Menu</span>
@@ -125,6 +158,7 @@ export function MobileNav({
           style={{
             fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
           }}
+          aria-label="Mobile navigation menu"
         >
           <SheetHeader className="p-5 border-b border-gray-200">
             <div className="flex justify-between items-center">
@@ -159,6 +193,7 @@ export function MobileNav({
                 style={{
                   fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
                 }}
+                aria-expanded={productsOpen}
               >
                 <div className="flex items-center gap-2">
                   <CreditCard className="h-4 w-4 text-green-600" />
@@ -176,7 +211,7 @@ export function MobileNav({
                   <Link
                     key={item.name}
                     href={item.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={handleLinkClick}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-gray-100 transition-colors",
                       pathname === item.href
@@ -186,6 +221,7 @@ export function MobileNav({
                     style={{
                       fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
                     }}
+                    tabIndex={0}
                   >
                     <div className="h-7 w-7 rounded-md bg-green-100 flex items-center justify-center">
                       <item.icon className="h-4 w-4 text-green-600" />
@@ -203,7 +239,7 @@ export function MobileNav({
               <Link
                 key={route.name}
                 href={route.href}
-                onClick={() => setIsOpen(false)}
+                onClick={handleLinkClick}
                 className={cn(
                   "flex w-full items-center p-4 font-medium text-black hover:bg-gray-50 transition-colors border-b border-gray-200",
                   pathname === route.href
@@ -213,6 +249,7 @@ export function MobileNav({
                 style={{
                   fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
                 }}
+                tabIndex={0}
               >
                 <div className="h-7 w-7 rounded-md flex items-center mr-3">
                   <route.icon className="h-4 w-4 text-green-600" />
@@ -224,7 +261,7 @@ export function MobileNav({
 
             <Link
               href="/dashboard/billing/payment-history"
-              onClick={() => setIsOpen(false)}
+              onClick={handleLinkClick}
               className={cn(
                 "flex w-full items-center p-4 font-medium text-black hover:bg-gray-50 transition-colors",
                 pathname === "/dashboard/billing/payment-history"
@@ -234,6 +271,7 @@ export function MobileNav({
               style={{
                 fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
               }}
+              tabIndex={0}
             >
               <div className="h-7 w-7 rounded-md flex items-center mr-3">
                 <Banknote className="h-4 w-4 text-green-600" />
