@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("./ufc-fonts.css");
 
 @tailwind base;
 @tailwind components;
@@ -93,9 +94,14 @@ body,
 
 @layer base {
   :root {
+    /* Default font stack (fallback) */
     --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-heading: "Space Grotesk", var(--font-sans);
     --font-mono: "JetBrains Mono", monospace;
+    
+    /* UFC font stack - activated via feature flag */
+    --font-ufc-sans: "UFC Sans", Arial, sans-serif;
+    --font-ufc-heading: "UFC Sans Condensed", "Arial Narrow", Arial, sans-serif;
 
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -145,6 +151,12 @@ body,
     font-family: var(--font-sans);
     background-color: #ffffff !important;
   }
+  
+  /* UFC Font Stack - Applied when feature flag is enabled */
+  body[data-ufc-font="true"] {
+    font-family: var(--font-ufc-sans);
+  }
+  
   h1,
   h2,
   h3,
@@ -153,6 +165,18 @@ body,
   h6 {
     font-family: var(--font-heading);
   }
+  
+  body[data-ufc-font="true"] h1,
+  body[data-ufc-font="true"] h2,
+  body[data-ufc-font="true"] h3,
+  body[data-ufc-font="true"] h4,
+  body[data-ufc-font="true"] h5,
+  body[data-ufc-font="true"] h6 {
+    font-family: var(--font-ufc-heading);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  
   code,
   pre {
     font-family: var(--font-mono);

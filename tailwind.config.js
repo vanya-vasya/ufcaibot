@@ -91,6 +91,8 @@ module.exports = {
         sans: ['var(--font-sans)', 'Inter', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
         heading: ['var(--font-heading)', 'Space Grotesk', 'Inter', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
+        'ufc-sans': ['var(--font-ufc-sans)', 'UFC Sans', 'Arial', 'sans-serif'],
+        'ufc-heading': ['var(--font-ufc-heading)', 'UFC Sans Condensed', '"Arial Narrow"', 'Arial', 'sans-serif'],
       },
       transitionDuration: {
         '2000': '2000ms',

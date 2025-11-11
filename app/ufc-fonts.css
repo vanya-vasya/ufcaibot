@@ -1,0 +1,70 @@
+/* UFC Sans Font Family - Self-hosted */
+
+/* UFC Sans Regular */
+@font-face {
+  font-family: 'UFC Sans';
+  src: url('/fonts/ufc/UFCSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UFC Sans';
+  src: url('/fonts/ufc/UFCSans-RegularOblique.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* UFC Sans Bold */
+@font-face {
+  font-family: 'UFC Sans';
+  src: url('/fonts/ufc/UFCSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UFC Sans';
+  src: url('/fonts/ufc/UFCSans-BoldOblique.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* UFC Sans Condensed Medium */
+@font-face {
+  font-family: 'UFC Sans Condensed';
+  src: url('/fonts/ufc/UFCSans-CondensedMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UFC Sans Condensed';
+  src: url('/fonts/ufc/UFCSans-CondensedMediumOblique.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* UFC Sans Condensed Bold */
+@font-face {
+  font-family: 'UFC Sans Condensed';
+  src: url('/fonts/ufc/UFCSans-CondensedBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UFC Sans Condensed';
+  src: url('/fonts/ufc/UFCSans-CondensedBoldOblique.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+

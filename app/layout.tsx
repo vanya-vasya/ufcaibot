@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { getFeatureFlags } from "@/lib/feature-flags";
 
 import { ModalProvider } from "@/components/modal-provider";
 import { ToasterProvider } from "@/components/toaster-provider";
@@ -32,6 +33,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const featureFlags = getFeatureFlags();
+  const ufcFontEnabled = featureFlags.typography.ufcFont;
+
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
@@ -41,6 +45,7 @@ export default function RootLayout({
             inter.variable,
             spaceGrotesk.variable
           )}
+          data-ufc-font={ufcFontEnabled ? "true" : "false"}
         >
           <GoogleAnalytics gaId="G-DYY23NK5V1" />
           <ModalProvider />
