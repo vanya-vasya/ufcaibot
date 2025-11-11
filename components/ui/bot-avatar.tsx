@@ -3,7 +3,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 export const BotAvatar = () => {
   return (
     <Avatar className="h-8 w-8">
-      <AvatarImage className="p-1" src="/logos/yum-mi-onigiri-logo.png" />
+      <AvatarImage className="p-1" src="/logos/ufc-fighter-logo.png" />
     </Avatar>
   );
 };

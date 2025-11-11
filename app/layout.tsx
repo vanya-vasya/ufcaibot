@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   title: "Yum-mi",
   description: "AI-powered creative tools for everyone",
   icons: {
-    icon: "/logos/yum-mi-onigiri-logo.png",
-    shortcut: "/logos/yum-mi-onigiri-logo.png",
-    apple: "/logos/yum-mi-onigiri-logo.png",
+    icon: "/logos/favicon-32.png",
+    shortcut: "/logos/favicon-32.png",
+    apple: "/logos/app-icon-512.png",
   },
 };
 

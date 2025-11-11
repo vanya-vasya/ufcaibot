@@ -17,7 +17,7 @@ export const LandingNavbar = () => {
     <nav className="p-4 bg-transparent flex items-center justify-between">
       <Link href="/" className="flex items-center">
         <div className="relative h-8 w-8 mr-4">
-          <Image fill alt="Yum-mi Logo" src="/logos/yum-mi-onigiri-logo.png" />
+          <Image fill alt="UFC Fighter Logo" src="/logos/ufc-fighter-logo.png" />
         </div>
         <h1 className={cn("text-2xl font-bold text-white", font.className)}>
           Genius

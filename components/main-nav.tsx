@@ -64,7 +64,7 @@ export function MainNav({
           href="/dashboard"
           className="hidden items-center space-x-2 md:flex"
         >
-          <Image src="/logos/yum-mi-onigiri-logo.png" alt="Yum-mi Logo" width={98} height={39} />
+          <Image src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo" width={98} height={39} />
         </Link>
 
         <NavigationMenu>

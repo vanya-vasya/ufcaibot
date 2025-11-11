@@ -79,7 +79,7 @@ const Footer = () => {
             <div className="pr-4 pl-4">
               <div className="footer-widget__column footer-widget__about">
                 <div className="footer-widget__logo">
-                  <Image width={"98"} height={"39"} src="/logos/yum-mi-onigiri-logo.png" alt="Yum-mi Logo" />
+                  <Image width={"98"} height={"39"} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo" />
                 </div>
                 <p 
                   className="footer-widget__about-text"

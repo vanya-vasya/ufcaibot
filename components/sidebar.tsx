@@ -32,8 +32,8 @@ export const Sidebar = ({
             width={"150"}
             height={"60"}
             className="mr-4"
-            alt="Logo"
-            src="/logos/yum-mi-onigiri-logo.png"
+            alt="UFC Fighter Logo"
+            src="/logos/ufc-fighter-logo.png"
           />
         </Link>
         <div className="space-y-1">

@@ -163,8 +163,8 @@ export function MobileNav({
           <SheetHeader className="p-5 border-b border-gray-200">
             <div className="flex justify-between items-center">
               <Image
-                src="/logos/yum-mi-onigiri-logo.png"
-                alt="Yum-mi Logo"
+                src="/logos/ufc-fighter-logo.png"
+                alt="UFC Fighter Logo"
                 width={98}
                 height={39}
               />

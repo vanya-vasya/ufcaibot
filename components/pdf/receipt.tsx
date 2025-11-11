@@ -140,7 +140,7 @@ const company = {
   address: "DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA",
   website: "yum-mi.com",
   email: "support@yum-mi.com",
-  logo: "./public/logos/yum-mi-onigiri-logo.png", // Official company logo
+  logo: "./public/logos/ufc-fighter-logo.png", // Official company logo
   companyNumber: "15995367",
 };
 

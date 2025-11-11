@@ -44,7 +44,7 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-6 gap-1">
         <div className="flex">
           <Link href="/dashboard" className="-m-1.5 p-1.5">
-            <Image width={98} height={39} src="/logos/yum-mi-onigiri-logo.png" alt="Yum-mi Logo"/>
+            <Image width={98} height={39} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
           </Link>
         </div>
         <div className="flex gap-x-12 ml-12">
