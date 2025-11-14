@@ -12,8 +12,53 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PRODUCT_ITEMS } from "@/constants/product-navigation";
-import { ProductIcon } from "@/components/shared/ProductIcon";
+import { ImageIcon, Wand2, Eraser, Palette, Layers, Image as ImageRestore } from "lucide-react";
+
+// Product navigation items
+const PRODUCT_ITEMS = [
+  {
+    label: "Image Generation",
+    href: "/dashboard/image-generation",
+    icon: ImageIcon,
+    iconUrl: null,
+    iconFallback: "IG"
+  },
+  {
+    label: "Image Restore",
+    href: "/dashboard/image-restore",
+    icon: ImageRestore,
+    iconUrl: null,
+    iconFallback: "IR"
+  },
+  {
+    label: "Background Removal",
+    href: "/dashboard/image-background-removal",
+    icon: Layers,
+    iconUrl: null,
+    iconFallback: "BR"
+  },
+  {
+    label: "Object Remove",
+    href: "/dashboard/image-object-remove",
+    icon: Eraser,
+    iconUrl: null,
+    iconFallback: "OR"
+  },
+  {
+    label: "Object Recolor",
+    href: "/dashboard/image-object-recolor",
+    icon: Palette,
+    iconUrl: null,
+    iconFallback: "OC"
+  },
+  {
+    label: "Generative Fill",
+    href: "/dashboard/image-generative-fill",
+    icon: Wand2,
+    iconUrl: null,
+    iconFallback: "GF"
+  },
+];
 
 const routes = [
   {
@@ -61,27 +106,24 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
                 align="start" 
                 className="bg-white border border-green-100 shadow-lg min-w-[240px] p-1"
               >
-                {PRODUCT_ITEMS.map((product) => (
-                  <DropdownMenuItem 
-                    key={product.href} 
-                    asChild
-                    className="focus:bg-transparent focus:text-inherit hover:bg-transparent data-[highlighted]:bg-transparent"
-                  >
-                    <Link 
-                      href={product.href}
-                      className="dropdown-menu-item flex items-center gap-3 w-full"
+                {PRODUCT_ITEMS.map((product) => {
+                  const Icon = product.icon;
+                  return (
+                    <DropdownMenuItem 
+                      key={product.href} 
+                      asChild
+                      className="focus:bg-transparent focus:text-inherit hover:bg-transparent data-[highlighted]:bg-transparent"
                     >
-                      <ProductIcon 
-                        icon={product.icon}
-                        iconUrl={product.iconUrl}
-                        fallback={product.iconFallback}
-                        alt={product.label}
-                        size={20}
-                      />
-                      <span className="flex-1">{product.label}</span>
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
+                      <Link 
+                        href={product.href}
+                        className="dropdown-menu-item flex items-center gap-3 w-full"
+                      >
+                        <Icon className="w-5 h-5" />
+                        <span className="flex-1">{product.label}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
               </DropdownMenuContent>
             </DropdownMenu>
             {routes.map((route) => (
