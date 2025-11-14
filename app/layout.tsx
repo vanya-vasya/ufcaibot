@@ -42,14 +42,7 @@ export default function RootLayout({
   const ufcFontEnabled = featureFlags.typography.ufcFont;
 
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-      signInUrl="/sign-in"
-      signUpUrl="/sign-up"
-      afterSignInUrl="/dashboard"
-      afterSignUpUrl="/dashboard"
-      domain={process.env.NODE_ENV === 'development' ? 'localhost:3000' : undefined}
-    >
+    <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
