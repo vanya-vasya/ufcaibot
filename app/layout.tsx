@@ -19,13 +19,18 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Yum-mi",
+  title: "UFC AI Bot",
   description: "AI-powered creative tools for everyone",
   icons: {
-    icon: "/logos/favicon-32.png",
-    shortcut: "/logos/favicon-32.png",
-    apple: "/logos/app-icon-512.png",
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -37,7 +42,14 @@ export default function RootLayout({
   const ufcFontEnabled = featureFlags.typography.ufcFont;
 
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/dashboard"
+      domain={process.env.NODE_ENV === 'development' ? 'localhost:3000' : undefined}
+    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(

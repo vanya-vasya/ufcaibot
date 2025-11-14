@@ -3,13 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronRight,
-  Crown,
-  Activity,
-  Target,
-  BookOpen,
   Menu,
   Banknote,
   CreditCard,
@@ -19,11 +13,6 @@ import {
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { UsageProgress } from "@/components/usage-progress";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import {
   Sheet,
   SheetContent,
@@ -42,32 +31,8 @@ import Image from "next/image";
 
 
 
-// Product items matching the header
-const productItems = [
-  {
-    name: "Your Own Chef",
-    href: "/dashboard/conversation?toolId=master-chef",
-    icon: Crown,
-  },
-  {
-    name: "Your Own Nutritionist",
-    href: "/dashboard/conversation?toolId=master-nutritionist",
-    icon: Activity,
-  },
-  {
-    name: "Your Own Tracker",
-    href: "/dashboard/conversation?toolId=cal-tracker",
-    icon: Target,
-  },
-];
-
 // Page routes matching the header
 const pageRoutes = [
-  {
-    name: "Our Story",
-    href: "/story",
-    icon: BookOpen,
-  },
   {
     name: "Pricing",
     href: "/#pricing",
@@ -93,14 +58,12 @@ export function MobileNav({
   initialAvailableGenerations: number;
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [productsOpen, setProductsOpen] = React.useState(false);
 
   const pathname = usePathname();
 
   // Auto-close menu when route changes (client-side navigation)
   React.useEffect(() => {
     setIsOpen(false);
-    setProductsOpen(false);
   }, [pathname]);
 
   // Prevent background scroll when menu is open
@@ -125,7 +88,6 @@ export function MobileNav({
   // Handle menu item click
   const handleLinkClick = () => {
     setIsOpen(false);
-    setProductsOpen(false);
   };
 
 
@@ -181,58 +143,6 @@ export function MobileNav({
                 />
               </div>
             </div>
-
-            {/* Products Section - Matching Header */}
-            <Collapsible
-              open={productsOpen}
-              onOpenChange={setProductsOpen}
-              className="border-b border-gray-200"
-            >
-              <CollapsibleTrigger 
-                className="flex w-full items-center justify-between p-4 font-medium text-black hover:bg-gray-50 transition-colors"
-                style={{
-                  fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                }}
-                aria-expanded={productsOpen}
-              >
-                <div className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-green-600" />
-                  Products
-                </div>
-                <ChevronRight
-                  className={cn(
-                    "h-4 w-4 transition-transform duration-200 text-green-600",
-                    productsOpen && "rotate-90"
-                  )}
-                />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="space-y-1 p-2 bg-gray-50">
-                {productItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm hover:bg-gray-100 transition-colors",
-                      pathname === item.href
-                        ? "bg-gray-100 text-black"
-                        : "text-black"
-                    )}
-                    style={{
-                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                    }}
-                    tabIndex={0}
-                  >
-                    <div className="h-7 w-7 rounded-md bg-green-100 flex items-center justify-center">
-                      <item.icon className="h-4 w-4 text-green-600" />
-                    </div>
-                    <div className="flex items-center justify-between flex-1">
-                      <span>{item.name}</span>
-                    </div>
-                  </Link>
-                ))}
-              </CollapsibleContent>
-            </Collapsible>
 
             {/* Page Routes - Matching Header */}
             {pageRoutes.map((route) => (

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soft Edge Gradient Configuration Demo</title>
+  <style>
+    :root {
+      /* CSS Variables for gradient configuration */
+      --gradient-intensity: 0.85;
+      --gradient-bg-color: #0a0a0a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: #1a1a1a;
+      color: white;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+    }
+
+    .controls {
+      background: #2a2a2a;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+
+    .control-group {
+      margin-bottom: 20px;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .control-group input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #444;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .control-group select {
+      width: 100%;
+      padding: 10px;
+      background: #333;
+      color: white;
+      border: 1px solid #555;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .value-display {
+      display: inline-block;
+      margin-left: 10px;
+      color: #4CAF50;
+      font-weight: bold;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .example-card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .example-card h3 {
+      margin-bottom: 15px;
+      color: #4CAF50;
+    }
+
+    .demo-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .demo-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .gradient-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* Direction variants */
+    .gradient-left {
+      background: linear-gradient(
+        to right,
+        var(--gradient-bg-color),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.6)),
+        transparent
+      );
+    }
+
+    .gradient-right {
+      background: linear-gradient(
+        to left,
+        var(--gradient-bg-color),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.6)),
+        transparent
+      );
+    }
+
+    .gradient-top {
+      background: linear-gradient(
+        to bottom,
+        var(--gradient-bg-color),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.6)),
+        transparent
+      );
+    }
+
+    .gradient-bottom {
+      background: linear-gradient(
+        to top,
+        var(--gradient-bg-color),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.6)),
+        transparent
+      );
+    }
+
+    /* Standard (non-soft) gradient */
+    .gradient-standard-left {
+      background: linear-gradient(
+        to right,
+        var(--gradient-bg-color),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.8)),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.6)),
+        transparent
+      );
+    }
+
+    .gradient-standard-right {
+      background: linear-gradient(
+        to left,
+        var(--gradient-bg-color),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.8)),
+        rgba(10, 10, 10, calc(var(--gradient-intensity) * 0.6)),
+        transparent
+      );
+    }
+
+    .text-overlay {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 40px;
+      z-index: 10;
+      max-width: 600px;
+    }
+
+    .text-overlay.left {
+      left: 0;
+    }
+
+    .text-overlay.right {
+      right: 0;
+    }
+
+    .text-overlay.top {
+      top: 0;
+      transform: none;
+    }
+
+    .text-overlay.bottom {
+      top: auto;
+      bottom: 0;
+      transform: none;
+    }
+
+    .text-overlay h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .text-overlay p {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .code-snippet {
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      border: 1px solid #333;
+    }
+
+    .code-snippet code {
+      color: #4CAF50;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .badge.soft {
+      background: #2196F3;
+    }
+
+    .badge.standard {
+      background: #FF9800;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Soft Edge Gradient Configuration</h1>
+    
+    <div class="controls">
+      <h2>Live Configuration</h2>
+      
+      <div class="control-group">
+        <label>
+          Gradient Intensity: 
+          <span class="value-display" id="intensity-value">0.85</span>
+        </label>
+        <input 
+          type="range" 
+          id="intensity-slider" 
+          min="0" 
+          max="1" 
+          step="0.05" 
+          value="0.85"
+        >
+      </div>
+
+      <div class="control-group">
+        <label for="bg-color">Background Color:</label>
+        <select id="bg-color">
+          <option value="#0a0a0a">Dark (#0a0a0a)</option>
+          <option value="#ffffff">Light (#ffffff)</option>
+          <option value="#1a1a1a">Charcoal (#1a1a1a)</option>
+          <option value="#2a2a2a">Slate (#2a2a2a)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="examples-grid">
+      <!-- Direction: LEFT (Soft Edge) -->
+      <div class="example-card">
+        <span class="badge soft">Soft Edge</span>
+        <h3>Direction: LEFT (Image on Right)</h3>
+        <div class="demo-container">
+          <img 
+            src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800" 
+            alt="Demo" 
+            class="demo-image"
+          >
+          <div class="gradient-overlay gradient-left"></div>
+          <div class="text-overlay left">
+            <h2>Global News. Decoded</h2>
+            <p>A multilingual media sweep tracks camp updates and fighter sentiment.</p>
+          </div>
+        </div>
+        <div class="code-snippet">
+          <code>direction: "left"<br>
+intensity: 0.85<br>
+softEdge: true</code>
+        </div>
+      </div>
+
+      <!-- Direction: RIGHT (Soft Edge) -->
+      <div class="example-card">
+        <span class="badge soft">Soft Edge</span>
+        <h3>Direction: RIGHT (Image on Left)</h3>
+        <div class="demo-container">
+          <img 
+            src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800" 
+            alt="Demo" 
+            class="demo-image"
+          >
+          <div class="gradient-overlay gradient-right"></div>
+          <div class="text-overlay right">
+            <h2>Every Round. Every Pattern</h2>
+            <p>Round-by-round performance reveals fighter behavior patterns.</p>
+          </div>
+        </div>
+        <div class="code-snippet">
+          <code>direction: "right"<br>
+intensity: 0.85<br>
+softEdge: true</code>
+        </div>
+      </div>
+
+      <!-- Direction: TOP (Soft Edge) -->
+      <div class="example-card">
+        <span class="badge soft">Soft Edge</span>
+        <h3>Direction: TOP (Image on Bottom)</h3>
+        <div class="demo-container">
+          <img 
+            src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800" 
+            alt="Demo" 
+            class="demo-image"
+          >
+          <div class="gradient-overlay gradient-top"></div>
+          <div class="text-overlay top">
+            <h2>Live Odds. Real Edge</h2>
+            <p>Real-time prices from multiple sportsbooks and markets.</p>
+          </div>
+        </div>
+        <div class="code-snippet">
+          <code>direction: "top"<br>
+intensity: 0.85<br>
+softEdge: true</code>
+        </div>
+      </div>
+
+      <!-- Direction: BOTTOM (Soft Edge) -->
+      <div class="example-card">
+        <span class="badge soft">Soft Edge</span>
+        <h3>Direction: BOTTOM (Image on Top)</h3>
+        <div class="demo-container">
+          <img 
+            src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800" 
+            alt="Demo" 
+            class="demo-image"
+          >
+          <div class="gradient-overlay gradient-bottom"></div>
+          <div class="text-overlay bottom">
+            <h2>Analysis Driven</h2>
+            <p>Data-backed predictions for every matchup and bout.</p>
+          </div>
+        </div>
+        <div class="code-snippet">
+          <code>direction: "bottom"<br>
+intensity: 0.85<br>
+softEdge: true</code>
+        </div>
+      </div>
+
+      <!-- Standard (Non-Soft) - LEFT -->
+      <div class="example-card">
+        <span class="badge standard">Standard</span>
+        <h3>Standard Gradient: LEFT</h3>
+        <div class="demo-container">
+          <img 
+            src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800" 
+            alt="Demo" 
+            class="demo-image"
+          >
+          <div class="gradient-overlay gradient-standard-left"></div>
+          <div class="text-overlay left">
+            <h2>Strong Contrast</h2>
+            <p>Standard gradient provides maximum text readability.</p>
+          </div>
+        </div>
+        <div class="code-snippet">
+          <code>direction: "left"<br>
+intensity: 0.85<br>
+softEdge: false</code>
+        </div>
+      </div>
+
+      <!-- Standard (Non-Soft) - RIGHT -->
+      <div class="example-card">
+        <span class="badge standard">Standard</span>
+        <h3>Standard Gradient: RIGHT</h3>
+        <div class="demo-container">
+          <img 
+            src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800" 
+            alt="Demo" 
+            class="demo-image"
+          >
+          <div class="gradient-overlay gradient-standard-right"></div>
+          <div class="text-overlay right">
+            <h2>Maximum Clarity</h2>
+            <p>Ideal for dense content requiring high contrast.</p>
+          </div>
+        </div>
+        <div class="code-snippet">
+          <code>direction: "right"<br>
+intensity: 0.85<br>
+softEdge: false</code>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 60px; text-align: center; opacity: 0.7;">
+      <p>Interactive demo showing configurable gradient directions and intensities</p>
+      <p style="font-size: 14px; margin-top: 10px;">Adjust the controls above to see real-time changes</p>
+    </div>
+  </div>
+
+  <script>
+    // Live configuration controls
+    const intensitySlider = document.getElementById('intensity-slider');
+    const intensityValue = document.getElementById('intensity-value');
+    const bgColorSelect = document.getElementById('bg-color');
+
+    intensitySlider.addEventListener('input', (e) => {
+      const value = parseFloat(e.target.value);
+      intensityValue.textContent = value.toFixed(2);
+      document.documentElement.style.setProperty('--gradient-intensity', value);
+    });
+
+    bgColorSelect.addEventListener('change', (e) => {
+      const color = e.target.value;
+      document.documentElement.style.setProperty('--gradient-bg-color', color);
+    });
+
+    console.log('🎨 Soft Edge Gradient Demo Loaded');
+    console.log('Current CSS Variables:');
+    console.log('--gradient-intensity:', getComputedStyle(document.documentElement).getPropertyValue('--gradient-intensity'));
+    console.log('--gradient-bg-color:', getComputedStyle(document.documentElement).getPropertyValue('--gradient-bg-color'));
+  </script>
+</body>
+</html>
+

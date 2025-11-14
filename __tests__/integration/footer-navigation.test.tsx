@@ -14,9 +14,6 @@ describe('Footer Navigation Integration Tests', () => {
   describe('Menu Links Presence', () => {
     it('should render all expected menu links', () => {
       const expectedMenuItems = [
-        'Home',
-        'Products', 
-        'Our Story',
         'Pricing',
         'FAQ',
         'Contact'
@@ -47,12 +44,9 @@ describe('Footer Navigation Integration Tests', () => {
       expect(menuSection).toBeInTheDocument();
 
       const menuLinks = menuSection?.querySelectorAll('a');
-      expect(menuLinks).toHaveLength(6);
+      expect(menuLinks).toHaveLength(3);
 
       const expectedOrder = [
-        { text: 'Home', href: '/#home' },
-        { text: 'Products', href: '/#products' },
-        { text: 'Our Story', href: '/story' },
         { text: 'Pricing', href: '/#pricing' },
         { text: 'FAQ', href: '/faq' },
         { text: 'Contact', href: '/contact' }
@@ -64,7 +58,7 @@ describe('Footer Navigation Integration Tests', () => {
       });
     });
 
-    it('should have correct href targets for new navigation links', () => {
+    it('should have correct href targets for navigation links', () => {
       // Test Pricing link
       const pricingLink = screen.getByRole('link', { name: 'Navigate to Pricing page' });
       expect(pricingLink).toHaveAttribute('href', '/#pricing');
@@ -78,25 +72,11 @@ describe('Footer Navigation Integration Tests', () => {
       expect(contactLink).toHaveAttribute('href', '/contact');
     });
 
-    it('should maintain existing link targets', () => {
-      // Test existing links haven't changed
-      const homeLink = screen.getByRole('link', { name: 'Navigate to Home page' });
-      expect(homeLink).toHaveAttribute('href', '/#home');
-
-      const productsLink = screen.getByRole('link', { name: 'Navigate to Products page' });
-      expect(productsLink).toHaveAttribute('href', '/#products');
-
-      const storyLink = screen.getByRole('link', { name: 'Navigate to Our Story page' });
-      expect(storyLink).toHaveAttribute('href', '/story');
-    });
   });
 
   describe('Accessibility Features', () => {
     it('should have proper aria-labels for all menu links', () => {
       const menuLinks = [
-        'Navigate to Home page',
-        'Navigate to Products page', 
-        'Navigate to Our Story page',
         'Navigate to Pricing page',
         'Navigate to FAQ page',
         'Navigate to Contact page'
@@ -142,16 +122,16 @@ describe('Footer Navigation Integration Tests', () => {
       expect(screen.getByText('Company')).toBeInTheDocument();
 
       // Test logo is present
-      expect(screen.getByAltText('Yum-mi Logo')).toBeInTheDocument();
+      expect(screen.getByAltText('UFC Fighter Logo')).toBeInTheDocument();
 
       // Test company details
       expect(screen.getByText(/QUICK FIT LTD/)).toBeInTheDocument();
-      expect(screen.getByText(/support@yum-mi\.com/)).toBeInTheDocument();
+      expect(screen.getByText(/support@ufcaibot\.com/)).toBeInTheDocument();
     });
 
     it('should display copyright information', () => {
       const currentYear = new Date().getFullYear();
-      expect(screen.getByText(`Yum-mi, Copyright © ${currentYear}. All Rights Reserved.`)).toBeInTheDocument();
+      expect(screen.getByText(`ufcaibot, Copyright © ${currentYear}. All Rights Reserved.`)).toBeInTheDocument();
     });
   });
 

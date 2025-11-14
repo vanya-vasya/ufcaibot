@@ -3,7 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import { UsageProgress } from "@/components/usage-progress";
-import { UserButton } from "@clerk/nextjs";
+// DISABLED FOR LOCAL DESIGN WORK - Re-enable for production
+// import { UserButton } from "@clerk/nextjs";
 import { ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
@@ -15,10 +16,6 @@ import { PRODUCT_ITEMS } from "@/constants/product-navigation";
 import { ProductIcon } from "@/components/shared/ProductIcon";
 
 const routes = [
-  {
-    name: "Our Story",
-    href: "/story",
-  },
   {
     name: "Pricing",
     href: "/#pricing",
@@ -44,7 +41,7 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-6 gap-1">
         <div className="flex">
           <Link href="/dashboard" className="-m-1.5 p-1.5">
-            <Image width={98} height={39} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
+            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
           </Link>
         </div>
         <div className="flex gap-x-12 ml-12">
@@ -106,7 +103,11 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
                 initialAvailableGenerations={initialAvailableGenerations}
               />
             </div>
-            <UserButton afterSignOutUrl="/" />
+            {/* DISABLED FOR LOCAL DESIGN WORK - UserButton replaced with placeholder */}
+            {/* <UserButton afterSignOutUrl="/" /> */}
+            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+              <span className="text-xs font-bold text-gray-600">U</span>
+            </div>
           </div>
           <GuestMobileSidebar />
         </div>

@@ -10,6 +10,7 @@
     "postinstall": "prisma generate",
     "db:init": "node scripts/init-db.js",
     "db:push": "prisma db push",
+    "favicon:generate": "node scripts/generate-favicons.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

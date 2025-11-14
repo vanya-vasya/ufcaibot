@@ -18,7 +18,6 @@ import { test, expect, Page } from '@playwright/test';
 // Test pages with hamburger menus
 const PAGES_WITH_MENU = [
   { name: 'Homepage', path: '/', hasAuth: false },
-  { name: 'Our Story', path: '/story', hasAuth: false },
   { name: 'FAQ', path: '/faq', hasAuth: false },
   { name: 'Contact', path: '/contact', hasAuth: false },
 ];
@@ -76,8 +75,8 @@ test.describe('Hamburger Menu Auto-Close - Basic Behavior', () => {
       // Verify menu is open
       expect(await isMenuOpen(page)).toBe(true);
       
-      // Click a navigation link (e.g., "Our Story")
-      const navLink = page.locator('[role="dialog"] a').filter({ hasText: 'Our Story' }).first();
+      // Click a navigation link (e.g., "FAQ")
+      const navLink = page.locator('[role="dialog"] a').filter({ hasText: 'FAQ' }).first();
       await expect(navLink).toBeVisible();
       
       // Click the link
@@ -339,8 +338,8 @@ test.describe('Hamburger Menu - State Management', () => {
     }
     
     // Navigate to another page
-    const storyLink = page.locator('[role="dialog"] a').filter({ hasText: 'Our Story' }).first();
-    await storyLink.click();
+    const faqLink = page.locator('[role="dialog"] a').filter({ hasText: 'FAQ' }).first();
+    await faqLink.click();
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(500);
     
@@ -428,17 +427,17 @@ test.describe('Hamburger Menu - Manual Example Test', () => {
     expect(await isScrollPrevented(page)).toBe(true);
     console.log('✓ Background scroll is prevented');
     
-    // 4. User clicks on "Our Story" link
-    const storyLink = page.locator('[role="dialog"] a').filter({ 
-      hasText: 'Our Story' 
+    // 4. User clicks on "FAQ" link
+    const faqLink = page.locator('[role="dialog"] a').filter({ 
+      hasText: 'FAQ' 
     }).first();
-    await storyLink.click();
-    console.log('✓ User clicks "Our Story" link');
+    await faqLink.click();
+    console.log('✓ User clicks "FAQ" link');
     
-    // 5. Page navigates to /story
+    // 5. Page navigates to /faq
     await page.waitForLoadState('networkidle');
-    expect(page.url()).toContain('/story');
-    console.log('✓ Page navigates to /story');
+    expect(page.url()).toContain('/faq');
+    console.log('✓ Page navigates to /faq');
     
     // 6. Menu automatically closes
     await page.waitForTimeout(500);

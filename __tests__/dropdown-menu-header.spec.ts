@@ -2,7 +2,7 @@
  * E2E Tests for Header Dropdown Menu
  * 
  * Tests the "Products" dropdown menu behavior across all landing pages
- * (Home, Our Story, FAQ, Contact) to ensure:
+ * (Home, FAQ, Contact) to ensure:
  * 
  * 1. Dropdown appears correctly below the header
  * 2. All product items are visible without clipping
@@ -17,7 +17,6 @@ import { test, expect, Page } from '@playwright/test';
 // Test pages - all should have consistent dropdown behavior
 const TEST_PAGES = [
   { name: 'Homepage', path: '/', hasDropdown: true },
-  { name: 'Our Story', path: '/story', hasDropdown: true },
   { name: 'FAQ', path: '/faq', hasDropdown: true },
   { name: 'Contact', path: '/contact', hasDropdown: true },
 ];
@@ -408,16 +407,6 @@ test.describe('Header Dropdown Menu - Visual Regression', () => {
     });
   });
   
-  test('should match expected visual appearance on Our Story page', async ({ page }) => {
-    await page.goto('/story');
-    await page.waitForLoadState('networkidle');
-    
-    await openProductsDropdown(page);
-    
-    const dropdown = page.locator('[role="menu"]').first();
-    await expect(dropdown).toHaveScreenshot('products-dropdown-story.png', {
-      maxDiffPixels: 100,
-    });
-  });
 });
+
 

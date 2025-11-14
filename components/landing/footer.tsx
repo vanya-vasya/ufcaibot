@@ -1,20 +1,9 @@
-import { Building, FileText, Mail, MapPin } from "lucide-react";
+import { Building2, FileCheck, MailOpen, MapPinned } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { getPresetStyles } from "@/config/ufc-font";
 
 const routes = [
-  {
-    name: "Home",
-    href: "/#home",
-  },
-  {
-    name: "Products",
-    href: "/#products",
-  },
-  {
-    name: "Our Story",
-    href: "/story",
-  },
   {
     name: "Pricing",
     href: "/#pricing",
@@ -51,48 +40,63 @@ const importantLinks = [
 const companyDetails = [
   {
     name: "Company: QUICK FIT LTD",
-    icon: Building,
+    icon: Building2,
+    ariaLabel: "Company name",
   },
   {
     name: "Company Number: 15995367",
-    icon: FileText,
+    icon: FileCheck,
+    ariaLabel: "Company registration number",
   },
   {
-    name: "support@yum-mi.com",
-    icon: Mail,
+    name: "support@ufcaibot.com",
+    icon: MailOpen,
+    ariaLabel: "Email contact",
   },
   {
     name: `DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA`,
-    icon: MapPin,
+    icon: MapPinned,
+    ariaLabel: "Business address",
   },
 ];
 
 const Footer = () => {
   const date = new Date();
   let year = date.getFullYear();
+  
+  const ufcHeadingFont = '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
+  const footerHeadingStyles = getPresetStyles('footerHeading');
+  const footerLinkStyles = getPresetStyles('footerLink');
+  const footerTextStyles = getPresetStyles('footerText');
 
   return (
-    <footer className="main-footer max-w-[1350px] mx-auto bg-white">
+    <footer className="main-footer w-full bg-white">
       <div className="main-footer__top bg-white">
-        <div className="px-4 bg-white">
+        <div className="px-4 bg-white max-w-[1350px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div className="pr-4 pl-4">
+            <div className="pr-4 pl-4 flex items-center">
               <div className="footer-widget__column footer-widget__about">
-                <div className="footer-widget__logo">
-                  <Image width={"98"} height={"39"} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo" />
+                <div className="flex justify-center mb-6">
+                  <Link href="/" className="inline-block" aria-label="UFC AI Bot Homepage">
+                    <Image 
+                      width={49} 
+                      height={20} 
+                      src="/logos/ufc-fighter-logo.png" 
+                      alt="UFC Fighter Logo"
+                      className="transition-transform duration-200 hover:scale-110 focus-visible:scale-110"
+                    />
+                  </Link>
                 </div>
                 <p 
-                  className="footer-widget__about-text"
+                  className="footer-widget__about-text text-center"
                   style={{
-                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    fontWeight: 600,
-                    lineHeight: 1.2,
-                    letterSpacing: '0.01em',
-                    textTransform: 'none',
+                    ...footerTextStyles,
+                    fontFamily: ufcHeadingFont,
+                    textTransform: 'uppercase',
                     color: '#0f172a'
                   }}
                 >
-                  AI sidekick counts the calories, imagines recipes, and guides you toward a healthier happily-ever-after
+                  An AI sidekick that scans live odds, decodes fighter histories and news, and points your lineup toward the most likely winners
                 </p>
               </div>
             </div>
@@ -103,10 +107,9 @@ const Footer = () => {
                   <h3 
                     className="footer-widget__title"
                     style={{
-                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                      lineHeight: 1.2,
-                      letterSpacing: '0.01em',
-                      textTransform: 'none',
+                      ...footerHeadingStyles,
+                      fontFamily: ufcHeadingFont,
+                      textTransform: 'uppercase',
                       color: '#0f172a'
                     }}
                   >Menu</h3>
@@ -119,11 +122,9 @@ const Footer = () => {
                           href={route.href}
                           aria-label={`Navigate to ${route.name} page`}
                           style={{
-                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                            fontWeight: 600,
-                            lineHeight: 1.2,
-                            letterSpacing: '0.01em',
-                            textTransform: 'none',
+                            ...footerLinkStyles,
+                            fontFamily: ufcHeadingFont,
+                            textTransform: 'uppercase',
                             color: '#0f172a'
                           }}
                         >{route.name}</Link>
@@ -139,10 +140,9 @@ const Footer = () => {
                   <h3 
                     className="footer-widget__title"
                     style={{
-                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                      lineHeight: 1.2,
-                      letterSpacing: '0.01em',
-                      textTransform: 'none',
+                      ...footerHeadingStyles,
+                      fontFamily: ufcHeadingFont,
+                      textTransform: 'uppercase',
                       color: '#0f172a'
                     }}
                   >Links</h3>
@@ -155,11 +155,9 @@ const Footer = () => {
                           href={link.href}
                           aria-label={`Read our ${link.name}`}
                           style={{
-                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                            fontWeight: 600,
-                            lineHeight: 1.2,
-                            letterSpacing: '0.01em',
-                            textTransform: 'none',
+                            ...footerLinkStyles,
+                            fontFamily: ufcHeadingFont,
+                            textTransform: 'uppercase',
                             color: '#0f172a'
                           }}
                         >{link.name}</Link>
@@ -175,10 +173,9 @@ const Footer = () => {
                   <h3 
                     className="footer-widget__title"
                     style={{
-                      fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                      lineHeight: 1.2,
-                      letterSpacing: '0.01em',
-                      textTransform: 'none',
+                      ...footerHeadingStyles,
+                      fontFamily: ufcHeadingFont,
+                      textTransform: 'uppercase',
                       color: '#0f172a'
                     }}
                   >Company</h3>
@@ -188,18 +185,20 @@ const Footer = () => {
                     {companyDetails.map((detail) => (
                       <li 
                         key={detail.name} 
-                        className="flex text-sm"
+                        className="flex text-sm items-start"
                         style={{
-                          fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                          fontWeight: 600,
-                          lineHeight: 1.2,
-                          letterSpacing: '0.01em',
-                          textTransform: 'none',
+                          ...footerTextStyles,
+                          fontFamily: ufcHeadingFont,
+                          textTransform: 'uppercase',
                           color: '#0f172a'
                         }}
                       >
-                        <detail.icon className="h-5 w-5 mr-3 min-w-fit" />
-                        {detail.name}
+                        <detail.icon 
+                          className="h-5 w-5 mr-3 min-w-fit flex-shrink-0 mt-0.5 transition-transform duration-200 group-hover:scale-110" 
+                          aria-label={detail.ariaLabel}
+                          role="img"
+                        />
+                        <span>{detail.name}</span>
                       </li>
                     ))}
                   </ul>
@@ -210,24 +209,22 @@ const Footer = () => {
         </div>
       </div>
       <div className="main-footer__bottom bg-white">
-        <div className="flex justify-between items-center px-4 mx-4 bg-white">
+        <div className="flex justify-between items-center px-4 bg-white max-w-[1350px] mx-auto">
           <div className="">
             <p 
               className="text-center"
               style={{
-                fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontWeight: 600,
-                lineHeight: 1.2,
-                letterSpacing: '0.01em',
-                textTransform: 'none',
+                ...footerTextStyles,
+                fontFamily: ufcHeadingFont,
+                textTransform: 'uppercase',
                 color: '#0f172a'
               }}
             >
-              Yum-mi, Copyright © {year}. All Rights Reserved.
+              ufcaibot, Copyright © {year}. All Rights Reserved.
             </p>
           </div>
         </div>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex justify-center bg-white">
           <Image
             src="/cards_new.svg"
             alt="cards"

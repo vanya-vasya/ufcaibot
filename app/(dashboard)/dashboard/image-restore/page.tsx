@@ -1,4 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
+// DISABLED FOR LOCAL DESIGN WORK - Re-enable for production
+// import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/lib/auth-bypass";
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.actions";
 import TransformationForm from "@/components/shared/TransformationForm";

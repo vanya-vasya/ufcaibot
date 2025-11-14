@@ -38,7 +38,7 @@ test.describe('Footer Background Tests', () => {
   });
 
   test('Body background is white on all pages', async ({ page }) => {
-    const pages = ['/', '/story', '/privacy-policy'];
+    const pages = ['/', '/privacy-policy'];
     
     for (const pagePath of pages) {
       await page.goto(pagePath);
