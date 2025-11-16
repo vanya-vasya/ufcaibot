@@ -1,23 +1,84 @@
 "use client";
 
+import { useState, useCallback } from "react";
+import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
+import { FighterInput } from "@/components/dashboard/FighterInput";
+import { VSEmblem } from "@/components/dashboard/VSEmblem";
+
 export default function HomePage() {
+  const [showIntro, setShowIntro] = useState(true);
+  const [fighterA, setFighterA] = useState("");
+  const [fighterB, setFighterB] = useState("");
+
+  const handleIntroComplete = useCallback(() => {
+    setShowIntro(false);
+  }, []);
+
+  const handleFighterAChange = useCallback((value: string) => {
+    setFighterA(value);
+  }, []);
+
+  const handleFighterBChange = useCallback((value: string) => {
+    setFighterB(value);
+  }, []);
+
+  const handleFightClick = useCallback(() => {
+    if (!fighterA || !fighterB) {
+      alert("Please enter both fighter names");
+      return;
+    }
+    console.log("Fight started:", { fighterA, fighterB });
+    // Add fight analysis logic here
+  }, [fighterA, fighterB]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="text-center space-y-6 max-w-2xl mx-auto px-4">
-        <h1 className="text-4xl md:text-6xl font-bold">
-          <span 
-            className="inline"
-            style={{
-              fontFamily: 'var(--font-ufc-heading)',
-              fontWeight: 600,
-              letterSpacing: '0.01em',
-              textTransform: 'none',
-              color: '#FFFFFF'
-            }}
-          >
-            AI ENGINE FOR FIGHTERS
-          </span>
-        </h1>
+    <>
+      {showIntro && <AnimatedIntro onComplete={handleIntroComplete} />}
+      
+      <div className="min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8">
+        <div className="w-full max-w-6xl mx-auto">
+          {/* Mobile: Stack vertically */}
+          <div className="flex flex-col lg:hidden space-y-6">
+            <FighterInput
+              label="Fighter A"
+              value={fighterA}
+              onChange={handleFighterAChange}
+              placeholder="Enter Fighter A Name"
+            />
+            
+            <VSEmblem className="mx-auto my-4" onClick={handleFightClick} />
+            
+            <FighterInput
+              label="Fighter B"
+              value={fighterB}
+              onChange={handleFighterBChange}
+              placeholder="Enter Fighter B Name"
+            />
+          </div>
+
+          {/* Desktop: Side by side */}
+          <div className="hidden lg:flex items-center gap-12">
+            <div className="flex-1">
+              <FighterInput
+                label="Fighter A"
+                value={fighterA}
+                onChange={handleFighterAChange}
+                placeholder="Enter Fighter A Name"
+              />
+            </div>
+
+            <VSEmblem className="flex-shrink-0 px-6" onClick={handleFightClick} />
+
+            <div className="flex-1">
+              <FighterInput
+                label="Fighter B"
+                value={fighterB}
+                onChange={handleFighterBChange}
+                placeholder="Enter Fighter B Name"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       
       <style jsx global>{`
@@ -25,6 +86,6 @@ export default function HomePage() {
           --font-ufc-heading: "UFC Sans Condensed", "Arial Narrow", Arial, sans-serif;
         }
       `}</style>
-    </div>
+    </>
   );
 }

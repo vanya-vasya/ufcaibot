@@ -1,4 +1,4 @@
-import CTA from "@/components/landing/cta";
+Remove the “Субтитры создавал DimaTorzok” watermark from the video by detecting and masking the text across all frames; if present only in certain time ranges or regions, limit processing to those segments and preserve original audio/video quality. Translate the Russian phrase “Субтитры создавал DimaTorzok” to English and return only the translation, no quotes or extra text.import CTA from "@/components/landing/cta";
 
 const CookiesPolicy = () => {
   return (

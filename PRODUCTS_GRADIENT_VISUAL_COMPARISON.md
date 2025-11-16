@@ -267,3 +267,4 @@ const autoGradient = analyzeImageBrightness(product.image);
 
 The "Global News. Decoded" section now features a professional, polished soft edge gradient that creates a seamless visual transition between the press conference image and the text content.
 
+
