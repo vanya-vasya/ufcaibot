@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { FighterInput } from "@/components/dashboard/FighterInput";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
-import { generateFightMessage } from "@/lib/fight-message-generator";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -28,15 +27,15 @@ export default function HomePage() {
 
   const handleFightClick = useCallback(async () => {
     if (!fighterA || !fighterB) {
-      alert("Please enter both fighter names");
+      console.log("Both fighter names are required");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Generate the fight message
-      const message = generateFightMessage(fighterA, fighterB);
+      // Construct simple message: "FIGHTER A VS FIGHTER B"
+      const message = `${fighterA} VS ${fighterB}`;
 
       // Send to N8N webhook
       const response = await fetch(N8N_WEBHOOK_URL, {
@@ -46,9 +45,6 @@ export default function HomePage() {
         },
         body: JSON.stringify({
           message,
-          fighterA,
-          fighterB,
-          timestamp: new Date().toISOString(),
         }),
       });
 
@@ -56,32 +52,10 @@ export default function HomePage() {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
 
-      // Get response text first to handle empty responses
-      const responseText = await response.text();
-      
-      // Only parse JSON if there's content
-      let data = null;
-      if (responseText && responseText.trim().length > 0) {
-        try {
-          data = JSON.parse(responseText);
-        } catch (parseError) {
-          console.error("JSON parse error:", parseError);
-          console.error("Raw response:", responseText);
-          throw new Error("Invalid JSON response from webhook");
-        }
-      }
-      
-      console.log("Fight analysis started successfully:", data);
-      
-      // Show success feedback
-      alert(`Fight analysis started successfully!\n\n${message}`);
+      console.log("Fight analysis started successfully:", message);
       
     } catch (error) {
       console.error("Failed to start fight analysis:", error);
-      
-      // Show error feedback
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      alert(`Failed to start fight analysis: ${errorMessage}`);
       
     } finally {
       setIsLoading(false);
