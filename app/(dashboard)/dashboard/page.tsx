@@ -56,7 +56,21 @@ export default function HomePage() {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
 
-      const data = await response.json();
+      // Get response text first to handle empty responses
+      const responseText = await response.text();
+      
+      // Only parse JSON if there's content
+      let data = null;
+      if (responseText && responseText.trim().length > 0) {
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error("JSON parse error:", parseError);
+          console.error("Raw response:", responseText);
+          throw new Error("Invalid JSON response from webhook");
+        }
+      }
+      
       console.log("Fight analysis started successfully:", data);
       
       // Show success feedback
