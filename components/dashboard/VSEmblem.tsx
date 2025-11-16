@@ -3,14 +3,18 @@
 interface VSEmblemProps {
   className?: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
-export const VSEmblem = ({ className = "", onClick }: VSEmblemProps) => {
+export const VSEmblem = ({ className = "", onClick, disabled = false }: VSEmblemProps) => {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-red-500 rounded-lg px-4 py-2 transition-all ${className}`}
+      disabled={disabled}
+      className={`flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-red-500 rounded-lg px-4 py-2 transition-all ${
+        disabled ? 'opacity-50 cursor-not-allowed' : ''
+      } ${className}`}
       data-testid="vs-emblem"
       aria-label="Start fight analysis"
     >

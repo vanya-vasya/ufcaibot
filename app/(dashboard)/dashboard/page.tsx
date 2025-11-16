@@ -4,11 +4,15 @@ import { useState, useCallback } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { FighterInput } from "@/components/dashboard/FighterInput";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
+import { generateFightMessage } from "@/lib/fight-message-generator";
+
+const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
 export default function HomePage() {
   const [showIntro, setShowIntro] = useState(true);
   const [fighterA, setFighterA] = useState("");
   const [fighterB, setFighterB] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
@@ -22,13 +26,52 @@ export default function HomePage() {
     setFighterB(value);
   }, []);
 
-  const handleFightClick = useCallback(() => {
+  const handleFightClick = useCallback(async () => {
     if (!fighterA || !fighterB) {
       alert("Please enter both fighter names");
       return;
     }
-    console.log("Fight started:", { fighterA, fighterB });
-    // Add fight analysis logic here
+
+    setIsLoading(true);
+
+    try {
+      // Generate the fight message
+      const message = generateFightMessage(fighterA, fighterB);
+
+      // Send to N8N webhook
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message,
+          fighterA,
+          fighterB,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("Fight analysis started successfully:", data);
+      
+      // Show success feedback
+      alert(`Fight analysis started successfully!\n\n${message}`);
+      
+    } catch (error) {
+      console.error("Failed to start fight analysis:", error);
+      
+      // Show error feedback
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      alert(`Failed to start fight analysis: ${errorMessage}`);
+      
+    } finally {
+      setIsLoading(false);
+    }
   }, [fighterA, fighterB]);
 
   return (
@@ -46,7 +89,11 @@ export default function HomePage() {
               placeholder="Enter Fighter A Name"
             />
             
-            <VSEmblem className="mx-auto my-4" onClick={handleFightClick} />
+            <VSEmblem 
+              className="mx-auto my-4" 
+              onClick={handleFightClick}
+              disabled={isLoading}
+            />
             
             <FighterInput
               label="Fighter B"
@@ -67,7 +114,11 @@ export default function HomePage() {
               />
             </div>
 
-            <VSEmblem className="flex-shrink-0 px-6" onClick={handleFightClick} />
+            <VSEmblem 
+              className="flex-shrink-0 px-6" 
+              onClick={handleFightClick}
+              disabled={isLoading}
+            />
 
             <div className="flex-1">
               <FighterInput
