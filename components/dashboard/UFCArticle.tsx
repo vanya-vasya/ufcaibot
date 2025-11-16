@@ -66,9 +66,9 @@ export const UFCArticle = ({
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-black">
           {/* Hero Section - Black Background */}
-          <header className="mb-8 pb-6 px-6 py-8 bg-black border border-gray-800 rounded-lg">
+          <header className="mb-8 pb-6 px-6 py-8">
             <div className="mb-4">
               <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold uppercase tracking-wider">
                 Fight Analysis
