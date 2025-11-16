@@ -129,6 +129,7 @@ export default function HomePage() {
               className="mx-auto my-4" 
               onClick={handleFightClick}
               disabled={isLoading}
+              isLoading={isLoading}
             />
             
             <FighterInput
@@ -154,6 +155,7 @@ export default function HomePage() {
               className="flex-shrink-0 px-6" 
               onClick={handleFightClick}
               disabled={isLoading}
+              isLoading={isLoading}
             />
 
             <div className="flex-1">

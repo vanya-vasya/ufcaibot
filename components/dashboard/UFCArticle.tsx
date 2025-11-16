@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { parseContentBlocks } from "@/lib/parseContentBlocks";
 
 interface UFCArticleProps {
   content: string;
@@ -38,59 +39,8 @@ export const UFCArticle = ({
     day: "numeric",
   });
 
-  // Parse content into sections
-  const parseContent = (text: string) => {
-    const sections = [];
-    const lines = text.split("\n").filter((line) => line.trim());
-
-    let currentSection = { type: "text", content: "" };
-
-    for (const line of lines) {
-      const trimmedLine = line.trim();
-
-      if (trimmedLine.startsWith("#")) {
-        if (currentSection.content) {
-          sections.push(currentSection);
-        }
-        currentSection = {
-          type: "heading",
-          content: trimmedLine.replace(/^#+\s*/, ""),
-        };
-        sections.push(currentSection);
-        currentSection = { type: "text", content: "" };
-      } else if (trimmedLine.startsWith(">")) {
-        if (currentSection.content) {
-          sections.push(currentSection);
-        }
-        currentSection = {
-          type: "quote",
-          content: trimmedLine.replace(/^>\s*/, ""),
-        };
-        sections.push(currentSection);
-        currentSection = { type: "text", content: "" };
-      } else if (trimmedLine.startsWith("**") && trimmedLine.endsWith("**")) {
-        if (currentSection.content) {
-          sections.push(currentSection);
-        }
-        currentSection = {
-          type: "subheading",
-          content: trimmedLine.replace(/\*\*/g, ""),
-        };
-        sections.push(currentSection);
-        currentSection = { type: "text", content: "" };
-      } else {
-        currentSection.content += (currentSection.content ? " " : "") + trimmedLine;
-      }
-    }
-
-    if (currentSection.content) {
-      sections.push(currentSection);
-    }
-
-    return sections;
-  };
-
-  const contentSections = parseContent(content);
+  // Parse content into Block 1, Block 2, Block 3
+  const contentBlocks = parseContentBlocks(content);
 
   return (
     <div
@@ -117,8 +67,8 @@ export const UFCArticle = ({
         }`}
       >
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Hero Section */}
-          <header className="mb-8 border-b border-red-600 pb-6">
+          {/* Hero Section - Black Background */}
+          <header className="mb-8 pb-6 px-6 py-8 bg-black border border-gray-800 rounded-lg">
             <div className="mb-4">
               <span className="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold uppercase tracking-wider">
                 Fight Analysis
@@ -130,7 +80,7 @@ export const UFCArticle = ({
               className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
               style={{ fontFamily: "var(--font-ufc-heading)" }}
             >
-              {fighterA} <span className="text-red-600">VS</span> {fighterB}
+              {fighterA} <span className="text-white">VS</span> {fighterB}
             </h1>
 
             <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
@@ -142,56 +92,64 @@ export const UFCArticle = ({
             </div>
           </header>
 
-          {/* Article Content */}
-          <div className="prose prose-invert prose-lg max-w-none">
-            {contentSections.map((section, index) => {
-              switch (section.type) {
-                case "heading":
-                  return (
-                    <h2
-                      key={index}
-                      className="text-3xl sm:text-4xl font-bold text-white mt-12 mb-6 first:mt-0"
-                      style={{ fontFamily: "var(--font-ufc-heading)" }}
-                    >
-                      {section.content}
-                    </h2>
-                  );
+          {/* Article Content - Three Blocks */}
+          <div className="space-y-12">
+            {/* Block 1 */}
+            <section>
+              <h2
+                className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
+              >
+                Block 1
+              </h2>
+              {contentBlocks.block1 ? (
+                <div className="prose prose-invert prose-lg max-w-none">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                    {contentBlocks.block1}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">No content for Block 1</p>
+              )}
+            </section>
 
-                case "subheading":
-                  return (
-                    <h3
-                      key={index}
-                      className="text-2xl sm:text-3xl font-bold text-red-500 mt-8 mb-4"
-                      style={{ fontFamily: "var(--font-ufc-heading)" }}
-                    >
-                      {section.content}
-                    </h3>
-                  );
+            {/* Block 2 */}
+            <section>
+              <h2
+                className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
+              >
+                Block 2
+              </h2>
+              {contentBlocks.block2 ? (
+                <div className="prose prose-invert prose-lg max-w-none">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                    {contentBlocks.block2}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">No content for Block 2</p>
+              )}
+            </section>
 
-                case "quote":
-                  return (
-                    <blockquote
-                      key={index}
-                      className="border-l-4 border-red-600 pl-6 py-4 my-8 italic text-xl text-gray-300 bg-gray-900/50"
-                    >
-                      &ldquo;{section.content}&rdquo;
-                    </blockquote>
-                  );
-
-                case "text":
-                  return (
-                    <p
-                      key={index}
-                      className="text-gray-300 leading-relaxed mb-6 text-lg"
-                    >
-                      {section.content}
-                    </p>
-                  );
-
-                default:
-                  return null;
-              }
-            })}
+            {/* Block 3 */}
+            <section>
+              <h2
+                className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
+              >
+                Block 3
+              </h2>
+              {contentBlocks.block3 ? (
+                <div className="prose prose-invert prose-lg max-w-none">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                    {contentBlocks.block3}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">No content for Block 3</p>
+              )}
+            </section>
           </div>
 
           {/* Footer */}
@@ -205,7 +163,7 @@ export const UFCArticle = ({
               </div>
               <button
                 onClick={handleClose}
-                className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                className="px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
                 New Analysis
