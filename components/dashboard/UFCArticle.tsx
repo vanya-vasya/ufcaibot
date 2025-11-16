@@ -65,10 +65,17 @@ export const UFCArticle = ({
         className={`h-full overflow-y-auto transition-transform duration-500 ${
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
+        style={{ backgroundColor: '#000000' }}
       >
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-black">
+        <article 
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+          style={{ backgroundColor: '#000000' }}
+        >
           {/* Hero Section - Black Background */}
-          <header className="mb-8 pb-6 px-6 py-8">
+          <header 
+            className="mb-8 pb-6 px-6 py-8"
+            style={{ backgroundColor: '#000000' }}
+          >
             <div className="mb-4">
               <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold uppercase tracking-wider">
                 Fight Analysis
