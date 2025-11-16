@@ -44,7 +44,7 @@ export const VSEmblem = ({ className = "", onClick, disabled = false, isLoading 
             />
           </svg>
           <span
-            className="text-sm md:text-base font-black text-white"
+            className="text-2xl md:text-3xl font-black text-white"
             style={{
               fontFamily: 'var(--font-ufc-heading)',
               letterSpacing: '0.05em',
