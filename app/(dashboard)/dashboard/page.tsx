@@ -4,13 +4,15 @@ import { useState, useCallback } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { FighterInput } from "@/components/dashboard/FighterInput";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
+import { UFCArticle } from "@/components/dashboard/UFCArticle";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
-interface SuccessResponse {
+interface ArticleData {
+  content: string;
+  fighterA: string;
+  fighterB: string;
   timestamp: string;
-  message: string;
-  responseBody: any;
 }
 
 export default function HomePage() {
@@ -18,7 +20,7 @@ export default function HomePage() {
   const [fighterA, setFighterA] = useState("");
   const [fighterB, setFighterB] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [successResponses, setSuccessResponses] = useState<SuccessResponse[]>([]);
+  const [activeArticle, setActiveArticle] = useState<ArticleData | null>(null);
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
@@ -60,16 +62,20 @@ export default function HomePage() {
         const responseBody = await response.json();
         const timestamp = new Date().toISOString();
         
-        setSuccessResponses((prev) => [
-          {
-            timestamp,
-            message,
-            responseBody,
-          },
-          ...prev,
-        ]);
+        // Extract content from response
+        const content = typeof responseBody === 'string' 
+          ? responseBody 
+          : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
         
-        console.log("Fight analysis started successfully:", message);
+        // Set active article to display
+        setActiveArticle({
+          content,
+          fighterA,
+          fighterB,
+          timestamp,
+        });
+        
+        console.log("Fight analysis completed successfully:", message);
       } else {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
@@ -82,11 +88,33 @@ export default function HomePage() {
     }
   }, [fighterA, fighterB]);
 
+  const handleCloseArticle = useCallback(() => {
+    setActiveArticle(null);
+    setFighterA("");
+    setFighterB("");
+  }, []);
+
   return (
     <>
       {showIntro && <AnimatedIntro onComplete={handleIntroComplete} />}
       
-      <div className="min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8">
+      {/* Show Article Overlay when active */}
+      {activeArticle && (
+        <UFCArticle
+          content={activeArticle.content}
+          fighterA={activeArticle.fighterA}
+          fighterB={activeArticle.fighterB}
+          timestamp={activeArticle.timestamp}
+          onClose={handleCloseArticle}
+        />
+      )}
+      
+      {/* Fighter Input UI - Hidden when article is active */}
+      <div
+        className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
+          activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
         <div className="w-full max-w-6xl mx-auto">
           {/* Mobile: Stack vertically */}
           <div className="flex flex-col lg:hidden space-y-6">
@@ -138,49 +166,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
-        {/* Success Response Display */}
-        {successResponses.length > 0 && (
-          <div className="w-full max-w-6xl mx-auto mt-8 px-4">
-            <div 
-              className="bg-green-950/30 border-2 border-green-500 rounded-lg p-6"
-              role="region"
-              aria-label="Success responses"
-            >
-              <h2 className="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
-                <span className="text-3xl" aria-hidden="true">✓</span>
-                Success
-              </h2>
-              
-              <div className="space-y-4">
-                {successResponses.map((success, index) => (
-                  <div 
-                    key={`${success.timestamp}-${index}`}
-                    className="bg-black/40 border border-green-600/30 rounded-md p-4"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                      <p className="text-green-300 font-semibold">
-                        {success.message}
-                      </p>
-                      <time 
-                        className="text-sm text-green-400/70"
-                        dateTime={success.timestamp}
-                      >
-                        {new Date(success.timestamp).toLocaleString()}
-                      </time>
-                    </div>
-                    
-                    <div className="mt-3">
-                      <pre className="text-sm text-green-100 bg-black/60 rounded p-3 overflow-x-auto">
-                        <code>{JSON.stringify(success.responseBody, null, 2)}</code>
-                      </pre>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
       
       <style jsx global>{`
