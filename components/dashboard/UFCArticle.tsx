@@ -174,7 +174,7 @@ export const UFCArticle = ({
                       key={index}
                       className="border-l-4 border-red-600 pl-6 py-4 my-8 italic text-xl text-gray-300 bg-gray-900/50"
                     >
-                      "{section.content}"
+                      &ldquo;{section.content}&rdquo;
                     </blockquote>
                   );
 
