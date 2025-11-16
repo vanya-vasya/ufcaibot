@@ -21,7 +21,7 @@ export const VSEmblem = ({ className = "", onClick, disabled = false, isLoading 
       aria-busy={isLoading}
     >
       {isLoading ? (
-        <div className="flex items-center gap-3" role="status" aria-live="polite">
+        <div className="flex flex-col items-center gap-2" role="status" aria-live="polite">
           <svg
             className="animate-spin h-8 w-8 text-white"
             xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ export const VSEmblem = ({ className = "", onClick, disabled = false, isLoading 
             />
           </svg>
           <span
-            className="text-2xl md:text-3xl font-black text-white"
+            className="text-sm md:text-base font-black text-white"
             style={{
               fontFamily: 'var(--font-ufc-heading)',
               letterSpacing: '0.05em',

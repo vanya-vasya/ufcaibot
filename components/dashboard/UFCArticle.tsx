@@ -70,7 +70,7 @@ export const UFCArticle = ({
           {/* Hero Section - Black Background */}
           <header className="mb-8 pb-6 px-6 py-8 bg-black border border-gray-800 rounded-lg">
             <div className="mb-4">
-              <span className="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold uppercase tracking-wider">
+              <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold uppercase tracking-wider">
                 Fight Analysis
               </span>
             </div>
@@ -100,7 +100,7 @@ export const UFCArticle = ({
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                Block 1
+                ODDS ANALYSIS
               </h2>
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -109,7 +109,7 @@ export const UFCArticle = ({
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No content for Block 1</p>
+                <p className="text-gray-500 italic">No content for ODDS ANALYSIS</p>
               )}
             </section>
 
@@ -119,7 +119,7 @@ export const UFCArticle = ({
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                Block 2
+                FIGHTER ANALYSIS
               </h2>
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -128,7 +128,7 @@ export const UFCArticle = ({
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No content for Block 2</p>
+                <p className="text-gray-500 italic">No content for FIGHTER ANALYSIS</p>
               )}
             </section>
 
@@ -138,7 +138,7 @@ export const UFCArticle = ({
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                Block 3
+                SENTIMENT ANALYSIS
               </h2>
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -147,7 +147,7 @@ export const UFCArticle = ({
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No content for Block 3</p>
+                <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
               )}
             </section>
           </div>
