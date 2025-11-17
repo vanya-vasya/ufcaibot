@@ -493,3 +493,84 @@ input:-webkit-autofill:active {
   box-shadow: 0 0 0 30px transparent inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+/* UFC Article - Force black background with maximum specificity */
+/* Override landing-page-layout.css header rules */
+.ufc-article-overlay {
+  background-color: #000000 !important;
+  background: #000000 !important;
+}
+
+.ufc-article-container {
+  background-color: #000000 !important;
+  background: #000000 !important;
+}
+
+.ufc-article {
+  background-color: #000000 !important;
+  background: #000000 !important;
+}
+
+.ufc-article-header {
+  background-color: #000000 !important;
+  background: #000000 !important;
+  box-shadow: none !important;
+}
+
+/* Restore white badge */
+.ufc-article-header .bg-white,
+.ufc-article .bg-white {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* Restore red button */
+.ufc-article-overlay .bg-red-600 {
+  background-color: rgb(220, 38, 38) !important;
+  background: rgb(220, 38, 38) !important;
+}
+
+.ufc-article-overlay .bg-red-600:hover,
+.ufc-article-overlay .hover\:bg-red-700:hover {
+  background-color: rgb(185, 28, 28) !important;
+  background: rgb(185, 28, 28) !important;
+}
+
+/* Ensure text colors are preserved */
+.ufc-article-overlay .text-white {
+  color: #ffffff !important;
+}
+
+.ufc-article-overlay .text-gray-400 {
+  color: rgb(156, 163, 175) !important;
+}
+
+.ufc-article-overlay .text-gray-300 {
+  color: rgb(209, 213, 219) !important;
+}
+
+.ufc-article-overlay .text-gray-500 {
+  color: rgb(107, 114, 128) !important;
+}
+
+.ufc-article-overlay .text-black {
+  color: #000000 !important;
+}
+
+/* Ensure content sections maintain black background */
+.ufc-article section,
+.ufc-article div[class*="space-y"],
+.ufc-article div[class*="prose"] {
+  background-color: transparent !important;
+}
+
+/* Footer styling */
+.ufc-article footer {
+  background-color: transparent !important;
+}
+
+/* Button in footer */
+.ufc-article .bg-black {
+  background-color: #000000 !important;
+  background: #000000 !important;
+}

@@ -44,9 +44,11 @@ export const UFCArticle = ({
 
   return (
     <div
-      className={`fixed inset-0 z-50 bg-black transition-opacity duration-300 ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className={`fixed inset-0 z-50 transition-opacity duration-300 ufc-article-overlay`}
+      style={{ 
+        backgroundColor: '#000000 !important',
+        opacity: isVisible ? 1 : 0
+      }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="article-title"
@@ -62,19 +64,26 @@ export const UFCArticle = ({
 
       {/* Article Container */}
       <div
-        className={`h-full overflow-y-auto transition-transform duration-500 ${
+        className={`h-full overflow-y-auto transition-transform duration-500 ufc-article-container ${
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
-        style={{ backgroundColor: '#000000' }}
+        style={{ 
+          backgroundColor: '#000000 !important'
+        }}
       >
         <article 
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
-          style={{ backgroundColor: '#000000' }}
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ufc-article"
+          style={{ 
+            backgroundColor: '#000000 !important'
+          }}
         >
           {/* Hero Section - Black Background */}
           <header 
-            className="mb-8 pb-6 px-6 py-8"
-            style={{ backgroundColor: '#000000' }}
+            className="mb-8 pb-6 px-6 py-8 ufc-article-header"
+            style={{ 
+              backgroundColor: '#000000 !important',
+              background: 'none !important'
+            }}
           >
             <div className="mb-4">
               <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold uppercase tracking-wider">
