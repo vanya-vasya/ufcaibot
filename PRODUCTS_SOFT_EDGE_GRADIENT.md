@@ -259,3 +259,4 @@ Potential additions for extended configurability:
 - Image prominence maintained
 
 
+

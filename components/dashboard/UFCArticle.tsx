@@ -69,26 +69,35 @@ export const UFCArticle = ({
         }`}
         style={{ 
           backgroundColor: '#000000 !important',
-          paddingTop: '200px'
+          paddingTop: '0'
         }}
       >
         <article 
           className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 ufc-article"
           style={{ 
-            backgroundColor: '#000000 !important'
+            backgroundColor: '#000000 !important',
+            paddingTop: '220px'
           }}
         >
-          {/* Hero Section - Sticky Header */}
+          {/* Hero Section - Fixed Header */}
           <header 
-            className="sticky top-0 z-40 pb-6 px-6 py-8 ufc-article-header"
+            className="fixed top-0 left-0 right-0 z-40 pb-6 px-6 py-8 ufc-article-header"
             style={{ 
               backgroundColor: '#000000 !important',
               background: 'none !important',
-              marginTop: '-200px',
-              marginBottom: '2rem'
             }}
           >
-            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center gap-2 text-gray-400 text-sm mb-2">
+                <time dateTime={new Date().toISOString()}>
+                  {new Date().toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+              </div>
+              
               <h1
                 id="article-title"
                 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight"
@@ -96,16 +105,6 @@ export const UFCArticle = ({
               >
                 {fighterA} <span className="text-white">VS</span> {fighterB}
               </h1>
-              <time 
-                dateTime={timestamp}
-                className="text-gray-400 text-sm sm:text-base whitespace-nowrap flex-shrink-0 self-end sm:self-auto"
-              >
-                {formattedDate}
-              </time>
-            </div>
-
-            <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <span className="font-semibold">UFC AI Bot</span>
             </div>
           </header>
 
