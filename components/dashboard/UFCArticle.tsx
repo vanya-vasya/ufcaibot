@@ -85,12 +85,6 @@ export const UFCArticle = ({
               background: 'none !important'
             }}
           >
-            <div className="mb-4">
-              <span className="inline-block px-3 py-1 bg-white text-black text-xs font-bold uppercase tracking-wider">
-                Fight Analysis
-              </span>
-            </div>
-
             <h1
               id="article-title"
               className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
