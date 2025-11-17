@@ -73,28 +73,26 @@ export const UFCArticle = ({
         }}
       >
         <article 
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-32 ufc-article"
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-24 ufc-article"
           style={{ 
             backgroundColor: '#000000 !important'
           }}
         >
           {/* Hero Section - Non-sticky Header */}
           <header 
-            className="relative px-6 py-6 mb-12 ufc-article-header"
+            className="mb-12 ufc-article-header"
             style={{ 
               backgroundColor: '#000000 !important',
               background: 'none !important',
             }}
           >
-            <div className="max-w-4xl mx-auto">
-              <h1
-                id="article-title"
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
-                style={{ fontFamily: "var(--font-ufc-heading)" }}
-              >
-                {fighterA.toUpperCase()} <span className="text-white">VS</span> {fighterB.toUpperCase()}
-              </h1>
-            </div>
+            <h1
+              id="article-title"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight"
+              style={{ fontFamily: "var(--font-ufc-heading)" }}
+            >
+              {fighterA.toUpperCase()} <span className="text-white">VS</span> {fighterB.toUpperCase()}
+            </h1>
           </header>
 
           {/* Article Content - Three Blocks */}
