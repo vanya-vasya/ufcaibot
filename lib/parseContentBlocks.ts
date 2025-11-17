@@ -32,24 +32,40 @@ export const parseContentBlocks = (text: string): ContentBlocks => {
   const block2Index = block2Match ? normalizedText.indexOf(block2Match[0]) : -1;
   const block3Index = block3Match ? normalizedText.indexOf(block3Match[0]) : -1;
 
+  // Helper function to clean content from metadata markers
+  const cleanContent = (content: string): string => {
+    // Remove patterns like ": Odds Data\n", ": Fighters Data\n", etc.
+    let cleaned = content
+      .replace(/^\s*:\s*Odds Data\s*/i, '')
+      .replace(/^\s*:\s*Fighters Data\s*/i, '')
+      .replace(/^\s*:\s*Sentiment Analysis\s*/i, '')
+      .replace(/^\s*:\s*[^\n]+\n/, '') // Remove any other ": Something\n" pattern at start
+      .trim();
+    
+    return cleaned;
+  };
+
   // Extract Block 1 content
   if (block1Index !== -1) {
     const startIdx = block1Index + (block1Match?.[0].length || 0);
     const endIdx = block2Index !== -1 ? block2Index : (block3Index !== -1 ? block3Index : normalizedText.length);
-    blocks.block1 = normalizedText.substring(startIdx, endIdx).trim();
+    const rawContent = normalizedText.substring(startIdx, endIdx).trim();
+    blocks.block1 = cleanContent(rawContent);
   }
 
   // Extract Block 2 content
   if (block2Index !== -1) {
     const startIdx = block2Index + (block2Match?.[0].length || 0);
     const endIdx = block3Index !== -1 ? block3Index : normalizedText.length;
-    blocks.block2 = normalizedText.substring(startIdx, endIdx).trim();
+    const rawContent = normalizedText.substring(startIdx, endIdx).trim();
+    blocks.block2 = cleanContent(rawContent);
   }
 
   // Extract Block 3 content
   if (block3Index !== -1) {
     const startIdx = block3Index + (block3Match?.[0].length || 0);
-    blocks.block3 = normalizedText.substring(startIdx).trim();
+    const rawContent = normalizedText.substring(startIdx).trim();
+    blocks.block3 = cleanContent(rawContent);
   }
 
   return blocks;
