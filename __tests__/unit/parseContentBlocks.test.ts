@@ -326,6 +326,60 @@ content`;
       expect(result.block3).toContain('Content for block 3');
     });
 
+    it('should remove trailing " } pattern with space', () => {
+      const content = `
+        Block 1
+        Content for block 1" }
+        
+        Block 2
+        Content for block 2" }
+        
+        Block 3
+        Content for block 3" }
+      `;
+
+      const result = parseContentBlocks(content);
+
+      expect(result.block1).not.toContain('" }');
+      expect(result.block1).not.toContain('"}');
+      expect(result.block1).toContain('Content for block 1');
+      
+      expect(result.block2).not.toContain('" }');
+      expect(result.block2).not.toContain('"}');
+      expect(result.block2).toContain('Content for block 2');
+      
+      expect(result.block3).not.toContain('" }');
+      expect(result.block3).not.toContain('"}');
+      expect(result.block3).toContain('Content for block 3');
+    });
+
+    it('should remove } " pattern (reverse order)', () => {
+      const content = `
+        Block 1
+        Content for block 1} "
+        
+        Block 2
+        Content for block 2} "
+        
+        Block 3
+        Content for block 3} "
+      `;
+
+      const result = parseContentBlocks(content);
+
+      expect(result.block1).not.toContain('} "');
+      expect(result.block1).not.toContain('}"');
+      expect(result.block1).toContain('Content for block 1');
+      
+      expect(result.block2).not.toContain('} "');
+      expect(result.block2).not.toContain('}"');
+      expect(result.block2).toContain('Content for block 2');
+      
+      expect(result.block3).not.toContain('} "');
+      expect(result.block3).not.toContain('}"');
+      expect(result.block3).toContain('Content for block 3');
+    });
+
     it('should remove "} pattern anywhere in content', () => {
       const content = `
         Block 1
@@ -431,6 +485,35 @@ content`;
       expect(result.block3).not.toContain(': Sentiment Analysis');
       expect(result.block3).not.toMatch(/\s{2,}/);
       expect(result.block3).toContain('Final content here');
+    });
+
+    it('should handle real-world example with " } pattern', () => {
+      const content = `
+        Block 1
+        Some odds analysis content here
+        
+        Block 2
+        Some fighters analysis content here
+        
+        Block 3
+        "Media and expert sentiment in the supplied material heavily favored Carlos Prates both before and after the contest with roughly sixty to seventy percent of narrative coverage framing him as the rising knockout specialist and a legitimate threat to Leon Edwards, common pre fight themes were Prates momentum, power, and stylistic upside while Edwards was framed as more vulnerable than in prior championship runs and carrying narrative baggage about recent setbacks, after the fight the tone became decisively pro Prates with many outlets describing a brutal knockout and questioning Edwards future standing, public perception mirrored that split with bettors and writers tilting toward Prates in the run up and celebrating his finishing result afterward, neutral takes were a minority and focused on tactical explanations and implications for rankings and future matchmaking" }
+      `;
+
+      const result = parseContentBlocks(content);
+
+      // Block 3 should not contain " } at the end
+      expect(result.block3).not.toContain('" }');
+      expect(result.block3).not.toContain('"}');
+      expect(result.block3).not.toContain('} "');
+      expect(result.block3).not.toContain('}"');
+      
+      // Should contain the actual content
+      expect(result.block3).toContain('Media and expert sentiment');
+      expect(result.block3).toContain('Carlos Prates');
+      expect(result.block3).toContain('Leon Edwards');
+      
+      // Should end cleanly without artifacts
+      expect(result.block3).toMatch(/matchmaking$/);
     });
   });
 });

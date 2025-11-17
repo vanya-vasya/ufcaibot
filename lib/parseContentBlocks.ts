@@ -54,8 +54,10 @@ export const parseContentBlocks = (text: string): ContentBlocks => {
       .replace(/\\n/g, ' ')           // Replace escaped \n with space
       .replace(/\n/g, ' ')            // Replace real newlines with space
       .replace(/^"+|"+$/g, '')        // Remove leading/trailing quotes
-      .replace(/"}$/g, '')            // Remove trailing "}
-      .replace(/"}/g, '')             // Remove "} anywhere
+      .replace(/"\s*}$/g, '')         // Remove trailing " } or "} (with optional space)
+      .replace(/"\s*}/g, '')          // Remove " } or "} anywhere (with optional space)
+      .replace(/}\s*"$/g, '')         // Remove trailing } " (reverse order)
+      .replace(/}\s*"/g, '')          // Remove } " anywhere (reverse order)
       .replace(/\s+/g, ' ')           // Collapse multiple spaces
       .trim();
   };
