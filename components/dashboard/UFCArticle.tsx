@@ -73,14 +73,14 @@ export const UFCArticle = ({
         }}
       >
         <article 
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-20 ufc-article"
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-32 ufc-article"
           style={{ 
             backgroundColor: '#000000 !important'
           }}
         >
-          {/* Hero Section - Normal Header */}
+          {/* Hero Section - Sticky/Pinned Header */}
           <header 
-            className="mb-12 px-6 ufc-article-header"
+            className="sticky top-0 z-40 px-6 py-6 mb-12 ufc-article-header"
             style={{ 
               backgroundColor: '#000000 !important',
               background: 'none !important',
@@ -89,13 +89,13 @@ export const UFCArticle = ({
             <div className="max-w-4xl mx-auto">
               <h1
                 id="article-title"
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 pl-8"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
                 {fighterA} <span className="text-white">VS</span> {fighterB}
               </h1>
               
-              <div className="flex items-center gap-2 text-gray-400 text-sm mb-12">
+              <div className="flex items-center gap-2 text-gray-400 text-sm pl-8">
                 <time dateTime={new Date().toISOString()}>
                   {new Date().toLocaleDateString("en-US", {
                     year: "numeric",
