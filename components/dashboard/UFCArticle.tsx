@@ -42,6 +42,37 @@ export const UFCArticle = ({
   // Parse content into Block 1, Block 2, Block 3
   const contentBlocks = parseContentBlocks(content);
 
+  // Function to render content with bullet points
+  const renderContentWithBullets = (text: string) => {
+    if (!text) return null;
+
+    // Split by bullet point symbol •
+    const parts = text.split('•').filter(part => part.trim());
+
+    // If no bullet points, return as plain text
+    if (parts.length === 1) {
+      return (
+        <p className="text-gray-300 leading-relaxed text-lg" style={{ textAlign: 'justify' }}>
+          {text}
+        </p>
+      );
+    }
+
+    // If there are bullet points, render as list
+    return (
+      <ul className="space-y-4 list-none">
+        {parts.map((part, index) => (
+          <li key={index} className="flex items-start">
+            <span className="text-red-600 mr-3 mt-1 flex-shrink-0">•</span>
+            <p className="text-gray-300 leading-relaxed text-lg flex-1" style={{ textAlign: 'justify' }}>
+              {part.trim()}
+            </p>
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   return (
     <div
       className={`fixed inset-0 z-50 transition-opacity duration-300 ufc-article-overlay`}
@@ -107,9 +138,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
-                    {contentBlocks.block1}
-                  </p>
+                  {renderContentWithBullets(contentBlocks.block1)}
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for ODDS ANALYSIS</p>
@@ -126,9 +155,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
-                    {contentBlocks.block2}
-                  </p>
+                  {renderContentWithBullets(contentBlocks.block2)}
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for FIGHTERS ANALYSIS</p>
@@ -145,9 +172,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
-                    {contentBlocks.block3}
-                  </p>
+                  {renderContentWithBullets(contentBlocks.block3)}
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
