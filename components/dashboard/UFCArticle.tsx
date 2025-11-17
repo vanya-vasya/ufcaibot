@@ -95,7 +95,7 @@ export const UFCArticle = ({
             </h1>
           </header>
 
-          {/* Article Content - Four Blocks */}
+          {/* Article Content - Three Blocks */}
           <div className="space-y-12">
             {/* Block 1 - Odds Analysis */}
             <section>
@@ -151,25 +151,6 @@ export const UFCArticle = ({
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
-              )}
-            </section>
-
-            {/* Block 4 - Final Recommendation */}
-            <section>
-              <h2
-                className="text-3xl sm:text-4xl font-bold text-white mb-6"
-                style={{ fontFamily: "var(--font-ufc-heading)" }}
-              >
-                FINAL RECOMMENDATION
-              </h2>
-              {contentBlocks.block4 ? (
-                <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
-                    {contentBlocks.block4}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">No content for FINAL RECOMMENDATION</p>
               )}
             </section>
           </div>
