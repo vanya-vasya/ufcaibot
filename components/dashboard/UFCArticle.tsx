@@ -78,9 +78,9 @@ export const UFCArticle = ({
             backgroundColor: '#000000 !important'
           }}
         >
-          {/* Hero Section - Sticky/Pinned Header */}
+          {/* Hero Section - Non-sticky Header */}
           <header 
-            className="sticky top-0 z-40 px-6 py-6 mb-12 ufc-article-header"
+            className="relative px-6 py-6 mb-12 ufc-article-header"
             style={{ 
               backgroundColor: '#000000 !important',
               background: 'none !important',
