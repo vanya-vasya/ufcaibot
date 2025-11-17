@@ -94,16 +94,6 @@ export const UFCArticle = ({
               >
                 {fighterA.toUpperCase()} <span className="text-white">VS</span> {fighterB.toUpperCase()}
               </h1>
-              
-              <div className="flex items-center gap-2 text-gray-400 text-sm">
-                <time dateTime={new Date().toISOString()}>
-                  {new Date().toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
-              </div>
             </div>
           </header>
 
