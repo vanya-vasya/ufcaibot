@@ -5,6 +5,7 @@ import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { FighterInput } from "@/components/dashboard/FighterInput";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
+import { getUFCStatsUrl } from "@/lib/ufcStatsHelper";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -13,6 +14,7 @@ interface ArticleData {
   fighterA: string;
   fighterB: string;
   timestamp: string;
+  statsImageUrl?: string;
 }
 
 export default function HomePage() {
@@ -21,6 +23,7 @@ export default function HomePage() {
   const [fighterB, setFighterB] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeArticle, setActiveArticle] = useState<ArticleData | null>(null);
+  const [ufcStatsUrl, setUfcStatsUrl] = useState<string | null>(null);
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
@@ -43,10 +46,19 @@ export default function HomePage() {
     setIsLoading(true);
 
     try {
-      // Construct simple message: "FIGHTER A VS FIGHTER B"
+      // Step 1: Fetch UFC stats URL
+      console.log("Fetching UFC fighter stats...");
+      const ufcStatsData = await getUFCStatsUrl(fighterA, fighterB);
+      
+      if (ufcStatsData.success && ufcStatsData.searchUrl) {
+        setUfcStatsUrl(ufcStatsData.searchUrl);
+        console.log("UFC stats URL:", ufcStatsData.searchUrl);
+      }
+
+      // Step 2: Construct simple message: "FIGHTER A VS FIGHTER B"
       const message = `${fighterA} VS ${fighterB}`;
 
-      // Send to N8N webhook
+      // Step 3: Send to N8N webhook
       const response = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -57,7 +69,7 @@ export default function HomePage() {
         }),
       });
 
-      // Capture HTTP 200 OK responses
+      // Step 4: Capture HTTP 200 OK responses
       if (response.status === 200) {
         const responseBody = await response.json();
         const timestamp = new Date().toISOString();
@@ -67,12 +79,13 @@ export default function HomePage() {
           ? responseBody 
           : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
         
-        // Set active article to display
+        // Set active article to display with UFC stats URL
         setActiveArticle({
           content,
           fighterA,
           fighterB,
           timestamp,
+          statsImageUrl: ufcStatsData.searchUrl,
         });
         
         console.log("Fight analysis completed successfully:", message);
@@ -105,6 +118,7 @@ export default function HomePage() {
           fighterA={activeArticle.fighterA}
           fighterB={activeArticle.fighterB}
           timestamp={activeArticle.timestamp}
+          statsImageUrl={activeArticle.statsImageUrl}
           onClose={handleCloseArticle}
         />
       )}

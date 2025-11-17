@@ -9,6 +9,7 @@ interface UFCArticleProps {
   fighterA: string;
   fighterB: string;
   timestamp: string;
+  statsImageUrl?: string;
   onClose: () => void;
 }
 
@@ -17,6 +18,7 @@ export const UFCArticle = ({
   fighterA,
   fighterB,
   timestamp,
+  statsImageUrl,
   onClose,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -125,6 +127,31 @@ export const UFCArticle = ({
               {fighterA.toUpperCase()} <span className="text-white">VS</span> {fighterB.toUpperCase()}
             </h1>
           </header>
+
+          {/* UFC Fighter Stats Section */}
+          {statsImageUrl && (
+            <section className="mb-12 border border-red-600 rounded-lg overflow-hidden bg-gray-900">
+              <div className="p-6">
+                <h2 
+                  className="text-2xl sm:text-3xl font-bold text-white mb-4"
+                  style={{ fontFamily: "var(--font-ufc-heading)" }}
+                >
+                  FIGHTER STATISTICS
+                </h2>
+                <a 
+                  href={statsImageUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                >
+                  View UFC.com Fighter Comparison →
+                </a>
+                <p className="text-gray-400 text-sm mt-4">
+                  Click to view official fighter statistics and matchup data from UFC.com
+                </p>
+              </div>
+            </section>
+          )}
 
           {/* Article Content - Three Blocks */}
           <div className="space-y-12">
