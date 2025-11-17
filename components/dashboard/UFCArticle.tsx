@@ -95,9 +95,9 @@ export const UFCArticle = ({
             </h1>
           </header>
 
-          {/* Article Content - Three Blocks */}
+          {/* Article Content - Four Blocks */}
           <div className="space-y-12">
-            {/* Block 1 */}
+            {/* Block 1 - Odds Analysis */}
             <section>
               <h2
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
@@ -116,13 +116,13 @@ export const UFCArticle = ({
               )}
             </section>
 
-            {/* Block 2 */}
+            {/* Block 2 - Fighters Analysis */}
             <section>
               <h2
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                FIGHTER ANALYSIS
+                FIGHTERS ANALYSIS
               </h2>
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -131,11 +131,11 @@ export const UFCArticle = ({
                   </p>
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No content for FIGHTER ANALYSIS</p>
+                <p className="text-gray-500 italic">No content for FIGHTERS ANALYSIS</p>
               )}
             </section>
 
-            {/* Block 3 */}
+            {/* Block 3 - Sentiment Analysis */}
             <section>
               <h2
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
@@ -151,6 +151,25 @@ export const UFCArticle = ({
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
+              )}
+            </section>
+
+            {/* Block 4 - Final Recommendation */}
+            <section>
+              <h2
+                className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
+              >
+                FINAL RECOMMENDATION
+              </h2>
+              {contentBlocks.block4 ? (
+                <div className="prose prose-invert prose-lg max-w-none">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
+                    {contentBlocks.block4}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">No content for FINAL RECOMMENDATION</p>
               )}
             </section>
           </div>
