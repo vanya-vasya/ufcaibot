@@ -142,9 +142,9 @@ const Pricing = () => {
               )}
 
               {/* Content */}
-              <div className="flex flex-col flex-1 space-y-6">
+              <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className="text-center space-y-2">
+                <div className="text-center space-y-2 mb-6">
                   <h3 
                     className="text-xl font-bold text-white"
                     style={{
@@ -171,52 +171,128 @@ const Pricing = () => {
                   )}
                 </div>
 
-                {/* Price */}
-                {tier.id !== "custom" && (
-                  <div className="text-center space-y-1">
-                    <div 
-                      className="text-4xl font-bold text-white"
-                      style={{
-                        fontFamily: UFC_HEADING_FONT,
-                        fontWeight: fontWeights.bold,
-                        lineHeight: lineHeights.tight,
-                        letterSpacing: letterSpacing.normal,
-                      }}
-                    >
-                      {tier.price}
-                    </div>
-                    {tier.tokens && (
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-center space-x-2">
-                          <p 
-                            className="text-white font-semibold"
-                            style={{
-                              fontFamily: UFC_HEADING_FONT,
-                              fontWeight: fontWeights.semibold,
-                              lineHeight: lineHeights.normal,
-                              letterSpacing: letterSpacing.normal,
-                            }}
-                          >
-                            {tier.tokens}
-                          </p>
-                          {tier.discount && (
-                            <span 
-                              className={`text-xs px-2 py-1 rounded-full ${
-                                tier.discount === "Standard Rate" 
-                                  ? "bg-gray-700 text-gray-300"
-                                  : "bg-white/20 text-white"
-                              }`}
+                {/* Price/Input Section - Fixed height container */}
+                <div className="flex-1 flex items-start mb-6">
+                  {/* Price */}
+                  {tier.id !== "custom" && (
+                    <div className="text-center space-y-1 w-full">
+                      <div 
+                        className="text-4xl font-bold text-white"
+                        style={{
+                          fontFamily: UFC_HEADING_FONT,
+                          fontWeight: fontWeights.bold,
+                          lineHeight: lineHeights.tight,
+                          letterSpacing: letterSpacing.normal,
+                        }}
+                      >
+                        {tier.price}
+                      </div>
+                      {tier.tokens && (
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-center space-x-2">
+                            <p 
+                              className="text-white font-semibold"
                               style={{
                                 fontFamily: UFC_HEADING_FONT,
                                 fontWeight: fontWeights.semibold,
+                                lineHeight: lineHeights.normal,
+                                letterSpacing: letterSpacing.normal,
                               }}
                             >
-                              {tier.discount}
-                            </span>
+                              {tier.tokens}
+                            </p>
+                            {tier.discount && (
+                              <span 
+                                className={`text-xs px-2 py-1 rounded-full ${
+                                  tier.discount === "Standard Rate" 
+                                    ? "bg-gray-700 text-gray-300"
+                                    : "bg-white/20 text-white"
+                                }`}
+                                style={{
+                                  fontFamily: UFC_HEADING_FONT,
+                                  fontWeight: fontWeights.semibold,
+                                }}
+                              >
+                                {tier.discount}
+                              </span>
+                            )}
+                          </div>
+                          {tier.tokenRate && (
+                            <p 
+                              className="text-white/70 text-xs"
+                              style={{
+                                fontFamily: UFC_HEADING_FONT,
+                                fontWeight: fontWeights.normal,
+                                lineHeight: lineHeights.normal,
+                                letterSpacing: letterSpacing.normal,
+                              }}
+                            >
+                              {tier.tokenRate}
+                            </p>
                           )}
                         </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Custom Amount Input */}
+                  {tier.id === "custom" && (
+                    <div className="text-center space-y-1 w-full">
+                      <div className="relative">
+                        <label htmlFor={`custom-amount-${tier.id}`} className="sr-only">
+                          Enter custom amount in pounds
+                        </label>
+                        <span 
+                          className="absolute left-3 top-1/2 transform -translate-y-1/2 font-semibold pointer-events-none" 
+                          style={{ 
+                            color: '#fff',
+                            fontFamily: UFC_HEADING_FONT,
+                          }}
+                        >
+                          £
+                        </span>
+                        <input
+                          id={`custom-amount-${tier.id}`}
+                          type="number"
+                          placeholder="25"
+                          value={customAmount}
+                          onChange={(e) => setCustomAmount(e.target.value)}
+                          className="w-full pl-8 pr-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-[#2a2a2a] focus:outline-none focus:ring-2"
+                          style={{
+                            fontFamily: UFC_HEADING_FONT,
+                            fontWeight: fontWeights.bold,
+                            borderColor: '#666',
+                            color: '#fff',
+                          }}
+                          onFocus={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            target.style.borderColor = '#888';
+                            target.style.boxShadow = '0 0 0 2px rgba(255, 255, 255, 0.2)';
+                          }}
+                          onBlur={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            target.style.borderColor = '#666';
+                            target.style.boxShadow = 'none';
+                          }}
+                          onMouseOver={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            if (document.activeElement !== target) {
+                              target.style.borderColor = '#777';
+                            }
+                          }}
+                          onMouseOut={(e) => {
+                            const target = e.target as HTMLInputElement;
+                            if (document.activeElement !== target) {
+                              target.style.borderColor = '#666';
+                            }
+                          }}
+                          aria-describedby={`token-rate-${tier.id}`}
+                        />
+                      </div>
+                      <div className="space-y-2 mt-2">
                         {tier.tokenRate && (
                           <p 
+                            id={`token-rate-${tier.id}`}
                             className="text-white/70 text-xs"
                             style={{
                               fontFamily: UFC_HEADING_FONT,
@@ -229,85 +305,12 @@ const Pricing = () => {
                           </p>
                         )}
                       </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Custom Amount Input */}
-                {tier.id === "custom" && (
-                  <div className="text-center space-y-1">
-                    <div className="relative">
-                      <label htmlFor={`custom-amount-${tier.id}`} className="sr-only">
-                        Enter custom amount in pounds
-                      </label>
-                      <span 
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 font-semibold pointer-events-none" 
-                        style={{ 
-                          color: '#fff',
-                          fontFamily: UFC_HEADING_FONT,
-                        }}
-                      >
-                        £
-                      </span>
-                      <input
-                        id={`custom-amount-${tier.id}`}
-                        type="number"
-                        placeholder="25"
-                        value={customAmount}
-                        onChange={(e) => setCustomAmount(e.target.value)}
-                        className="w-full pl-8 pr-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-[#2a2a2a] focus:outline-none focus:ring-2"
-                        style={{
-                          fontFamily: UFC_HEADING_FONT,
-                          fontWeight: fontWeights.bold,
-                          borderColor: '#666',
-                          color: '#fff',
-                        }}
-                        onFocus={(e) => {
-                          const target = e.target as HTMLInputElement;
-                          target.style.borderColor = '#888';
-                          target.style.boxShadow = '0 0 0 2px rgba(255, 255, 255, 0.2)';
-                        }}
-                        onBlur={(e) => {
-                          const target = e.target as HTMLInputElement;
-                          target.style.borderColor = '#666';
-                          target.style.boxShadow = 'none';
-                        }}
-                        onMouseOver={(e) => {
-                          const target = e.target as HTMLInputElement;
-                          if (document.activeElement !== target) {
-                            target.style.borderColor = '#777';
-                          }
-                        }}
-                        onMouseOut={(e) => {
-                          const target = e.target as HTMLInputElement;
-                          if (document.activeElement !== target) {
-                            target.style.borderColor = '#666';
-                          }
-                        }}
-                        aria-describedby={`token-rate-${tier.id}`}
-                      />
                     </div>
-                    <div className="space-y-2 mt-2">
-                      {tier.tokenRate && (
-                        <p 
-                          id={`token-rate-${tier.id}`}
-                          className="text-white/70 text-xs"
-                          style={{
-                            fontFamily: UFC_HEADING_FONT,
-                            fontWeight: fontWeights.normal,
-                            lineHeight: lineHeights.normal,
-                            letterSpacing: letterSpacing.normal,
-                          }}
-                        >
-                          {tier.tokenRate}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 {/* CTA */}
-                <div className="mt-auto pt-4">
+                <div className="mt-auto">
                   <Link href="/dashboard">
                     <button
                       className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"

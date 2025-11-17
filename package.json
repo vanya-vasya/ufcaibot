@@ -11,6 +11,8 @@
     "db:init": "node scripts/init-db.js",
     "db:push": "prisma db push",
     "favicon:generate": "node scripts/generate-favicons.js",
+    "deploy": "vercel --no-clipboard",
+    "deploy:prod": "vercel --prod --no-clipboard",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
