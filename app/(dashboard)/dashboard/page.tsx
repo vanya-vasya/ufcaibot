@@ -98,6 +98,29 @@ export default function HomePage() {
     <>
       {showIntro && <AnimatedIntro onComplete={handleIntroComplete} />}
       
+      {/* Fixed Header - Always visible except during intro */}
+      {!showIntro && !activeArticle && (
+        <header
+          className="fixed top-0 left-0 right-0 z-40 bg-black border-b border-white/20"
+          style={{ fontFamily: "var(--font-ufc-heading)" }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16 sm:h-20">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white uppercase tracking-wider">
+                UFC AI Bot
+              </h1>
+              <time className="text-sm sm:text-base text-gray-400">
+                {new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            </div>
+          </div>
+        </header>
+      )}
+      
       {/* Show Article Overlay when active */}
       {activeArticle && (
         <UFCArticle
@@ -114,6 +137,7 @@ export default function HomePage() {
         className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
           activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
+        style={{ paddingTop: !showIntro ? "5rem" : "0" }}
       >
         <div className="w-full max-w-6xl mx-auto">
           {/* Mobile: Stack vertically */}

@@ -62,43 +62,50 @@ export const UFCArticle = ({
         <X className="w-6 h-6 text-white" />
       </button>
 
-      {/* Article Container */}
+      {/* Article Container with proper scroll behavior */}
       <div
         className={`h-full overflow-y-auto transition-transform duration-500 ufc-article-container ${
           isVisible ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ 
-          backgroundColor: '#000000 !important'
+          backgroundColor: '#000000 !important',
+          paddingTop: '200px'
         }}
       >
         <article 
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ufc-article"
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 ufc-article"
           style={{ 
             backgroundColor: '#000000 !important'
           }}
         >
-          {/* Hero Section - Black Background */}
+          {/* Hero Section - Sticky Header */}
           <header 
-            className="mb-8 pb-6 px-6 py-8 ufc-article-header"
+            className="sticky top-0 z-40 pb-6 px-6 py-8 ufc-article-header"
             style={{ 
               backgroundColor: '#000000 !important',
-              background: 'none !important'
+              background: 'none !important',
+              marginTop: '-200px',
+              marginBottom: '2rem'
             }}
           >
-            <h1
-              id="article-title"
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight"
-              style={{ fontFamily: "var(--font-ufc-heading)" }}
-            >
-              {fighterA} <span className="text-white">VS</span> {fighterB}
-            </h1>
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-4">
+              <h1
+                id="article-title"
+                className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight"
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
+              >
+                {fighterA} <span className="text-white">VS</span> {fighterB}
+              </h1>
+              <time 
+                dateTime={timestamp}
+                className="text-gray-400 text-sm sm:text-base whitespace-nowrap flex-shrink-0 self-end sm:self-auto"
+              >
+                {formattedDate}
+              </time>
+            </div>
 
-            <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold">UFC AI Bot</span>
-              </div>
-              <span className="hidden sm:inline">•</span>
-              <time dateTime={timestamp}>{formattedDate}</time>
+            <div className="flex items-center gap-2 text-gray-400 text-sm">
+              <span className="font-semibold">UFC AI Bot</span>
             </div>
           </header>
 
@@ -114,7 +121,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
                     {contentBlocks.block1}
                   </p>
                 </div>
@@ -133,7 +140,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
                     {contentBlocks.block2}
                   </p>
                 </div>
@@ -152,7 +159,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap">
+                  <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-wrap" style={{ textAlign: 'justify' }}>
                     {contentBlocks.block3}
                   </p>
                 </div>
