@@ -42,7 +42,22 @@ export const parseContentBlocks = (text: string): ContentBlocks => {
       .replace(/^\s*:\s*[^\n]+\n/, '') // Remove any other ": Something\n" pattern at start
       .trim();
     
-    return cleaned;
+    // Normalize AI text: remove all technical artifacts
+    return normalizeAiText(cleaned);
+  };
+
+  // Normalize AI-generated text by removing technical artifacts
+  const normalizeAiText = (raw: string): string => {
+    if (!raw) return '';
+    
+    return raw
+      .replace(/\\n/g, ' ')           // Replace escaped \n with space
+      .replace(/\n/g, ' ')            // Replace real newlines with space
+      .replace(/^"+|"+$/g, '')        // Remove leading/trailing quotes
+      .replace(/"}$/g, '')            // Remove trailing "}
+      .replace(/"}/g, '')             // Remove "} anywhere
+      .replace(/\s+/g, ' ')           // Collapse multiple spaces
+      .trim();
   };
 
   // Extract Block 1 content
