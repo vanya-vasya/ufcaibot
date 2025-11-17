@@ -309,21 +309,14 @@ const Pricing = () => {
                 {/* CTA */}
                 <div className="mt-auto pt-4">
                   <Link href="/dashboard">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-300 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-800 hover:to-slate-900"
+                    <button
+                      className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
                       style={{
                         fontFamily: UFC_HEADING_FONT,
-                        fontWeight: fontWeights.bold,
-                        fontSize: '1rem',
-                        lineHeight: lineHeights.snug,
-                        letterSpacing: letterSpacing.normal,
-                        textTransform: 'uppercase',
                       }}
                     >
                       {tier.id === "custom" ? "Choose Amount" : "Begin"}
-                    </motion.button>
+                    </button>
                   </Link>
                 </div>
               </div>
