@@ -17,7 +17,7 @@ export function AnimatedLayout({ children }: { children: React.ReactNode }) {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="sticky top-0 z-50 w-full"
+        className="w-full"
       >
         {children}
       </motion.div>

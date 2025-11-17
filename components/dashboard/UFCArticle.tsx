@@ -73,15 +73,14 @@ export const UFCArticle = ({
         }}
       >
         <article 
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 ufc-article"
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-8 ufc-article"
           style={{ 
-            backgroundColor: '#000000 !important',
-            paddingTop: '220px'
+            backgroundColor: '#000000 !important'
           }}
         >
-          {/* Hero Section - Fixed Header */}
+          {/* Hero Section - Normal Header */}
           <header 
-            className="fixed top-0 left-0 right-0 z-40 pb-6 px-6 py-8 ufc-article-header"
+            className="pb-6 px-6 py-8 ufc-article-header"
             style={{ 
               backgroundColor: '#000000 !important',
               background: 'none !important',
