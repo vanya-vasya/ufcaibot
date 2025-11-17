@@ -42,34 +42,17 @@ export const UFCArticle = ({
   // Parse content into Block 1, Block 2, Block 3
   const contentBlocks = parseContentBlocks(content);
 
-  // Function to render content with bullet points
+  // Function to render content as plain text (no bullet points)
   const renderContentWithBullets = (text: string) => {
     if (!text) return null;
 
-    // Split by bullet point symbol •
-    const parts = text.split('•').filter(part => part.trim());
+    // Remove any bullet point symbols from the text
+    const cleanText = text.replace(/•/g, '').trim();
 
-    // If no bullet points, return as plain text
-    if (parts.length === 1) {
-      return (
-        <p className="text-gray-300 leading-relaxed text-lg" style={{ textAlign: 'justify' }}>
-          {text}
-        </p>
-      );
-    }
-
-    // If there are bullet points, render as list
     return (
-      <ul className="space-y-4 list-none">
-        {parts.map((part, index) => (
-          <li key={index} className="flex items-start">
-            <span className="text-red-600 mr-3 mt-1 flex-shrink-0">•</span>
-            <p className="text-gray-300 leading-relaxed text-lg flex-1" style={{ textAlign: 'justify' }}>
-              {part.trim()}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <p className="text-gray-300 leading-relaxed text-lg" style={{ textAlign: 'justify' }}>
+        {cleanText}
+      </p>
     );
   };
 

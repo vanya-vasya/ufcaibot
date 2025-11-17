@@ -58,6 +58,8 @@ export const parseContentBlocks = (text: string): ContentBlocks => {
       .replace(/"\s*}/g, '')          // Remove " } or "} anywhere (with optional space)
       .replace(/}\s*"$/g, '')         // Remove trailing } " (reverse order)
       .replace(/}\s*"/g, '')          // Remove } " anywhere (reverse order)
+      .replace(/\s*}$/g, '')          // Remove trailing } with any space before
+      .replace(/\s*}\s*/g, '')        // Remove } with spaces around it anywhere
       .replace(/\s+/g, ' ')           // Collapse multiple spaces
       .trim();
   };
