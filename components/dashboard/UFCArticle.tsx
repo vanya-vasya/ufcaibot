@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { parseContentBlocks } from "@/lib/parseContentBlocks";
+import { parseContentBlocks, splitContentByFighters } from "@/lib/parseContentBlocks";
 
 interface UFCArticleProps {
   content: string;
@@ -73,6 +73,49 @@ export const UFCArticle = ({
     );
   };
 
+  // Function to render split content by fighters (UFC.com style)
+  const renderSplitFighterContent = (blockContent: string) => {
+    if (!blockContent) return null;
+
+    // Split content by fighters
+    const split = splitContentByFighters(blockContent, fighterA, fighterB);
+    
+    // If no split detected or both are same, render normally
+    if (!split.fighterA && !split.fighterB) {
+      return renderContentWithBullets(blockContent);
+    }
+
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Fighter A - Red Corner */}
+        {split.fighterA && (
+          <div className="border-2 border-red-600 rounded-lg p-6 bg-gray-900/50">
+            <h3 
+              className="text-xl font-bold text-red-500 mb-4 uppercase"
+              style={{ fontFamily: "var(--font-ufc-heading)" }}
+            >
+              {fighterA}
+            </h3>
+            {renderContentWithBullets(split.fighterA)}
+          </div>
+        )}
+
+        {/* Fighter B - Blue Corner */}
+        {split.fighterB && (
+          <div className="border-2 border-blue-600 rounded-lg p-6 bg-gray-900/50">
+            <h3 
+              className="text-xl font-bold text-blue-500 mb-4 uppercase"
+              style={{ fontFamily: "var(--font-ufc-heading)" }}
+            >
+              {fighterB}
+            </h3>
+            {renderContentWithBullets(split.fighterB)}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div
       className={`fixed inset-0 z-50 transition-opacity duration-300 ufc-article-overlay`}
@@ -138,7 +181,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  {renderContentWithBullets(contentBlocks.block1)}
+                  {renderSplitFighterContent(contentBlocks.block1)}
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for ODDS ANALYSIS</p>
@@ -155,7 +198,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  {renderContentWithBullets(contentBlocks.block2)}
+                  {renderSplitFighterContent(contentBlocks.block2)}
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for FIGHTERS ANALYSIS</p>
@@ -172,7 +215,7 @@ export const UFCArticle = ({
               </h2>
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
-                  {renderContentWithBullets(contentBlocks.block3)}
+                  {renderSplitFighterContent(contentBlocks.block3)}
                 </div>
               ) : (
                 <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>

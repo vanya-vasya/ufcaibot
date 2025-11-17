@@ -1,11 +1,22 @@
 /**
  * Parse content into Block 1, Block 2, and Block 3
  * Extracts text content between block headings
+ * Also splits content by fighter names if detected
  */
+export interface FighterContent {
+  fighterA: string;
+  fighterB: string;
+}
+
 export interface ContentBlocks {
   block1: string;
   block2: string;
   block3: string;
+  fighterSplit?: {
+    block1?: FighterContent;
+    block2?: FighterContent;
+    block3?: FighterContent;
+  };
 }
 
 export const parseContentBlocks = (text: string): ContentBlocks => {
@@ -87,4 +98,64 @@ export const parseContentBlocks = (text: string): ContentBlocks => {
 
   return blocks;
 };
+
+/**
+ * Split content by fighter names
+ * Attempts to identify which parts of text refer to each fighter
+ */
+export function splitContentByFighters(
+  content: string,
+  fighterAName: string,
+  fighterBName: string
+): FighterContent {
+  if (!content) {
+    return { fighterA: '', fighterB: '' };
+  }
+
+  // Split by bullet points first
+  const bullets = content.split('•').filter(b => b.trim());
+  
+  const fighterAContent: string[] = [];
+  const fighterBContent: string[] = [];
+  const sharedContent: string[] = [];
+
+  bullets.forEach(bullet => {
+    const bulletText = bullet.trim();
+    const lowerBullet = bulletText.toLowerCase();
+    const fighterALower = fighterAName.toLowerCase();
+    const fighterBLower = fighterBName.toLowerCase();
+    
+    // Extract last names for better matching
+    const fighterALastName = fighterAName.split(' ').pop()?.toLowerCase() || '';
+    const fighterBLastName = fighterBName.split(' ').pop()?.toLowerCase() || '';
+
+    // Check if bullet mentions fighter A
+    const mentionsFighterA = lowerBullet.includes(fighterALower) || 
+                             lowerBullet.includes(fighterALastName);
+    
+    // Check if bullet mentions fighter B
+    const mentionsFighterB = lowerBullet.includes(fighterBLower) || 
+                             lowerBullet.includes(fighterBLastName);
+
+    if (mentionsFighterA && !mentionsFighterB) {
+      fighterAContent.push(bulletText);
+    } else if (mentionsFighterB && !mentionsFighterA) {
+      fighterBContent.push(bulletText);
+    } else {
+      // If mentions both or neither, add to shared
+      sharedContent.push(bulletText);
+    }
+  });
+
+  // Build final content strings
+  const buildContent = (specific: string[], shared: string[]) => {
+    const parts = [...specific, ...shared];
+    return parts.length > 0 ? parts.join(' • ') : '';
+  };
+
+  return {
+    fighterA: buildContent(fighterAContent, sharedContent),
+    fighterB: buildContent(fighterBContent, sharedContent),
+  };
+}
 
