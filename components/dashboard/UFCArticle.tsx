@@ -9,6 +9,7 @@ interface UFCArticleProps {
   fighterA: string;
   fighterB: string;
   timestamp: string;
+  imageUrl?: string;
   onClose: () => void;
 }
 
@@ -17,15 +18,26 @@ export const UFCArticle = ({
   fighterA,
   fighterB,
   timestamp,
+  imageUrl,
   onClose,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     // Trigger animation after mount
     const timer = setTimeout(() => setIsVisible(true), 50);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Reset image loaded state when imageUrl changes
+    setImageLoaded(false);
+  }, [imageUrl]);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
 
   const handleClose = () => {
     setIsVisible(false);
@@ -108,6 +120,38 @@ export const UFCArticle = ({
               {fighterA.toUpperCase()} <span className="text-white">VS</span> {fighterB.toUpperCase()}
             </h1>
           </header>
+
+          {/* AI Generated Fighter Image */}
+          {imageUrl && (
+            <div className="mb-12 relative">
+              {/* Loading skeleton */}
+              {!imageLoaded && (
+                <div 
+                  className="w-full rounded-lg animate-pulse bg-gray-800"
+                  style={{ 
+                    height: '500px',
+                    border: '2px solid #d4af37'
+                  }}
+                >
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-gray-400 text-lg">Generating fighter image...</p>
+                  </div>
+                </div>
+              )}
+              {/* Actual image */}
+              <img
+                src={imageUrl}
+                alt={`${fighterA} vs ${fighterB} - AI generated matchup`}
+                className={`w-full h-auto rounded-lg transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
+                style={{ 
+                  maxHeight: '500px',
+                  objectFit: 'cover',
+                  border: '2px solid #d4af37'
+                }}
+                onLoad={handleImageLoad}
+              />
+            </div>
+          )}
 
           {/* Article Content - Three Blocks */}
           <div className="space-y-12">

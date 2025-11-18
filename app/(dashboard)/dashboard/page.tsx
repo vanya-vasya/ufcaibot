@@ -13,6 +13,7 @@ interface ArticleData {
   fighterA: string;
   fighterB: string;
   timestamp: string;
+  imageUrl?: string;
 }
 
 export default function HomePage() {
@@ -67,12 +68,40 @@ export default function HomePage() {
           ? responseBody 
           : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
         
+        // Generate AI image of the two fighters
+        let imageUrl: string | undefined;
+        try {
+          console.log("Generating fighter image...");
+          const imageResponse = await fetch('/api/generate-fighter-image', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              fighterA,
+              fighterB,
+            }),
+          });
+
+          if (imageResponse.ok) {
+            const imageData = await imageResponse.json();
+            imageUrl = imageData.imageUrl;
+            console.log("Fighter image generated successfully:", imageUrl);
+          } else {
+            console.error("Failed to generate fighter image:", await imageResponse.text());
+          }
+        } catch (imageError) {
+          console.error("Failed to generate fighter image:", imageError);
+          // Continue without image if generation fails
+        }
+        
         // Set active article to display
         setActiveArticle({
           content,
           fighterA,
           fighterB,
           timestamp,
+          imageUrl,
         });
         
         console.log("Fight analysis completed successfully:", message);
@@ -105,6 +134,7 @@ export default function HomePage() {
           fighterA={activeArticle.fighterA}
           fighterB={activeArticle.fighterB}
           timestamp={activeArticle.timestamp}
+          imageUrl={activeArticle.imageUrl}
           onClose={handleCloseArticle}
         />
       )}
