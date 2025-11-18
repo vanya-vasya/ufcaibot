@@ -32,10 +32,12 @@ export const UFCArticle = ({
 
   useEffect(() => {
     // Reset image loaded state when imageUrl changes
+    console.log("[UFCArticle] Image URL received:", imageUrl);
     setImageLoaded(false);
   }, [imageUrl]);
 
   const handleImageLoad = () => {
+    console.log("[UFCArticle] Image loaded successfully");
     setImageLoaded(true);
   };
 

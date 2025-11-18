@@ -71,7 +71,7 @@ export default function HomePage() {
         // Generate AI image of the two fighters
         let imageUrl: string | undefined;
         try {
-          console.log("Generating fighter image...");
+          console.log("[Dashboard] Starting fighter image generation for:", fighterA, "vs", fighterB);
           const imageResponse = await fetch('/api/generate-fighter-image', {
             method: 'POST',
             headers: {
@@ -83,19 +83,25 @@ export default function HomePage() {
             }),
           });
 
+          console.log("[Dashboard] Image API response status:", imageResponse.status);
+
           if (imageResponse.ok) {
             const imageData = await imageResponse.json();
             imageUrl = imageData.imageUrl;
-            console.log("Fighter image generated successfully:", imageUrl);
+            console.log("[Dashboard] Fighter image generated successfully:", imageUrl);
+            console.log("[Dashboard] Full image response:", imageData);
           } else {
-            console.error("Failed to generate fighter image:", await imageResponse.text());
+            const errorText = await imageResponse.text();
+            console.error("[Dashboard] Failed to generate fighter image. Status:", imageResponse.status);
+            console.error("[Dashboard] Error response:", errorText);
           }
         } catch (imageError) {
-          console.error("Failed to generate fighter image:", imageError);
+          console.error("[Dashboard] Exception while generating fighter image:", imageError);
           // Continue without image if generation fails
         }
         
         // Set active article to display
+        console.log("[Dashboard] Setting article with imageUrl:", imageUrl);
         setActiveArticle({
           content,
           fighterA,
@@ -104,7 +110,7 @@ export default function HomePage() {
           imageUrl,
         });
         
-        console.log("Fight analysis completed successfully:", message);
+        console.log("[Dashboard] Fight analysis completed successfully:", message);
       } else {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
