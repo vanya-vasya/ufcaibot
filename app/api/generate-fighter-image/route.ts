@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create prompt for image generation - UFC athletic style (content-policy safe)
-    const prompt = `Professional sports photography of two athletic MMA competitors ${fighterA} and ${fighterB} in dynamic training pose inside an octagon. One athlete in red athletic shorts, another in yellow athletic shorts, demonstrating professional grappling technique and athletic positioning on the mat. Octagon cage structure visible in background with arena atmosphere. Dramatic sports lighting, photorealistic detail, athletic physiques, sports gloves, professional UFC-style octagon setting. High-quality action sports photography capturing athletic performance and technique. NO TEXT, NO LOGOS, NO LABELS on the image.`;
+    // Create prompt for image generation - UFC champions promotional style
+    const prompt = `Professional UFC promotional photoshoot: Two MMA champions ${fighterA} and ${fighterB} posing side by side in powerful stance. Both athletes shirtless wearing championship belts around waist, MMA gloves on hands, confident poses looking at camera. Dramatic studio lighting with warm golden bronze gradient background. Athletic muscular physiques, tattoos visible, serious intense expressions. Professional sports portrait photography, cinematic lighting, photorealistic detail, champion fighters promotional poster style. Studio backdrop with professional lighting setup. NO TEXT, NO LOGOS, NO LABELS visible on the image.`;
 
     // Generate filename
     const timestamp = Date.now();
