@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create prompt for image generation - UFC champions promotional style
-    const prompt = `Professional UFC promotional photoshoot: Two MMA champions ${fighterA} and ${fighterB} posing side by side in powerful stance. Both athletes shirtless wearing championship belts around waist, MMA gloves on hands, confident poses looking at camera. Dramatic studio lighting with warm golden bronze gradient background. Athletic muscular physiques, tattoos visible, serious intense expressions. Professional sports portrait photography, cinematic lighting, photorealistic detail, champion fighters promotional poster style. Studio backdrop with professional lighting setup. NO TEXT, NO LOGOS, NO LABELS visible on the image.`;
+    // Create prompt for image generation - UFC aerial octagon view
+    const prompt = `Aerial top-down view of UFC octagon during live event: Two MMA athletes ${fighterA} and ${fighterB} positioned in the center of the octagon mat with referee between them. Epic bird's eye perspective showing the complete octagon cage from above, white canvas mat visible, cage fence surrounding the fighting area. Massive crowd of spectators visible around the entire octagon perimeter, arena atmosphere with dramatic overhead lighting. Professional sports photography from elevated angle, photorealistic detail, dynamic composition showing scale of the event. Athletes in athletic shorts with MMA gloves, octagon logos on mat. NO TEXT, NO VISIBLE LABELS on the main image content.`;
 
     // Generate filename
     const timestamp = Date.now();
