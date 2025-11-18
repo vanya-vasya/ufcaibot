@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create prompt for image generation
-    const prompt = `Two professional MMA fighters facing off in a promotional style photo. On the left is ${fighterA}, on the right is ${fighterB}. Both fighters are shirtless, wearing plain black shorts, standing in fighting stance against a pure black background. Professional photography style, dramatic lighting, high quality, realistic, photorealistic. NO TEXT, NO LOGOS, NO LABELS, NO WATERMARKS, clean image.`;
+    // Create prompt for image generation - UFC action style
+    const prompt = `Realistic UFC fight action photo: Two professional MMA fighters ${fighterA} and ${fighterB} engaged in intense ground fighting inside the octagon cage. One fighter in red/maroon shorts performing a grappling technique on another fighter in yellow/gold shorts. Dynamic ground combat position, showing wrestling control and submission attempt. Cage fence visible in background with blurred crowd. Professional sports photography, dramatic arena lighting, high action intensity, photorealistic detail. Show athletic physiques, fighting gloves, authentic UFC octagon environment. NO TEXT, NO LOGOS, NO LABELS on the image itself, clean action shot.`;
 
     // Generate filename
     const timestamp = Date.now();
