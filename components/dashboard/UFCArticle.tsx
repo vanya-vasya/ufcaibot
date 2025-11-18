@@ -129,10 +129,9 @@ export const UFCArticle = ({
               {/* Loading skeleton */}
               {!imageLoaded && (
                 <div 
-                  className="w-full rounded-lg animate-pulse bg-gray-800"
+                  className="w-full animate-pulse bg-gray-800"
                   style={{ 
-                    height: '500px',
-                    border: '2px solid #d4af37'
+                    height: '500px'
                   }}
                 >
                   <div className="flex items-center justify-center h-full">
@@ -144,11 +143,10 @@ export const UFCArticle = ({
               <img
                 src={imageUrl}
                 alt={`${fighterA} vs ${fighterB} - AI generated matchup`}
-                className={`w-full h-auto rounded-lg transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
+                className={`w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
                 style={{ 
                   maxHeight: '500px',
-                  objectFit: 'cover',
-                  border: '2px solid #d4af37'
+                  objectFit: 'cover'
                 }}
                 onLoad={handleImageLoad}
               />

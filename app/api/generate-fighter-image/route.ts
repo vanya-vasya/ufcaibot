@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create prompt for image generation
-    const prompt = `Two professional UFC fighters facing off in a UFC promotional style photo. On the left is ${fighterA}, on the right is ${fighterB}. Both fighters are shirtless, wearing UFC shorts, standing in fighting stance against a dark black background. Professional UFC photography style, dramatic lighting, high quality, realistic, photorealistic.`;
+    const prompt = `Two professional MMA fighters facing off in a promotional style photo. On the left is ${fighterA}, on the right is ${fighterB}. Both fighters are shirtless, wearing plain black shorts, standing in fighting stance against a pure black background. Professional photography style, dramatic lighting, high quality, realistic, photorealistic. NO TEXT, NO LOGOS, NO LABELS, NO WATERMARKS, clean image.`;
 
     // Generate filename
     const timestamp = Date.now();
