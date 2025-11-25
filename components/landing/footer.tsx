@@ -39,12 +39,12 @@ const importantLinks = [
 
 const companyDetails = [
   {
-    name: "Company: QUICK FIT LTD",
+    name: "Company: DIGIDROP SP.Z.O.O",
     icon: Building2,
     ariaLabel: "Company name",
   },
   {
-    name: "Company Number: 15995367",
+    name: "KRS: 0001185058",
     icon: FileCheck,
     ariaLabel: "Company registration number",
   },
@@ -54,7 +54,7 @@ const companyDetails = [
     ariaLabel: "Email contact",
   },
   {
-    name: `DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA`,
+    name: `ALEJA JANA PAWŁA II 27, 00-867 WARSZAWA`,
     icon: MapPinned,
     ariaLabel: "Business address",
   },
