@@ -66,14 +66,14 @@ const FighterImage = ({ src, alt }: { src: string; alt: string }) => {
 };
 
 // Single fight card component
-const FightCardItem = ({ card, showEventNumber }: { card: FightCard; showEventNumber: boolean }) => {
+const FightCardItem = ({ card, showEventNumber, showUpNext }: { card: FightCard; showEventNumber: boolean; showUpNext?: boolean }) => {
   const ufcHeadingFont = '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 md:px-8 py-4 relative">
-      {/* Event number - big on left/right */}
+      {/* Event number or UP NEXT - big on left/right */}
       {showEventNumber && (
-        <div className="absolute left-0 top-0 bottom-0 flex items-center justify-center w-16 sm:w-20 md:w-24 lg:w-28">
+        <div className={`absolute left-0 top-0 bottom-0 flex items-center justify-center ${showUpNext ? 'w-32 sm:w-40 md:w-48 lg:w-56' : 'w-16 sm:w-20 md:w-24 lg:w-28'}`}>
           <span
             className="text-black font-bold"
             style={{
@@ -83,13 +83,13 @@ const FightCardItem = ({ card, showEventNumber }: { card: FightCard; showEventNu
               letterSpacing: letterSpacing.tight,
             }}
           >
-            {card.eventNumber}
+            {showUpNext ? "UP NEXT" : card.eventNumber}
           </span>
         </div>
       )}
 
       {/* Left side - Two fighter images */}
-      <div className={`flex items-center gap-1 sm:gap-2 shrink-0 ${showEventNumber ? 'ml-16 sm:ml-20 md:ml-24 lg:ml-28' : ''}`}>
+      <div className={`flex items-center gap-1 sm:gap-2 shrink-0 ${showEventNumber ? (showUpNext ? 'ml-24 sm:ml-32 md:ml-40 lg:ml-48' : 'ml-16 sm:ml-20 md:ml-24 lg:ml-28') : ''}`}>
         <FighterImage src={card.fighter1Image} alt={card.fighter1Name} />
         <FighterImage src={card.fighter2Image} alt={card.fighter2Name} />
       </div>
@@ -164,7 +164,7 @@ const Features = () => {
             <div className="flex-1 h-full flex items-center bg-white overflow-hidden">
               {/* Left fight card */}
               <div className="flex-1 h-full flex items-center relative">
-                <FightCardItem card={fightCards[0]} showEventNumber={true} />
+                <FightCardItem card={fightCards[0]} showEventNumber={true} showUpNext={true} />
               </div>
 
               {/* Right fight card */}
