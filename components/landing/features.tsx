@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { fontSizes, fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
 
 // Fight card data type
@@ -33,14 +34,14 @@ const fightCards: FightCard[] = [
   },
   {
     id: 2,
-    fighter1Name: "Fighter 1",
-    fighter2Name: "Fighter 2",
-    title: "TODO: INSERT PROVIDED TEXT",
-    datetime: "TODO: Date / Time / Card Type",
-    venue: "TODO: Venue Name",
-    location: "TODO: City, State Country",
-    fighter1Image: "/images/fighters/fighter-324.png",
-    fighter2Image: "/images/fighters/fighter-325.png",
+    fighter1Name: "Volkanovski",
+    fighter2Name: "Lopes",
+    title: "VOLKANOVSKI VS LOPES 2",
+    datetime: "Sun, Feb 1 / 6:00 AM GMT+4 / Main Card",
+    venue: "Qudos Bank Arena",
+    location: "Sydney Olympic Park NSW  Australia",
+    fighter1Image: "/images/fighters/fighter-volkanovski.png",
+    fighter2Image: "/images/fighters/fighter-lopes.png",
     eventNumber: "325",
   },
 ];
@@ -154,41 +155,41 @@ const Features = () => {
       className="relative w-full bg-white"
       aria-label="Upcoming UFC Fights"
     >
-      {/* Container */}
-      <div className="relative w-full h-[100px] sm:h-[120px] md:h-[150px] lg:h-[180px]">
-        {/* Content wrapper */}
-        <div className="absolute inset-0 flex items-center">
-          {/* Fight cards container */}
-          <div className="flex-1 h-full flex items-center bg-white overflow-hidden">
-            {/* Left fight card */}
-            <div className="flex-1 h-full flex items-center border-r border-gray-200 relative">
-              <FightCardItem card={fightCards[0]} showEventNumber={true} />
-            </div>
+      <Link href="/dashboard" className="block w-full">
+        {/* Container */}
+        <div className="relative w-full h-[100px] sm:h-[120px] md:h-[150px] lg:h-[180px] cursor-pointer">
+          {/* Content wrapper */}
+          <div className="absolute inset-0 flex items-center">
+            {/* Fight cards container */}
+            <div className="flex-1 h-full flex items-center bg-white overflow-hidden">
+              {/* Left fight card */}
+              <div className="flex-1 h-full flex items-center relative">
+                <FightCardItem card={fightCards[0]} showEventNumber={true} />
+              </div>
 
-            {/* Right fight card */}
-            <div className="flex-1 h-full flex items-center relative">
-              <FightCardItem card={fightCards[1]} showEventNumber={true} />
+              {/* Right fight card */}
+              <div className="flex-1 h-full flex items-center relative">
+                <FightCardItem card={fightCards[1]} showEventNumber={true} />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* UP NEXT label - small, positioned at top */}
-        <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10">
-          <span
-            className="text-black font-bold text-xs sm:text-sm"
-            style={{
-              fontFamily: ufcHeadingFont,
-              fontWeight: fontWeights.bold,
-              fontSize: fontSizes.xs.value,
-              lineHeight: lineHeights.snug,
-              letterSpacing: letterSpacing.wide,
-              textTransform: "uppercase",
-            }}
-          >
-            UP NEXT
-          </span>
+          {/* UP NEXT label - same size and style as event numbers */}
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 h-full flex items-start justify-center pt-2 z-10">
+            <span
+              className="text-black font-bold"
+              style={{
+                fontFamily: ufcHeadingFont,
+                fontSize: "4rem",
+                lineHeight: lineHeights.none,
+                letterSpacing: letterSpacing.tight,
+              }}
+            >
+              UP NEXT
+            </span>
+          </div>
         </div>
-      </div>
+      </Link>
     </section>
   );
 };
