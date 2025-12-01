@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "reactAs";
+import { useState, useCallback } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { FighterInput } from "@/components/dashboard/FighterInput";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
