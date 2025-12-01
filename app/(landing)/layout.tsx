@@ -1,7 +1,6 @@
 import { GuestMobileSidebar } from '@/components/guest-mobile-sidebar';
 import Footer from '@/components/landing/footer';
 import Header from '@/components/landing/header';
-import OddsSlider from '@/components/landing/odds-slider';
 import { cn } from '@/lib/utils';
 import { Nunito } from 'next/font/google';
 
@@ -17,7 +16,6 @@ const LandingLayout = ({ children }: { children: React.ReactNode; }) => {
       <>
       <main className={cn("bg-white text-[#A1AAC9] overflow-x-hidden h-full flex flex-col justify-between", nunito.className)}>
           <Header/>
-          <OddsSlider />
             {children}
           <Footer/> 
       </main>
