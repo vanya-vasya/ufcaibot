@@ -74,17 +74,44 @@ const FightCardItem = ({ card, showEventNumber, showUpNext }: { card: FightCard;
       {/* Event number or UP NEXT - big on left/right */}
       {showEventNumber && (
         <div className={`absolute left-0 top-0 bottom-0 flex items-center justify-center ${showUpNext ? 'w-40 sm:w-52 md:w-64 lg:w-72' : 'w-16 sm:w-20 md:w-24 lg:w-28'}`}>
-          <span
-            className="text-black font-bold"
-            style={{
-              fontFamily: ufcHeadingFont,
-              fontSize: "4rem",
-              lineHeight: lineHeights.none,
-              letterSpacing: letterSpacing.tight,
-            }}
-          >
-            {showUpNext ? `UP NEXT ${card.eventNumber}` : card.eventNumber}
-          </span>
+          {showUpNext ? (
+            <div className="flex flex-col items-center justify-center">
+              <span
+                className="text-black font-bold"
+                style={{
+                  fontFamily: ufcHeadingFont,
+                  fontSize: "4rem",
+                  lineHeight: lineHeights.none,
+                  letterSpacing: letterSpacing.tight,
+                }}
+              >
+                UP NEXT
+              </span>
+              <span
+                className="text-black font-bold"
+                style={{
+                  fontFamily: ufcHeadingFont,
+                  fontSize: "4rem",
+                  lineHeight: lineHeights.none,
+                  letterSpacing: letterSpacing.tight,
+                }}
+              >
+                {card.eventNumber}
+              </span>
+            </div>
+          ) : (
+            <span
+              className="text-black font-bold"
+              style={{
+                fontFamily: ufcHeadingFont,
+                fontSize: "4rem",
+                lineHeight: lineHeights.none,
+                letterSpacing: letterSpacing.tight,
+              }}
+            >
+              {card.eventNumber}
+            </span>
+          )}
         </div>
       )}
 
@@ -169,7 +196,7 @@ const Features = () => {
 
               {/* Right fight card */}
               <div className="flex-1 h-full flex items-center relative">
-                <FightCardItem card={fightCards[1]} showEventNumber={true} />
+                <FightCardItem card={fightCards[1]} showEventNumber={true} showUpNext={true} />
               </div>
             </div>
           </div>
