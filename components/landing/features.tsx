@@ -71,9 +71,9 @@ const FightCardItem = ({ card, showEventNumber, showUpNext }: { card: FightCard;
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 md:px-8 py-4 relative">
-      {/* Event number or UP NEXT - big on right */}
+      {/* Event number or UP NEXT - big on left/right */}
       {showEventNumber && (
-        <div className={`absolute right-0 top-0 bottom-0 flex items-center justify-center ${showUpNext ? 'w-40 sm:w-52 md:w-64 lg:w-72' : 'w-16 sm:w-20 md:w-24 lg:w-28'}`}>
+        <div className={`absolute left-0 top-0 bottom-0 flex items-center justify-center ${showUpNext ? 'w-40 sm:w-52 md:w-64 lg:w-72' : 'w-16 sm:w-20 md:w-24 lg:w-28'}`}>
           {showUpNext ? (
             <div className="flex flex-col items-center justify-center">
               <span
@@ -116,7 +116,7 @@ const FightCardItem = ({ card, showEventNumber, showUpNext }: { card: FightCard;
       )}
 
       {/* Left side - Two fighter images */}
-      <div className={`flex items-center gap-1 sm:gap-2 shrink-0 ${showEventNumber ? (showUpNext ? 'mr-40 sm:mr-52 md:mr-64 lg:mr-72' : 'mr-16 sm:mr-20 md:mr-24 lg:mr-28') : ''}`}>
+      <div className={`flex items-center gap-1 sm:gap-2 shrink-0 ${showEventNumber ? (showUpNext ? 'ml-40 sm:ml-52 md:ml-64 lg:ml-72' : 'ml-16 sm:ml-20 md:ml-24 lg:ml-28') : ''}`}>
         <FighterImage src={card.fighter1Image} alt={card.fighter1Name} />
         <FighterImage src={card.fighter2Image} alt={card.fighter2Name} />
       </div>
@@ -200,7 +200,6 @@ const Features = () => {
               </div>
             </div>
           </div>
-
         </div>
       </Link>
     </section>
