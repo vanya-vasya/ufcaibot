@@ -462,3 +462,42 @@ describe("OddsSlider Edge Cases", () => {
   });
 });
 
+// ============================================================================
+// LAYOUT & VISIBILITY TESTS (Regression prevention for flexbox collapse bug)
+// ============================================================================
+
+describe("OddsSlider Layout & Visibility", () => {
+  it("should have shrink-0 class to prevent flexbox collapse", () => {
+    render(<OddsSlider />);
+    
+    const section = screen.getByRole("region");
+    // The section should have the shrink-0 Tailwind class
+    expect(section.className).toContain("shrink-0");
+  });
+
+  it("should have odds-slider-section class for styling", () => {
+    render(<OddsSlider />);
+    
+    const section = screen.getByRole("region");
+    expect(section.className).toContain("odds-slider-section");
+  });
+
+  it("should have id='odds-slider' for CSS targeting", () => {
+    render(<OddsSlider />);
+    
+    const section = screen.getByRole("region");
+    expect(section).toHaveAttribute("id", "odds-slider");
+  });
+
+  it("should render visible content with LIVE label and fight items", () => {
+    render(<OddsSlider />);
+    
+    // LIVE label should be present
+    expect(screen.getByText("LIVE")).toBeInTheDocument();
+    
+    // Fight items should be present
+    const items = screen.getAllByRole("listitem");
+    expect(items.length).toBeGreaterThan(0);
+  });
+});
+

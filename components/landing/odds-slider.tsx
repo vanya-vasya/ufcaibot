@@ -210,7 +210,7 @@ const OddsSlider = ({ oddsData = sampleOddsData }: OddsSliderProps) => {
   return (
     <section
       id="odds-slider"
-      className="odds-slider-section"
+      className="odds-slider-section shrink-0"
       aria-label="Live betting odds ticker"
       role="region"
     >
@@ -237,6 +237,9 @@ const OddsSlider = ({ oddsData = sampleOddsData }: OddsSliderProps) => {
           width: 100%;
           background-color: #000000;
           overflow: hidden;
+          /* Prevent flexbox collapse in parent layout */
+          flex-shrink: 0;
+          min-height: 44px;
         }
 
         .odds-slider-container {
