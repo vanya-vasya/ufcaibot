@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
-import { FighterInput } from "@/components/dashboard/FighterInput";
 import { EventSelector } from "@/components/dashboard/EventSelector";
+import { FightSelector } from "@/components/dashboard/FightSelector";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 
@@ -11,6 +11,23 @@ const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923
 
 // Available UFC events for selection
 const UFC_EVENTS = ["UFC 324", "UFC 325"];
+
+// Fights available for each UFC event
+const UFC_FIGHTS: Record<string, string[]> = {
+  "UFC 324": [
+    "JUSTIN GAETHJE VS PADDY PIMBLETT",
+    "KAYLA HARRISON VS AMANDA NUNES",
+    "SEAN O'MALLEY VS SONG YADONG",
+    "WALDO CORTES ACOSTA VS DERRICK LEWIS",
+    "ARNOLD ALLEN VS JEAN SILVA",
+    "ALEXA GRASSO VS ROSE NAMAJUNAS",
+    "UMAR NURMAGOMEDOV VS DEIVESON FIGUEIREDO",
+    "ATEBA GAUTIER VS ANDREY PULYAEV",
+  ],
+  "UFC 325": [
+    "ALEXANDER VOLKANOVSKI VS DIEGO LOPES",
+  ],
+};
 
 interface ArticleData {
   content: string;
@@ -24,9 +41,25 @@ export default function HomePage() {
   const [showIntro, setShowIntro] = useState(true);
   // Events selector - default to first event
   const [selectedEvent, setSelectedEvent] = useState(UFC_EVENTS[0]);
-  const [fighterB, setFighterB] = useState("");
+  // Fights selector - will be populated based on selected event
+  const [selectedFight, setSelectedFight] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeArticle, setActiveArticle] = useState<ArticleData | null>(null);
+
+  // Get available fights for the currently selected event
+  const availableFights = useMemo(() => {
+    return UFC_FIGHTS[selectedEvent] || [];
+  }, [selectedEvent]);
+
+  // Reset selected fight when event changes (select first fight of new event)
+  useEffect(() => {
+    const fights = UFC_FIGHTS[selectedEvent] || [];
+    if (fights.length > 0) {
+      setSelectedFight(fights[0]);
+    } else {
+      setSelectedFight("");
+    }
+  }, [selectedEvent]);
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
@@ -36,23 +69,38 @@ export default function HomePage() {
     setSelectedEvent(value);
   }, []);
 
-  const handleFighterBChange = useCallback((value: string) => {
-    setFighterB(value);
+  const handleFightChange = useCallback((value: string) => {
+    setSelectedFight(value);
   }, []);
 
+  /**
+   * Handle Fight button click
+   * IMPORTANT: Only uses data from the Fights panel (selectedFight)
+   * Does NOT use any data from the Events panel
+   */
   const handleFightClick = useCallback(async () => {
-    if (!selectedEvent || !fighterB) {
-      console.log("Event and fighter name are required");
+    // Only check for selectedFight - ignoring Events panel
+    if (!selectedFight) {
+      console.log("Please select a fight");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Construct message with event and fighter
-      const message = `${selectedEvent}: ${fighterB}`;
+      // ONLY use the selected fight - ignore Events panel entirely
+      const message = selectedFight;
 
-      // Send to N8N webhook
+      // Parse fighters from the fight string (format: "FIGHTER A VS FIGHTER B")
+      const fighters = selectedFight.split(" VS ");
+      const fighterA = fighters[0]?.trim() || "";
+      const fighterB = fighters[1]?.trim() || "";
+
+      console.log("[Dashboard] Sending fight analysis for:", message);
+      console.log("[Dashboard] Fighter A:", fighterA);
+      console.log("[Dashboard] Fighter B:", fighterB);
+
+      // Send to N8N webhook - ONLY fight data, no event data
       const response = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -60,8 +108,9 @@ export default function HomePage() {
         },
         body: JSON.stringify({
           message,
-          event: selectedEvent,
-          fighter: fighterB,
+          fight: selectedFight,
+          fighterA,
+          fighterB,
         }),
       });
 
@@ -75,17 +124,17 @@ export default function HomePage() {
           ? responseBody 
           : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
         
-        // Generate AI image of the fighter
+        // Generate AI image of the fighters
         let imageUrl: string | undefined;
         try {
-          console.log("[Dashboard] Starting fighter image generation for:", selectedEvent, fighterB);
+          console.log("[Dashboard] Starting fighter image generation for:", fighterA, "vs", fighterB);
           const imageResponse = await fetch('/api/generate-fighter-image', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              fighterA: selectedEvent,
+              fighterA,
               fighterB,
             }),
           });
@@ -96,7 +145,6 @@ export default function HomePage() {
             const imageData = await imageResponse.json();
             imageUrl = imageData.imageUrl;
             console.log("[Dashboard] Fighter image generated successfully:", imageUrl);
-            console.log("[Dashboard] Full image response:", imageData);
           } else {
             const errorText = await imageResponse.text();
             console.error("[Dashboard] Failed to generate fighter image. Status:", imageResponse.status);
@@ -108,16 +156,15 @@ export default function HomePage() {
         }
         
         // Set active article to display
-        console.log("[Dashboard] Setting article with imageUrl:", imageUrl);
         setActiveArticle({
           content,
-          fighterA: selectedEvent,
+          fighterA,
           fighterB,
           timestamp,
           imageUrl,
         });
         
-        console.log("[Dashboard] Analysis completed successfully:", message);
+        console.log("[Dashboard] Analysis completed successfully for:", message);
       } else {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
@@ -128,12 +175,13 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedEvent, fighterB]);
+  }, [selectedFight]);
 
   const handleCloseArticle = useCallback(() => {
     setActiveArticle(null);
     setSelectedEvent(UFC_EVENTS[0]);
-    setFighterB("");
+    const firstFight = UFC_FIGHTS[UFC_EVENTS[0]]?.[0] || "";
+    setSelectedFight(firstFight);
   }, []);
 
   return (
@@ -171,20 +219,20 @@ export default function HomePage() {
             <VSEmblem 
               className="mx-auto my-4" 
               onClick={handleFightClick}
-              disabled={isLoading}
+              disabled={isLoading || !selectedFight}
               isLoading={isLoading}
             />
             
-            <FighterInput
-              label="Fighter B"
-              value={fighterB}
-              onChange={handleFighterBChange}
-              placeholder="Enter Fighter B Name"
+            <FightSelector
+              label="Fights"
+              fights={availableFights}
+              value={selectedFight}
+              onChange={handleFightChange}
             />
           </div>
 
           {/* Desktop: Side by side */}
-          <div className="hidden lg:flex items-center gap-12">
+          <div className="hidden lg:flex items-start gap-12">
             <div className="flex-1">
               <EventSelector
                 label="Events"
@@ -195,18 +243,18 @@ export default function HomePage() {
             </div>
 
             <VSEmblem 
-              className="flex-shrink-0 px-6" 
+              className="flex-shrink-0 px-6 mt-10" 
               onClick={handleFightClick}
-              disabled={isLoading}
+              disabled={isLoading || !selectedFight}
               isLoading={isLoading}
             />
 
             <div className="flex-1">
-              <FighterInput
-                label="Fighter B"
-                value={fighterB}
-                onChange={handleFighterBChange}
-                placeholder="Enter Fighter B Name"
+              <FightSelector
+                label="Fights"
+                fights={availableFights}
+                value={selectedFight}
+                onChange={handleFightChange}
               />
             </div>
           </div>
