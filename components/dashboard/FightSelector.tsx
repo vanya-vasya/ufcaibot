@@ -33,7 +33,7 @@ export const FightSelector = ({
       options={fights}
       value={value}
       onChange={onChange}
-      placeholder="Select a fight..."
+      placeholder="Choose Fight"
       clearable={true}
       searchable={fights.length >= 5}
       searchThreshold={5}
