@@ -71,52 +71,48 @@ const FightCardItem = ({ card, showEventNumber, showUpNext }: { card: FightCard;
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 md:gap-8 px-4 sm:px-6 md:px-8 py-4 relative">
-      {/* Event number or UP NEXT - big on left/right */}
+      {/* UFC Event number badge - styled like official UFC logo */}
       {showEventNumber && (
-        <div className={`absolute left-0 top-0 bottom-0 flex items-center justify-center ${showUpNext ? 'w-40 sm:w-52 md:w-64 lg:w-72' : 'w-16 sm:w-20 md:w-24 lg:w-28'}`}>
-          {showUpNext ? (
-            <div className="flex flex-col items-center justify-center">
-              <span
-                className="text-black font-bold"
-                style={{
-                  fontFamily: ufcHeadingFont,
-                  fontSize: "4rem",
-                  lineHeight: lineHeights.none,
-                  letterSpacing: letterSpacing.tight,
-                }}
-              >
-                UP NEXT
-              </span>
-              <span
-                className="text-black font-bold"
-                style={{
-                  fontFamily: ufcHeadingFont,
-                  fontSize: "4rem",
-                  lineHeight: lineHeights.none,
-                  letterSpacing: letterSpacing.tight,
-                }}
-              >
-                {card.eventNumber}
-              </span>
-            </div>
-          ) : (
+        <div className={`absolute left-0 top-0 bottom-0 flex items-center justify-center ${showUpNext ? 'w-32 sm:w-40 md:w-48 lg:w-56' : 'w-16 sm:w-20 md:w-24 lg:w-28'}`}>
+          <div 
+            className="flex flex-col items-center justify-center"
+            style={{
+              transform: "skewX(-8deg)",
+            }}
+          >
+            {/* UFC Text */}
             <span
-              className="text-black font-bold"
+              className="text-black font-black tracking-tighter"
               style={{
                 fontFamily: ufcHeadingFont,
-                fontSize: "4rem",
-                lineHeight: lineHeights.none,
-                letterSpacing: letterSpacing.tight,
+                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+                lineHeight: "0.9",
+                letterSpacing: "-0.02em",
+                fontStyle: "italic",
+              }}
+            >
+              UFC
+            </span>
+            {/* Event Number */}
+            <span
+              className="text-black font-black tracking-tighter"
+              style={{
+                fontFamily: ufcHeadingFont,
+                fontSize: "clamp(1.25rem, 3vw, 2rem)",
+                lineHeight: "1",
+                letterSpacing: "-0.01em",
+                fontStyle: "italic",
+                marginTop: "-2px",
               }}
             >
               {card.eventNumber}
             </span>
-          )}
+          </div>
         </div>
       )}
 
       {/* Left side - Two fighter images */}
-      <div className={`flex items-center gap-1 sm:gap-2 shrink-0 ${showEventNumber ? (showUpNext ? 'ml-40 sm:ml-52 md:ml-64 lg:ml-72' : 'ml-16 sm:ml-20 md:ml-24 lg:ml-28') : ''}`}>
+      <div className={`flex items-center gap-1 sm:gap-2 shrink-0 ${showEventNumber ? (showUpNext ? 'ml-32 sm:ml-40 md:ml-48 lg:ml-56' : 'ml-16 sm:ml-20 md:ml-24 lg:ml-28') : ''}`}>
         <FighterImage src={card.fighter1Image} alt={card.fighter1Name} />
         <FighterImage src={card.fighter2Image} alt={card.fighter2Name} />
       </div>
