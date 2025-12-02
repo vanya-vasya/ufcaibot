@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { parseContentBlocks } from "@/lib/parseContentBlocks";
+import { AnalysisInfographic } from "./AnalysisInfographic";
+import { FighterComparisonInfographic } from "./FighterComparisonInfographic";
 
 interface UFCArticleProps {
   content: string;
@@ -156,7 +158,7 @@ export const UFCArticle = ({
             </div>
           )}
 
-          {/* Article Content - Three Blocks */}
+          {/* Article Content - Three Blocks with Infographics */}
           <div className="space-y-12">
             {/* Block 1 - Odds Analysis */}
             <section>
@@ -166,6 +168,12 @@ export const UFCArticle = ({
               >
                 ODDS ANALYSIS
               </h2>
+              {/* Odds Infographic - Before text */}
+              <AnalysisInfographic
+                type="odds"
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block1)}
@@ -183,6 +191,17 @@ export const UFCArticle = ({
               >
                 FIGHTERS ANALYSIS
               </h2>
+              {/* Fighter Comparison Infographic - Before text */}
+              <FighterComparisonInfographic
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
+              {/* Fighters Analysis Bar Infographic */}
+              <AnalysisInfographic
+                type="fighters"
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block2)}
@@ -200,6 +219,12 @@ export const UFCArticle = ({
               >
                 SENTIMENT ANALYSIS
               </h2>
+              {/* Sentiment Infographic - Before text */}
+              <AnalysisInfographic
+                type="sentiment"
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block3)}
