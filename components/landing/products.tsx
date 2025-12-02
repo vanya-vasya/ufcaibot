@@ -262,7 +262,7 @@ const Products = () => {
       </div>
 
       {/* Fighter Profile Section - "Every Round. Every Pattern" */}
-      <div className="bg-[#1c1c1c]">
+      <div className="bg-[#0a0a0a]">
         {/* Fighter Cards Container - Self-contained with proper flow */}
         <div className="relative w-full min-h-screen">
           {/* Fighter Image - Right side, contained within section */}
@@ -288,8 +288,8 @@ const Products = () => {
                         priority
                         sizes="(max-width: 1024px) 100vw, 60vw"
                       />
-                      {/* Gradient overlay from left */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#1c1c1c] via-[#1c1c1c]/80 to-transparent pointer-events-none" />
+                      {/* Gradient overlay from left - matching Live Odds block style */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[rgba(10,10,10,0.72)] lg:via-[rgba(10,10,10,0.54)] to-transparent pointer-events-none" />
                     </div>
                   </motion.div>
                 )
