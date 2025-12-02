@@ -374,6 +374,42 @@ const Products = () => {
 
       {/* Fighter Profile Section */}
       <div className="relative bg-[#1c1c1c] min-h-screen overflow-hidden">
+        {/* Content Container - Matching Product Block Styling */}
+        <div className="relative z-10 w-full">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="max-w-7xl mx-auto"
+            >
+              <div className="lg:w-[55%] xl:w-[50%] space-y-6 lg:space-y-8 py-16 lg:py-24">
+                <div className="space-y-6">
+                  <h3 
+                    className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
+                    style={{ 
+                      color: '#ffffff',
+                      fontFamily: ufcHeadingFont
+                    }}
+                  >
+                    Every Round. Every Pattern
+                  </h3>
+                  
+                  <div className="space-y-4">
+                    <p 
+                      className="text-base md:text-lg lg:text-xl leading-relaxed text-white"
+                      style={{ fontFamily: ufcHeadingFont }}
+                    >
+                      Fighter history rebuilt into prediction fuel: opponent quality, style matchups, pace, and finishing threats
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
         {/* Fighter Cards Container */}
         <div className="relative h-screen min-h-[700px] md:min-h-[750px] lg:min-h-[800px]">
           <AnimatePresence mode="wait">
