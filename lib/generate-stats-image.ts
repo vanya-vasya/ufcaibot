@@ -309,6 +309,4 @@ export const generateStatsImageBase64 = async (
   return { success: true, dataUrl };
 };
 
-// Export types
-export type { StatsImageInput, BarData, GeneratedImageResult };
 
