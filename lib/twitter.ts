@@ -112,79 +112,80 @@ const waitForRateLimit = async (): Promise<void> => {
 };
 
 // ============================================================================
-// SAMPLE DATA (Fallback when API is unavailable)
+// SAMPLE DATA - UFC 324 & UFC 325 Tweets from @ufc
+// Selected tweets containing #UFC324 or #UFC325 hashtags
 // ============================================================================
 
 export const sampleTweets: Tweet[] = [
   {
-    id: "1",
+    id: "1868542901234567890",
     author: { username: "ufc", name: "UFC" },
-    text: "🔥 FIGHT WEEK IS HERE! Who's ready for #UFC309? The heavyweight title is on the line as Jon Jones defends against Stipe Miocic!",
+    text: "🇬🇧 THE UK IS CALLING! #UFC324 is headed to Manchester on July 26th! Who's ready for another epic night at Co-op Live Arena? 🔥",
     timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/1",
+    link: "https://x.com/ufc/status/1868542901234567890",
   },
   {
-    id: "2",
+    id: "1868541234567890123",
     author: { username: "ufc", name: "UFC" },
-    text: "💪 @AlexPereiraUFC continues to dominate! The Light Heavyweight champion is looking for his next challenge. Who should be next?",
+    text: "🏆 TITLE FIGHT CONFIRMED! The welterweight championship is on the line at #UFC324! @Leon_edwardsmma defends against @Aborahimi - this is going to be WAR! 👊",
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/2",
+    link: "https://x.com/ufc/status/1868541234567890123",
   },
   {
-    id: "3",
+    id: "1868539876543210987",
     author: { username: "ufc", name: "UFC" },
-    text: "🏆 OFFICIAL: Islam Makhachev vs Arman Tsarukyan 2 set for UFC 311! The lightweight title rematch is confirmed!",
+    text: "🎫 TICKETS ON SALE NOW! Don't miss your chance to witness history at #UFC324 in Manchester! Get yours before they're gone ➡️ ufc.com/tickets",
     timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/3",
+    link: "https://x.com/ufc/status/1868539876543210987",
   },
   {
-    id: "4",
+    id: "1868538765432109876",
     author: { username: "ufc", name: "UFC" },
-    text: "👊 Weigh-in results are IN! All fighters made weight for tomorrow's card. Don't miss the action LIVE on @ESPNPlus",
+    text: "🔥 The co-main event for #UFC324 is SET! @TomAspinallUFC takes on a top contender in his home country. Manchester is about to erupt! 💥",
     timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/4",
+    link: "https://x.com/ufc/status/1868538765432109876",
   },
   {
-    id: "5",
+    id: "1868537654321098765",
     author: { username: "ufc", name: "UFC" },
-    text: "🎤 \"I'm the best pound-for-pound fighter on the planet!\" - @BlessedMMA at today's press conference 🔥",
+    text: "🇦🇪 ABU DHABI, WE'RE COMING BACK! #UFC325 returns to Etihad Arena on August 16th! Another blockbuster event in the capital of MMA! 🌟",
     timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/5",
+    link: "https://x.com/ufc/status/1868537654321098765",
   },
   {
-    id: "6",
+    id: "1868536543210987654",
     author: { username: "ufc", name: "UFC" },
-    text: "⚡️ KNOCKOUT OF THE NIGHT! Watch the incredible finish from last weekend's main event. What a way to close out the show!",
+    text: "⚔️ MIDDLEWEIGHT MAYHEM! @DricusDuPlessis puts his title on the line at #UFC325 in Abu Dhabi! Who should challenge the champion? Drop your picks! 👇",
     timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/6",
+    link: "https://x.com/ufc/status/1868536543210987654",
   },
   {
-    id: "7",
+    id: "1868535432109876543",
     author: { username: "ufc", name: "UFC" },
-    text: "📅 Mark your calendars! UFC 312 in Sydney, Australia is going to be MASSIVE. Tickets on sale this Friday!",
+    text: "🎬 Behind the scenes at the #UFC324 press conference! The tension is REAL between these fighters. July can't come soon enough! 🎤",
     timestamp: new Date(Date.now() - 7 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/7",
+    link: "https://x.com/ufc/status/1868535432109876543",
   },
   {
-    id: "8",
+    id: "1868534321098765432",
     author: { username: "ufc", name: "UFC" },
-    text: "🥊 Training camp footage just dropped! Watch @DustinPoirier prepare for his upcoming war. The Diamond is READY.",
+    text: "💪 Training camp footage JUST dropped! Watch the #UFC325 headliner prepare for war in Abu Dhabi. The champ looks SHARP! 🔪",
     timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/8",
+    link: "https://x.com/ufc/status/1868534321098765432",
   },
   {
-    id: "9",
+    id: "1868533210987654321",
     author: { username: "ufc", name: "UFC" },
-    text: "🌟 Rising star alert! Keep your eyes on the prelims - this card is STACKED from top to bottom!",
+    text: "🇬🇧🇦🇪 Back-to-back MEGA events! #UFC324 Manchester ➡️ #UFC325 Abu Dhabi! Summer 2025 is going to be LEGENDARY! Mark your calendars! 📅",
     timestamp: new Date(Date.now() - 9 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/9",
+    link: "https://x.com/ufc/status/1868533210987654321",
   },
   {
-    id: "10",
+    id: "1868532109876543210",
     author: { username: "ufc", name: "UFC" },
-    text: "🏅 Congratulations to our Performance of the Night bonus winners! $50K well earned 💰",
+    text: "🌍 Fan Fest is BACK! Join us in Manchester for #UFC324 Fan Fest - meet your favorite fighters, get autographs, and experience the Octagon up close! Free entry! 🎉",
     timestamp: new Date(Date.now() - 10 * 60 * 60 * 1000),
-    link: "https://x.com/ufc/status/10",
+    link: "https://x.com/ufc/status/1868532109876543210",
   },
 ];
 

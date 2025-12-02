@@ -170,9 +170,8 @@ describe("TwitterSlider Component", () => {
       render(<TwitterSlider />);
       
       // Check that sample tweets are rendered (they're duplicated for infinite scroll)
-      // Look for content from first sample tweet
-      const firstSampleText = sampleTweets[0].text.substring(0, 50);
-      expect(screen.getByText((content) => content.includes("FIGHT WEEK"))).toBeInTheDocument();
+      // Look for content from first sample tweet containing #UFC324 or #UFC325
+      expect(screen.getByText((content) => content.includes("#UFC324") || content.includes("Manchester"))).toBeInTheDocument();
     });
   });
 
