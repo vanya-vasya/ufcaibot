@@ -35,26 +35,7 @@ interface ArticleData {
   fighterB: string;
   timestamp: string;
   imageUrl?: string;
-  statsImageUrl?: string;
 }
-
-// Helper function to get stats image URL from fight name
-const getStatsImageUrl = (fight: string): string => {
-  // Map fight names to their corresponding image files
-  const fightImageMap: Record<string, string> = {
-    "JUSTIN GAETHJE VS PADDY PIMBLETT": "/generated-fighters/gaethje-vs-pimblett.png",
-    "KAYLA HARRISON VS AMANDA NUNES": "/generated-fighters/harrison-vs-nunes.png",
-    "SEAN O'MALLEY VS SONG YADONG": "/generated-fighters/o-malley-vs-yadong.png",
-    "WALDO CORTES ACOSTA VS DERRICK LEWIS": "/generated-fighters/acosta-vs-lewis.png",
-    "ARNOLD ALLEN VS JEAN SILVA": "/generated-fighters/allen-vs-silva.png",
-    "ALEXA GRASSO VS ROSE NAMAJUNAS": "/generated-fighters/grasso-vs-namajunas.png",
-    "UMAR NURMAGOMEDOV VS DEIVESON FIGUEIREDO": "/generated-fighters/nurmagomedov-vs-figueiredo.png",
-    "ATEBA GAUTIER VS ANDREY PULYAEV": "/generated-fighters/gautier-vs-pulyaev.png",
-    "ALEXANDER VOLKANOVSKI VS DIEGO LOPES": "/generated-fighters/volkanovski-vs-lopes.png",
-  };
-  
-  return fightImageMap[fight] || "";
-};
 
 export default function HomePage() {
   const [showIntro, setShowIntro] = useState(true);
@@ -174,10 +155,6 @@ export default function HomePage() {
           // Continue without image if generation fails
         }
         
-        // Get the stats image URL for this fight
-        const statsImageUrl = getStatsImageUrl(selectedFight);
-        console.log("[Dashboard] Stats image URL:", statsImageUrl);
-        
         // Set active article to display
         setActiveArticle({
           content,
@@ -185,7 +162,6 @@ export default function HomePage() {
           fighterB,
           timestamp,
           imageUrl,
-          statsImageUrl,
         });
         
         console.log("[Dashboard] Analysis completed successfully for:", message);
@@ -220,7 +196,6 @@ export default function HomePage() {
           fighterB={activeArticle.fighterB}
           timestamp={activeArticle.timestamp}
           imageUrl={activeArticle.imageUrl}
-          statsImageUrl={activeArticle.statsImageUrl}
           onClose={handleCloseArticle}
         />
       )}

@@ -36,23 +36,13 @@ if (fs.existsSync(apiRoutePath)) {
   console.log('   ❌ API route not found:', apiRoutePath);
 }
 
-// 3. Check output directory
-console.log('\n3️⃣ Checking output directory...');
-const outputDir = path.join(__dirname, 'public', 'generated-fighters');
-if (fs.existsSync(outputDir)) {
-  console.log('   ✅ Output directory exists:', outputDir);
-  const files = fs.readdirSync(outputDir);
-  console.log('   📁 Files in directory:', files.length);
-  files.forEach(file => {
-    const stats = fs.statSync(path.join(outputDir, file));
-    const sizeMB = (stats.size / 1024 / 1024).toFixed(2);
-    console.log(`      - ${file} (${sizeMB} MB)`);
-  });
+// 3. Check public directory
+console.log('\n3️⃣ Checking public directory...');
+const publicDir = path.join(__dirname, 'public');
+if (fs.existsSync(publicDir)) {
+  console.log('   ✅ Public directory exists:', publicDir);
 } else {
-  console.log('   ⚠️  Output directory does not exist');
-  console.log('   Creating directory...');
-  fs.mkdirSync(outputDir, { recursive: true });
-  console.log('   ✅ Directory created');
+  console.log('   ❌ Public directory not found');
 }
 
 // 4. Check components
