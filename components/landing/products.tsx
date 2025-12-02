@@ -20,7 +20,7 @@ const fighterProfiles = [
       submissions: 1,
       firstRoundFinishes: 3,
     },
-    image: "/images/fighters/fighter-324.png",
+    image: "/images/fighters/fighter-petr-yan.png",
   },
   {
     id: 2,
@@ -69,18 +69,18 @@ const fighterProfiles = [
   },
   {
     id: 5,
-    ranking: "#8 Welterweight Division",
+    ranking: "#5 Lightweight Division",
     status: "Active",
-    nickname: "BORZ",
-    name: "KHAMZAT CHIMAEV",
-    division: "Welterweight Division",
-    record: "14-0-0 (W-L-D)",
+    nickname: "THE BADDY",
+    name: "PADDY PIMBLETT",
+    division: "Lightweight Division",
+    record: "23-3-0 (W-L-D)",
     stats: {
-      knockouts: 6,
-      submissions: 6,
-      firstRoundFinishes: 10,
+      knockouts: 7,
+      submissions: 10,
+      firstRoundFinishes: 9,
     },
-    image: "/images/fighters/fighter-324.png",
+    image: "/images/fighters/fighter-pimblett.png",
   },
 ];
 
