@@ -15,6 +15,11 @@ NEXT_PUBLIC_CLERK_SIGN_IN_URL="/sign-in"
 NEXT_PUBLIC_CLERK_SIGN_UP_URL="/sign-up"
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL="/dashboard"
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL="/dashboard"
+
+# Twitter/X API (Optional - for live tweet fetching)
+# Get your Bearer Token from https://developer.twitter.com
+# Without this, sample/demo tweets will be displayed
+TWITTER_BEARER_TOKEN="your_twitter_bearer_token_here"
 ```
 
 ## Production Database Setup
