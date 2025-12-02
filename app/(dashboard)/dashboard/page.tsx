@@ -3,10 +3,14 @@
 import { useState, useCallback } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { FighterInput } from "@/components/dashboard/FighterInput";
+import { EventSelector } from "@/components/dashboard/EventSelector";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
+
+// Available UFC events for selection
+const UFC_EVENTS = ["UFC 324", "UFC 325"];
 
 interface ArticleData {
   content: string;
@@ -18,7 +22,8 @@ interface ArticleData {
 
 export default function HomePage() {
   const [showIntro, setShowIntro] = useState(true);
-  const [fighterA, setFighterA] = useState("");
+  // Events selector - default to first event
+  const [selectedEvent, setSelectedEvent] = useState(UFC_EVENTS[0]);
   const [fighterB, setFighterB] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeArticle, setActiveArticle] = useState<ArticleData | null>(null);
@@ -27,8 +32,8 @@ export default function HomePage() {
     setShowIntro(false);
   }, []);
 
-  const handleFighterAChange = useCallback((value: string) => {
-    setFighterA(value);
+  const handleEventChange = useCallback((value: string) => {
+    setSelectedEvent(value);
   }, []);
 
   const handleFighterBChange = useCallback((value: string) => {
@@ -36,16 +41,16 @@ export default function HomePage() {
   }, []);
 
   const handleFightClick = useCallback(async () => {
-    if (!fighterA || !fighterB) {
-      console.log("Both fighter names are required");
+    if (!selectedEvent || !fighterB) {
+      console.log("Event and fighter name are required");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Construct simple message: "FIGHTER A VS FIGHTER B"
-      const message = `${fighterA} VS ${fighterB}`;
+      // Construct message with event and fighter
+      const message = `${selectedEvent}: ${fighterB}`;
 
       // Send to N8N webhook
       const response = await fetch(N8N_WEBHOOK_URL, {
@@ -55,6 +60,8 @@ export default function HomePage() {
         },
         body: JSON.stringify({
           message,
+          event: selectedEvent,
+          fighter: fighterB,
         }),
       });
 
@@ -68,17 +75,17 @@ export default function HomePage() {
           ? responseBody 
           : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
         
-        // Generate AI image of the two fighters
+        // Generate AI image of the fighter
         let imageUrl: string | undefined;
         try {
-          console.log("[Dashboard] Starting fighter image generation for:", fighterA, "vs", fighterB);
+          console.log("[Dashboard] Starting fighter image generation for:", selectedEvent, fighterB);
           const imageResponse = await fetch('/api/generate-fighter-image', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              fighterA,
+              fighterA: selectedEvent,
               fighterB,
             }),
           });
@@ -104,13 +111,13 @@ export default function HomePage() {
         console.log("[Dashboard] Setting article with imageUrl:", imageUrl);
         setActiveArticle({
           content,
-          fighterA,
+          fighterA: selectedEvent,
           fighterB,
           timestamp,
           imageUrl,
         });
         
-        console.log("[Dashboard] Fight analysis completed successfully:", message);
+        console.log("[Dashboard] Analysis completed successfully:", message);
       } else {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
@@ -121,11 +128,11 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [fighterA, fighterB]);
+  }, [selectedEvent, fighterB]);
 
   const handleCloseArticle = useCallback(() => {
     setActiveArticle(null);
-    setFighterA("");
+    setSelectedEvent(UFC_EVENTS[0]);
     setFighterB("");
   }, []);
 
@@ -154,11 +161,11 @@ export default function HomePage() {
         <div className="w-full max-w-6xl mx-auto">
           {/* Mobile: Stack vertically */}
           <div className="flex flex-col lg:hidden space-y-6">
-            <FighterInput
-              label="Fighter A"
-              value={fighterA}
-              onChange={handleFighterAChange}
-              placeholder="Enter Fighter A Name"
+            <EventSelector
+              label="Events"
+              events={UFC_EVENTS}
+              value={selectedEvent}
+              onChange={handleEventChange}
             />
             
             <VSEmblem 
@@ -179,11 +186,11 @@ export default function HomePage() {
           {/* Desktop: Side by side */}
           <div className="hidden lg:flex items-center gap-12">
             <div className="flex-1">
-              <FighterInput
-                label="Fighter A"
-                value={fighterA}
-                onChange={handleFighterAChange}
-                placeholder="Enter Fighter A Name"
+              <EventSelector
+                label="Events"
+                events={UFC_EVENTS}
+                value={selectedEvent}
+                onChange={handleEventChange}
               />
             </div>
 
