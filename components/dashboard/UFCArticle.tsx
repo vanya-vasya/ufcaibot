@@ -10,6 +10,7 @@ interface UFCArticleProps {
   fighterB: string;
   timestamp: string;
   imageUrl?: string;
+  statsImageUrl?: string;
   onClose: () => void;
 }
 
@@ -19,10 +20,12 @@ export const UFCArticle = ({
   fighterB,
   timestamp,
   imageUrl,
+  statsImageUrl,
   onClose,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [statsImageLoaded, setStatsImageLoaded] = useState(false);
 
   useEffect(() => {
     // Trigger animation after mount
@@ -205,6 +208,40 @@ export const UFCArticle = ({
                 <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
               )}
             </section>
+
+            {/* Stats Analysis Image - After Sentiment Analysis */}
+            {statsImageUrl && (
+              <section className="mt-12">
+                <div className="relative rounded-2xl overflow-hidden">
+                  {/* Loading skeleton */}
+                  {!statsImageLoaded && (
+                    <div 
+                      className="w-full animate-pulse bg-gray-800 rounded-2xl"
+                      style={{ 
+                        aspectRatio: '1/1',
+                        maxWidth: '800px',
+                        margin: '0 auto'
+                      }}
+                    >
+                      <div className="flex items-center justify-center h-full">
+                        <p className="text-gray-400 text-lg">Loading analysis image...</p>
+                      </div>
+                    </div>
+                  )}
+                  {/* Stats Image */}
+                  <img
+                    src={statsImageUrl}
+                    alt={`${fighterA} vs ${fighterB} - Analysis Statistics`}
+                    className={`w-full h-auto mx-auto transition-opacity duration-500 rounded-2xl ${statsImageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
+                    style={{ 
+                      maxWidth: '800px',
+                      display: 'block'
+                    }}
+                    onLoad={() => setStatsImageLoaded(true)}
+                  />
+                </div>
+              </section>
+            )}
           </div>
 
           {/* Footer */}
