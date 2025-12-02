@@ -174,7 +174,7 @@ const FighterProfileCard = ({
           className="text-lg md:text-xl lg:text-2xl italic text-[#d4af37] mb-2 md:mb-4 font-bold tracking-wide"
           style={{ fontFamily: '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif' }}
         >
-          "{fighter.nickname}"
+          &ldquo;{fighter.nickname}&rdquo;
         </motion.p>
 
         {/* Fighter Name */}
