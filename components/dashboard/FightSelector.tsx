@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback } from "react";
+import { DropdownSelect } from "./DropdownSelect";
 
 /**
- * Fight Selector - Clickable fight options matching EventSelector design
- * Clean, frameless design with same styling as Events panel
+ * Fight Selector - Dropdown select for UFC fights
+ * Uses the unified DropdownSelect component with search enabled for large lists
  */
 
 interface FightSelectorProps {
@@ -27,100 +27,20 @@ export const FightSelector = ({
   onChange,
   id,
 }: FightSelectorProps) => {
-  const inputId = id || `fight-selector-${label.toLowerCase().replace(/\s+/g, "-")}`;
-
-  /**
-   * Handle click on a fight option
-   */
-  const handleFightClick = useCallback(
-    (fight: string) => {
-      onChange(fight);
-    },
-    [onChange]
-  );
-
-  /**
-   * Handle keyboard navigation for accessibility
-   */
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, fight: string) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onChange(fight);
-      }
-    },
-    [onChange]
-  );
-
   return (
-    <div
-      className="flex flex-col space-y-3 w-full"
-      data-testid={`fight-selector-${label.toLowerCase().replace(/\s+/g, "-")}`}
-    >
-      {/* Label - matches EventSelector label styling */}
-      <label
-        id={`${inputId}-label`}
-        className="text-lg md:text-xl font-semibold text-white dark:text-white"
-        style={{
-          fontFamily: "var(--font-ufc-heading)",
-          letterSpacing: "0.02em",
-        }}
-      >
-        {label}
-      </label>
-
-      {/* Fight options - simple clickable text items matching Events design */}
-      <div
-        role="listbox"
-        aria-labelledby={`${inputId}-label`}
-        aria-activedescendant={`${inputId}-option-${fights.indexOf(value)}`}
-        className="flex flex-col"
-      >
-        {fights.map((fight, index) => {
-          const isSelected = fight === value;
-          
-          return (
-            <div
-              key={fight}
-              id={`${inputId}-option-${index}`}
-              role="option"
-              aria-selected={isSelected}
-              tabIndex={0}
-              onClick={() => handleFightClick(fight)}
-              onKeyDown={(e) => handleKeyDown(e, fight)}
-              className={`
-                px-4 py-3 cursor-pointer transition-all duration-200 ease-out
-                focus:outline-none focus:ring-2 focus:ring-zinc-500/50 rounded-lg
-                ${isSelected 
-                  ? "text-white" 
-                  : "text-zinc-500 hover:text-zinc-300"
-                }
-              `}
-              style={{
-                fontFamily: "var(--font-ufc-heading)",
-                letterSpacing: "0.02em",
-              }}
-            >
-              <span className="text-lg md:text-xl font-semibold">
-                {fight}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* ARIA live region for screen readers */}
-      <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="sr-only"
-      >
-        {`Selected: ${value}`}
-      </div>
-    </div>
+    <DropdownSelect
+      label={label}
+      options={fights}
+      value={value}
+      onChange={onChange}
+      placeholder="Select a fight..."
+      clearable={true}
+      searchable={fights.length >= 5}
+      searchThreshold={5}
+      id={id}
+      testId={`fight-selector-${label.toLowerCase().replace(/\s+/g, "-")}`}
+    />
   );
 };
 
 export default FightSelector;
-
