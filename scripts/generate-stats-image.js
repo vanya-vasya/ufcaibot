@@ -101,10 +101,21 @@ function generateStatsSVG(input) {
     `;
   }).join('\n');
 
+  // Calculate font size based on name length
+  const getFighterFontSize = (name) => {
+    if (!name) return 28;
+    if (name.length > 18) return 20;
+    if (name.length > 14) return 24;
+    return 28;
+  };
+  
+  const fighterAFontSize = getFighterFontSize(fighterA);
+  const fighterBFontSize = getFighterFontSize(fighterB);
+
   const fighterNamesSection = (fighterA || fighterB) ? `
     <text x="${cardX + 80}" y="${cardY + 140}" 
           font-family="Arial Black, sans-serif" 
-          font-size="32" 
+          font-size="${fighterAFontSize}" 
           font-weight="bold"
           fill="${redColor}">
       ${fighterA || 'FIGHTER A'}
@@ -112,7 +123,7 @@ function generateStatsSVG(input) {
     <text x="${cardX + cardWidth - 80}" y="${cardY + 140}" 
           text-anchor="end"
           font-family="Arial Black, sans-serif" 
-          font-size="32" 
+          font-size="${fighterBFontSize}" 
           font-weight="bold"
           fill="${blueColor}">
       ${fighterB || 'FIGHTER B'}
@@ -166,10 +177,10 @@ function generateStatsSVG(input) {
     <text x="${width / 2}" y="${cardY + 100}" 
           text-anchor="middle"
           font-family="Arial Black, sans-serif" 
-          font-size="42" 
+          font-size="${title.length > 25 ? 30 : title.length > 20 ? 36 : 42}" 
           font-weight="bold"
           fill="${textColor}"
-          letter-spacing="4">
+          letter-spacing="${title.length > 25 ? 2 : 4}">
       ${title.toUpperCase()}
     </text>
   </g>
