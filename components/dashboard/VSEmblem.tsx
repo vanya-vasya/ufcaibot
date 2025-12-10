@@ -105,9 +105,9 @@ export const VSEmblem = ({
         `}</style>
       </button>
 
-      {/* Typewriter phrases - positioned 1cm (40px) below "ANALYZING" */}
+      {/* Typewriter phrases - positioned 2cm (80px) below "ANALYZING" */}
       <div 
-        className="mt-10 min-h-[2rem] w-full max-w-md"
+        className="mt-20 min-h-[2rem] w-full max-w-md"
         data-testid="typewriter-phrases-container"
       >
         <TypewriterPhrases
