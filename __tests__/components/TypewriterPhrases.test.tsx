@@ -84,7 +84,6 @@ describe('TypewriterPhrases Component', () => {
           isActive={true}
           phrases={['ABC']}
           charDelay={50}
-          totalDuration={5000}
         />
       );
 
@@ -103,7 +102,6 @@ describe('TypewriterPhrases Component', () => {
           isActive={true}
           phrases={['A long phrase to type']}
           charDelay={50}
-          totalDuration={10000}
         />
       );
 
@@ -120,24 +118,24 @@ describe('TypewriterPhrases Component', () => {
   });
 
   describe('callback', () => {
-    it('should call onComplete when animation finishes', () => {
-      const onComplete = jest.fn();
+    it('should call onCycleComplete when a full cycle finishes', () => {
+      const onCycleComplete = jest.fn();
       render(
         <TypewriterPhrases
           isActive={true}
-          phrases={testPhrases}
-          totalDuration={500}
+          phrases={['AB', 'CD']}
           charDelay={10}
-          onComplete={onComplete}
+          displayDuration={50}
+          onCycleComplete={onCycleComplete}
         />
       );
 
-      // Advance past total duration
+      // Advance through full cycle
       act(() => {
-        jest.advanceTimersByTime(600);
+        jest.advanceTimersByTime(2000);
       });
 
-      expect(onComplete).toHaveBeenCalled();
+      expect(onCycleComplete).toHaveBeenCalled();
     });
   });
 
@@ -205,6 +203,27 @@ describe('TypewriterPhrases Component', () => {
 
       // Unmount should not throw
       expect(() => unmount()).not.toThrow();
+    });
+  });
+
+  describe('infinite cycling', () => {
+    it('should continue cycling through phrases indefinitely', () => {
+      render(
+        <TypewriterPhrases
+          isActive={true}
+          phrases={['A', 'B']}
+          charDelay={10}
+          displayDuration={50}
+        />
+      );
+
+      // Advance through multiple cycles
+      act(() => {
+        jest.advanceTimersByTime(5000);
+      });
+
+      // Should still be active
+      expect(screen.getByTestId('typewriter-phrases')).toBeInTheDocument();
     });
   });
 });

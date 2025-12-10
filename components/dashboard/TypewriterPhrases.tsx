@@ -7,14 +7,12 @@ export interface TypewriterPhrasesProps {
   isActive: boolean;
   /** Optional custom phrases list */
   phrases?: readonly TypewriterPhrase[];
-  /** Total duration for animation cycle (ms) - default 5000 */
-  totalDuration?: number;
-  /** Time to display completed phrase (ms) - default 300 */
+  /** Time to display completed phrase (ms) - default 400 */
   displayDuration?: number;
-  /** Delay between characters (ms) - default 30 */
+  /** Delay between characters (ms) - default 25 */
   charDelay?: number;
-  /** Callback when animation completes */
-  onComplete?: () => void;
+  /** Callback when a full cycle completes */
+  onCycleComplete?: () => void;
   /** Additional CSS classes */
   className?: string;
   /** Test ID for testing */
@@ -24,26 +22,23 @@ export interface TypewriterPhrasesProps {
 /**
  * TypewriterPhrases - Displays phrases with typewriter effect
  * 
- * Used below the Fight button during loading to show analysis status.
- * Shows phrases in random order, one at a time, with character-by-character typing.
+ * Cycles through all phrases in random order, then reshuffles and repeats indefinitely.
  */
 export const TypewriterPhrases = ({
   isActive,
   phrases = DEFAULT_ANALYSIS_PHRASES,
-  totalDuration = 5000,
-  displayDuration = 300,
-  charDelay = 30,
-  onComplete,
+  displayDuration = 400,
+  charDelay = 25,
+  onCycleComplete,
   className = "",
   testId = "typewriter-phrases",
 }: TypewriterPhrasesProps) => {
   const { displayText, isTyping } = useTypewriterPhrases({
     isActive,
     phrases,
-    totalDuration,
     displayDuration,
     charDelay,
-    onComplete,
+    onCycleComplete,
   });
 
   if (!isActive && !displayText) {

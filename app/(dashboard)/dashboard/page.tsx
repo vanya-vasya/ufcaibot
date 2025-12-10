@@ -7,6 +7,7 @@ import { FightSelector } from "@/components/dashboard/FightSelector";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
+import { TypewriterPhrases } from "@/components/dashboard/TypewriterPhrases";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -220,54 +221,29 @@ export default function HomePage() {
         {activeTab === "upcoming" && (
           /* Fighter Input UI - Hidden when article is active */
           <div
-            className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
+            className={`min-h-screen flex flex-col bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
               activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
             }`}
           >
-            <div className="w-full max-w-6xl mx-auto">
-              {/* Mobile: Stack vertically */}
-              <div className="flex flex-col lg:hidden space-y-6">
-                <EventSelector
-                  label="Events"
-                  events={UFC_EVENTS}
-                  value={selectedEvent}
-                  onChange={handleEventChange}
-                />
-                
-                <VSEmblem 
-                  className="mx-auto my-4" 
-                  onClick={handleFightClick}
-                  disabled={isLoading || !selectedFight}
-                  isLoading={isLoading}
-                />
-                
-                <FightSelector
-                  label="Fights"
-                  fights={availableFights}
-                  value={selectedFight}
-                  onChange={handleFightChange}
-                />
-              </div>
-
-              {/* Desktop: Side by side */}
-              <div className="hidden lg:flex items-start gap-12">
-                <div className="flex-1">
+            {/* Main content area - centered */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-full max-w-6xl mx-auto">
+                {/* Mobile: Stack vertically */}
+                <div className="flex flex-col lg:hidden space-y-6">
                   <EventSelector
                     label="Events"
                     events={UFC_EVENTS}
                     value={selectedEvent}
                     onChange={handleEventChange}
                   />
-                </div>
-
-                <VSEmblem 
-                  className="flex-shrink-0 px-6 mt-10" 
-                  onClick={handleFightClick}
-                  disabled={isLoading || !selectedFight}
-                  isLoading={isLoading}
-                />
-
-                <div className="flex-1">
+                  
+                  <VSEmblem 
+                    className="mx-auto my-4" 
+                    onClick={handleFightClick}
+                    disabled={isLoading || !selectedFight}
+                    isLoading={isLoading}
+                  />
+                  
                   <FightSelector
                     label="Fights"
                     fights={availableFights}
@@ -275,7 +251,43 @@ export default function HomePage() {
                     onChange={handleFightChange}
                   />
                 </div>
+
+                {/* Desktop: Side by side */}
+                <div className="hidden lg:flex items-start gap-12">
+                  <div className="flex-1">
+                    <EventSelector
+                      label="Events"
+                      events={UFC_EVENTS}
+                      value={selectedEvent}
+                      onChange={handleEventChange}
+                    />
+                  </div>
+
+                  <VSEmblem 
+                    className="flex-shrink-0 px-6 mt-10" 
+                    onClick={handleFightClick}
+                    disabled={isLoading || !selectedFight}
+                    isLoading={isLoading}
+                  />
+
+                  <div className="flex-1">
+                    <FightSelector
+                      label="Fights"
+                      fights={availableFights}
+                      value={selectedFight}
+                      onChange={handleFightChange}
+                    />
+                  </div>
+                </div>
               </div>
+            </div>
+
+            {/* Typewriter phrases - positioned at bottom, separate from selectors */}
+            <div className="w-full max-w-2xl mx-auto pb-8">
+              <TypewriterPhrases
+                isActive={isLoading}
+                className="min-h-[3rem]"
+              />
             </div>
           </div>
         )}

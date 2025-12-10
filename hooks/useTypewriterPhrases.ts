@@ -33,16 +33,14 @@ export type TypewriterPhrase = string;
 export interface UseTypewriterPhrasesOptions {
   /** List of phrases to display */
   phrases?: readonly TypewriterPhrase[];
-  /** Total duration for the entire animation cycle (ms) */
-  totalDuration?: number;
   /** Time to display completed phrase before clearing (ms) */
   displayDuration?: number;
   /** Delay between characters (ms) */
   charDelay?: number;
   /** Whether the animation is active */
   isActive: boolean;
-  /** Callback when animation completes or is cancelled */
-  onComplete?: () => void;
+  /** Callback when a full cycle completes (all phrases shown once) */
+  onCycleComplete?: () => void;
 }
 
 export interface UseTypewriterPhrasesReturn {
@@ -52,10 +50,10 @@ export interface UseTypewriterPhrasesReturn {
   currentPhrase: string;
   /** Index of current phrase in the shuffled list */
   phraseIndex: number;
+  /** Number of completed cycles */
+  cycleCount: number;
   /** Whether currently typing characters */
   isTyping: boolean;
-  /** Whether animation has completed (all phrases shown or timed out) */
-  isComplete: boolean;
   /** Reset the animation state */
   reset: () => void;
   /** Force stop the animation */
@@ -75,39 +73,36 @@ const shuffleArray = <T,>(array: readonly T[]): T[] => {
 };
 
 /**
- * Hook for displaying typewriter-style phrases with timing control
+ * Hook for displaying typewriter-style phrases with infinite cycling
  * 
  * Features:
- * - Random phrase order (no repeats)
+ * - Random phrase order (no repeats within a cycle)
  * - Character-by-character typing effect
  * - Configurable timing
  * - Auto-cleanup and cancellation
- * - Keeps last phrase visible if list exhausted
+ * - Infinite cycling: after all phrases shown, reshuffles and starts new cycle
  */
 export const useTypewriterPhrases = ({
   phrases = DEFAULT_ANALYSIS_PHRASES,
-  totalDuration = 5000,
-  displayDuration = 300,
-  charDelay = 30,
+  displayDuration = 400,
+  charDelay = 25,
   isActive,
-  onComplete,
+  onCycleComplete,
 }: UseTypewriterPhrasesOptions): UseTypewriterPhrasesReturn => {
   const [displayText, setDisplayText] = useState("");
   const [currentPhrase, setCurrentPhrase] = useState("");
   const [phraseIndex, setPhraseIndex] = useState(0);
+  const [cycleCount, setCycleCount] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
-  const [isComplete, setIsComplete] = useState(false);
 
   // Refs for cleanup and state tracking
   const shuffledPhrasesRef = useRef<string[]>([]);
-  const shownPhrasesRef = useRef<Set<number>>(new Set());
+  const currentPhraseIndexRef = useRef(0);
   const charIndexRef = useRef(0);
   const typingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const displayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const globalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const startTimeRef = useRef<number>(0);
   const isActiveRef = useRef(isActive);
-  const onCompleteRef = useRef(onComplete);
+  const onCycleCompleteRef = useRef(onCycleComplete);
 
   // Keep refs in sync
   useEffect(() => {
@@ -115,8 +110,8 @@ export const useTypewriterPhrases = ({
   }, [isActive]);
 
   useEffect(() => {
-    onCompleteRef.current = onComplete;
-  }, [onComplete]);
+    onCycleCompleteRef.current = onCycleComplete;
+  }, [onCycleComplete]);
 
   /**
    * Clear all timers
@@ -130,10 +125,6 @@ export const useTypewriterPhrases = ({
       clearTimeout(displayTimeoutRef.current);
       displayTimeoutRef.current = null;
     }
-    if (globalTimeoutRef.current) {
-      clearTimeout(globalTimeoutRef.current);
-      globalTimeoutRef.current = null;
-    }
   }, []);
 
   /**
@@ -144,12 +135,11 @@ export const useTypewriterPhrases = ({
     setDisplayText("");
     setCurrentPhrase("");
     setPhraseIndex(0);
+    setCycleCount(0);
     setIsTyping(false);
-    setIsComplete(false);
     shuffledPhrasesRef.current = [];
-    shownPhrasesRef.current = new Set();
+    currentPhraseIndexRef.current = 0;
     charIndexRef.current = 0;
-    startTimeRef.current = 0;
   }, [clearAllTimers]);
 
   /**
@@ -158,47 +148,45 @@ export const useTypewriterPhrases = ({
   const stop = useCallback(() => {
     clearAllTimers();
     setIsTyping(false);
-    setIsComplete(true);
-    onCompleteRef.current?.();
   }, [clearAllTimers]);
 
   /**
-   * Get next phrase that hasn't been shown
+   * Start a new cycle with reshuffled phrases
    */
-  const getNextPhrase = useCallback((): string | null => {
-    const shuffled = shuffledPhrasesRef.current;
-    
-    for (let i = 0; i < shuffled.length; i++) {
-      if (!shownPhrasesRef.current.has(i)) {
-        shownPhrasesRef.current.add(i);
-        setPhraseIndex(i);
-        return shuffled[i];
-      }
+  const startNewCycle = useCallback(() => {
+    shuffledPhrasesRef.current = shuffleArray(phrases);
+    currentPhraseIndexRef.current = 0;
+    setCycleCount(prev => prev + 1);
+  }, [phrases]);
+
+  /**
+   * Get next phrase, starting new cycle if needed
+   */
+  const getNextPhrase = useCallback((): string => {
+    // If we've shown all phrases, start a new cycle
+    if (currentPhraseIndexRef.current >= shuffledPhrasesRef.current.length) {
+      startNewCycle();
+      onCycleCompleteRef.current?.();
     }
+
+    const phrase = shuffledPhrasesRef.current[currentPhraseIndexRef.current];
+    setPhraseIndex(currentPhraseIndexRef.current);
+    currentPhraseIndexRef.current++;
     
-    return null; // All phrases exhausted
-  }, []);
+    return phrase;
+  }, [startNewCycle]);
 
   /**
    * Type the next phrase
    */
   const typeNextPhrase = useCallback(() => {
-    // Check if we've exceeded total duration
-    const elapsed = Date.now() - startTimeRef.current;
-    if (elapsed >= totalDuration) {
-      setIsComplete(true);
-      setIsTyping(false);
-      onCompleteRef.current?.();
+    if (!isActiveRef.current) {
       return;
     }
 
     const nextPhrase = getNextPhrase();
     
     if (!nextPhrase) {
-      // All phrases exhausted - keep last phrase visible
-      setIsComplete(true);
-      setIsTyping(false);
-      onCompleteRef.current?.();
       return;
     }
 
@@ -207,12 +195,7 @@ export const useTypewriterPhrases = ({
     charIndexRef.current = 0;
     setIsTyping(true);
 
-    // Calculate remaining time
-    const remainingTime = totalDuration - elapsed;
-    const estimatedTypeTime = nextPhrase.length * charDelay;
-    const estimatedCycleTime = estimatedTypeTime + displayDuration + 100; // 100ms buffer
-
-    // Start typing
+    // Start typing character by character
     typingIntervalRef.current = setInterval(() => {
       if (!isActiveRef.current) {
         clearAllTimers();
@@ -231,75 +214,55 @@ export const useTypewriterPhrases = ({
         }
         setIsTyping(false);
 
-        // Check if we have time for another phrase
-        const currentElapsed = Date.now() - startTimeRef.current;
-        const timeLeft = totalDuration - currentElapsed;
-
-        if (timeLeft > estimatedCycleTime && shownPhrasesRef.current.size < shuffledPhrasesRef.current.length) {
-          // Wait, then clear and show next phrase
+        // Wait for display duration, then clear and show next phrase
+        displayTimeoutRef.current = setTimeout(() => {
+          if (!isActiveRef.current) return;
+          setDisplayText("");
+          
+          // Small delay before next phrase starts
           displayTimeoutRef.current = setTimeout(() => {
             if (!isActiveRef.current) return;
-            setDisplayText("");
-            
-            // Small delay before next phrase
-            displayTimeoutRef.current = setTimeout(() => {
-              if (!isActiveRef.current) return;
-              typeNextPhrase();
-            }, 100);
-          }, displayDuration);
-        } else {
-          // Keep this phrase visible - we're out of time or phrases
-          setIsComplete(true);
-          onCompleteRef.current?.();
-        }
+            typeNextPhrase();
+          }, 100);
+        }, displayDuration);
       }
     }, charDelay);
-  }, [charDelay, clearAllTimers, displayDuration, getNextPhrase, totalDuration]);
+  }, [charDelay, clearAllTimers, displayDuration, getNextPhrase]);
 
   /**
    * Start the animation when isActive becomes true
    */
   useEffect(() => {
-    if (isActive && !isComplete) {
-      // Initialize
+    if (isActive) {
+      // Initialize with shuffled phrases
       shuffledPhrasesRef.current = shuffleArray(phrases);
-      shownPhrasesRef.current = new Set();
-      startTimeRef.current = Date.now();
+      currentPhraseIndexRef.current = 0;
+      setCycleCount(1);
       
       // Start typing first phrase
       typeNextPhrase();
-
-      // Set global timeout to stop after totalDuration
-      globalTimeoutRef.current = setTimeout(() => {
-        clearAllTimers();
-        setIsTyping(false);
-        setIsComplete(true);
-        onCompleteRef.current?.();
-      }, totalDuration);
     }
 
     return () => {
-      if (!isActive) {
-        clearAllTimers();
-      }
+      clearAllTimers();
     };
-  }, [isActive, isComplete, phrases, totalDuration, typeNextPhrase, clearAllTimers]);
+  }, [isActive, phrases, typeNextPhrase, clearAllTimers]);
 
   /**
    * Cleanup when isActive becomes false
    */
   useEffect(() => {
-    if (!isActive && (isTyping || displayText)) {
+    if (!isActive) {
       reset();
     }
-  }, [isActive, isTyping, displayText, reset]);
+  }, [isActive, reset]);
 
   return {
     displayText,
     currentPhrase,
     phraseIndex,
+    cycleCount,
     isTyping,
-    isComplete,
     reset,
     stop,
   };

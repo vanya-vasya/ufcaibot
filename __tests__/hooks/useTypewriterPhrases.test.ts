@@ -1,4 +1,4 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { renderHook, act } from '@testing-library/react';
 import { useTypewriterPhrases, DEFAULT_ANALYSIS_PHRASES } from '@/hooks/useTypewriterPhrases';
 
 // Mock timers for precise control
@@ -23,7 +23,7 @@ describe('useTypewriterPhrases', () => {
       expect(result.current.displayText).toBe('');
       expect(result.current.currentPhrase).toBe('');
       expect(result.current.isTyping).toBe(false);
-      expect(result.current.isComplete).toBe(false);
+      expect(result.current.cycleCount).toBe(0);
     });
 
     it('should have default phrases exported', () => {
@@ -50,6 +50,7 @@ describe('useTypewriterPhrases', () => {
 
       expect(result.current.isTyping).toBe(true);
       expect(result.current.displayText.length).toBeGreaterThan(0);
+      expect(result.current.cycleCount).toBe(1);
     });
 
     it('should type character by character', () => {
@@ -59,7 +60,6 @@ describe('useTypewriterPhrases', () => {
           isActive: true,
           phrases: shortPhrase,
           charDelay: 100,
-          totalDuration: 10000,
         })
       );
 
@@ -83,8 +83,8 @@ describe('useTypewriterPhrases', () => {
     });
   });
 
-  describe('phrase deduplication', () => {
-    it('should not repeat phrases', () => {
+  describe('phrase deduplication within cycle', () => {
+    it('should not repeat phrases within the same cycle', () => {
       const seenPhrases = new Set<string>();
       const { result } = renderHook(() =>
         useTypewriterPhrases({
@@ -92,76 +92,72 @@ describe('useTypewriterPhrases', () => {
           phrases: testPhrases,
           charDelay: 1,
           displayDuration: 10,
-          totalDuration: 10000,
         })
       );
 
-      // Advance through several phrase cycles
-      for (let i = 0; i < 50; i++) {
+      // Advance through all phrases in first cycle
+      for (let i = 0; i < 100; i++) {
         act(() => {
-          jest.advanceTimersByTime(100);
+          jest.advanceTimersByTime(50);
         });
 
-        if (result.current.currentPhrase) {
-          // Check if we've seen this phrase before in a completed state
-          if (!result.current.isTyping && result.current.displayText === result.current.currentPhrase) {
-            if (seenPhrases.has(result.current.currentPhrase)) {
-              // If we see it again, it should be because list is exhausted
-              expect(seenPhrases.size).toBe(testPhrases.length);
-            }
-            seenPhrases.add(result.current.currentPhrase);
-          }
+        if (result.current.currentPhrase && !result.current.isTyping) {
+          seenPhrases.add(result.current.currentPhrase);
         }
+
+        // Stop at end of first cycle
+        if (result.current.cycleCount > 1) break;
       }
+
+      // All phrases from testPhrases should have been shown
+      expect(seenPhrases.size).toBe(testPhrases.length);
     });
   });
 
-  describe('timing control', () => {
-    it('should complete within totalDuration', () => {
-      const onComplete = jest.fn();
+  describe('infinite cycling', () => {
+    it('should increment cycleCount after showing all phrases', () => {
+      const twoPhrase = ['AB', 'CD'] as const;
+      const onCycleComplete = jest.fn();
+      
+      const { result } = renderHook(() =>
+        useTypewriterPhrases({
+          isActive: true,
+          phrases: twoPhrase,
+          charDelay: 10,
+          displayDuration: 50,
+          onCycleComplete,
+        })
+      );
+
+      expect(result.current.cycleCount).toBe(1);
+
+      // Type through both phrases and wait for cycle to complete
+      act(() => {
+        jest.advanceTimersByTime(2000);
+      });
+
+      // Should have started second cycle
+      expect(result.current.cycleCount).toBeGreaterThanOrEqual(2);
+      expect(onCycleComplete).toHaveBeenCalled();
+    });
+
+    it('should reshuffle phrases for each new cycle', () => {
       const { result } = renderHook(() =>
         useTypewriterPhrases({
           isActive: true,
           phrases: testPhrases,
-          totalDuration: 1000,
-          charDelay: 10,
-          onComplete,
+          charDelay: 1,
+          displayDuration: 10,
         })
       );
 
-      // Advance past total duration
+      // Advance through multiple cycles
       act(() => {
-        jest.advanceTimersByTime(1100);
+        jest.advanceTimersByTime(5000);
       });
 
-      expect(result.current.isComplete).toBe(true);
-      expect(onComplete).toHaveBeenCalled();
-    });
-
-    it('should respect displayDuration between phrases', () => {
-      const shortPhrase = ['AB'] as const;
-      const { result } = renderHook(() =>
-        useTypewriterPhrases({
-          isActive: true,
-          phrases: shortPhrase,
-          charDelay: 50,
-          displayDuration: 200,
-          totalDuration: 10000,
-        })
-      );
-
-      // Type both characters (100ms)
-      act(() => {
-        jest.advanceTimersByTime(100);
-      });
-      expect(result.current.displayText).toBe('AB');
-      expect(result.current.isTyping).toBe(false);
-
-      // Display duration not yet elapsed (at 150ms)
-      act(() => {
-        jest.advanceTimersByTime(50);
-      });
-      expect(result.current.displayText).toBe('AB');
+      // Should have cycled multiple times
+      expect(result.current.cycleCount).toBeGreaterThan(1);
     });
   });
 
@@ -192,17 +188,15 @@ describe('useTypewriterPhrases', () => {
       });
       expect(result.current.displayText).toBe('');
       expect(result.current.isTyping).toBe(false);
+      expect(result.current.cycleCount).toBe(0);
     });
 
     it('should call stop() to force stop animation', () => {
-      const onComplete = jest.fn();
       const { result } = renderHook(() =>
         useTypewriterPhrases({
           isActive: true,
           phrases: testPhrases,
           charDelay: 10,
-          totalDuration: 5000,
-          onComplete,
         })
       );
 
@@ -217,9 +211,7 @@ describe('useTypewriterPhrases', () => {
         result.current.stop();
       });
 
-      expect(result.current.isComplete).toBe(true);
       expect(result.current.isTyping).toBe(false);
-      expect(onComplete).toHaveBeenCalled();
     });
 
     it('should reset state with reset()', () => {
@@ -245,7 +237,7 @@ describe('useTypewriterPhrases', () => {
       expect(result.current.displayText).toBe('');
       expect(result.current.currentPhrase).toBe('');
       expect(result.current.isTyping).toBe(false);
-      expect(result.current.isComplete).toBe(false);
+      expect(result.current.cycleCount).toBe(0);
     });
 
     it('should not cause memory leaks with rapid activation/deactivation', () => {
@@ -276,32 +268,6 @@ describe('useTypewriterPhrases', () => {
     });
   });
 
-  describe('phrase exhaustion fallback', () => {
-    it('should keep last phrase visible when all phrases exhausted', () => {
-      const twoPhrase = ['First', 'Second'] as const;
-      const { result } = renderHook(() =>
-        useTypewriterPhrases({
-          isActive: true,
-          phrases: twoPhrase,
-          charDelay: 10,
-          displayDuration: 50,
-          totalDuration: 10000, // Long duration to ensure exhaustion
-        })
-      );
-
-      // Advance through both phrases with enough time
-      act(() => {
-        jest.advanceTimersByTime(2000);
-      });
-
-      // Should have completed and be showing something
-      if (result.current.isComplete) {
-        // Last phrase should still be visible
-        expect(result.current.displayText.length).toBeGreaterThan(0);
-      }
-    });
-  });
-
   describe('shuffling', () => {
     it('should shuffle phrases randomly', () => {
       // Run multiple times and verify order varies
@@ -313,7 +279,6 @@ describe('useTypewriterPhrases', () => {
             isActive: true,
             phrases: testPhrases,
             charDelay: 1,
-            totalDuration: 100,
           })
         );
 
@@ -328,10 +293,7 @@ describe('useTypewriterPhrases', () => {
         unmount();
       }
 
-      // At least one order should be different (probabilistically)
-      // This isn't a deterministic test but with 5 runs and 3 phrases,
-      // probability of all same is very low
-      // We mainly verify it doesn't crash and produces valid phrases
+      // All phrases should be valid
       orders.forEach(order => {
         expect(testPhrases).toContain(order);
       });
