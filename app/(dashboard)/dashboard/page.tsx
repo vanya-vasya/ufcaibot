@@ -219,13 +219,23 @@ export default function HomePage() {
         hidden={activeTab !== "upcoming"}
       >
         {activeTab === "upcoming" && (
-          <div className="min-h-screen flex flex-col bg-black dark:bg-black">
-            {/* Centered Fighter Selection Block - matches Past tab centering */}
-            <div
-              className={`flex-1 flex items-center justify-center px-4 transition-opacity duration-500 ${
+          <div className="min-h-screen bg-black dark:bg-black">
+            {/* MMA News Feed - positioned between Upcoming/Past tabs and Events/Fights selectors */}
+            <section 
+              className={`pt-8 sm:pt-10 md:pt-12 lg:pt-14 pb-10 sm:pb-12 md:pb-14 lg:pb-16 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
-              style={{ minHeight: "calc(100vh - 200px)" }}
+              aria-label="MMA News"
+            >
+              <NewsFeed animationDuration={800} />
+            </section>
+
+            {/* Events and Fights Selection Block */}
+            <section
+              className={`py-8 sm:py-10 md:py-12 lg:py-14 px-4 transition-opacity duration-500 ${
+                activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
+              aria-label="Fight Selection"
             >
               <div className="w-full max-w-6xl mx-auto">
                 {/* Mobile: Stack vertically */}
@@ -284,13 +294,7 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* MMA News Feed - positioned at bottom of centered block */}
-            <NewsFeed 
-              className={`mt-auto ${activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"}`} 
-              animationDuration={800}
-            />
+            </section>
           </div>
         )}
       </div>
