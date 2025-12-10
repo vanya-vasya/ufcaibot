@@ -249,9 +249,10 @@ export default function HomePage() {
                   />
                 </div>
 
-                {/* Desktop: Side by side */}
+                {/* Desktop: Side by side - Fixed widths to prevent layout shift */}
                 <div className="hidden lg:flex items-start gap-12">
-                  <div className="flex-1">
+                  {/* Events selector - fixed width */}
+                  <div className="w-[320px] flex-shrink-0">
                     <EventSelector
                       label="Events"
                       events={UFC_EVENTS}
@@ -260,14 +261,18 @@ export default function HomePage() {
                     />
                   </div>
 
-                  <VSEmblem 
-                    className="flex-shrink-0 px-6 mt-10" 
-                    onClick={handleFightClick}
-                    disabled={isLoading || !selectedFight}
-                    isLoading={isLoading}
-                  />
+                  {/* Fight button - fixed width container */}
+                  <div className="flex-shrink-0 w-[200px] flex justify-center">
+                    <VSEmblem 
+                      className="px-6 mt-10" 
+                      onClick={handleFightClick}
+                      disabled={isLoading || !selectedFight}
+                      isLoading={isLoading}
+                    />
+                  </div>
 
-                  <div className="flex-1">
+                  {/* Fights selector - fixed width */}
+                  <div className="w-[320px] flex-shrink-0">
                     <FightSelector
                       label="Fights"
                       fights={availableFights}
