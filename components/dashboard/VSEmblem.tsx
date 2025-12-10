@@ -105,14 +105,16 @@ export const VSEmblem = ({
         `}</style>
       </button>
 
-      {/* Typewriter phrases - positioned 2cm (80px) below "ANALYZING" */}
+      {/* Typewriter phrases container - always reserves space to prevent layout reflow */}
+      {/* Height: 80px margin + 2rem text = ~112px total reserved space */}
       <div 
-        className="mt-20 h-[2rem] w-[500px] overflow-visible"
+        className="mt-20 min-h-[2rem] w-[500px] max-w-full overflow-visible"
         data-testid="typewriter-phrases-container"
+        aria-hidden={!isLoading}
       >
         <TypewriterPhrases
           isActive={isLoading}
-          className="h-[2rem]"
+          className="min-h-[2rem]"
         />
       </div>
     </div>

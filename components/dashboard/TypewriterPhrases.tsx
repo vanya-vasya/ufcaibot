@@ -47,9 +47,8 @@ export const TypewriterPhrases = ({
     onCycleComplete,
   });
 
-  if (!isActive && !displayText) {
-    return null;
-  }
+  // Always render container to reserve space and prevent layout reflow
+  const hasContent = isActive || displayText;
 
   return (
     <div
@@ -59,21 +58,23 @@ export const TypewriterPhrases = ({
       aria-live="polite"
       aria-atomic="true"
     >
-      <p
-        className="text-sm md:text-base text-zinc-400 font-mono tracking-wide text-center px-4 whitespace-nowrap"
-        style={{
-          fontFamily: 'var(--font-mono, "JetBrains Mono", monospace)',
-        }}
-        data-testid={`${testId}-text`}
-      >
-        {displayText}
-        {isTyping && (
-          <span 
-            className="inline-block w-[2px] h-4 bg-zinc-400 ml-0.5 animate-pulse"
-            aria-hidden="true"
-          />
-        )}
-      </p>
+      {hasContent && (
+        <p
+          className="text-sm md:text-base text-zinc-400 font-mono tracking-wide text-center px-4 whitespace-nowrap"
+          style={{
+            fontFamily: 'var(--font-mono, "JetBrains Mono", monospace)',
+          }}
+          data-testid={`${testId}-text`}
+        >
+          {displayText}
+          {isTyping && (
+            <span 
+              className="inline-block w-[2px] h-4 bg-zinc-400 ml-0.5 animate-pulse"
+              aria-hidden="true"
+            />
+          )}
+        </p>
+      )}
     </div>
   );
 };

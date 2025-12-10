@@ -219,17 +219,16 @@ export default function HomePage() {
         hidden={activeTab !== "upcoming"}
       >
         {activeTab === "upcoming" && (
-          <>
-            {/* Fighter Input UI - Moved HIGHER, directly after tabs */}
-            {/* Top spacing: 3x increase (192px mobile, 240px tablet, 288px desktop) */}
-            {/* Bottom spacing: x1.1 multiplier (132px mobile, 168px tablet, 200px desktop) */}
+          <div className="min-h-screen flex flex-col bg-black dark:bg-black">
+            {/* Centered Fighter Selection Block - matches Past tab centering */}
             <div
-              className={`pt-48 sm:pt-60 lg:pt-72 pb-33 sm:pb-42 lg:pb-50 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
+              className={`flex-1 flex items-center justify-center px-4 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
+              style={{ minHeight: "calc(100vh - 200px)" }}
             >
               <div className="w-full max-w-6xl mx-auto">
-                {/* Mobile: Stack vertically - reduced spacing */}
+                {/* Mobile: Stack vertically */}
                 <div className="flex flex-col lg:hidden space-y-4 items-center">
                   <EventSelector
                     label="Events"
@@ -255,7 +254,7 @@ export default function HomePage() {
                   />
                 </div>
 
-                {/* Desktop: Side by side - reduced gap and margin */}
+                {/* Desktop: Side by side */}
                 <div className="hidden lg:flex items-start justify-center gap-8">
                   <div className="w-[340px] flex-shrink-0">
                     <EventSelector
@@ -287,14 +286,12 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* MMA News Feed - Now BELOW the selectors with x1.1 spacing multiplier */}
-            {/* Bottom padding on Events/Fights block (pb-33/42/50) provides gap */}
-            {/* Minimal margin for visual separation */}
+            {/* MMA News Feed - positioned at bottom of centered block */}
             <NewsFeed 
-              className={`mt-2 sm:mt-3 lg:mt-4 ${activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"}`} 
+              className={`mt-auto ${activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"}`} 
               animationDuration={800}
             />
-          </>
+          </div>
         )}
       </div>
 
