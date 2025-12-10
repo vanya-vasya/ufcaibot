@@ -1,5 +1,8 @@
 "use client";
 
+/** Fixed card width matching NewsFeed slider */
+const CARD_WIDTH = 300;
+
 interface NewsCardSkeletonProps {
   /** Show thumbnail placeholder */
   showThumbnail?: boolean;
@@ -19,12 +22,9 @@ export const NewsCardSkeleton = ({
     <div
       role="status"
       aria-label="Loading news article"
-      className={`
-        flex flex-col bg-zinc-900/80 border border-zinc-800 rounded-lg overflow-hidden
-        min-w-[240px] max-w-[280px] sm:min-w-[260px] sm:max-w-[300px] lg:min-w-[280px] lg:max-w-[320px]
-        flex-shrink-0 h-full animate-pulse
-      `}
+      className="flex flex-col bg-zinc-900/80 border border-zinc-800 rounded-lg overflow-hidden flex-shrink-0 h-full animate-pulse"
       style={{
+        width: `${CARD_WIDTH}px`,
         animationDelay: `${index * 100}ms`,
       }}
     >

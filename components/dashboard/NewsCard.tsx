@@ -13,6 +13,7 @@ interface NewsCardProps {
 
 /**
  * NewsCard - Individual news article card
+ * Fixed-width card that fits within slider without overflow
  * Displays title, source, relative time, excerpt, and optional thumbnail
  * Fully accessible with keyboard navigation and ARIA labels
  */
@@ -52,81 +53,87 @@ export const NewsCard = ({ item, index = 0 }: NewsCardProps) => {
       onMouseLeave={() => setIsHovered(false)}
       className={`
         group relative flex flex-col bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 
-        rounded-lg overflow-hidden cursor-pointer
+        rounded-lg cursor-pointer h-full
         transition-all duration-300 ease-out
-        hover:border-zinc-600 hover:bg-zinc-800/90
+        hover:border-zinc-600 hover:bg-zinc-800/90 hover:scale-[1.02]
         focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black
-        min-w-[240px] max-w-[280px] sm:min-w-[260px] sm:max-w-[300px] lg:min-w-[280px] lg:max-w-[320px]
-        flex-shrink-0 h-full
+        w-full overflow-hidden
       `}
       style={{
         animationDelay: `${index * 50}ms`,
       }}
     >
-      {/* Thumbnail */}
+      {/* Thumbnail - Fixed aspect ratio */}
       {showThumbnail && (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-800">
+        <div className="relative w-full aspect-[16/9] overflow-hidden bg-zinc-800 flex-shrink-0">
           <Image
             src={item.thumbnail!}
             alt=""
             fill
-            sizes="(max-width: 640px) 240px, (max-width: 1024px) 280px, 320px"
+            sizes="300px"
             className={`
               object-cover transition-transform duration-500
               ${isHovered ? "scale-105" : "scale-100"}
             `}
             onError={handleImageError}
             loading="lazy"
-            unoptimized // External URLs
+            unoptimized
           />
           {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent" />
         </div>
       )}
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-3 sm:p-4">
-        {/* Source and Time */}
-        <div className="flex items-center justify-between gap-2 mb-2">
+      {/* Content - Fixed padding, controlled overflow */}
+      <div className="flex flex-col flex-1 p-3 min-h-0 overflow-hidden">
+        {/* Source and Time - Single line */}
+        <div className="flex items-center justify-between gap-2 mb-2 flex-shrink-0">
           <span 
-            className="text-xs font-semibold text-red-500 uppercase tracking-wide truncate"
+            className="text-xs font-semibold text-red-500 uppercase tracking-wide truncate max-w-[60%]"
             style={{ fontFamily: 'var(--font-ufc-heading)' }}
           >
             {item.source}
           </span>
           <time 
             dateTime={item.pubDate}
-            className="text-xs text-zinc-500 whitespace-nowrap"
+            className="text-xs text-zinc-500 whitespace-nowrap flex-shrink-0"
           >
             {relativeTime}
           </time>
         </div>
 
-        {/* Title */}
+        {/* Title - Strictly 2 lines max */}
         <h3 
-          className={`
-            text-sm sm:text-base font-bold text-white mb-2 
-            line-clamp-2 leading-tight
-            group-hover:text-red-400 transition-colors duration-200
-          `}
-          style={{ fontFamily: 'var(--font-ufc-heading)' }}
+          className="text-sm font-bold text-white mb-2 line-clamp-2 leading-tight flex-shrink-0 group-hover:text-red-400 transition-colors duration-200"
+          style={{ 
+            fontFamily: 'var(--font-ufc-heading)',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
         >
           {item.title}
         </h3>
 
-        {/* Description/Excerpt */}
+        {/* Description - Strictly 2 lines max, fills remaining space */}
         {item.description && (
-          <p className="text-xs sm:text-sm text-zinc-400 line-clamp-2 leading-relaxed flex-1">
+          <p 
+            className="text-xs text-zinc-400 line-clamp-2 leading-relaxed flex-1 min-h-0"
+            style={{
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
             {item.description}
           </p>
         )}
 
-        {/* Read more indicator */}
+        {/* Read more indicator - Fixed at bottom */}
         <div 
-          className={`
-            mt-3 pt-2 border-t border-zinc-700/50 flex items-center justify-between
-            opacity-0 group-hover:opacity-100 transition-opacity duration-200
-          `}
+          className="mt-auto pt-2 border-t border-zinc-700/50 flex items-center justify-between flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         >
           <span className="text-xs text-zinc-500">Read more</span>
           <svg 
@@ -143,11 +150,7 @@ export const NewsCard = ({ item, index = 0 }: NewsCardProps) => {
 
       {/* Hover effect glow */}
       <div 
-        className={`
-          absolute inset-0 rounded-lg pointer-events-none
-          bg-gradient-to-br from-red-500/5 via-transparent to-transparent
-          opacity-0 group-hover:opacity-100 transition-opacity duration-300
-        `}
+        className="absolute inset-0 rounded-lg pointer-events-none bg-gradient-to-br from-red-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         aria-hidden="true"
       />
     </article>
