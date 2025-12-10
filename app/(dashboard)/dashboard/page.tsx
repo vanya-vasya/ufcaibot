@@ -222,9 +222,9 @@ export default function HomePage() {
           <>
             {/* Fighter Input UI - Moved HIGHER, directly after tabs */}
             {/* Top spacing: 3x increase (192px mobile, 240px tablet, 288px desktop) */}
-            {/* Bottom spacing: 10% increase (120px mobile, 152px tablet, 180px desktop) */}
+            {/* Bottom spacing: x1.1 multiplier (132px mobile, 168px tablet, 200px desktop) */}
             <div
-              className={`pt-48 sm:pt-60 lg:pt-72 pb-30 sm:pb-38 lg:pb-45 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
+              className={`pt-48 sm:pt-60 lg:pt-72 pb-33 sm:pb-42 lg:pb-50 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
@@ -287,8 +287,8 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* MMA News Feed - Now BELOW the selectors with 10% increased spacing */}
-            {/* Bottom padding on Events/Fights block (pb-30/38/45) provides gap */}
+            {/* MMA News Feed - Now BELOW the selectors with x1.1 spacing multiplier */}
+            {/* Bottom padding on Events/Fights block (pb-33/42/50) provides gap */}
             {/* Minimal margin for visual separation */}
             <NewsFeed 
               className={`mt-2 sm:mt-3 lg:mt-4 ${activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"}`} 
