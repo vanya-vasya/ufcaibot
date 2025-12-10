@@ -221,8 +221,9 @@ export default function HomePage() {
         {activeTab === "upcoming" && (
           <>
             {/* Fighter Input UI - Moved HIGHER, directly after tabs */}
+            {/* Spacing: pb-12 (3x the original pb-4) for gap before MMA News */}
             <div
-              className={`pt-6 pb-4 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
+              className={`pt-6 pb-12 sm:pb-14 lg:pb-16 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
@@ -285,9 +286,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* MMA News Feed - Now BELOW the selectors */}
+            {/* MMA News Feed - Now BELOW the selectors with 3x spacing */}
+            {/* Additional mt-4 sm:mt-6 lg:mt-8 for total 3x gap across breakpoints */}
             <NewsFeed 
-              className={activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"} 
+              className={`mt-4 sm:mt-6 lg:mt-8 ${activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"}`} 
               animationDuration={800}
             />
           </>
