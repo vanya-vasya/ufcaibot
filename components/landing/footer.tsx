@@ -1,3 +1,5 @@
+"use client";
+
 import { Building2, FileCheck, MailOpen, MapPinned } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
