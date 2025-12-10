@@ -7,6 +7,7 @@ import { FightSelector } from "@/components/dashboard/FightSelector";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
+import { NewsFeed } from "@/components/dashboard/NewsFeed";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -218,12 +219,16 @@ export default function HomePage() {
         hidden={activeTab !== "upcoming"}
       >
         {activeTab === "upcoming" && (
-          /* Fighter Input UI - Hidden when article is active */
-          <div
-            className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
-              activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
-            }`}
-          >
+          <>
+            {/* MMA News Feed - Async loads independently */}
+            <NewsFeed className={activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"} />
+            
+            {/* Fighter Input UI - Hidden when article is active */}
+            <div
+              className={`min-h-[calc(100vh-300px)] flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
+                activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
+            >
             <div className="w-full max-w-6xl mx-auto">
                 {/* Mobile: Stack vertically */}
                 <div className="flex flex-col lg:hidden space-y-6 items-center">
@@ -282,6 +287,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+          </>
         )}
       </div>
 
