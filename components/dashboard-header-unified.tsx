@@ -37,7 +37,7 @@ const DashboardHeaderUnified = ({
       <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
         {/* Left - Logo (aligned with footer) */}
         <div className="flex items-center">
-          <Link href="/dashboard" className="-m-1.5 p-1.5 logo-hover-effect" aria-label="Go to dashboard">
+          <Link href="/dashboard" className="logo-hover-effect" aria-label="Go to dashboard">
             <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
           </Link>
         </div>

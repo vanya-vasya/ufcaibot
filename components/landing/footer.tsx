@@ -62,7 +62,7 @@ const companyDetails = [
 
 const Footer = () => {
   const date = new Date();
-  let year = date.getFullYear();
+  const year = date.getFullYear();
   
   const ufcHeadingFont = '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
   const footerHeadingStyles = getPresetStyles('footerHeading');
@@ -74,21 +74,20 @@ const Footer = () => {
       <div className="main-footer__top bg-white">
         <div className="px-4 bg-white max-w-[1350px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            <div className="pr-4 pl-4 flex items-center">
+            <div className="flex items-start">
               <div className="footer-widget__column footer-widget__about">
-                <div className="flex justify-center mb-6">
-                  <Link href="/" className="inline-block" aria-label="UFC AI Bot Homepage">
+                <div className="flex justify-start mb-6">
+                  <Link href="/" className="inline-block logo-hover-effect" aria-label="UFC AI Bot Homepage">
                     <Image 
                       width={49} 
                       height={20} 
                       src="/logos/ufc-fighter-logo.png" 
                       alt="UFC Fighter Logo"
-                      className="transition-transform duration-200 hover:scale-110 focus-visible:scale-110"
                     />
                   </Link>
                 </div>
                 <p 
-                  className="footer-widget__about-text text-center"
+                  className="footer-widget__about-text text-left"
                   style={{
                     ...footerTextStyles,
                     fontFamily: ufcHeadingFont,
@@ -101,7 +100,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="pr-4 pl-4 pt-6 md:pt-0">
+            <div className="pt-6 md:pt-0">
               <div className="footer-widget__column footer-widget__company">
                 <div className="footer-widget__title-box">
                   <h3 
@@ -134,7 +133,7 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            <div className="pr-4 pl-4 pt-6 xl:pt-0">
+            <div className="pt-6 xl:pt-0">
               <div className="footer-widget__column footer-widget__resources">
                 <div className="footer-widget__title-box">
                   <h3 
@@ -167,7 +166,7 @@ const Footer = () => {
                 </div>
               </div>
             </div>
-            <div className="pr-4 pl-4 pt-6 xl:pt-0">
+            <div className="pt-6 xl:pt-0">
               <div className="footer-widget__column footer-widget__resources">
                 <div className="footer-widget__title-box">
                   <h3 
@@ -234,6 +233,37 @@ const Footer = () => {
           />
         </div>
       </div>
+
+      <style jsx global>{`
+        /* Logo hover effect - consistent with header */
+        .logo-hover-effect {
+          transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: transform;
+          display: inline-block;
+        }
+
+        .logo-hover-effect:hover {
+          transform: scale(1.075);
+        }
+
+        .logo-hover-effect:focus-visible {
+          transform: scale(1.075);
+          outline: 2px solid #10b981;
+          outline-offset: 2px;
+        }
+
+        /* Respect reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+          .logo-hover-effect {
+            transition: none;
+          }
+          
+          .logo-hover-effect:hover,
+          .logo-hover-effect:focus-visible {
+            transform: none;
+          }
+        }
+      `}</style>
     </footer>
   );
 };
