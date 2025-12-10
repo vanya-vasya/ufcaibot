@@ -18,17 +18,6 @@ export const VSEmblem = ({
 }: VSEmblemProps) => {
   return (
     <div className="flex flex-col items-center">
-      {/* Typewriter phrases - positioned 1cm (40px) above "ANALYZING" */}
-      <div 
-        className="mb-10 min-h-[2rem] w-full max-w-md"
-        data-testid="typewriter-phrases-container"
-      >
-        <TypewriterPhrases
-          isActive={isLoading}
-          className="min-h-[2rem]"
-        />
-      </div>
-
       <button
         type="button"
         onClick={onClick}
@@ -115,6 +104,17 @@ export const VSEmblem = ({
           }
         `}</style>
       </button>
+
+      {/* Typewriter phrases - positioned 1cm (40px) below "ANALYZING" */}
+      <div 
+        className="mt-10 min-h-[2rem] w-full max-w-md"
+        data-testid="typewriter-phrases-container"
+      >
+        <TypewriterPhrases
+          isActive={isLoading}
+          className="min-h-[2rem]"
+        />
+      </div>
     </div>
   );
 };
