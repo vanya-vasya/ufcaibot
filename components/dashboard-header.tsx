@@ -83,17 +83,21 @@ interface DashboardHeaderProps {
 const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }: DashboardHeaderProps) => {
   return (
     <header className="bg-white">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-3 lg:px-6 gap-1">
-        <div className="flex">
-          <Link href="/dashboard" className="-m-1.5 p-1.5">
+      <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
+        {/* Left - Logo (aligned with footer) */}
+        <div className="flex items-center">
+          <Link href="/dashboard" className="-m-1.5 p-1.5 logo-hover-effect" aria-label="Go to dashboard">
             <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
           </Link>
         </div>
-        <div className="flex gap-x-12 ml-12">
+
+        {/* Center Navigation - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:flex flex-1 justify-center">
           <div className="nav-container-light-green">
             <Link
               href="/"
               className="nav-link"
+              tabIndex={0}
             >
               Home
             </Link>
@@ -131,26 +135,31 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
                 key={route.name}
                 href={route.href}
                 className="nav-link"
+                tabIndex={0}
               >
                 {route.name}
               </Link>
             ))}
           </div>
         </div>
-        <div className="flex lg:flex-1 lg:justify-end">
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:block w-[220px]">
-              <UsageProgress
-                initialUsedGenerations={initialUsedGenerations}
-                initialAvailableGenerations={initialAvailableGenerations}
-              />
-            </div>
-            {/* DISABLED FOR LOCAL DESIGN WORK - UserButton replaced with placeholder */}
-            {/* <UserButton afterSignOutUrl="/" /> */}
-            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-              <span className="text-xs font-bold text-gray-600">U</span>
-            </div>
+
+        {/* Right Side - Usage Progress & User */}
+        <div className="hidden lg:flex items-center space-x-4">
+          <div className="w-[220px]">
+            <UsageProgress
+              initialUsedGenerations={initialUsedGenerations}
+              initialAvailableGenerations={initialAvailableGenerations}
+            />
           </div>
+          {/* DISABLED FOR LOCAL DESIGN WORK - UserButton replaced with placeholder */}
+          {/* <UserButton afterSignOutUrl="/" /> */}
+          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center" aria-label="User profile">
+            <span className="text-xs font-bold text-gray-600">U</span>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className="lg:hidden flex items-center gap-2">
           <GuestMobileSidebar />
         </div>
       </nav>
@@ -269,6 +278,36 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
         @media (max-width: 1024px) {
           .nav-container-light-green {
             display: none;
+          }
+        }
+
+        /* Logo hover effect - GPU accelerated with accessibility support */
+        .logo-hover-effect {
+          transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+          will-change: transform;
+        }
+
+        .logo-hover-effect:hover {
+          transform: scale(1.075);
+        }
+
+        .logo-hover-effect:focus-visible {
+          transform: scale(1.075);
+          outline: 2px solid #10b981;
+          outline-offset: 2px;
+        }
+
+        /* Respect reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+          .logo-hover-effect,
+          .nav-link,
+          .dropdown-menu-item {
+            transition: none;
+          }
+          
+          .logo-hover-effect:hover,
+          .logo-hover-effect:focus-visible {
+            transform: none;
           }
         }
 

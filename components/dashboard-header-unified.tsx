@@ -34,15 +34,23 @@ const DashboardHeaderUnified = ({
 
   return (
     <header className="bg-white">
-      <nav className="mx-auto flex max-w-7xl items-center justify-center p-3 lg:px-6 relative">
-        {/* Left Navigation - Hidden on mobile, shown on desktop */}
-        <div className="hidden lg:flex absolute left-0 lg:left-6">
+      <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
+        {/* Left - Logo (aligned with footer) */}
+        <div className="flex items-center">
+          <Link href="/dashboard" className="-m-1.5 p-1.5 logo-hover-effect" aria-label="Go to dashboard">
+            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
+          </Link>
+        </div>
+
+        {/* Center Navigation - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:flex flex-1 justify-center">
           <div className="nav-container-light-green">
             {routes.map((route) => (
               <Link
                 key={route.name}
                 href={route.href}
                 className="nav-link"
+                tabIndex={0}
               >
                 {route.name}
               </Link>
@@ -50,15 +58,8 @@ const DashboardHeaderUnified = ({
           </div>
         </div>
 
-        {/* Centered Logo */}
-        <div className="flex items-center justify-center">
-          <Link href="/dashboard" className="-m-1.5 p-1.5 logo-hover-effect">
-            <Image width={"49"} height={"20"} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
-          </Link>
-        </div>
-
         {/* Right Side - UsageProgress Card (PRESERVED) */}
-        <div className="hidden lg:flex absolute right-0 lg:right-6">
+        <div className="hidden lg:flex items-center">
           <UsageProgress
             initialUsedGenerations={initialUsedGenerations}
             initialAvailableGenerations={initialAvailableGenerations}
@@ -66,7 +67,7 @@ const DashboardHeaderUnified = ({
         </div>
 
         {/* Mobile Right Side - UsageProgress + Menu */}
-        <div className="lg:hidden absolute right-3 flex items-center gap-2">
+        <div className="lg:hidden flex items-center gap-2">
           <UsageProgress
             initialUsedGenerations={initialUsedGenerations}
             initialAvailableGenerations={initialAvailableGenerations}
@@ -174,12 +175,6 @@ const DashboardHeaderUnified = ({
         @media (max-width: 1024px) {
           .nav-container-light-green {
             display: none;
-          }
-          
-          /* Ensure mobile layout is properly centered */
-          nav {
-            padding-left: 12px;
-            padding-right: 12px;
           }
         }
 
