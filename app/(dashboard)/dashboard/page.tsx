@@ -7,7 +7,6 @@ import { FightSelector } from "@/components/dashboard/FightSelector";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
-import { TypewriterPhrases } from "@/components/dashboard/TypewriterPhrases";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -221,13 +220,11 @@ export default function HomePage() {
         {activeTab === "upcoming" && (
           /* Fighter Input UI - Hidden when article is active */
           <div
-            className={`min-h-screen flex flex-col bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
+            className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
               activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
             }`}
           >
-            {/* Main content area - centered */}
-            <div className="flex-1 flex items-center justify-center">
-              <div className="w-full max-w-6xl mx-auto">
+            <div className="w-full max-w-6xl mx-auto">
                 {/* Mobile: Stack vertically */}
                 <div className="flex flex-col lg:hidden space-y-6">
                   <EventSelector
@@ -280,17 +277,6 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Typewriter phrases - positioned higher, closer to the selectors */}
-            <div 
-              className="w-full max-w-2xl mx-auto -mt-32 md:-mt-40 lg:-mt-48"
-              data-testid="typewriter-phrases-container"
-            >
-              <TypewriterPhrases
-                isActive={isLoading}
-                className="min-h-[3rem]"
-              />
             </div>
           </div>
         )}

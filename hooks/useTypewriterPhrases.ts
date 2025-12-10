@@ -84,10 +84,10 @@ const shuffleArray = <T,>(array: readonly T[]): T[] => {
  */
 /**
  * Default timing configuration for phrase display
- * - PHRASE_DISPLAY_DURATION: How long each completed phrase stays visible (10 seconds)
+ * - PHRASE_DISPLAY_DURATION: How long each completed phrase stays visible (8 seconds)
  * - CHAR_TYPING_DELAY: Delay between typing each character (25ms)
  */
-export const PHRASE_DISPLAY_DURATION = 10000; // 10 seconds
+export const PHRASE_DISPLAY_DURATION = 8000; // 8 seconds
 export const CHAR_TYPING_DELAY = 25; // 25ms between characters
 
 export const useTypewriterPhrases = ({
