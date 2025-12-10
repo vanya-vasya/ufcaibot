@@ -222,9 +222,9 @@ export default function HomePage() {
           <>
             {/* Fighter Input UI - Moved HIGHER, directly after tabs */}
             {/* Top spacing: 3x increase (192px mobile, 240px tablet, 288px desktop) */}
-            {/* Bottom spacing: 2x increase (128px mobile, 160px tablet, 192px desktop) */}
+            {/* Bottom spacing: 15% decrease from 2x (108px mobile, 136px tablet, 164px desktop) */}
             <div
-              className={`pt-48 sm:pt-60 lg:pt-72 pb-32 sm:pb-40 lg:pb-48 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
+              className={`pt-48 sm:pt-60 lg:pt-72 pb-27 sm:pb-34 lg:pb-41 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
