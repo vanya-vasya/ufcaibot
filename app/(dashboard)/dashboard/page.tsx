@@ -221,9 +221,11 @@ export default function HomePage() {
         {activeTab === "upcoming" && (
           <>
             {/* Fighter Input UI - Moved HIGHER, directly after tabs */}
-            {/* Spacing: pb-12 (3x the original pb-4) for gap before MMA News */}
+            {/* Spacing: pt-12/14/16 + mt-4/6/8 = same gap as below to MMA News */}
+            {/* Total top gap: 64px (mobile), 80px (tablet), 96px (desktop) */}
+            {/* Total bottom gap: 64px (mobile), 80px (tablet), 96px (desktop) */}
             <div
-              className={`pt-6 pb-12 sm:pb-14 lg:pb-16 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
+              className={`pt-12 sm:pt-14 lg:pt-16 mt-4 sm:mt-6 lg:mt-8 pb-12 sm:pb-14 lg:pb-16 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
