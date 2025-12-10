@@ -17,23 +17,17 @@ export const VSEmblem = ({
   isLoading = false,
 }: VSEmblemProps) => {
   return (
-    <div 
-      className="flex flex-col items-center"
-      // Fixed height container to prevent layout shift
-      style={{ minHeight: '200px' }}
-    >
+    <div className="flex flex-col items-center">
       <button
         type="button"
         onClick={onClick}
         disabled={disabled || isLoading}
-        className={`flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-red-500 rounded-lg px-4 py-2 transition-all ${
+        className={`flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-red-500 rounded-lg px-4 py-2 transition-all min-h-[60px] min-w-[120px] ${
           disabled || isLoading ? 'opacity-50 cursor-not-allowed' : ''
         } ${className}`}
         data-testid="vs-emblem"
         aria-label={isLoading ? "Processing fight analysis" : "Start fight analysis"}
         aria-busy={isLoading}
-        // Fixed dimensions to prevent button size change
-        style={{ minWidth: '140px', minHeight: '80px' }}
       >
         {isLoading ? (
           <div className="flex flex-col items-center gap-2" role="status" aria-live="polite">
@@ -112,15 +106,13 @@ export const VSEmblem = ({
       </button>
 
       {/* Typewriter phrases - positioned 2cm (80px) below "ANALYZING" */}
-      {/* Fixed height container to always reserve space and prevent layout shift */}
       <div 
-        className="mt-20 w-full max-w-md"
+        className="mt-20 h-[2rem] w-[500px] overflow-visible"
         data-testid="typewriter-phrases-container"
-        style={{ minHeight: '48px' }}
       >
         <TypewriterPhrases
           isActive={isLoading}
-          className="min-h-[3rem]"
+          className="h-[2rem]"
         />
       </div>
     </div>

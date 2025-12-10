@@ -18,6 +18,8 @@ interface EventSelectorProps {
   onChange: (value: string) => void;
   /** Optional ID for accessibility */
   id?: string;
+  /** Fixed width class (e.g., "w-80", "w-[320px]") */
+  widthClass?: string;
 }
 
 export const EventSelector = ({
@@ -26,6 +28,7 @@ export const EventSelector = ({
   value,
   onChange,
   id,
+  widthClass,
 }: EventSelectorProps) => {
   return (
     <DropdownSelect
@@ -38,6 +41,7 @@ export const EventSelector = ({
       searchable={false}
       id={id}
       testId={`event-selector-${label.toLowerCase().replace(/\s+/g, "-")}`}
+      widthClass={widthClass}
     />
   );
 };

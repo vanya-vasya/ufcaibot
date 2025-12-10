@@ -226,12 +226,13 @@ export default function HomePage() {
           >
             <div className="w-full max-w-6xl mx-auto">
                 {/* Mobile: Stack vertically */}
-                <div className="flex flex-col lg:hidden space-y-6">
+                <div className="flex flex-col lg:hidden space-y-6 items-center">
                   <EventSelector
                     label="Events"
                     events={UFC_EVENTS}
                     value={selectedEvent}
                     onChange={handleEventChange}
+                    widthClass="w-[320px]"
                   />
                   
                   <VSEmblem 
@@ -246,38 +247,36 @@ export default function HomePage() {
                     fights={availableFights}
                     value={selectedFight}
                     onChange={handleFightChange}
+                    widthClass="w-[320px]"
                   />
                 </div>
 
-                {/* Desktop: Side by side - Fixed widths to prevent layout shift */}
-                <div className="hidden lg:flex items-start gap-12">
-                  {/* Events selector - fixed width */}
-                  <div className="w-[320px] flex-shrink-0">
+                {/* Desktop: Side by side with fixed widths */}
+                <div className="hidden lg:flex items-start justify-center gap-12">
+                  <div className="w-[380px] flex-shrink-0">
                     <EventSelector
                       label="Events"
                       events={UFC_EVENTS}
                       value={selectedEvent}
                       onChange={handleEventChange}
+                      widthClass="w-full"
                     />
                   </div>
 
-                  {/* Fight button - fixed width container */}
-                  <div className="flex-shrink-0 w-[200px] flex justify-center">
-                    <VSEmblem 
-                      className="px-6 mt-10" 
-                      onClick={handleFightClick}
-                      disabled={isLoading || !selectedFight}
-                      isLoading={isLoading}
-                    />
-                  </div>
+                  <VSEmblem 
+                    className="flex-shrink-0 px-6 mt-10 w-[200px]" 
+                    onClick={handleFightClick}
+                    disabled={isLoading || !selectedFight}
+                    isLoading={isLoading}
+                  />
 
-                  {/* Fights selector - fixed width */}
-                  <div className="w-[320px] flex-shrink-0">
+                  <div className="w-[380px] flex-shrink-0">
                     <FightSelector
                       label="Fights"
                       fights={availableFights}
                       value={selectedFight}
                       onChange={handleFightChange}
+                      widthClass="w-full"
                     />
                   </div>
                 </div>

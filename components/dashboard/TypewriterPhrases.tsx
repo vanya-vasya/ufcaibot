@@ -60,7 +60,7 @@ export const TypewriterPhrases = ({
       aria-atomic="true"
     >
       <p
-        className="text-sm md:text-base text-zinc-400 font-mono tracking-wide text-center px-4"
+        className="text-sm md:text-base text-zinc-400 font-mono tracking-wide text-center px-4 whitespace-nowrap"
         style={{
           fontFamily: 'var(--font-mono, "JetBrains Mono", monospace)',
         }}

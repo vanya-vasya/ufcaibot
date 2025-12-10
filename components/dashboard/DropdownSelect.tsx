@@ -44,6 +44,10 @@ interface DropdownSelectProps {
   id?: string;
   /** Test ID for testing */
   testId?: string;
+  /** Fixed width class (e.g., "w-80", "w-[320px]") */
+  widthClass?: string;
+  /** Fixed height class for the trigger button */
+  heightClass?: string;
 }
 
 export const DropdownSelect = ({
@@ -57,6 +61,8 @@ export const DropdownSelect = ({
   searchThreshold = 5,
   id,
   testId,
+  widthClass,
+  heightClass = "h-[52px]",
 }: DropdownSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -262,7 +268,7 @@ export const DropdownSelect = ({
   return (
     <div
       ref={containerRef}
-      className="flex flex-col space-y-3 w-full"
+      className={`flex flex-col space-y-3 ${widthClass || "w-full"}`}
       data-testid={dataTestId}
       onKeyDown={handleKeyDown}
     >
@@ -302,6 +308,7 @@ export const DropdownSelect = ({
             bg-zinc-900 border-2 transition-all duration-200
             text-left cursor-pointer
             focus:outline-none focus:ring-2 focus:ring-zinc-500/50
+            ${heightClass}
             ${isOpen 
               ? "border-zinc-500 ring-2 ring-zinc-500/30" 
               : "border-zinc-700 hover:border-zinc-600"

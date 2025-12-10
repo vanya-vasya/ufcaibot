@@ -18,6 +18,8 @@ interface FightSelectorProps {
   onChange: (value: string) => void;
   /** Optional ID for accessibility */
   id?: string;
+  /** Fixed width class (e.g., "w-80", "w-[320px]") */
+  widthClass?: string;
 }
 
 export const FightSelector = ({
@@ -26,6 +28,7 @@ export const FightSelector = ({
   value,
   onChange,
   id,
+  widthClass,
 }: FightSelectorProps) => {
   return (
     <DropdownSelect
@@ -39,6 +42,7 @@ export const FightSelector = ({
       searchThreshold={5}
       id={id}
       testId={`fight-selector-${label.toLowerCase().replace(/\s+/g, "-")}`}
+      widthClass={widthClass}
     />
   );
 };
