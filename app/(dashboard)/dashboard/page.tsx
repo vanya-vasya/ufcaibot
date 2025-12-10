@@ -282,8 +282,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Typewriter phrases - positioned at bottom, separate from selectors */}
-            <div className="w-full max-w-2xl mx-auto pb-8">
+            {/* Typewriter phrases - positioned higher, closer to the selectors */}
+            <div 
+              className="w-full max-w-2xl mx-auto -mt-32 md:-mt-40 lg:-mt-48"
+              data-testid="typewriter-phrases-container"
+            >
               <TypewriterPhrases
                 isActive={isLoading}
                 className="min-h-[3rem]"

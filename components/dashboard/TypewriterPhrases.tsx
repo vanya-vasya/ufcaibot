@@ -1,13 +1,19 @@
 "use client";
 
-import { useTypewriterPhrases, DEFAULT_ANALYSIS_PHRASES, type TypewriterPhrase } from "@/hooks/useTypewriterPhrases";
+import { 
+  useTypewriterPhrases, 
+  DEFAULT_ANALYSIS_PHRASES, 
+  PHRASE_DISPLAY_DURATION,
+  CHAR_TYPING_DELAY,
+  type TypewriterPhrase 
+} from "@/hooks/useTypewriterPhrases";
 
 export interface TypewriterPhrasesProps {
   /** Whether the animation is active */
   isActive: boolean;
   /** Optional custom phrases list */
   phrases?: readonly TypewriterPhrase[];
-  /** Time to display completed phrase (ms) - default 400 */
+  /** Time to display completed phrase (ms) - default 10000 (10 seconds) */
   displayDuration?: number;
   /** Delay between characters (ms) - default 25 */
   charDelay?: number;
@@ -27,8 +33,8 @@ export interface TypewriterPhrasesProps {
 export const TypewriterPhrases = ({
   isActive,
   phrases = DEFAULT_ANALYSIS_PHRASES,
-  displayDuration = 400,
-  charDelay = 25,
+  displayDuration = PHRASE_DISPLAY_DURATION,
+  charDelay = CHAR_TYPING_DELAY,
   onCycleComplete,
   className = "",
   testId = "typewriter-phrases",
@@ -72,5 +78,5 @@ export const TypewriterPhrases = ({
   );
 };
 
-export { DEFAULT_ANALYSIS_PHRASES };
+export { DEFAULT_ANALYSIS_PHRASES, PHRASE_DISPLAY_DURATION, CHAR_TYPING_DELAY };
 export default TypewriterPhrases;

@@ -82,10 +82,18 @@ const shuffleArray = <T,>(array: readonly T[]): T[] => {
  * - Auto-cleanup and cancellation
  * - Infinite cycling: after all phrases shown, reshuffles and starts new cycle
  */
+/**
+ * Default timing configuration for phrase display
+ * - PHRASE_DISPLAY_DURATION: How long each completed phrase stays visible (10 seconds)
+ * - CHAR_TYPING_DELAY: Delay between typing each character (25ms)
+ */
+export const PHRASE_DISPLAY_DURATION = 10000; // 10 seconds
+export const CHAR_TYPING_DELAY = 25; // 25ms between characters
+
 export const useTypewriterPhrases = ({
   phrases = DEFAULT_ANALYSIS_PHRASES,
-  displayDuration = 400,
-  charDelay = 25,
+  displayDuration = PHRASE_DISPLAY_DURATION,
+  charDelay = CHAR_TYPING_DELAY,
   isActive,
   onCycleComplete,
 }: UseTypewriterPhrasesOptions): UseTypewriterPhrasesReturn => {
