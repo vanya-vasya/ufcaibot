@@ -6,6 +6,7 @@ import { EventSelector } from "@/components/dashboard/EventSelector";
 import { FightSelector } from "@/components/dashboard/FightSelector";
 import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
+import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -39,6 +40,8 @@ interface ArticleData {
 
 export default function HomePage() {
   const [showIntro, setShowIntro] = useState(true);
+  // Tab state - default to "upcoming"
+  const [activeTab, setActiveTab] = useState<TabValue>("upcoming");
   // Events selector - default to first event
   const [selectedEvent, setSelectedEvent] = useState(UFC_EVENTS[0]);
   // Fights selector - will be populated based on selected event
@@ -63,6 +66,10 @@ export default function HomePage() {
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
+  }, []);
+
+  const handleTabChange = useCallback((tab: TabValue) => {
+    setActiveTab(tab);
   }, []);
 
   const handleEventChange = useCallback((value: string) => {
@@ -200,65 +207,102 @@ export default function HomePage() {
         />
       )}
       
-      {/* Fighter Input UI - Hidden when article is active */}
-      <div
-        className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
-          activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
+      {/* Dashboard Tabs - Placed directly below header */}
+      <DashboardTabs activeTab={activeTab} onTabChange={handleTabChange} />
+      
+      {/* Tab Panels */}
+      <div 
+        role="tabpanel" 
+        id="tabpanel-upcoming"
+        aria-labelledby="tab-upcoming"
+        hidden={activeTab !== "upcoming"}
       >
-        <div className="w-full max-w-6xl mx-auto">
-          {/* Mobile: Stack vertically */}
-          <div className="flex flex-col lg:hidden space-y-6">
-            <EventSelector
-              label="Events"
-              events={UFC_EVENTS}
-              value={selectedEvent}
-              onChange={handleEventChange}
-            />
-            
-            <VSEmblem 
-              className="mx-auto my-4" 
-              onClick={handleFightClick}
-              disabled={isLoading || !selectedFight}
-              isLoading={isLoading}
-            />
-            
-            <FightSelector
-              label="Fights"
-              fights={availableFights}
-              value={selectedFight}
-              onChange={handleFightChange}
-            />
-          </div>
+        {activeTab === "upcoming" && (
+          /* Fighter Input UI - Hidden when article is active */
+          <div
+            className={`min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
+              activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
+            }`}
+          >
+            <div className="w-full max-w-6xl mx-auto">
+              {/* Mobile: Stack vertically */}
+              <div className="flex flex-col lg:hidden space-y-6">
+                <EventSelector
+                  label="Events"
+                  events={UFC_EVENTS}
+                  value={selectedEvent}
+                  onChange={handleEventChange}
+                />
+                
+                <VSEmblem 
+                  className="mx-auto my-4" 
+                  onClick={handleFightClick}
+                  disabled={isLoading || !selectedFight}
+                  isLoading={isLoading}
+                />
+                
+                <FightSelector
+                  label="Fights"
+                  fights={availableFights}
+                  value={selectedFight}
+                  onChange={handleFightChange}
+                />
+              </div>
 
-          {/* Desktop: Side by side */}
-          <div className="hidden lg:flex items-start gap-12">
-            <div className="flex-1">
-              <EventSelector
-                label="Events"
-                events={UFC_EVENTS}
-                value={selectedEvent}
-                onChange={handleEventChange}
-              />
+              {/* Desktop: Side by side */}
+              <div className="hidden lg:flex items-start gap-12">
+                <div className="flex-1">
+                  <EventSelector
+                    label="Events"
+                    events={UFC_EVENTS}
+                    value={selectedEvent}
+                    onChange={handleEventChange}
+                  />
+                </div>
+
+                <VSEmblem 
+                  className="flex-shrink-0 px-6 mt-10" 
+                  onClick={handleFightClick}
+                  disabled={isLoading || !selectedFight}
+                  isLoading={isLoading}
+                />
+
+                <div className="flex-1">
+                  <FightSelector
+                    label="Fights"
+                    fights={availableFights}
+                    value={selectedFight}
+                    onChange={handleFightChange}
+                  />
+                </div>
+              </div>
             </div>
+          </div>
+        )}
+      </div>
 
-            <VSEmblem 
-              className="flex-shrink-0 px-6 mt-10" 
-              onClick={handleFightClick}
-              disabled={isLoading || !selectedFight}
-              isLoading={isLoading}
-            />
-
-            <div className="flex-1">
-              <FightSelector
-                label="Fights"
-                fights={availableFights}
-                value={selectedFight}
-                onChange={handleFightChange}
-              />
+      <div 
+        role="tabpanel" 
+        id="tabpanel-past"
+        aria-labelledby="tab-past"
+        hidden={activeTab !== "past"}
+      >
+        {activeTab === "past" && (
+          /* Coming Soon Content */
+          <div className="min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8">
+            <div className="text-center">
+              <h2 
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+                style={{ fontFamily: '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif' }}
+              >
+                COMING SOON
+              </h2>
+              <p className="text-zinc-400 text-lg md:text-xl max-w-md mx-auto">
+                Past fight analyses and results will be available here.
+              </p>
             </div>
           </div>
-        </div>
+        )}
       </div>
       
       <style jsx global>{`
