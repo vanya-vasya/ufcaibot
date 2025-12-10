@@ -220,28 +220,25 @@ export default function HomePage() {
       >
         {activeTab === "upcoming" && (
           <>
-            {/* MMA News Feed - Async loads independently */}
-            <NewsFeed className={activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"} />
-            
-            {/* Fighter Input UI - Hidden when article is active */}
+            {/* Fighter Input UI - Moved HIGHER, directly after tabs */}
             <div
-              className={`min-h-[calc(100vh-300px)] flex items-center justify-center bg-black dark:bg-black px-4 py-8 transition-opacity duration-500 ${
+              className={`pt-6 pb-4 flex items-start justify-center bg-black dark:bg-black px-4 transition-opacity duration-500 ${
                 activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"
               }`}
             >
-            <div className="w-full max-w-6xl mx-auto">
-                {/* Mobile: Stack vertically */}
-                <div className="flex flex-col lg:hidden space-y-6 items-center">
+              <div className="w-full max-w-6xl mx-auto">
+                {/* Mobile: Stack vertically - reduced spacing */}
+                <div className="flex flex-col lg:hidden space-y-4 items-center">
                   <EventSelector
                     label="Events"
                     events={UFC_EVENTS}
                     value={selectedEvent}
                     onChange={handleEventChange}
-                    widthClass="w-[320px]"
+                    widthClass="w-[300px]"
                   />
                   
                   <VSEmblem 
-                    className="mx-auto my-4" 
+                    className="mx-auto my-2" 
                     onClick={handleFightClick}
                     disabled={isLoading || !selectedFight}
                     isLoading={isLoading}
@@ -252,13 +249,13 @@ export default function HomePage() {
                     fights={availableFights}
                     value={selectedFight}
                     onChange={handleFightChange}
-                    widthClass="w-[320px]"
+                    widthClass="w-[300px]"
                   />
                 </div>
 
-                {/* Desktop: Side by side with fixed widths */}
-                <div className="hidden lg:flex items-start justify-center gap-12">
-                  <div className="w-[380px] flex-shrink-0">
+                {/* Desktop: Side by side - reduced gap and margin */}
+                <div className="hidden lg:flex items-start justify-center gap-8">
+                  <div className="w-[340px] flex-shrink-0">
                     <EventSelector
                       label="Events"
                       events={UFC_EVENTS}
@@ -269,13 +266,13 @@ export default function HomePage() {
                   </div>
 
                   <VSEmblem 
-                    className="flex-shrink-0 px-6 mt-10 w-[200px]" 
+                    className="flex-shrink-0 px-4 mt-8 w-[180px]" 
                     onClick={handleFightClick}
                     disabled={isLoading || !selectedFight}
                     isLoading={isLoading}
                   />
 
-                  <div className="w-[380px] flex-shrink-0">
+                  <div className="w-[340px] flex-shrink-0">
                     <FightSelector
                       label="Fights"
                       fights={availableFights}
@@ -287,6 +284,12 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
+
+            {/* MMA News Feed - Now BELOW the selectors */}
+            <NewsFeed 
+              className={activeArticle ? "opacity-0 pointer-events-none" : "opacity-100"} 
+              animationDuration={800}
+            />
           </>
         )}
       </div>

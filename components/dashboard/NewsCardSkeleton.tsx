@@ -1,7 +1,7 @@
 "use client";
 
-/** Fixed card width matching NewsFeed slider */
-const CARD_WIDTH = 300;
+/** Fixed card width - 40% smaller (180px) */
+const CARD_WIDTH = 180;
 
 interface NewsCardSkeletonProps {
   /** Show thumbnail placeholder */
@@ -12,7 +12,7 @@ interface NewsCardSkeletonProps {
 
 /**
  * NewsCardSkeleton - Loading placeholder for NewsCard
- * Matches the exact dimensions and layout of NewsCard
+ * Matches the compact 180px card dimensions
  */
 export const NewsCardSkeleton = ({
   showThumbnail = true,
@@ -22,49 +22,42 @@ export const NewsCardSkeleton = ({
     <div
       role="status"
       aria-label="Loading news article"
-      className="flex flex-col bg-zinc-900/80 border border-zinc-800 rounded-lg overflow-hidden flex-shrink-0 h-full animate-pulse"
+      className="flex flex-col bg-zinc-900/80 border border-zinc-800 rounded-md overflow-hidden flex-shrink-0 h-full animate-pulse"
       style={{
         width: `${CARD_WIDTH}px`,
-        animationDelay: `${index * 100}ms`,
+        animationDelay: `${index * 80}ms`,
       }}
     >
       {/* Thumbnail skeleton */}
       {showThumbnail && (
-        <div className="w-full aspect-[16/9] bg-zinc-800 relative overflow-hidden">
+        <div className="w-full aspect-[16/10] bg-zinc-800 relative overflow-hidden">
           <div className="absolute inset-0 shimmer-skeleton" />
         </div>
       )}
 
-      {/* Content skeleton */}
-      <div className="flex flex-col flex-1 p-3 sm:p-4 space-y-3">
+      {/* Content skeleton - compact */}
+      <div className="flex flex-col flex-1 p-2 space-y-1.5">
         {/* Source and time */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="h-3 w-16 bg-zinc-700 rounded shimmer-skeleton" />
-          <div className="h-3 w-10 bg-zinc-800 rounded shimmer-skeleton" />
+        <div className="flex items-center justify-between gap-1">
+          <div className="h-2 w-12 bg-zinc-700 rounded shimmer-skeleton" />
+          <div className="h-2 w-8 bg-zinc-800 rounded shimmer-skeleton" />
         </div>
 
         {/* Title - 2 lines */}
-        <div className="space-y-2">
-          <div className="h-4 w-full bg-zinc-700 rounded shimmer-skeleton" />
-          <div className="h-4 w-3/4 bg-zinc-700 rounded shimmer-skeleton" />
-        </div>
-
-        {/* Description - 2 lines */}
-        <div className="space-y-2 flex-1">
-          <div className="h-3 w-full bg-zinc-800 rounded shimmer-skeleton" />
-          <div className="h-3 w-5/6 bg-zinc-800 rounded shimmer-skeleton" />
+        <div className="space-y-1">
+          <div className="h-3 w-full bg-zinc-700 rounded shimmer-skeleton" />
+          <div className="h-3 w-3/4 bg-zinc-700 rounded shimmer-skeleton" />
         </div>
       </div>
 
-      {/* Screen reader text */}
-      <span className="sr-only">Loading news article...</span>
+      <span className="sr-only">Loading...</span>
 
       <style jsx>{`
         .shimmer-skeleton {
           background: linear-gradient(
             90deg,
             transparent 0%,
-            rgba(255, 255, 255, 0.05) 50%,
+            rgba(255, 255, 255, 0.04) 50%,
             transparent 100%
           );
           background-size: 200% 100%;
@@ -72,12 +65,8 @@ export const NewsCardSkeleton = ({
         }
 
         @keyframes shimmer {
-          0% {
-            background-position: 200% 0;
-          }
-          100% {
-            background-position: -200% 0;
-          }
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
         }
       `}</style>
     </div>
@@ -87,7 +76,7 @@ export const NewsCardSkeleton = ({
 /**
  * Multiple skeletons for loading state
  */
-export const NewsSkeletonGroup = ({ count = 5 }: { count?: number }) => {
+export const NewsSkeletonGroup = ({ count = 6 }: { count?: number }) => {
   return (
     <>
       {Array.from({ length: count }).map((_, i) => (
