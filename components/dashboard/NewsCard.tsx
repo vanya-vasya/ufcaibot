@@ -50,7 +50,7 @@ export const NewsCard = ({
 
   return (
     <>
-      {/* Reusable RTL slide animation class */}
+      {/* Reusable RTL slide animation class and responsive line-clamp */}
       <style jsx>{`
         .news-card-slide-rtl {
           will-change: transform, opacity;
@@ -62,6 +62,25 @@ export const NewsCard = ({
         
         .news-card-slide-rtl:hover {
           transform: translateY(-2px) scale(1.02);
+        }
+        
+        .news-card-title-compact {
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          -webkit-line-clamp: 4;
+        }
+        
+        @media (min-width: 640px) {
+          .news-card-title-compact {
+            -webkit-line-clamp: 5;
+          }
+        }
+        
+        @media (min-width: 768px) {
+          .news-card-title-compact {
+            -webkit-line-clamp: 6;
+          }
         }
       `}</style>
 
@@ -81,6 +100,7 @@ export const NewsCard = ({
           hover:border-zinc-600 hover:bg-zinc-800/90
           focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 focus-visible:ring-offset-black
           w-full overflow-hidden
+          ${compact ? "min-h-[240px] sm:min-h-[260px] md:min-h-[280px]" : "min-h-[320px]"}
         `}
         style={{
           transitionDuration: `${animationDuration / 2}ms`,
@@ -108,32 +128,28 @@ export const NewsCard = ({
         )}
 
         {/* Content - Compact styling */}
-        <div className={`flex flex-col flex-1 min-h-0 overflow-hidden ${compact ? "p-2" : "p-3"}`}>
+        <div className={`flex flex-col flex-1 min-h-0 overflow-hidden ${compact ? "p-2.5 sm:p-3" : "p-3"}`}>
           {/* Source and Time */}
-          <div className="flex items-center justify-between gap-1 mb-1 flex-shrink-0">
+          <div className={`flex items-center justify-between gap-1 flex-shrink-0 ${compact ? "mb-1.5 sm:mb-2" : "mb-1"}`}>
             <span 
-              className={`font-semibold text-red-500 uppercase tracking-wide truncate max-w-[55%] ${compact ? "text-[10px]" : "text-xs"}`}
+              className={`font-semibold text-red-500 uppercase tracking-wide truncate max-w-[55%] ${compact ? "text-[10px] sm:text-xs" : "text-xs"}`}
               style={{ fontFamily: 'var(--font-ufc-heading)' }}
             >
               {item.source}
             </span>
             <time 
               dateTime={item.pubDate}
-              className={`text-zinc-500 whitespace-nowrap flex-shrink-0 ${compact ? "text-[9px]" : "text-xs"}`}
+              className={`text-zinc-500 whitespace-nowrap flex-shrink-0 ${compact ? "text-[9px] sm:text-[10px]" : "text-xs"}`}
             >
               {relativeTime}
             </time>
           </div>
 
-          {/* Title - Compact: smaller text, still 2 lines */}
+          {/* Title - Increased font size to fill card, responsive line-clamp */}
           <h3 
-            className={`font-bold text-white mb-1 leading-tight flex-shrink-0 group-hover:text-red-400 transition-colors ${compact ? "text-xs line-clamp-2" : "text-sm line-clamp-2"}`}
+            className={`font-bold text-white flex-1 group-hover:text-red-400 transition-colors ${compact ? "text-sm sm:text-base md:text-lg leading-snug sm:leading-normal md:leading-relaxed news-card-title-compact" : "text-base sm:text-lg leading-relaxed line-clamp-4 sm:line-clamp-5"}`}
             style={{ 
               fontFamily: 'var(--font-ufc-heading)',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
               transitionDuration: `${animationDuration / 3}ms`,
             }}
           >
