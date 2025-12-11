@@ -35,3 +35,19 @@ model Transaction {
   receipt_url         String?
   user                User      @relation(fields: [userId], references: [clerkId])
 }
+
+model Prediction {
+  id          String   @id @default(cuid())
+  userId      String
+  event       String?
+  fight       String
+  fighterA    String
+  fighterB    String
+  content     String   @db.Text
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Index for efficient querying by user and sorting by date
+  @@index([userId, createdAt(sort: Desc)])
+}

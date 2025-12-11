@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { EventSelector } from "@/components/dashboard/EventSelector";
 import { FightSelector } from "@/components/dashboard/FightSelector";
@@ -8,6 +8,8 @@ import { VSEmblem } from "@/components/dashboard/VSEmblem";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
 import { NewsFeed } from "@/components/dashboard/NewsFeed";
+import { PredictionList } from "@/components/dashboard/PredictionList";
+import { usePredictions, type Prediction, type CreatePredictionPayload } from "@/hooks/usePredictions";
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -49,6 +51,12 @@ export default function HomePage() {
   const [selectedFight, setSelectedFight] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [activeArticle, setActiveArticle] = useState<ArticleData | null>(null);
+  const [isSavingPrediction, setIsSavingPrediction] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  
+  // Use predictions hook for saving
+  const { savePrediction, refresh: refreshPredictions } = usePredictions({ autoFetch: false });
+  const predictionListRefreshRef = useRef<() => void>(() => {});
 
   // Get available fights for the currently selected event
   const availableFights = useMemo(() => {
@@ -173,6 +181,33 @@ export default function HomePage() {
         });
         
         console.log("[Dashboard] Analysis completed successfully for:", message);
+        
+        // Save prediction to database
+        setIsSavingPrediction(true);
+        setSaveError(null);
+        try {
+          const predictionPayload: CreatePredictionPayload = {
+            event: selectedEvent,
+            fight: selectedFight,
+            fighterA,
+            fighterB,
+            content,
+            imageUrl,
+          };
+          
+          const savedPrediction = await savePrediction(predictionPayload);
+          if (savedPrediction) {
+            console.log("[Dashboard] Prediction saved successfully:", savedPrediction.id);
+          } else {
+            console.warn("[Dashboard] Failed to save prediction");
+            setSaveError("Failed to save prediction to history");
+          }
+        } catch (saveErr) {
+          console.error("[Dashboard] Error saving prediction:", saveErr);
+          setSaveError("Failed to save prediction to history");
+        } finally {
+          setIsSavingPrediction(false);
+        }
       } else {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
       }
@@ -183,13 +218,27 @@ export default function HomePage() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedFight]);
+  }, [selectedFight, selectedEvent, savePrediction]);
 
   const handleCloseArticle = useCallback(() => {
     setActiveArticle(null);
     setSelectedEvent(UFC_EVENTS[0]);
     const firstFight = UFC_FIGHTS[UFC_EVENTS[0]]?.[0] || "";
     setSelectedFight(firstFight);
+    setSaveError(null);
+  }, []);
+
+  /**
+   * Handle viewing a saved prediction from the Past tab
+   */
+  const handleViewSavedPrediction = useCallback((prediction: Prediction) => {
+    setActiveArticle({
+      content: prediction.content,
+      fighterA: prediction.fighterA,
+      fighterB: prediction.fighterB,
+      timestamp: prediction.createdAt,
+      imageUrl: prediction.imageUrl || undefined,
+    });
   }, []);
 
   return (
@@ -306,18 +355,12 @@ export default function HomePage() {
         hidden={activeTab !== "past"}
       >
         {activeTab === "past" && (
-          /* Coming Soon Content */
-          <div className="min-h-screen flex items-center justify-center bg-black dark:bg-black px-4 py-8">
-            <div className="text-center">
-              <h2 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
-                style={{ fontFamily: '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif' }}
-              >
-                COMING SOON
-              </h2>
-              <p className="text-zinc-400 text-lg md:text-xl max-w-md mx-auto">
-                Past fight analyses and results will be available here.
-              </p>
+          <div className="min-h-screen bg-black dark:bg-black px-4 py-8">
+            <div className="max-w-4xl mx-auto">
+              <PredictionList 
+                onViewPrediction={handleViewSavedPrediction}
+                pageSize={10}
+              />
             </div>
           </div>
         )}
