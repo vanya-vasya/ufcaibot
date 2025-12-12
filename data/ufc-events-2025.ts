@@ -256,7 +256,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
             id: "ufcfn-nov22-main3",
             fighterA: { name: "Volkan Oezdemir", country: "Switzerland", countryCode: "CH", rank: "#9" },
             fighterB: { name: "Alonzo Menifield", country: "United States", countryCode: "US", rank: "#14" },
-            winner: "B",
+            winner: "A",
             method: "KO/TKO",
             round: 1,
             time: "1:27",
