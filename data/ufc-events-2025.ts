@@ -1243,7 +1243,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
             id: "ufcfn-oct11-prelim1",
             fighterA: { name: "Lucas Almeida", country: "Brazil", countryCode: "BR" },
             fighterB: { name: "Michael Aswell Jr.", country: "United States", countryCode: "US" },
-            winner: "A",
+            winner: "B",
             method: "KO/TKO",
             round: 1,
             time: "1:42",
