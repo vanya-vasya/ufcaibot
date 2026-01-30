@@ -41,12 +41,12 @@ const importantLinks = [
 
 const companyDetails = [
   {
-    name: "Company: DIGIDROP SP.Z.O.O",
+    name: "Company: DIGIARIA SP.Z.O.O",
     icon: Building2,
     ariaLabel: "Company name",
   },
   {
-    name: "KRS: 0001185058",
+    name: "KRS: 0001189469",
     icon: FileCheck,
     ariaLabel: "Company registration number",
   },
@@ -56,7 +56,7 @@ const companyDetails = [
     ariaLabel: "Email contact",
   },
   {
-    name: `ALEJA JANA PAWŁA II 27, 00-867 WARSZAWA`,
+    name: `ul. JANA HEWELIUSZA, nr 11, lok. 819, GDAŃSK, 80-890, POLSKA`,
     icon: MapPinned,
     ariaLabel: "Business address",
   },
