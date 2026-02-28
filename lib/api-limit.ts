@@ -1,11 +1,6 @@
-// DISABLED FOR LOCAL DESIGN WORK - Re-enable for production
-// import { auth } from "@clerk/nextjs/server";
-
+import { auth } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
 import { Transaction } from "@prisma/client";
-
-// Mock auth function for local development without Clerk
-const auth = () => ({ userId: 'local-dev-user-123' });
 
 export const incrementApiLimit = async (value: number) => {
   const { userId } = auth();

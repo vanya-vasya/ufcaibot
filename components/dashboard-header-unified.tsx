@@ -1,24 +1,25 @@
 "use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
+import { LogOut, ChevronDown } from "lucide-react";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import { UsageProgress } from "@/components/usage-progress";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { fontSizes, fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
 
 const routes = [
-  {
-    name: "Pricing",
-    href: "/#pricing",
-  },
-  {
-    name: "FAQ",
-    href: "/faq",
-  },
-  {
-    name: "Contact",
-    href: "/contact",
-  },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQ", href: "/faq" },
+  { name: "Contact", href: "/contact" },
 ];
 
 interface DashboardHeaderUnifiedProps {
@@ -30,69 +31,163 @@ const DashboardHeaderUnified = ({
   initialUsedGenerations,
   initialAvailableGenerations,
 }: DashboardHeaderUnifiedProps) => {
+  const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
+  const router = useRouter();
   const ufcHeadingFont = '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
+
+  const handleSignOut = () => {
+    signOut(() => router.push("/"));
+  };
+
+  const userInitials =
+    user?.firstName && user?.lastName
+      ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
+      : user?.firstName
+      ? user.firstName[0].toUpperCase()
+      : user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() ?? "U";
 
   return (
     <header className="bg-white">
       <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
-        {/* Left - Logo (aligned with footer) */}
+        {/* Left — Logo */}
         <div className="flex items-center">
           <Link href="/dashboard" className="logo-hover-effect" aria-label="Go to dashboard">
-            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
+            <Image
+              width={49}
+              height={20}
+              src="/logos/ufc-fighter-logo.png"
+              alt="UFC Fighter Logo"
+            />
           </Link>
         </div>
 
-        {/* Center Navigation - Hidden on mobile, shown on desktop */}
+        {/* Center — Navigation (desktop only) */}
         <div className="hidden lg:flex flex-1 justify-center">
           <div className="nav-container-light-green">
             {routes.map((route) => (
-              <Link
-                key={route.name}
-                href={route.href}
-                className="nav-link"
-                tabIndex={0}
-              >
+              <Link key={route.name} href={route.href} className="nav-link" tabIndex={0}>
                 {route.name}
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Right Side - UsageProgress Card (PRESERVED) */}
-        <div className="hidden lg:flex items-center">
+        {/* Right — Credits + User Avatar (desktop) */}
+        <div className="hidden lg:flex items-center gap-3">
           <UsageProgress
             initialUsedGenerations={initialUsedGenerations}
             initialAvailableGenerations={initialAvailableGenerations}
           />
+
+          {/* User Avatar Dropdown */}
+          {isLoaded && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="User menu"
+                  className="flex items-center gap-1.5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 cursor-pointer"
+                >
+                  {user?.imageUrl ? (
+                    <Image
+                      src={user.imageUrl}
+                      alt={user.fullName ?? "User avatar"}
+                      width={36}
+                      height={36}
+                      className="rounded-full object-cover border-2 border-emerald-100"
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-full bg-emerald-100 border-2 border-emerald-200 flex items-center justify-center">
+                      <span className="text-xs font-bold text-emerald-700">{userInitials}</span>
+                    </div>
+                  )}
+                  <ChevronDown className="w-3 h-3 text-gray-400" />
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-100 shadow-lg p-1">
+                {/* User info */}
+                <div className="px-3 py-2">
+                  <p className="text-sm font-semibold text-gray-900 truncate">
+                    {user?.fullName ?? user?.firstName ?? "User"}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {user?.emailAddresses?.[0]?.emailAddress}
+                  </p>
+                </div>
+
+                <DropdownMenuSeparator className="bg-gray-100" />
+
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 cursor-pointer rounded-md hover:bg-red-50 focus:bg-red-50 focus:text-red-600"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
 
-        {/* Mobile Right Side - UsageProgress + Menu */}
+        {/* Mobile Right — Credits + Avatar + Hamburger */}
         <div className="lg:hidden flex items-center gap-2">
           <UsageProgress
             initialUsedGenerations={initialUsedGenerations}
             initialAvailableGenerations={initialAvailableGenerations}
           />
+
+          {isLoaded && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="User menu"
+                  className="outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
+                >
+                  {user?.imageUrl ? (
+                    <Image
+                      src={user.imageUrl}
+                      alt={user.fullName ?? "User avatar"}
+                      width={32}
+                      height={32}
+                      className="rounded-full object-cover border-2 border-emerald-100"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 border-2 border-emerald-200 flex items-center justify-center">
+                      <span className="text-xs font-bold text-emerald-700">{userInitials}</span>
+                    </div>
+                  )}
+                </button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end" className="w-52 bg-white border border-gray-100 shadow-lg p-1">
+                <div className="px-3 py-2">
+                  <p className="text-sm font-semibold text-gray-900 truncate">
+                    {user?.fullName ?? user?.firstName ?? "User"}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {user?.emailAddresses?.[0]?.emailAddress}
+                  </p>
+                </div>
+                <DropdownMenuSeparator className="bg-gray-100" />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 cursor-pointer rounded-md hover:bg-red-50 focus:bg-red-50 focus:text-red-600"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+
           <GuestMobileSidebar />
         </div>
       </nav>
 
       <style jsx global>{`
-        .nav-container {
-          display: flex;
-          background-color: #f8fafc;
-          border-radius: 9999px;
-          padding: 4px;
-          gap: 4px;
-        }
-
-        .nav-container-green {
-          display: flex;
-          background-color: transparent;
-          border-radius: 9999px;
-          padding: 4px;
-          gap: 4px;
-        }
-
         .nav-container-light-green {
           display: flex;
           background-color: transparent;
@@ -115,82 +210,27 @@ const DashboardHeaderUnified = ({
           will-change: transform;
         }
 
-        .main-header__login-sing-up .nav-link {
-          font-family: ${ufcHeadingFont} !important;
-          font-weight: ${fontWeights.bold} !important;
-          font-size: ${fontSizes.base.value} !important;
-          line-height: ${lineHeights.snug} !important;
-          letter-spacing: ${letterSpacing.normal} !important;
-          text-transform: uppercase !important;
-          color: #000000 !important;
-          padding: 8px 16px !important;
-          border-radius: 9999px !important;
-          border: none !important;
-        }
-
         .nav-link:hover,
         .nav-link:focus-visible {
           transform: scale(1.075);
           text-decoration: none;
         }
 
-        /* Ensure dropdown trigger inherits nav-link hover styles */
-        button.nav-link:hover,
-        button.nav-link:focus-visible,
-        button.nav-link[data-state="open"] {
-          transform: scale(1.075);
-          text-decoration: none;
-        }
-
-        /* Dropdown menu item styling - solid black text, scale on hover */
-        .dropdown-menu-item {
-          font-family: ${ufcHeadingFont};
-          font-weight: ${fontWeights.bold};
-          font-size: ${fontSizes.base.value};
-          line-height: ${lineHeights.snug};
-          letter-spacing: ${letterSpacing.normal};
-          text-transform: uppercase;
-          color: #000000 !important;
-          padding: 10px 14px;
-          border-radius: 8px;
-          text-decoration: none;
-          transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
-          will-change: transform;
-        }
-
-        /* Override any inherited or conflicting text colors */
-        .dropdown-menu-item *,
-        .dropdown-menu-item span {
-          color: inherit;
-        }
-
-        .dropdown-menu-item:hover,
-        .dropdown-menu-item:focus-visible,
-        .dropdown-menu-item:active {
-          transform: scale(1.075);
-          text-decoration: none;
-        }
-
-        /* Responsive adjustments */
         @media (max-width: 1024px) {
           .nav-container-light-green {
             display: none;
           }
         }
 
-        /* Additional spacing for desktop layout */
         @media (min-width: 1024px) {
           .nav-container-light-green {
             gap: 8px;
           }
-          
-          /* Ensure proper spacing between navigation elements */
           .nav-link {
             margin: 0 4px;
           }
         }
 
-        /* Logo hover effect - GPU accelerated with accessibility support */
         .logo-hover-effect {
           transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
           will-change: transform;
@@ -206,39 +246,21 @@ const DashboardHeaderUnified = ({
           outline-offset: 2px;
         }
 
-        /* Respect reduced motion preferences */
         @media (prefers-reduced-motion: reduce) {
           .logo-hover-effect,
-          .nav-link,
-          .dropdown-menu-item {
+          .nav-link {
             transition: none;
           }
-          
           .logo-hover-effect:hover,
           .logo-hover-effect:focus-visible,
           .nav-link:hover,
-          .nav-link:focus-visible,
-          button.nav-link:hover,
-          button.nav-link:focus-visible,
-          button.nav-link[data-state="open"],
-          .dropdown-menu-item:hover,
-          .dropdown-menu-item:focus-visible,
-          .dropdown-menu-item:active {
+          .nav-link:focus-visible {
             transform: none;
           }
         }
-
-        /* Dark mode support */
-        @media (prefers-color-scheme: dark) {
-          .dropdown-menu-item {
-            color: #f1f5f9;
-          }
-        }
-
       `}</style>
     </header>
   );
 };
 
 export default DashboardHeaderUnified;
-
