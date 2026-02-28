@@ -172,7 +172,22 @@ export default function HomePage() {
           timestamp,
           imageUrl,
         });
-        
+
+        // Deduct 100 credits and record transaction
+        try {
+          const deductRes = await fetch("/api/user/deduct-credits", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fight: selectedFight, fighterA, fighterB }),
+          });
+          if (deductRes.ok) {
+            // Notify UsageProgress to re-fetch balance
+            window.dispatchEvent(new CustomEvent("credits:updated"));
+          }
+        } catch (deductErr) {
+          console.error("[Dashboard] Failed to deduct credits:", deductErr);
+        }
+
         console.log("[Dashboard] Analysis completed successfully for:", message);
       } else {
         throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);

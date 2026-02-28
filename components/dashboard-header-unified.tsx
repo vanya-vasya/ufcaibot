@@ -45,7 +45,7 @@ const DashboardHeaderUnified = ({
       <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
         {/* Left — Logo */}
         <div className="flex items-center">
-          <Link href="/dashboard" className="logo-hover-effect" aria-label="Go to dashboard">
+          <Link href="/" className="logo-hover-effect" aria-label="Go to home">
             <Image
               width={49}
               height={20}

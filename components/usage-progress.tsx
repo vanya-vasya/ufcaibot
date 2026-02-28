@@ -18,20 +18,25 @@ export function UsageProgress({
   const [available, setAvailable] = React.useState(initialAvailableGenerations);
   const [used, setUsed] = React.useState(initialUsedGenerations);
 
-  React.useEffect(() => {
-    const fetchCredits = async () => {
-      try {
-        const res = await fetch("/api/user/credits");
-        if (!res.ok) return;
-        const data = await res.json();
-        setAvailable(data.available);
-        setUsed(data.used);
-      } catch {
-        // keep initial values on network failure
-      }
-    };
-    fetchCredits();
+  const fetchCredits = React.useCallback(async () => {
+    try {
+      const res = await fetch("/api/user/credits");
+      if (!res.ok) return;
+      const data = await res.json();
+      setAvailable(data.available);
+      setUsed(data.used);
+    } catch {
+      // keep initial values on network failure
+    }
   }, []);
+
+  React.useEffect(() => {
+    fetchCredits();
+
+    // Re-fetch whenever a fight analysis deducts credits
+    window.addEventListener("credits:updated", fetchCredits);
+    return () => window.removeEventListener("credits:updated", fetchCredits);
+  }, [fetchCredits]);
 
   const remaining = Math.max(0, available - used);
 
