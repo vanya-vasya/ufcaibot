@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import type { ParsedFighterStats } from "@/lib/parseChartData";
 
 interface FighterStats {
   wins: number;
@@ -14,6 +15,8 @@ interface FighterStats {
 interface FighterComparisonProps {
   fighterA: string;
   fighterB: string;
+  parsedStatsA?: ParsedFighterStats;
+  parsedStatsB?: ParsedFighterStats;
 }
 
 // Fighter stats data (simplified for demonstration)
@@ -89,9 +92,28 @@ const StatBar = ({ label, valueA, valueB, isNumeric = true }: StatBarProps) => {
 export const FighterComparisonInfographic = ({
   fighterA,
   fighterB,
+  parsedStatsA,
+  parsedStatsB,
 }: FighterComparisonProps) => {
-  const statsA = useMemo(() => FIGHTER_STATS[fighterA] || DEFAULT_STATS, [fighterA]);
-  const statsB = useMemo(() => FIGHTER_STATS[fighterB] || DEFAULT_STATS, [fighterB]);
+  const baseA = useMemo(() => FIGHTER_STATS[fighterA] || DEFAULT_STATS, [fighterA]);
+  const baseB = useMemo(() => FIGHTER_STATS[fighterB] || DEFAULT_STATS, [fighterB]);
+
+  // Merge parsed stats (from AI text) over the base lookup, preferring real text data
+  const statsA = useMemo<FighterStats>(() => ({
+    ...baseA,
+    wins: parsedStatsA?.wins ?? baseA.wins,
+    losses: parsedStatsA?.losses ?? baseA.losses,
+    knockouts: parsedStatsA?.knockouts ?? baseA.knockouts,
+    submissions: parsedStatsA?.submissions ?? baseA.submissions,
+  }), [baseA, parsedStatsA]);
+
+  const statsB = useMemo<FighterStats>(() => ({
+    ...baseB,
+    wins: parsedStatsB?.wins ?? baseB.wins,
+    losses: parsedStatsB?.losses ?? baseB.losses,
+    knockouts: parsedStatsB?.knockouts ?? baseB.knockouts,
+    submissions: parsedStatsB?.submissions ?? baseB.submissions,
+  }), [baseB, parsedStatsB]);
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">

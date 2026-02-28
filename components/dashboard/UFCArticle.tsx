@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { parseContentBlocks } from "@/lib/parseContentBlocks";
+import { parseWinProbability, parseFighterStatsFromBlock } from "@/lib/parseChartData";
 import { AnalysisInfographic } from "./AnalysisInfographic";
 import { FighterComparisonInfographic } from "./FighterComparisonInfographic";
 
@@ -57,6 +58,33 @@ export const UFCArticle = ({
 
   // Parse content into Block 1, Block 2, Block 3
   const contentBlocks = parseContentBlocks(content);
+
+  // Derive chart data by parsing percentages from each block's text
+  const oddsData = useMemo(
+    () => parseWinProbability(contentBlocks.block1, fighterA, fighterB),
+    [contentBlocks.block1, fighterA, fighterB]
+  );
+
+  const fightersData = useMemo(
+    () => parseWinProbability(contentBlocks.block2, fighterA, fighterB),
+    [contentBlocks.block2, fighterA, fighterB]
+  );
+
+  const sentimentData = useMemo(
+    () => parseWinProbability(contentBlocks.block3, fighterA, fighterB),
+    [contentBlocks.block3, fighterA, fighterB]
+  );
+
+  // Parse fighter stats from block 2 for the comparison infographic
+  const parsedStatsA = useMemo(
+    () => parseFighterStatsFromBlock(contentBlocks.block2, fighterA),
+    [contentBlocks.block2, fighterA]
+  );
+
+  const parsedStatsB = useMemo(
+    () => parseFighterStatsFromBlock(contentBlocks.block2, fighterB),
+    [contentBlocks.block2, fighterB]
+  );
 
   // Function to render content as plain text (no bullet points)
   const renderContentWithBullets = (text: string) => {
@@ -170,6 +198,7 @@ export const UFCArticle = ({
                 type="odds"
                 fighterA={fighterA}
                 fighterB={fighterB}
+                data={oddsData}
               />
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -192,12 +221,15 @@ export const UFCArticle = ({
               <FighterComparisonInfographic
                 fighterA={fighterA}
                 fighterB={fighterB}
+                parsedStatsA={parsedStatsA}
+                parsedStatsB={parsedStatsB}
               />
               {/* Fighters Analysis Bar Infographic */}
               <AnalysisInfographic
                 type="fighters"
                 fighterA={fighterA}
                 fighterB={fighterB}
+                data={fightersData}
               />
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -221,6 +253,7 @@ export const UFCArticle = ({
                 type="sentiment"
                 fighterA={fighterA}
                 fighterB={fighterB}
+                data={sentimentData}
               />
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
