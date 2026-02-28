@@ -15,8 +15,27 @@ export function UsageProgress({
 }: UsageProgressProps) {
   const proModal = useProModal();
 
-  const remaining = Math.max(0, initialAvailableGenerations - initialUsedGenerations);
-  const isLow = remaining <= 10;
+  const [available, setAvailable] = React.useState(initialAvailableGenerations);
+  const [used, setUsed] = React.useState(initialUsedGenerations);
+
+  // Fetch fresh credits from server on mount to always reflect real DB value
+  React.useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        const res = await fetch("/api/user/credits");
+        if (!res.ok) return;
+        const data = await res.json();
+        setAvailable(data.available);
+        setUsed(data.used);
+      } catch {
+        // silently keep initial values on network failure
+      }
+    };
+    fetchCredits();
+  }, []);
+
+  const remaining = Math.max(0, available - used);
+  const isLow = remaining > 0 && remaining <= 10;
   const isEmpty = remaining === 0;
 
   return (
