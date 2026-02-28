@@ -1,20 +1,43 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
 import { Transaction } from "@prisma/client";
+
+/** Finds user by clerkId; falls back to email lookup and syncs clerkId if found. */
+const findUserByAuth = async () => {
+  const { userId } = auth();
+  if (!userId) return null;
+
+  let user = await prismadb.user.findUnique({ where: { clerkId: userId } });
+
+  if (!user) {
+    const clerkUser = await currentUser();
+    const primaryEmail = clerkUser?.emailAddresses?.[0]?.emailAddress;
+    if (primaryEmail) {
+      user = await prismadb.user.findUnique({ where: { email: primaryEmail } });
+      if (user) {
+        // Persist real clerkId so future lookups are direct
+        await prismadb.user.update({
+          where: { email: primaryEmail },
+          data: { clerkId: userId },
+        });
+        user = { ...user, clerkId: userId };
+      }
+    }
+  }
+
+  return user;
+};
 
 export const incrementApiLimit = async (value: number) => {
   try {
     const { userId } = auth();
     if (!userId) return;
 
-    const userApiLimit = await prismadb.user.findUnique({
-      where: { clerkId: userId },
-    });
-
-    if (userApiLimit) {
+    const user = await findUserByAuth();
+    if (user) {
       await prismadb.user.update({
-        where: { clerkId: userId },
-        data: { usedGenerations: userApiLimit.usedGenerations + value },
+        where: { clerkId: user.clerkId },
+        data: { usedGenerations: user.usedGenerations + value },
       });
     }
   } catch (error) {
@@ -24,20 +47,9 @@ export const incrementApiLimit = async (value: number) => {
 
 export const checkApiLimit = async (generationPrice: number) => {
   try {
-    const { userId } = auth();
-    if (!userId) return false;
-
-    const userApiLimit = await prismadb.user.findUnique({
-      where: { clerkId: userId },
-    });
-
-    if (
-      userApiLimit &&
-      userApiLimit.availableGenerations - userApiLimit.usedGenerations >= generationPrice
-    ) {
-      return true;
-    }
-    return false;
+    const user = await findUserByAuth();
+    if (!user) return false;
+    return user.availableGenerations - user.usedGenerations >= generationPrice;
   } catch (error) {
     console.error("[checkApiLimit]", error);
     return false;
@@ -46,14 +58,7 @@ export const checkApiLimit = async (generationPrice: number) => {
 
 export const getApiAvailableGenerations = async () => {
   try {
-    const { userId } = auth();
-    if (!userId) return 0;
-
-    const user = await prismadb.user.findUnique({
-      where: { clerkId: userId },
-      select: { availableGenerations: true },
-    });
-
+    const user = await findUserByAuth();
     return user?.availableGenerations ?? 0;
   } catch (error) {
     console.error("[getApiAvailableGenerations]", error);
@@ -63,14 +68,7 @@ export const getApiAvailableGenerations = async () => {
 
 export const getApiUsedGenerations = async () => {
   try {
-    const { userId } = auth();
-    if (!userId) return 0;
-
-    const user = await prismadb.user.findUnique({
-      where: { clerkId: userId },
-      select: { usedGenerations: true },
-    });
-
+    const user = await findUserByAuth();
     return user?.usedGenerations ?? 0;
   } catch (error) {
     console.error("[getApiUsedGenerations]", error);
@@ -83,8 +81,11 @@ export async function fetchPaymentHistory(): Promise<Transaction[] | null> {
     const { userId } = auth();
     if (!userId) return null;
 
+    const user = await findUserByAuth();
+    if (!user) return null;
+
     const transactions = await prismadb.transaction.findMany({
-      where: { userId },
+      where: { userId: user.clerkId },
       orderBy: { createdAt: "desc" },
     });
     return transactions;

@@ -40,13 +40,6 @@ const DashboardHeaderUnified = ({
     signOut(() => router.push("/"));
   };
 
-  const userInitials =
-    user?.firstName && user?.lastName
-      ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
-      : user?.firstName
-      ? user.firstName[0].toUpperCase()
-      : user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() ?? "U";
-
   return (
     <header className="bg-white">
       <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
@@ -89,19 +82,13 @@ const DashboardHeaderUnified = ({
                   aria-label="User menu"
                   className="flex items-center gap-1.5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 cursor-pointer"
                 >
-                  {user?.imageUrl ? (
-                    <Image
-                      src={user.imageUrl}
-                      alt={user.fullName ?? "User avatar"}
-                      width={36}
-                      height={36}
-                      className="rounded-full object-cover border-2 border-emerald-100"
-                    />
-                  ) : (
-                    <div className="w-9 h-9 rounded-full bg-emerald-100 border-2 border-emerald-200 flex items-center justify-center">
-                      <span className="text-xs font-bold text-emerald-700">{userInitials}</span>
-                    </div>
-                  )}
+                  <Image
+                    src={user?.imageUrl || "/images/avatar-fighter.png"}
+                    alt={user?.fullName ?? "User avatar"}
+                    width={36}
+                    height={36}
+                    className="rounded-full object-cover border-2 border-gray-200"
+                  />
                   <ChevronDown className="w-3 h-3 text-gray-400" />
                 </button>
               </DropdownMenuTrigger>
@@ -146,19 +133,13 @@ const DashboardHeaderUnified = ({
                   aria-label="User menu"
                   className="outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                 >
-                  {user?.imageUrl ? (
-                    <Image
-                      src={user.imageUrl}
-                      alt={user.fullName ?? "User avatar"}
-                      width={32}
-                      height={32}
-                      className="rounded-full object-cover border-2 border-emerald-100"
-                    />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full bg-emerald-100 border-2 border-emerald-200 flex items-center justify-center">
-                      <span className="text-xs font-bold text-emerald-700">{userInitials}</span>
-                    </div>
-                  )}
+                  <Image
+                    src={user?.imageUrl || "/images/avatar-fighter.png"}
+                    alt={user?.fullName ?? "User avatar"}
+                    width={32}
+                    height={32}
+                    className="rounded-full object-cover border-2 border-gray-200"
+                  />
                 </button>
               </DropdownMenuTrigger>
 
