@@ -1,5 +1,8 @@
 "use client";
 
+import { TypewriterPhrases } from "./TypewriterPhrases";
+import { DEFAULT_ANALYSIS_PHRASES, type TypewriterPhrase } from "@/hooks/useTypewriterPhrases";
+
 interface VSEmblemProps {
   className?: string;
   onClick?: () => void;
@@ -7,94 +10,115 @@ interface VSEmblemProps {
   isLoading?: boolean;
 }
 
-export const VSEmblem = ({ className = "", onClick, disabled = false, isLoading = false }: VSEmblemProps) => {
+export const VSEmblem = ({ 
+  className = "", 
+  onClick, 
+  disabled = false, 
+  isLoading = false,
+}: VSEmblemProps) => {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled || isLoading}
-      className={`flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-red-500 rounded-lg px-4 py-2 transition-all ${
-        disabled || isLoading ? 'opacity-50 cursor-not-allowed' : ''
-      } ${className}`}
-      data-testid="vs-emblem"
-      aria-label={isLoading ? "Processing fight analysis" : "Start fight analysis"}
-      aria-busy={isLoading}
-    >
-      {isLoading ? (
-        <div className="flex flex-col items-center gap-2" role="status" aria-live="polite">
-          <svg
-            className="animate-spin h-8 w-8 text-white"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            />
-          </svg>
+    <div className="flex flex-col items-center">
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={disabled || isLoading}
+        className={`flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-red-500 rounded-lg px-4 py-2 transition-all min-h-[60px] min-w-[120px] ${
+          disabled || isLoading ? 'opacity-50 cursor-not-allowed' : ''
+        } ${className}`}
+        data-testid="vs-emblem"
+        aria-label={isLoading ? "Processing fight analysis" : "Start fight analysis"}
+        aria-busy={isLoading}
+      >
+        {isLoading ? (
+          <div className="flex flex-col items-center gap-2" role="status" aria-live="polite">
+            <svg
+              className="animate-spin h-8 w-8 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+            <span
+              className="text-2xl md:text-3xl font-black text-white"
+              style={{
+                fontFamily: 'var(--font-ufc-heading)',
+                letterSpacing: '0.05em',
+              }}
+            >
+              ANALYZING
+            </span>
+          </div>
+        ) : (
           <span
-            className="text-2xl md:text-3xl font-black text-white"
+            className="text-3xl md:text-4xl font-black text-white dark:text-white fight-button-text"
             style={{
               fontFamily: 'var(--font-ufc-heading)',
               letterSpacing: '0.05em',
             }}
           >
-            ANALYZING
+            FIGHT
           </span>
-        </div>
-      ) : (
-        <span
-          className="text-3xl md:text-4xl font-black text-white dark:text-white fight-button-text"
-          style={{
-            fontFamily: 'var(--font-ufc-heading)',
-            letterSpacing: '0.05em',
-          }}
-        >
-          FIGHT
-        </span>
-      )}
+        )}
 
-      <style jsx>{`
-        @keyframes jump {
-          0%, 100% {
-            transform: translateY(0);
+        <style jsx>{`
+          @keyframes jump {
+            0%, 100% {
+              transform: translateY(0);
+            }
+            50% {
+              transform: translateY(-8px);
+            }
           }
-          50% {
-            transform: translateY(-8px);
-          }
-        }
 
-        @keyframes blink {
-          0%, 100% {
-            opacity: 1;
+          @keyframes blink {
+            0%, 100% {
+              opacity: 1;
+            }
+            50% {
+              opacity: 0.3;
+            }
           }
-          50% {
-            opacity: 0.3;
-          }
-        }
 
-        .fight-button-text {
-          animation: jump 1s ease-in-out infinite, blink 1.5s ease-in-out infinite;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
           .fight-button-text {
-            animation: none;
+            animation: jump 1s ease-in-out infinite, blink 1.5s ease-in-out infinite;
           }
-        }
-      `}</style>
-    </button>
+
+          @media (prefers-reduced-motion: reduce) {
+            .fight-button-text {
+              animation: none;
+            }
+          }
+        `}</style>
+      </button>
+
+      {/* Typewriter phrases container - always reserves space to prevent layout reflow */}
+      {/* Height: 80px margin + 2rem text = ~112px total reserved space */}
+      <div 
+        className="mt-20 min-h-[2rem] w-[500px] max-w-full overflow-visible"
+        data-testid="typewriter-phrases-container"
+        aria-hidden={!isLoading}
+      >
+        <TypewriterPhrases
+          isActive={isLoading}
+          className="min-h-[2rem]"
+        />
+      </div>
+    </div>
   );
 };
 
+export { DEFAULT_ANALYSIS_PHRASES };

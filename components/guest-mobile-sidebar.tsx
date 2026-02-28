@@ -66,7 +66,7 @@ export const GuestMobileSidebar = () => {
       <Button 
         variant="sidebar" 
         size="icon" 
-        className="lg:hidden text-green-600"
+        className="lg:hidden text-black"
         aria-expanded={isOpen}
         aria-label={isOpen ? "Close menu" : "Open menu"}
       >
@@ -78,7 +78,7 @@ export const GuestMobileSidebar = () => {
         className="p-0 border-r-0"
         aria-label="Mobile navigation menu"
       >
-        <div className="space-y-4 py-6 px-6 flex flex-col h-full bg-white border-r border-green-100 shadow-lg">
+        <div className="space-y-4 py-6 px-6 flex flex-col h-full bg-white border-r border-black shadow-lg">
           <div className="px-3 py-2 flex-1">
             <Link href="/dashboard" className="flex items-center pl-3 mb-14">
               <Image width={"75"} height={"30"} className="mr-4" alt="UFC Fighter Logo" src="/logos/ufc-fighter-logo.png" />
@@ -120,10 +120,7 @@ export const GuestMobileSidebar = () => {
         .mobile-nav-link:hover,
         .mobile-nav-link:focus-visible,
         .mobile-nav-link:active {
-          background: linear-gradient(to right, #10b981, #059669, #047857);
-          background-clip: text;
-          -webkit-background-clip: text;
-          color: transparent;
+          color: #000000;
           text-decoration: none;
         }
       `}</style>

@@ -27,15 +27,23 @@ const Header = () => {
 
   return (
     <header className="bg-white">
-      <nav className="mx-auto flex max-w-7xl items-center justify-center p-3 lg:px-6 relative">
-        {/* Left Navigation - Hidden on mobile, shown on desktop */}
-        <div className="hidden lg:flex absolute left-0 lg:left-6">
+      <nav className="mx-auto flex max-w-[1350px] items-center justify-between px-4 py-3">
+        {/* Left - Logo (aligned with footer) */}
+        <div className="flex items-center">
+          <Link href="/" className="logo-hover-effect" aria-label="Go to homepage">
+            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
+          </Link>
+        </div>
+
+        {/* Center Navigation - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:flex flex-1 justify-center">
           <div className="nav-container-light-green">
             {routes.map((route) => (
               <Link
                 key={route.name}
                 href={route.href}
                 className="nav-link"
+                tabIndex={0}
               >
                 {route.name}
               </Link>
@@ -43,40 +51,33 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Centered Logo */}
-        <div className="flex items-center justify-center">
-          <Link href="/" className="-m-1.5 p-1.5 logo-hover-effect">
-            <Image width={"49"} height={"20"} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
-          </Link>
-        </div>
-
         {/* Right Side - Begin Button */}
-        <div className="hidden lg:flex absolute right-0 lg:right-6">
-          <div className="flex">
-            <ul className="main-header__login-sing-up">
-              <li>
-                {/* DISABLED FOR LOCAL DESIGN WORK - Showing "Begin" button for all users */}
-                {/* <SignedIn>...</SignedIn> <SignedOut>...</SignedOut> */}
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="nav-container-green">
-                    <Link
-                      href="/dashboard"
-                      className="nav-link"
-                    >
-                      Begin
-                    </Link>
-                  </div>
-                </motion.div>
-              </li>
-            </ul>
-          </div>
+        <div className="hidden lg:flex items-center">
+          <ul className="main-header__login-sing-up">
+            <li>
+              {/* DISABLED FOR LOCAL DESIGN WORK - Showing "Begin" button for all users */}
+              {/* <SignedIn>...</SignedIn> <SignedOut>...</SignedOut> */}
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="nav-container-green">
+                  <Link
+                    href="/dashboard"
+                    className="nav-link"
+                    tabIndex={0}
+                    aria-label="Begin using UFC AI Bot"
+                  >
+                    Begin
+                  </Link>
+                </div>
+              </motion.div>
+            </li>
+          </ul>
         </div>
 
         {/* Mobile Menu - Always visible on mobile */}
-        <div className="lg:hidden absolute right-3">
+        <div className="lg:hidden">
           <GuestMobileSidebar />
         </div>
       </nav>
@@ -180,12 +181,6 @@ const Header = () => {
         @media (max-width: 1024px) {
           .nav-container-light-green {
             display: none;
-          }
-          
-          /* Ensure mobile layout is properly centered */
-          nav {
-            padding-left: 12px;
-            padding-right: 12px;
           }
         }
 

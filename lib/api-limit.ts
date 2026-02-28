@@ -1,108 +1,96 @@
-// DISABLED FOR LOCAL DESIGN WORK - Re-enable for production
-// import { auth } from "@clerk/nextjs/server";
-
+import { auth, currentUser } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
 import { Transaction } from "@prisma/client";
 
-// Mock auth function for local development without Clerk
-const auth = () => ({ userId: 'local-dev-user-123' });
-
-export const incrementApiLimit = async (value: number) => {
+/** Finds user by clerkId; falls back to email lookup and syncs clerkId if found. */
+const findUserByAuth = async () => {
   const { userId } = auth();
+  if (!userId) return null;
 
-  if (!userId) {
-    return;
+  let user = await prismadb.user.findUnique({ where: { clerkId: userId } });
+
+  if (!user) {
+    const clerkUser = await currentUser();
+    const primaryEmail = clerkUser?.emailAddresses?.[0]?.emailAddress;
+    if (primaryEmail) {
+      user = await prismadb.user.findUnique({ where: { email: primaryEmail } });
+      if (user) {
+        // Persist real clerkId so future lookups are direct
+        await prismadb.user.update({
+          where: { email: primaryEmail },
+          data: { clerkId: userId },
+        });
+        user = { ...user, clerkId: userId };
+      }
+    }
   }
 
-  const userApiLimit = await prismadb.user.findUnique({
-    where: { clerkId: userId },
-  });
+  return user;
+};
 
-  if (userApiLimit) {
-    await prismadb.user.update({
-      where: { clerkId: userId },
-      data: { usedGenerations: userApiLimit.usedGenerations + value },
-    });
+export const incrementApiLimit = async (value: number) => {
+  try {
+    const { userId } = auth();
+    if (!userId) return;
+
+    const user = await findUserByAuth();
+    if (user) {
+      await prismadb.user.update({
+        where: { clerkId: user.clerkId },
+        data: { usedGenerations: user.usedGenerations + value },
+      });
+    }
+  } catch (error) {
+    console.error("[incrementApiLimit]", error);
   }
 };
 
 export const checkApiLimit = async (generationPrice: number) => {
-  const { userId } = auth();
-
-  if (!userId) {
-    return false;
-  }
-
-  const userApiLimit = await prismadb.user.findUnique({
-    where: { clerkId: userId },
-  });
-  if (
-    userApiLimit &&
-    userApiLimit.usedGenerations < userApiLimit.availableGenerations &&
-    userApiLimit.availableGenerations - userApiLimit.usedGenerations >=
-      generationPrice
-  ) {
-    return true;
-  } else {
+  try {
+    const user = await findUserByAuth();
+    if (!user) return false;
+    return user.availableGenerations - user.usedGenerations >= generationPrice;
+  } catch (error) {
+    console.error("[checkApiLimit]", error);
     return false;
   }
 };
 
 export const getApiAvailableGenerations = async () => {
-  const { userId } = auth();
-
-  if (!userId) {
+  try {
+    const user = await findUserByAuth();
+    return user?.availableGenerations ?? 0;
+  } catch (error) {
+    console.error("[getApiAvailableGenerations]", error);
     return 0;
   }
-
-  const userApiLimit = await prismadb.user.findUnique({
-    where: {
-      clerkId: userId,
-    },
-  });
-
-  if (!userApiLimit) {
-    return 0;
-  }
-
-  return userApiLimit.availableGenerations;
 };
 
 export const getApiUsedGenerations = async () => {
-  const { userId } = auth();
-  if (!userId) {
+  try {
+    const user = await findUserByAuth();
+    return user?.usedGenerations ?? 0;
+  } catch (error) {
+    console.error("[getApiUsedGenerations]", error);
     return 0;
   }
-
-  const userApiLimit = await prismadb.user.findUnique({
-    where: {
-      clerkId: userId,
-    },
-  });
-
-  if (!userApiLimit) {
-    return 0;
-  }
-
-  return userApiLimit.usedGenerations;
 };
 
 export async function fetchPaymentHistory(): Promise<Transaction[] | null> {
   try {
     const { userId } = auth();
+    if (!userId) return null;
 
-    if (!userId) {
-      return null;
-    }
+    const user = await findUserByAuth();
+    if (!user) return null;
+
     const transactions = await prismadb.transaction.findMany({
-      where: {
-        userId: userId,
-      },
+      where: { userId: user.clerkId },
+      orderBy: { createdAt: "desc" },
     });
     return transactions;
   } catch (error) {
-    // console.error("[FETCH_PAYMENT_HISTORY_ERROR]", error);
-    // throw new Error("Failed to fetch payment history");
+    console.error("[fetchPaymentHistory]", error);
     return null;
   }
 }

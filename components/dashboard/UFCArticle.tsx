@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { parseContentBlocks } from "@/lib/parseContentBlocks";
+import { AnalysisInfographic } from "./AnalysisInfographic";
+import { FighterComparisonInfographic } from "./FighterComparisonInfographic";
 
 interface UFCArticleProps {
   content: string;
   fighterA: string;
   fighterB: string;
   timestamp: string;
+  imageUrl?: string;
   onClose: () => void;
 }
 
@@ -17,15 +20,28 @@ export const UFCArticle = ({
   fighterA,
   fighterB,
   timestamp,
+  imageUrl,
   onClose,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     // Trigger animation after mount
     const timer = setTimeout(() => setIsVisible(true), 50);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Reset image loaded state when imageUrl changes
+    console.log("[UFCArticle] Image URL received:", imageUrl);
+    setImageLoaded(false);
+  }, [imageUrl]);
+
+  const handleImageLoad = () => {
+    console.log("[UFCArticle] Image loaded successfully");
+    setImageLoaded(true);
+  };
 
   const handleClose = () => {
     setIsVisible(false);
@@ -109,7 +125,37 @@ export const UFCArticle = ({
             </h1>
           </header>
 
-          {/* Article Content - Three Blocks */}
+          {/* AI Generated Fighter Image */}
+          {imageUrl && (
+            <div className="mb-12 relative">
+              {/* Loading skeleton */}
+              {!imageLoaded && (
+                <div 
+                  className="w-full animate-pulse bg-gray-800"
+                  style={{ 
+                    height: '500px'
+                  }}
+                >
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-gray-400 text-lg">Generating fighter image...</p>
+                  </div>
+                </div>
+              )}
+              {/* Actual image */}
+              <img
+                src={imageUrl}
+                alt={`${fighterA} vs ${fighterB} - AI generated matchup`}
+                className={`w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
+                style={{ 
+                  maxHeight: '500px',
+                  objectFit: 'cover'
+                }}
+                onLoad={handleImageLoad}
+              />
+            </div>
+          )}
+
+          {/* Article Content - Three Blocks with Infographics */}
           <div className="space-y-12">
             {/* Block 1 - Odds Analysis */}
             <section>
@@ -119,6 +165,12 @@ export const UFCArticle = ({
               >
                 ODDS ANALYSIS
               </h2>
+              {/* Odds Infographic - Before text */}
+              <AnalysisInfographic
+                type="odds"
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block1)}
@@ -136,6 +188,17 @@ export const UFCArticle = ({
               >
                 FIGHTERS ANALYSIS
               </h2>
+              {/* Fighter Comparison Infographic - Before text */}
+              <FighterComparisonInfographic
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
+              {/* Fighters Analysis Bar Infographic */}
+              <AnalysisInfographic
+                type="fighters"
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block2)}
@@ -153,6 +216,12 @@ export const UFCArticle = ({
               >
                 SENTIMENT ANALYSIS
               </h2>
+              {/* Sentiment Infographic - Before text */}
+              <AnalysisInfographic
+                type="sentiment"
+                fighterA={fighterA}
+                fighterB={fighterB}
+              />
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block3)}

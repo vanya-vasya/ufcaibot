@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Zap } from "lucide-react";
 import { useProModal } from "@/hooks/use-pro-modal";
 
 interface UsageProgressProps {
@@ -12,28 +13,42 @@ export function UsageProgress({
   initialUsedGenerations,
   initialAvailableGenerations,
 }: UsageProgressProps) {
-  const [usedGenerations, setUsedGenerations] = React.useState<number>(
-    initialUsedGenerations
-  );
-  const [availableGenerations, setAvailableGenerations] =
-    React.useState<number>(initialAvailableGenerations);
-
   const proModal = useProModal();
 
+  const [available, setAvailable] = React.useState(initialAvailableGenerations);
+  const [used, setUsed] = React.useState(initialUsedGenerations);
+
+  React.useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        const res = await fetch("/api/user/credits");
+        if (!res.ok) return;
+        const data = await res.json();
+        setAvailable(data.available);
+        setUsed(data.used);
+      } catch {
+        // keep initial values on network failure
+      }
+    };
+    fetchCredits();
+  }, []);
+
+  const remaining = Math.max(0, available - used);
+
   return (
-    <div
-      className="relative overflow-hidden px-3 py-2 cursor-pointer border-0 bg-white/5 backdrop-blur-sm rounded-xl transition-all duration-200 hover:bg-white/10"
+    <button
+      type="button"
       onClick={proModal.onOpen}
-      title="Click to upgrade"
+      aria-label={`${remaining} credits remaining. Click to buy more.`}
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-black bg-black transition-all duration-200 cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-1 hover:bg-gray-900"
     >
-      <div className="relative z-20 flex items-center gap-2">
-        <div className="flex items-center gap-1.5 text-xs text-black">
-          <span className="font-medium">Credits:</span>
-          <span className="font-bold">
-            {usedGenerations}/{availableGenerations}
-          </span>
-        </div>
-      </div>
-    </div>
+      <Zap className="w-3.5 h-3.5 flex-shrink-0 text-white" />
+      <span className="text-xs font-bold tabular-nums text-white">
+        {remaining}
+      </span>
+      <span className="text-xs font-medium hidden sm:inline text-white">
+        credits
+      </span>
+    </button>
   );
 }

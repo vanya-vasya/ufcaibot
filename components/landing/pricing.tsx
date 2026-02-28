@@ -20,13 +20,14 @@ interface PricingTier {
   features: string[];
   popular: boolean;
   color: string;
+  isElite?: boolean;
 }
 
 const pricingTiers: PricingTier[] = [
   {
     id: "Tracker",
     name: "For a Quick Start",
-    price: "£20",
+    price: "£25",
     tokens: "100 Tokens",
     discount: "Standard Rate",
     features: [
@@ -38,7 +39,7 @@ const pricingTiers: PricingTier[] = [
   {
     id: "master-chef",
     name: "For Regular Use",
-    price: "£40",
+    price: "£50",
     tokens: "220 Tokens",
     discount: "10% Token Discount",
     features: [
@@ -49,22 +50,23 @@ const pricingTiers: PricingTier[] = [
   },
   {
     id: "master-nutritionist",
-    name: "Maximum Value Package",
-    price: "£60",
-    tokens: "360 Tokens",
-    discount: "20% Token Discount",
+    name: "Elite UFC Analysis Report",
+    price: "",
+    tokens: "The entire UFC card, distilled for dominance",
+    discount: "",
     features: [
       "Consulting Generations"
     ],
     popular: false,
     color: "from-blue-600 to-violet-600",
+    isElite: true,
   },
   {
     id: "custom",
     name: "Custom Amount",
     price: "",
     tokens: "",
-    tokenRate: "£0.20 per token",
+    tokenRate: "£0.25 per token",
     features: [
       "Pay Exactly What You Want"
     ],
@@ -173,8 +175,25 @@ const Pricing = () => {
 
                 {/* Price/Input Section - Fixed height container */}
                 <div className="flex-1 flex items-start mb-6">
-                  {/* Price */}
-                  {tier.id !== "custom" && (
+                  {/* Elite Card - Special Layout */}
+                  {tier.isElite && (
+                    <div className="text-center w-full">
+                      <p 
+                        className="text-xl font-bold text-white"
+                        style={{
+                          fontFamily: UFC_HEADING_FONT,
+                          fontWeight: fontWeights.bold,
+                          lineHeight: lineHeights.snug,
+                          letterSpacing: letterSpacing.normal,
+                        }}
+                      >
+                        {tier.tokens}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Price - Standard Cards */}
+                  {tier.id !== "custom" && !tier.isElite && (
                     <div className="text-center space-y-1 w-full">
                       <div 
                         className="text-4xl font-bold text-white"
@@ -254,7 +273,7 @@ const Pricing = () => {
                         <input
                           id={`custom-amount-${tier.id}`}
                           type="number"
-                          placeholder="25"
+                          placeholder="30"
                           value={customAmount}
                           onChange={(e) => setCustomAmount(e.target.value)}
                           className="w-full pl-8 pr-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-[#2a2a2a] focus:outline-none focus:ring-2"
@@ -311,16 +330,29 @@ const Pricing = () => {
 
                 {/* CTA */}
                 <div className="mt-auto">
-                  <Link href="/dashboard">
-                    <button
-                      className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
-                      style={{
-                        fontFamily: UFC_HEADING_FONT,
-                      }}
-                    >
-                      {tier.id === "custom" ? "Choose Amount" : "Begin"}
-                    </button>
-                  </Link>
+                  {tier.isElite ? (
+                    <Link href="/contact">
+                      <button
+                        className="w-full px-6 py-3 bg-[#d20a0a] border-2 border-[#d20a0a] hover:bg-[#b00808] text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                        style={{
+                          fontFamily: UFC_HEADING_FONT,
+                        }}
+                      >
+                        Contact
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link href="/dashboard">
+                      <button
+                        className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                        style={{
+                          fontFamily: UFC_HEADING_FONT,
+                        }}
+                      >
+                        {tier.id === "custom" ? "Choose Amount" : "Begin"}
+                      </button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </motion.div>
