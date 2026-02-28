@@ -82,12 +82,13 @@ const DashboardHeaderUnified = ({
                   aria-label="User menu"
                   className="flex items-center gap-1.5 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 cursor-pointer"
                 >
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={user?.imageUrl || "/images/avatar-fighter.png"}
                     alt={user?.fullName ?? "User avatar"}
                     width={36}
                     height={36}
-                    className="rounded-full object-cover border-2 border-gray-200"
+                    className="rounded-full object-cover border-2 border-gray-200 w-9 h-9"
                   />
                   <ChevronDown className="w-3 h-3 text-gray-400" />
                 </button>
@@ -133,12 +134,13 @@ const DashboardHeaderUnified = ({
                   aria-label="User menu"
                   className="outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                 >
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={user?.imageUrl || "/images/avatar-fighter.png"}
                     alt={user?.fullName ?? "User avatar"}
                     width={32}
                     height={32}
-                    className="rounded-full object-cover border-2 border-gray-200"
+                    className="rounded-full object-cover border-2 border-gray-200 w-8 h-8"
                   />
                 </button>
               </DropdownMenuTrigger>
