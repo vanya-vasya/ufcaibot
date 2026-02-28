@@ -51,7 +51,7 @@ export const parseWinProbability = (
   // Resolve ranges first, then lowercase
   const resolved = collapseRanges(text).toLowerCase();
 
-  const allMatches = [...resolved.matchAll(/(\d+(?:\.\d+)?)\s*%/g)];
+  const allMatches = Array.from(resolved.matchAll(/(\d+(?:\.\d+)?)\s*%/g));
   if (allMatches.length === 0) return { red: 50, blue: 50 };
 
   let percentA: number | null = null;
