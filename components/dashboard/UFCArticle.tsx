@@ -153,6 +153,26 @@ export const UFCArticle = ({
             </h1>
           </header>
 
+          {/* AI Generated Fighter Image - right after header, before all blocks */}
+          {(imageUrl || !imageLoaded) && (
+            <div className="mb-12 relative rounded-2xl overflow-hidden border border-gray-800">
+              {!imageLoaded && (
+                <div className="w-full animate-pulse bg-gray-900 flex items-center justify-center" style={{ height: '420px' }}>
+                  <p className="text-gray-500 text-sm tracking-widest uppercase">Generating fighter image…</p>
+                </div>
+              )}
+              {imageUrl && (
+                <img
+                  src={imageUrl}
+                  alt={`${fighterA} vs ${fighterB} - AI generated matchup`}
+                  className={`w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
+                  style={{ maxHeight: '420px', objectFit: 'cover' }}
+                  onLoad={handleImageLoad}
+                />
+              )}
+            </div>
+          )}
+
           {/* Article Content - Three Blocks with Infographics */}
           <div className="space-y-12">
             {/* Block 1 - Odds Analysis */}
@@ -186,26 +206,6 @@ export const UFCArticle = ({
               >
                 FIGHTERS ANALYSIS
               </h2>
-
-              {/* AI Generated Fighter Image - inside Fighters Analysis */}
-              {(imageUrl || !imageLoaded) && (
-                <div className="mb-8 relative rounded-2xl overflow-hidden border border-gray-800">
-                  {!imageLoaded && (
-                    <div className="w-full animate-pulse bg-gray-900 flex items-center justify-center" style={{ height: '420px' }}>
-                      <p className="text-gray-500 text-sm tracking-widest uppercase">Generating fighter image…</p>
-                    </div>
-                  )}
-                  {imageUrl && (
-                    <img
-                      src={imageUrl}
-                      alt={`${fighterA} vs ${fighterB} - AI generated matchup`}
-                      className={`w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
-                      style={{ maxHeight: '420px', objectFit: 'cover' }}
-                      onLoad={handleImageLoad}
-                    />
-                  )}
-                </div>
-              )}
 
               {/* Fighter Comparison Infographic */}
               <FighterComparisonInfographic
