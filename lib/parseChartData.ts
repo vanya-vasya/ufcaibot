@@ -34,62 +34,56 @@ const TENS: Record<string, number> = {
   sixty: 60, seventy: 70, eighty: 80, ninety: 90,
 };
 
-const tensPattern  = Object.keys(TENS).join("|");
-const onesPattern  = Object.keys(ONES).join("|");
+const tensPattern = Object.keys(TENS).join("|");
+const onesPattern = Object.keys(ONES).join("|");
 
-/**
- * Convert word-based numbers to digit strings.
- * Handles:
- *   - Compound hyphenated:  "sixty-two" → "62"
- *   - Compound with space:  "sixty two" → "62"  (only tens + ones combos)
- *   - Single tens word:     "seventy"   → "70"
- *   - Single ones/teen:     "thirty"    → "30"
- *
- * Betting lines like "minus one-seventy" are intentionally left alone because
- * "one" is not in the TENS map, so the compound pattern won't fire.
- */
 const convertWordNumbersToDigits = (text: string): string => {
-  // 1. Compound: tens + hyphen/space + ones  e.g. "sixty-two", "thirty seven"
   const compoundRe = new RegExp(`\\b(${tensPattern})[-\\s](${onesPattern})\\b`, "gi");
   let result = text.replace(compoundRe, (_, t, o) =>
     String((TENS[t.toLowerCase()] ?? 0) + (ONES[o.toLowerCase()] ?? 0))
   );
-
-  // 2. Single tens words  e.g. "seventy" → "70"
   const tensRe = new RegExp(`\\b(${tensPattern})\\b`, "gi");
   result = result.replace(tensRe, (w) => String(TENS[w.toLowerCase()] ?? w));
-
-  // 3. Single ones/teen words  e.g. "thirty" already handled; "fifteen" → "15"
   const onesRe = new RegExp(`\\b(${onesPattern})\\b`, "gi");
   result = result.replace(onesRe, (w) => String(ONES[w.toLowerCase()] ?? w));
-
   return result;
 };
 
-/**
- * Replace "N percent" (word) with "N%" so downstream regexes can match it.
- */
 const wordPercentToSymbol = (text: string): string =>
-  text.replace(/(\d+)\s+percent\b/gi, "$1%");
+  text.replace(/(\d+(?:\.\d+)?)\s+percent\b/gi, "$1%");
 
 /**
- * Collapse "X to Y %" ranges into their midpoint.
- * e.g. "62 to 68%" → "65%"
+ * Collapse percentage ranges into their midpoint.
+ * Handles all common formats from N8N output:
+ *   "58% to 62.5%"  →  "60%"
+ *   "58 to 62%"     →  "60%"
+ *   "52%–56%"       →  "54%"   (en-dash)
+ *   "52%—56%"       →  "54%"   (em-dash)
  */
-const collapseRanges = (text: string): string =>
-  text.replace(
-    /(\d+)\s+to\s+(\d+)\s*%/gi,
-    (_, a, b) => `${Math.round((parseInt(a) + parseInt(b)) / 2)}%`
+const collapseRanges = (text: string): string => {
+  // "N% to M%" — both numbers already have %
+  let result = text.replace(
+    /(\d+(?:\.\d+)?)\s*%\s+to\s+(\d+(?:\.\d+)?)\s*%/gi,
+    (_, a, b) => `${Math.round((parseFloat(a) + parseFloat(b)) / 2)}%`
   );
+  // "N to M%" — only the trailing number has %
+  result = result.replace(
+    /(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\s*%/gi,
+    (_, a, b) => `${Math.round((parseFloat(a) + parseFloat(b)) / 2)}%`
+  );
+  // "N%–M%" or "N%—M%" — en/em-dash range, both with %
+  result = result.replace(
+    /(\d+(?:\.\d+)?)\s*%\s*[–—]\s*(\d+(?:\.\d+)?)\s*%/gi,
+    (_, a, b) => `${Math.round((parseFloat(a) + parseFloat(b)) / 2)}%`
+  );
+  return result;
+};
 
-/**
- * Full normalisation pipeline applied before percentage extraction.
- */
 const normaliseText = (raw: string): string => {
   let t = raw;
-  t = convertWordNumbersToDigits(t);  // "seventy" → "70"
-  t = wordPercentToSymbol(t);          // "70 percent" → "70%"
-  t = collapseRanges(t);               // "62 to 68%" → "65%"
+  t = convertWordNumbersToDigits(t);
+  t = wordPercentToSymbol(t);
+  t = collapseRanges(t);
   return t.toLowerCase();
 };
 
@@ -101,13 +95,21 @@ const normaliseText = (raw: string): string => {
  * Parse a win-probability split (red = fighterA, blue = fighterB) from a
  * single analysis block.
  *
- * Strategy (applied in order after text normalisation):
- * 1. Scan every "N%" token; associate it with a fighter if that fighter's
- *    last name appears within ±80 chars of the token.
- * 2. If both fighters found, normalise pair to sum to 100.
- * 3. If only one fighter found, derive the other as 100 – found.
- * 4. Last resort: first adjacent pair that sums ≈ 100.
- * 5. Default: 50 / 50.
+ * Strategy:
+ * 1. Collect ALL "N%" tokens. For each token, check whether either fighter's
+ *    last name appears within ±300 chars (large window to handle blocks where
+ *    the fighter is named at the start but percentages follow later).
+ * 2. Filter collected candidates to "win-probability range" (20–85%).
+ *    This removes vig/juice values (typically 3–8%) and other small numbers
+ *    that appear near a fighter's name but are not win probabilities.
+ *    If filtering removes ALL candidates for a fighter, fall back to unfiltered.
+ * 3. Take the median of candidates per fighter (robust against outliers).
+ * 4. If both found, normalise to sum to exactly 100.
+ * 5. If only one found, derive the other as 100 – found.
+ * 6. Last resort: first adjacent pair that sums ≈ 100.
+ * 7. Default: 50 / 50.
+ *
+ * red = fighterA, blue = fighterB.  Both always sum to 100.
  */
 export const parseWinProbability = (
   text: string,
@@ -121,11 +123,18 @@ export const parseWinProbability = (
 
   const normalised = normaliseText(text);
 
+  // Clamp red to [1,99] and set blue = 100 – red (guarantees sum = 100)
+  const makeBar = (rawRed: number): BarData => {
+    const r = Math.min(Math.max(Math.round(rawRed), 1), 99);
+    return { red: r, blue: 100 - r };
+  };
+
   const allMatches = Array.from(normalised.matchAll(/(\d+(?:\.\d+)?)\s*%/g));
   if (allMatches.length === 0) return { red: 50, blue: 50 };
 
-  let percentA: number | null = null;
-  let percentB: number | null = null;
+  // Step 1 — collect all candidate percentages per fighter (large window)
+  const candidatesA: number[] = [];
+  const candidatesB: number[] = [];
 
   for (const match of allMatches) {
     const pct = parseFloat(match[1]);
@@ -133,36 +142,60 @@ export const parseWinProbability = (
 
     const idx = match.index!;
     const ctx = normalised.substring(
-      Math.max(0, idx - 80),
-      Math.min(normalised.length, idx + 80)
+      Math.max(0, idx - 300),
+      Math.min(normalised.length, idx + 300)
     );
 
     const hasA = !!lastNameA && ctx.includes(lastNameA);
     const hasB = !!lastNameB && ctx.includes(lastNameB);
 
-    if (hasB && !hasA && percentB === null) {
-      percentB = pct;
-    } else if (hasA && !hasB && percentA === null) {
-      percentA = pct;
+    // Prefer exclusive association; if both present use the closer one
+    if (hasA && !hasB) {
+      candidatesA.push(pct);
+    } else if (hasB && !hasA) {
+      candidatesB.push(pct);
+    } else if (hasA && hasB) {
+      const idxA = ctx.indexOf(lastNameA);
+      const idxB = ctx.indexOf(lastNameB);
+      const pctPosInCtx = Math.min(idx, 300); // offset of % within ctx
+      if (Math.abs(idxA - pctPosInCtx) <= Math.abs(idxB - pctPosInCtx)) {
+        candidatesA.push(pct);
+      } else {
+        candidatesB.push(pct);
+      }
     }
   }
 
-  // Helper: clamp red to [1,99] then derive blue as 100-red so they always sum to 100
-  const makeBar = (rawRed: number): BarData => {
-    const r = Math.min(Math.max(Math.round(rawRed), 1), 99);
-    return { red: r, blue: 100 - r };
+  // Step 2 — filter to win-probability range; fall back to unfiltered if empty
+  const WIN_MIN = 20;
+  const WIN_MAX = 85;
+  const filterWinProb = (vals: number[]): number[] => {
+    const filtered = vals.filter((v) => v >= WIN_MIN && v <= WIN_MAX);
+    return filtered.length > 0 ? filtered : vals;
   };
+
+  const filteredA = filterWinProb(candidatesA);
+  const filteredB = filterWinProb(candidatesB);
+
+  // Step 3 — median (robust against outliers)
+  const median = (vals: number[]): number | null => {
+    if (vals.length === 0) return null;
+    const s = [...vals].sort((a, b) => a - b);
+    const m = Math.floor(s.length / 2);
+    return s.length % 2 === 0 ? (s[m - 1] + s[m]) / 2 : s[m];
+  };
+
+  const percentA = median(filteredA);
+  const percentB = median(filteredB);
 
   if (percentA !== null && percentB !== null) {
     const sum = percentA + percentB;
-    const divisor = sum > 0 ? sum : 100;
-    return makeBar((percentA / divisor) * 100);
+    return makeBar((percentA / (sum > 0 ? sum : 100)) * 100);
   }
-
   if (percentB !== null) return makeBar(100 - percentB);
   if (percentA !== null) return makeBar(percentA);
 
-  // Adjacent pair summing ≈ 100 as last resort
+  // Step 4 — adjacent pair summing ≈ 100
   for (let i = 0; i < allMatches.length - 1; i++) {
     const p1 = parseFloat(allMatches[i][1]);
     const p2 = parseFloat(allMatches[i + 1][1]);
@@ -176,8 +209,6 @@ export const parseWinProbability = (
 
 /**
  * Extract basic fight stats for a single fighter from a block of text.
- * Looks for patterns like "15 career wins", "7 KOs", "4 submissions" near
- * the fighter's last name. Also handles word-based numbers.
  */
 export const parseFighterStatsFromBlock = (
   text: string,
@@ -185,14 +216,12 @@ export const parseFighterStatsFromBlock = (
 ): ParsedFighterStats => {
   if (!text || !fighterName) return {};
 
-  // Convert word numbers so "fifteen career wins" → "15 career wins"
   const normalised = convertWordNumbersToDigits(text).toLowerCase();
   const lastName = (fighterName.split(" ").pop() ?? "").toLowerCase();
 
   const nameIdx = normalised.indexOf(lastName);
   if (nameIdx === -1) return {};
 
-  // Scan up to 250 chars after the fighter name mention
   const segment = normalised.substring(
     nameIdx,
     Math.min(normalised.length, nameIdx + 250)
