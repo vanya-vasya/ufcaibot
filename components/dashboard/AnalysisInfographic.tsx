@@ -78,16 +78,31 @@ const FIGHT_ANALYSIS_DATA: Record<string, { odds: BarData; fighters: BarData; se
   },
 };
 
-const TYPE_LABELS: Record<string, string> = {
-  odds: "ODDS BREAKDOWN",
-  fighters: "FIGHTER STATS",
-  sentiment: "FAN SENTIMENT",
-};
-
-const TYPE_COLORS: Record<string, { gradient: string; accent: string }> = {
-  odds: { gradient: "from-amber-500 to-orange-600", accent: "text-amber-400" },
-  fighters: { gradient: "from-blue-500 to-indigo-600", accent: "text-blue-400" },
-  sentiment: { gradient: "from-purple-500 to-pink-600", accent: "text-purple-400" },
+const TYPE_CONFIG: Record<
+  string,
+  { label: string; sublabel: string; accentClass: string; barColorA: string; barColorB: string }
+> = {
+  odds: {
+    label: "ODDS BREAKDOWN",
+    sublabel: "Implied win probability from betting lines",
+    accentClass: "text-amber-400",
+    barColorA: "from-red-700 to-red-500",
+    barColorB: "from-blue-700 to-blue-500",
+  },
+  fighters: {
+    label: "FIGHTER STATS",
+    sublabel: "Win probability based on fighter metrics",
+    accentClass: "text-blue-400",
+    barColorA: "from-red-700 to-red-500",
+    barColorB: "from-blue-700 to-blue-500",
+  },
+  sentiment: {
+    label: "FAN SENTIMENT",
+    sublabel: "Community prediction & fan vote",
+    accentClass: "text-purple-400",
+    barColorA: "from-red-700 to-red-500",
+    barColorB: "from-blue-700 to-blue-500",
+  },
 };
 
 export const AnalysisInfographic = ({
@@ -96,82 +111,122 @@ export const AnalysisInfographic = ({
   fighterB,
   data: providedData,
 }: AnalysisInfographicProps) => {
-  // Get data from provided prop or default fight data
   const fightKey = `${fighterA} VS ${fighterB}`;
   const fightData = FIGHT_ANALYSIS_DATA[fightKey];
-  
+
   const data = useMemo(() => {
     if (providedData) return providedData;
     if (fightData) return fightData[type];
-    // Fallback default
     return { red: 50, blue: 50 };
   }, [providedData, fightData, type]);
 
-  const label = TYPE_LABELS[type];
-  const colors = TYPE_COLORS[type];
+  const config = TYPE_CONFIG[type];
+  const favoredA = data.red >= data.blue;
+  const isTie = data.red === data.blue;
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">
-      {/* Card Container */}
-      <div className="relative bg-gradient-to-br from-gray-900 to-gray-950 rounded-2xl p-6 border border-gray-800 overflow-hidden">
-        {/* Background Glow */}
-        <div 
-          className={`absolute inset-0 opacity-10 bg-gradient-to-r ${colors.gradient}`}
-          style={{ filter: "blur(40px)" }}
-        />
-        
-        {/* Header */}
-        <div className="relative z-10 flex items-center justify-between mb-6">
-          <h3 className={`text-sm font-bold tracking-widest ${colors.accent}`}>
-            {label}
-          </h3>
-          <div className="flex items-center gap-4 text-xs text-gray-500">
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-full bg-red-500" />
-              {fighterA.split(" ").pop()}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-3 h-3 rounded-full bg-blue-500" />
-              {fighterB.split(" ").pop()}
-            </span>
+      <div className="relative bg-gradient-to-b from-gray-950 to-black rounded-2xl border border-gray-800 overflow-hidden">
+
+        {/* Type Banner */}
+        <div className="bg-gray-900/80 border-b border-gray-800 px-6 py-2.5 flex items-center justify-between">
+          <span className={`text-[10px] font-black tracking-[0.2em] uppercase ${config.accentClass}`}>
+            {config.label}
+          </span>
+          <span className="text-[10px] text-gray-600 hidden sm:block">
+            {config.sublabel}
+          </span>
+        </div>
+
+        {/* Win Probability Header */}
+        <div className="px-6 pt-1 pb-1">
+          <p className="text-[10px] font-black tracking-[0.15em] text-white uppercase pt-4 pb-3">
+            WIN PROBABILITY
+          </p>
+        </div>
+
+        {/* Big Percentages */}
+        <div className="px-6 pb-5">
+          <div className="flex items-end justify-between gap-3 mb-5">
+            {/* Fighter A */}
+            <div className="flex-1 min-w-0">
+              <p
+                className={`text-5xl sm:text-6xl font-black leading-none transition-colors ${
+                  favoredA ? "text-red-400" : "text-gray-500"
+                }`}
+              >
+                {data.red}%
+              </p>
+              <p className="text-xs text-gray-400 mt-2 truncate font-medium" style={{ fontFamily: "var(--font-ufc-heading)" }}>
+                {fighterA}
+              </p>
+              {favoredA && !isTie && (
+                <span className="inline-block mt-1.5 text-[9px] font-black tracking-widest text-red-500 uppercase bg-red-500/10 border border-red-500/20 rounded px-1.5 py-0.5">
+                  FAVORED
+                </span>
+              )}
+            </div>
+
+            {/* VS divider */}
+            <div className="flex-shrink-0 pb-6">
+              <span className="text-gray-700 font-black text-base">VS</span>
+            </div>
+
+            {/* Fighter B */}
+            <div className="flex-1 min-w-0 text-right">
+              <p
+                className={`text-5xl sm:text-6xl font-black leading-none transition-colors ${
+                  !favoredA ? "text-blue-400" : "text-gray-500"
+                }`}
+              >
+                {data.blue}%
+              </p>
+              <p className="text-xs text-gray-400 mt-2 truncate font-medium text-right" style={{ fontFamily: "var(--font-ufc-heading)" }}>
+                {fighterB}
+              </p>
+              {!favoredA && !isTie && (
+                <div className="flex justify-end">
+                  <span className="inline-block mt-1.5 text-[9px] font-black tracking-widest text-blue-500 uppercase bg-blue-500/10 border border-blue-500/20 rounded px-1.5 py-0.5">
+                    FAVORED
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Split Bar */}
+          <div className="flex h-3 rounded-full overflow-hidden bg-gray-800/80">
+            <div
+              className={`bg-gradient-to-r ${config.barColorA} transition-all duration-700 ease-out`}
+              style={{ width: `${data.red}%` }}
+            />
+            <div
+              className={`bg-gradient-to-l ${config.barColorB} transition-all duration-700 ease-out`}
+              style={{ width: `${data.blue}%` }}
+            />
+          </div>
+
+          {/* Percentage ticks */}
+          <div className="flex justify-between mt-1.5">
+            <span className="text-[9px] text-gray-700">0%</span>
+            <span className="text-[9px] text-gray-700">50%</span>
+            <span className="text-[9px] text-gray-700">100%</span>
           </div>
         </div>
 
-        {/* Progress Bar */}
-        <div className="relative z-10">
-          {/* Fighter Names */}
-          <div className="flex justify-between mb-2">
-            <span className="text-red-400 font-bold text-lg">{data.red}%</span>
-            <span className="text-blue-400 font-bold text-lg">{data.blue}%</span>
-          </div>
-          
-          {/* Bar Container */}
-          <div className="relative h-12 bg-gray-800/50 rounded-xl overflow-hidden">
-            {/* Red Bar (Left) */}
-            <div
-              className="absolute left-0 top-0 h-full bg-gradient-to-r from-red-600 to-red-500 transition-all duration-700 ease-out"
-              style={{ width: `${data.red}%` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
-            
-            {/* Blue Bar (Right) */}
-            <div
-              className="absolute right-0 top-0 h-full bg-gradient-to-l from-blue-600 to-blue-500 transition-all duration-700 ease-out"
-              style={{ width: `${data.blue}%` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
-            
-            {/* Center Divider */}
-            <div className="absolute left-1/2 top-0 h-full w-0.5 bg-white/20 transform -translate-x-1/2 z-10" />
-          </div>
-
-          {/* Fighter Labels */}
-          <div className="flex justify-between mt-2 text-sm">
-            <span className="text-gray-400 truncate max-w-[45%]">{fighterA}</span>
-            <span className="text-gray-400 truncate max-w-[45%] text-right">{fighterB}</span>
-          </div>
+        {/* Footer */}
+        <div className="px-6 py-3 border-t border-gray-800 bg-gray-900/40 flex items-center justify-between">
+          <span className="text-[10px] text-gray-600 uppercase tracking-widest">
+            {isTie ? "Even matchup" : "Prediction"}
+          </span>
+          <span
+            className={`text-xs font-bold truncate max-w-[60%] text-right ${
+              isTie ? "text-gray-400" : favoredA ? "text-red-400" : "text-blue-400"
+            }`}
+            style={{ fontFamily: "var(--font-ufc-heading)" }}
+          >
+            {isTie ? "50 / 50" : favoredA ? fighterA : fighterB}
+          </span>
         </div>
       </div>
     </div>
@@ -179,4 +234,3 @@ export const AnalysisInfographic = ({
 };
 
 export default AnalysisInfographic;
-
