@@ -13,7 +13,7 @@ import { PastEventsList } from "@/components/dashboard/PastEventsList";
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
 // Available UFC events for selection
-const UFC_EVENTS = ["UFC 326"];
+const UFC_EVENTS = ["UFC 326", "UFC FIGHT NIGHT: EMMETT VS VALLEJOS"];
 
 // Fights available for each UFC event
 const UFC_FIGHTS: Record<string, string[]> = {
@@ -30,6 +30,20 @@ const UFC_FIGHTS: Record<string, string[]> = {
     "SUMUDAERJI VS JESUS AGUILAR",
     "LUKE FERNANDEZ VS RODOLFO BELLATO",
     "JOOSANG YOO VS GASTON BOLANOS",
+  ],
+  "UFC FIGHT NIGHT: EMMETT VS VALLEJOS": [
+    "JOSH EMMETT VS KEVIN VALLEJOS",
+    "AMANDA LEMOS VS GILLIAN ROBERTSON",
+    "ION CUTELABA VS OUMAR SY",
+    "BOLAJI OKI VS MANOEL SOUSA",
+    "MARWAN RAHIKI VS HARRY HARDWICK",
+    "CHARLES JOHNSON VS BRUNO SILVA",
+    "ANDRE FILI VS JOSE MIGUEL DELGADO",
+    "VITOR PETRINO VS STEVEN ASPLUND",
+    "PIERA RODRIGUEZ VS SAM HUGHES",
+    "ELIJAH SMITH VS SUYOUNG YOU",
+    "LUAN LACERDA VS HECHER SOSA",
+    "BIA MESQUITA VS MONTSE RENDON",
   ],
 };
 
