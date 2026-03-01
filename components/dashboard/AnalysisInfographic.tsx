@@ -14,52 +14,67 @@ interface AnalysisInfographicProps {
   data?: BarData;
 }
 
-// Default analysis data for each fight (used when webhook doesn't provide structured data)
+// Default analysis data for UFC 326 fights (used when webhook doesn't provide structured data)
 const FIGHT_ANALYSIS_DATA: Record<string, { odds: BarData; fighters: BarData; sentiment: BarData }> = {
-  "JUSTIN GAETHJE VS PADDY PIMBLETT": {
-    odds: { red: 55, blue: 45 },
-    fighters: { red: 62, blue: 38 },
-    sentiment: { red: 48, blue: 52 },
-  },
-  "KAYLA HARRISON VS AMANDA NUNES": {
-    odds: { red: 35, blue: 65 },
-    fighters: { red: 40, blue: 60 },
-    sentiment: { red: 38, blue: 62 },
-  },
-  "SEAN O'MALLEY VS SONG YADONG": {
-    odds: { red: 68, blue: 32 },
-    fighters: { red: 72, blue: 28 },
-    sentiment: { red: 75, blue: 25 },
-  },
-  "WALDO CORTES ACOSTA VS DERRICK LEWIS": {
-    odds: { red: 42, blue: 58 },
-    fighters: { red: 38, blue: 62 },
-    sentiment: { red: 45, blue: 55 },
-  },
-  "ARNOLD ALLEN VS JEAN SILVA": {
-    odds: { red: 52, blue: 48 },
-    fighters: { red: 55, blue: 45 },
-    sentiment: { red: 50, blue: 50 },
-  },
-  "ALEXA GRASSO VS ROSE NAMAJUNAS": {
-    odds: { red: 48, blue: 52 },
-    fighters: { red: 45, blue: 55 },
+  "MAX HOLLOWAY VS CHARLES OLIVEIRA": {
+    odds: { red: 45, blue: 55 },
+    fighters: { red: 48, blue: 52 },
     sentiment: { red: 52, blue: 48 },
   },
-  "UMAR NURMAGOMEDOV VS DEIVESON FIGUEIREDO": {
-    odds: { red: 70, blue: 30 },
-    fighters: { red: 65, blue: 35 },
-    sentiment: { red: 68, blue: 32 },
+  "CODY GARBRANDT VS XIAO LONG": {
+    odds: { red: 50, blue: 50 },
+    fighters: { red: 48, blue: 52 },
+    sentiment: { red: 52, blue: 48 },
   },
-  "ATEBA GAUTIER VS ANDREY PULYAEV": {
-    odds: { red: 55, blue: 45 },
-    fighters: { red: 50, blue: 50 },
+  "CAIO BORRALHO VS REINIER DE RIDDER": {
+    odds: { red: 62, blue: 38 },
+    fighters: { red: 60, blue: 40 },
     sentiment: { red: 58, blue: 42 },
   },
-  "ALEXANDER VOLKANOVSKI VS DIEGO LOPES": {
+  "ROB FONT VS RAUL ROSAS JR.": {
+    odds: { red: 40, blue: 60 },
+    fighters: { red: 42, blue: 58 },
+    sentiment: { red: 38, blue: 62 },
+  },
+  "GREGORY RODRIGUES VS BRUNNO FERREIRA": {
     odds: { red: 58, blue: 42 },
-    fighters: { red: 62, blue: 38 },
+    fighters: { red: 60, blue: 40 },
     sentiment: { red: 55, blue: 45 },
+  },
+  "DREW DOBER VS MICHAEL JOHNSON": {
+    odds: { red: 55, blue: 45 },
+    fighters: { red: 52, blue: 48 },
+    sentiment: { red: 50, blue: 50 },
+  },
+  "RICKY TURCIOS VS ALBERTO MONTES": {
+    odds: { red: 65, blue: 35 },
+    fighters: { red: 68, blue: 32 },
+    sentiment: { red: 62, blue: 38 },
+  },
+  "DONTE JOHNSON VS DUŠKO TODOROVIĆ": {
+    odds: { red: 45, blue: 55 },
+    fighters: { red: 48, blue: 52 },
+    sentiment: { red: 50, blue: 50 },
+  },
+  "CODY DURDEN VS NYAMJARGAL TUMENDEMBEREL": {
+    odds: { red: 52, blue: 48 },
+    fighters: { red: 50, blue: 50 },
+    sentiment: { red: 55, blue: 45 },
+  },
+  "SUMUDAERJI VS JESUS AGUILAR": {
+    odds: { red: 60, blue: 40 },
+    fighters: { red: 58, blue: 42 },
+    sentiment: { red: 62, blue: 38 },
+  },
+  "LUKE FERNANDEZ VS RODOLFO BELLATO": {
+    odds: { red: 38, blue: 62 },
+    fighters: { red: 40, blue: 60 },
+    sentiment: { red: 42, blue: 58 },
+  },
+  "JOOSANG YOO VS GASTON BOLANOS": {
+    odds: { red: 55, blue: 45 },
+    fighters: { red: 52, blue: 48 },
+    sentiment: { red: 58, blue: 42 },
   },
 };
 

@@ -2,15 +2,7 @@
 
 import { useMemo } from "react";
 import type { ParsedFighterStats } from "@/lib/parseChartData";
-
-interface FighterStats {
-  wins: number;
-  losses: number;
-  knockouts: number;
-  submissions: number;
-  reach: string;
-  height: string;
-}
+import { UFC326_FIGHTER_STATS, type FighterMatchupStats } from "@/data/ufc326-fighter-stats";
 
 interface FighterComparisonProps {
   fighterA: string;
@@ -19,74 +11,71 @@ interface FighterComparisonProps {
   parsedStatsB?: ParsedFighterStats;
 }
 
-// Fighter stats data (simplified for demonstration)
-const FIGHTER_STATS: Record<string, FighterStats> = {
-  "JUSTIN GAETHJE": { wins: 25, losses: 5, knockouts: 20, submissions: 0, reach: '70"', height: '5\'11"' },
-  "PADDY PIMBLETT": { wins: 21, losses: 3, knockouts: 5, submissions: 10, reach: '73"', height: '5\'10"' },
-  "KAYLA HARRISON": { wins: 17, losses: 1, knockouts: 2, submissions: 8, reach: '68"', height: '5\'8"' },
-  "AMANDA NUNES": { wins: 23, losses: 5, knockouts: 13, submissions: 4, reach: '69"', height: '5\'8"' },
-  "SEAN O'MALLEY": { wins: 18, losses: 2, knockouts: 12, submissions: 0, reach: '72"', height: '5\'11"' },
-  "SONG YADONG": { wins: 21, losses: 7, knockouts: 8, submissions: 1, reach: '67"', height: '5\'8"' },
-  "WALDO CORTES ACOSTA": { wins: 10, losses: 2, knockouts: 6, submissions: 2, reach: '75"', height: '6\'3"' },
-  "DERRICK LEWIS": { wins: 28, losses: 12, knockouts: 23, submissions: 0, reach: '79"', height: '6\'3"' },
-  "ARNOLD ALLEN": { wins: 20, losses: 2, knockouts: 6, submissions: 3, reach: '72"', height: '5\'8"' },
-  "JEAN SILVA": { wins: 14, losses: 2, knockouts: 10, submissions: 2, reach: '72"', height: '5\'8"' },
-  "ALEXA GRASSO": { wins: 16, losses: 4, knockouts: 2, submissions: 5, reach: '63"', height: '5\'5"' },
-  "ROSE NAMAJUNAS": { wins: 12, losses: 6, knockouts: 4, submissions: 5, reach: '65"', height: '5\'5"' },
-  "UMAR NURMAGOMEDOV": { wins: 18, losses: 0, knockouts: 3, submissions: 8, reach: '70"', height: '5\'7"' },
-  "DEIVESON FIGUEIREDO": { wins: 24, losses: 3, knockouts: 10, submissions: 7, reach: '68"', height: '5\'5"' },
-  "ATEBA GAUTIER": { wins: 8, losses: 1, knockouts: 5, submissions: 2, reach: '74"', height: '6\'0"' },
-  "ANDREY PULYAEV": { wins: 12, losses: 3, knockouts: 6, submissions: 4, reach: '73"', height: '6\'0"' },
-  "ALEXANDER VOLKANOVSKI": { wins: 26, losses: 4, knockouts: 13, submissions: 3, reach: '71"', height: '5\'6"' },
-  "DIEGO LOPES": { wins: 25, losses: 6, knockouts: 4, submissions: 14, reach: '73"', height: '5\'10"' },
-};
-
-// Default stats for unknown fighters
-const DEFAULT_STATS: FighterStats = {
-  wins: 10,
-  losses: 2,
-  knockouts: 5,
-  submissions: 2,
-  reach: '70"',
-  height: '5\'10"',
-};
-
-interface StatBarProps {
+interface StatRowProps {
   label: string;
-  valueA: number | string;
-  valueB: number | string;
-  isNumeric?: boolean;
+  valueA: string | number;
+  valueB: string | number;
+  numericA?: number;
+  numericB?: number;
+  highlight?: boolean;
 }
 
-const StatBar = ({ label, valueA, valueB, isNumeric = true }: StatBarProps) => {
-  const numA = typeof valueA === "number" ? valueA : parseInt(valueA) || 0;
-  const numB = typeof valueB === "number" ? valueB : parseInt(valueB) || 0;
-  const total = numA + numB || 1;
-  const percentA = isNumeric ? (numA / total) * 100 : 50;
-  const percentB = isNumeric ? (numB / total) * 100 : 50;
+const StatRow = ({ label, valueA, valueB, numericA, numericB, highlight = false }: StatRowProps) => {
+  const hasBar = numericA !== undefined && numericB !== undefined;
+  const total = hasBar ? (numericA + numericB || 1) : 1;
+  const percentA = hasBar ? (numericA / total) * 100 : 50;
+  const percentB = hasBar ? (numericB / total) * 100 : 50;
 
   return (
-    <div className="mb-4">
-      {/* Values Row */}
-      <div className="flex justify-between items-center mb-1">
-        <span className="text-red-400 font-bold text-lg w-16">{valueA}</span>
-        <span className="text-gray-400 text-xs uppercase tracking-wider">{label}</span>
-        <span className="text-blue-400 font-bold text-lg w-16 text-right">{valueB}</span>
+    <div className={`py-3 ${highlight ? "border-t border-gray-800/60" : ""}`}>
+      {/* Values + Label row */}
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <span className={`font-bold text-base w-[38%] text-left ${
+          hasBar && numericA > numericB ? "text-red-400" : "text-gray-300"
+        }`}>
+          {valueA}
+        </span>
+        <span className="text-[10px] font-bold tracking-widest text-gray-500 uppercase text-center flex-shrink-0 min-w-[24%]">
+          {label}
+        </span>
+        <span className={`font-bold text-base w-[38%] text-right ${
+          hasBar && numericB > numericA ? "text-blue-400" : "text-gray-300"
+        }`}>
+          {valueB}
+        </span>
       </div>
-      
-      {/* Bar */}
-      <div className="flex h-2 gap-1 rounded-full overflow-hidden bg-gray-800">
-        <div
-          className="bg-gradient-to-r from-red-600 to-red-500 transition-all duration-500"
-          style={{ width: `${percentA}%` }}
-        />
-        <div
-          className="bg-gradient-to-l from-blue-600 to-blue-500 transition-all duration-500"
-          style={{ width: `${percentB}%` }}
-        />
-      </div>
+
+      {/* Progress bar */}
+      {hasBar && (
+        <div className="flex h-1.5 rounded-full overflow-hidden bg-gray-800">
+          <div
+            className="bg-gradient-to-r from-red-700 to-red-500 transition-all duration-500"
+            style={{ width: `${percentA}%` }}
+          />
+          <div className="flex-1" />
+          <div
+            className="bg-gradient-to-l from-blue-700 to-blue-500 transition-all duration-500"
+            style={{ width: `${percentB}%` }}
+          />
+        </div>
+      )}
     </div>
   );
+};
+
+const DEFAULT_STATS: FighterMatchupStats = {
+  record: "—",
+  lastFight: "—",
+  country: "—",
+  height: "—",
+  weight: "—",
+  reach: "—",
+  legReach: "—",
+  wins: 10,
+  losses: 2,
+  draws: 0,
+  knockouts: 5,
+  submissions: 2,
 };
 
 export const FighterComparisonInfographic = ({
@@ -95,80 +84,169 @@ export const FighterComparisonInfographic = ({
   parsedStatsA,
   parsedStatsB,
 }: FighterComparisonProps) => {
-  const baseA = useMemo(() => FIGHTER_STATS[fighterA] || DEFAULT_STATS, [fighterA]);
-  const baseB = useMemo(() => FIGHTER_STATS[fighterB] || DEFAULT_STATS, [fighterB]);
+  const fightKey = `${fighterA} VS ${fighterB}`;
+  const matchup = UFC326_FIGHTER_STATS[fightKey];
 
-  // Merge parsed stats (from AI text) over the base lookup, preferring real text data
-  const statsA = useMemo<FighterStats>(() => ({
-    ...baseA,
-    wins: parsedStatsA?.wins ?? baseA.wins,
-    losses: parsedStatsA?.losses ?? baseA.losses,
-    knockouts: parsedStatsA?.knockouts ?? baseA.knockouts,
-    submissions: parsedStatsA?.submissions ?? baseA.submissions,
-  }), [baseA, parsedStatsA]);
+  const statsA = useMemo<FighterMatchupStats>(() => {
+    const base = matchup?.fighterA ?? DEFAULT_STATS;
+    return {
+      ...base,
+      wins: parsedStatsA?.wins ?? base.wins,
+      losses: parsedStatsA?.losses ?? base.losses,
+      knockouts: parsedStatsA?.knockouts ?? base.knockouts,
+      submissions: parsedStatsA?.submissions ?? base.submissions,
+    };
+  }, [matchup, parsedStatsA]);
 
-  const statsB = useMemo<FighterStats>(() => ({
-    ...baseB,
-    wins: parsedStatsB?.wins ?? baseB.wins,
-    losses: parsedStatsB?.losses ?? baseB.losses,
-    knockouts: parsedStatsB?.knockouts ?? baseB.knockouts,
-    submissions: parsedStatsB?.submissions ?? baseB.submissions,
-  }), [baseB, parsedStatsB]);
+  const statsB = useMemo<FighterMatchupStats>(() => {
+    const base = matchup?.fighterB ?? DEFAULT_STATS;
+    return {
+      ...base,
+      wins: parsedStatsB?.wins ?? base.wins,
+      losses: parsedStatsB?.losses ?? base.losses,
+      knockouts: parsedStatsB?.knockouts ?? base.knockouts,
+      submissions: parsedStatsB?.submissions ?? base.submissions,
+    };
+  }, [matchup, parsedStatsB]);
+
+  const winRateA = statsA.wins + statsA.losses > 0
+    ? Math.round((statsA.wins / (statsA.wins + statsA.losses)) * 100)
+    : 0;
+  const winRateB = statsB.wins + statsB.losses > 0
+    ? Math.round((statsB.wins / (statsB.wins + statsB.losses)) * 100)
+    : 0;
+
+  const reachNumA = parseFloat(statsA.reach) || 0;
+  const reachNumB = parseFloat(statsB.reach) || 0;
+  const heightNumA = parseFloat(statsA.height) || 0;
+  const heightNumB = parseFloat(statsB.height) || 0;
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">
-      {/* Card Container */}
-      <div className="relative bg-gradient-to-br from-gray-900 to-gray-950 rounded-2xl p-6 border border-gray-800 overflow-hidden">
-        {/* Background Glow */}
-        <div 
-          className="absolute inset-0 opacity-10 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"
-          style={{ filter: "blur(60px)" }}
-        />
-        
-        {/* Header */}
-        <div className="relative z-10 text-center mb-6">
-          <h3 className="text-sm font-bold tracking-widest text-purple-400 mb-3">
-            FIGHTER COMPARISON
-          </h3>
-          <div className="flex items-center justify-center gap-4">
-            <div className="text-right flex-1">
-              <p className="text-red-400 font-bold text-xl truncate">{fighterA}</p>
-              <p className="text-gray-500 text-sm">{statsA.height} | {statsA.reach}</p>
+      <div className="relative bg-gradient-to-b from-gray-950 to-black rounded-2xl border border-gray-800 overflow-hidden">
+
+        {/* Weight Class Banner */}
+        {matchup?.weightClass && (
+          <div className="bg-gray-900/80 border-b border-gray-800 px-6 py-2 text-center">
+            <span className="text-[10px] font-bold tracking-[0.2em] text-gray-500 uppercase">
+              {matchup.weightClass}
+            </span>
+          </div>
+        )}
+
+        {/* Fighter Names Header */}
+        <div className="relative px-6 pt-5 pb-4 border-b border-gray-800">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-red-400 font-bold text-xl leading-tight truncate" style={{ fontFamily: "var(--font-ufc-heading)" }}>
+                {fighterA}
+              </p>
+              <p className="text-gray-500 text-xs mt-0.5">{statsA.country}</p>
             </div>
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-blue-500 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">VS</span>
+
+            <div className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-gray-800/60 border border-gray-700">
+              <span className="text-white font-black text-sm tracking-wider">VS</span>
             </div>
-            <div className="text-left flex-1">
-              <p className="text-blue-400 font-bold text-xl truncate">{fighterB}</p>
-              <p className="text-gray-500 text-sm">{statsB.height} | {statsB.reach}</p>
+
+            <div className="flex-1 min-w-0 text-right">
+              <p className="text-blue-400 font-bold text-xl leading-tight truncate" style={{ fontFamily: "var(--font-ufc-heading)" }}>
+                {fighterB}
+              </p>
+              <p className="text-gray-500 text-xs mt-0.5 text-right">{statsB.country}</p>
             </div>
           </div>
         </div>
 
-        {/* Stats Comparison */}
-        <div className="relative z-10 space-y-1">
-          <StatBar label="WINS" valueA={statsA.wins} valueB={statsB.wins} />
-          <StatBar label="LOSSES" valueA={statsA.losses} valueB={statsB.losses} />
-          <StatBar label="KO/TKO" valueA={statsA.knockouts} valueB={statsB.knockouts} />
-          <StatBar label="SUBMISSIONS" valueA={statsA.submissions} valueB={statsB.submissions} />
+        {/* Matchup Stats */}
+        <div className="px-6 py-2 divide-y divide-gray-800/40">
+          {/* Header row */}
+          <div className="flex items-center justify-between py-2 mb-1">
+            <span className="text-[10px] font-black tracking-[0.15em] text-white uppercase">
+              MATCHUP STATS
+            </span>
+          </div>
+
+          <StatRow
+            label="RECORD"
+            valueA={statsA.record}
+            valueB={statsB.record}
+            numericA={statsA.wins}
+            numericB={statsB.wins}
+          />
+          <StatRow
+            label="LAST FIGHT"
+            valueA={statsA.lastFight}
+            valueB={statsB.lastFight}
+          />
+          <StatRow
+            label="HEIGHT"
+            valueA={statsA.height}
+            valueB={statsB.height}
+            numericA={heightNumA}
+            numericB={heightNumB}
+          />
+          <StatRow
+            label="WEIGHT"
+            valueA={statsA.weight}
+            valueB={statsB.weight}
+          />
+          <StatRow
+            label="REACH"
+            valueA={statsA.reach}
+            valueB={statsB.reach}
+            numericA={reachNumA}
+            numericB={reachNumB}
+          />
+          <StatRow
+            label="LEG REACH"
+            valueA={statsA.legReach}
+            valueB={statsB.legReach}
+          />
+          <StatRow
+            label="KO / TKO"
+            valueA={statsA.knockouts}
+            valueB={statsB.knockouts}
+            numericA={statsA.knockouts}
+            numericB={statsB.knockouts}
+          />
+          <StatRow
+            label="SUBMISSIONS"
+            valueA={statsA.submissions}
+            valueB={statsB.submissions}
+            numericA={statsA.submissions}
+            numericB={statsB.submissions}
+          />
         </div>
 
-        {/* Win Rate */}
-        <div className="relative z-10 mt-6 pt-4 border-t border-gray-800">
-          <div className="flex justify-between items-center">
+        {/* Win Rate Footer */}
+        <div className="px-6 py-4 border-t border-gray-800 bg-gray-900/40">
+          <div className="flex items-center justify-between">
             <div className="text-center flex-1">
-              <p className="text-2xl font-bold text-red-400">
-                {Math.round((statsA.wins / (statsA.wins + statsA.losses)) * 100)}%
+              <p className={`text-2xl font-bold ${winRateA >= winRateB ? "text-red-400" : "text-gray-400"}`}>
+                {winRateA}%
               </p>
-              <p className="text-xs text-gray-500 uppercase">Win Rate</p>
+              <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Win Rate</p>
             </div>
-            <div className="flex-shrink-0 h-12 w-px bg-gray-700" />
+            <div className="h-10 w-px bg-gray-700 mx-4" />
             <div className="text-center flex-1">
-              <p className="text-2xl font-bold text-blue-400">
-                {Math.round((statsB.wins / (statsB.wins + statsB.losses)) * 100)}%
+              <p className={`text-2xl font-bold ${winRateB >= winRateA ? "text-blue-400" : "text-gray-400"}`}>
+                {winRateB}%
               </p>
-              <p className="text-xs text-gray-500 uppercase">Win Rate</p>
+              <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Win Rate</p>
             </div>
+          </div>
+
+          {/* Win Rate bar */}
+          <div className="mt-3 flex h-2 rounded-full overflow-hidden bg-gray-800">
+            <div
+              className="bg-gradient-to-r from-red-700 to-red-500 transition-all duration-700"
+              style={{ width: `${winRateA}%` }}
+            />
+            <div className="flex-1" />
+            <div
+              className="bg-gradient-to-l from-blue-700 to-blue-500 transition-all duration-700"
+              style={{ width: `${winRateB}%` }}
+            />
           </div>
         </div>
       </div>
@@ -177,4 +255,3 @@ export const FighterComparisonInfographic = ({
 };
 
 export default FighterComparisonInfographic;
-
