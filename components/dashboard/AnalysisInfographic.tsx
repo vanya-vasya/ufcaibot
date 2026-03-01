@@ -139,38 +139,22 @@ const FIGHT_ANALYSIS_DATA: Record<string, { odds: BarData; fighters: BarData; se
   },
 };
 
-const TYPE_CONFIG: Record<
-  string,
-  { label: string; sublabel: string; accentClass: string; barColorA: string; barColorB: string }
-> = {
+const TYPE_CONFIG: Record<string, { label: string; sublabel: string; accentClass: string }> = {
   odds: {
     label: "ODDS BREAKDOWN",
     sublabel: "Implied win probability from betting lines",
     accentClass: "text-amber-400",
-    barColorA: "from-red-700 to-red-500",
-    barColorB: "from-blue-700 to-blue-500",
   },
   fighters: {
     label: "FIGHTER STATS",
     sublabel: "Win probability based on fighter metrics",
     accentClass: "text-blue-400",
-    barColorA: "from-red-700 to-red-500",
-    barColorB: "from-blue-700 to-blue-500",
   },
   sentiment: {
     label: "FAN SENTIMENT",
     sublabel: "Community prediction & fan vote",
     accentClass: "text-purple-400",
-    barColorA: "from-red-700 to-red-500",
-    barColorB: "from-blue-700 to-blue-500",
   },
-};
-
-const getEdgeLabel = (gap: number): string => {
-  if (gap <= 2) return "COIN FLIP";
-  if (gap <= 10) return "SLIGHT EDGE";
-  if (gap <= 20) return "MODERATE FAVORITE";
-  return "CLEAR FAVORITE";
 };
 
 export const AnalysisInfographic = ({
@@ -189,10 +173,9 @@ export const AnalysisInfographic = ({
   }, [providedData, fightData, type]);
 
   const config = TYPE_CONFIG[type];
-  const favoredA = data.red >= data.blue;
+  const favoredA = data.red > data.blue;
+  const favoredB = data.blue > data.red;
   const isTie = data.red === data.blue;
-  const gap = Math.abs(data.red - data.blue);
-  const edgeLabel = isTie ? "COIN FLIP" : getEdgeLabel(gap);
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">
@@ -208,79 +191,61 @@ export const AnalysisInfographic = ({
           </span>
         </div>
 
-        {/* Fighter names + favored indicator */}
-        <div className="px-6 pt-5 pb-5">
+        {/* Fighter names + FAVORED badges */}
+        <div className="px-6 pt-6 pb-6">
           <p className="text-[10px] font-black tracking-[0.15em] text-white uppercase mb-5">
             WIN PREDICTION
           </p>
 
-          <div className="flex items-stretch justify-between gap-3 mb-6">
+          <div className="flex items-center justify-between gap-4">
             {/* Fighter A */}
-            <div className={`flex-1 min-w-0 flex flex-col gap-2 transition-opacity duration-300 ${!favoredA && !isTie ? "opacity-35" : "opacity-100"}`}>
+            <div className={`flex-1 min-w-0 flex flex-col gap-2 transition-opacity duration-300 ${favoredB ? "opacity-30" : "opacity-100"}`}>
               <p
-                className={`text-lg sm:text-xl font-black leading-tight truncate ${
-                  favoredA ? "text-red-400" : "text-gray-400"
+                className={`text-lg sm:text-xl font-black leading-tight ${
+                  favoredA ? "text-red-400" : "text-gray-500"
                 }`}
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
                 {fighterA}
               </p>
-              {favoredA && !isTie && (
-                <span className="inline-block self-start text-[9px] font-black tracking-widest text-red-500 uppercase bg-red-500/10 border border-red-500/20 rounded px-1.5 py-0.5">
+              {favoredA && (
+                <span className="inline-block self-start text-[9px] font-black tracking-widest text-red-500 uppercase bg-red-500/10 border border-red-500/30 rounded px-2 py-0.5">
                   FAVORED
                 </span>
               )}
               {isTie && (
-                <span className="inline-block self-start text-[9px] font-black tracking-widest text-gray-500 uppercase bg-gray-500/10 border border-gray-500/20 rounded px-1.5 py-0.5">
+                <span className="inline-block self-start text-[9px] font-black tracking-widest text-gray-500 uppercase bg-gray-500/10 border border-gray-500/20 rounded px-2 py-0.5">
                   EVEN
                 </span>
               )}
             </div>
 
             {/* VS divider */}
-            <div className="flex-shrink-0 flex items-center">
+            <div className="flex-shrink-0">
               <span className="text-gray-700 font-black text-sm">VS</span>
             </div>
 
             {/* Fighter B */}
-            <div className={`flex-1 min-w-0 flex flex-col items-end gap-2 transition-opacity duration-300 ${favoredA && !isTie ? "opacity-35" : "opacity-100"}`}>
+            <div className={`flex-1 min-w-0 flex flex-col items-end gap-2 transition-opacity duration-300 ${favoredA ? "opacity-30" : "opacity-100"}`}>
               <p
-                className={`text-lg sm:text-xl font-black leading-tight truncate text-right ${
-                  !favoredA ? "text-blue-400" : "text-gray-400"
+                className={`text-lg sm:text-xl font-black leading-tight text-right ${
+                  favoredB ? "text-blue-400" : "text-gray-500"
                 }`}
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
                 {fighterB}
               </p>
-              {!favoredA && !isTie && (
-                <span className="inline-block self-end text-[9px] font-black tracking-widest text-blue-500 uppercase bg-blue-500/10 border border-blue-500/20 rounded px-1.5 py-0.5">
+              {favoredB && (
+                <span className="inline-block self-end text-[9px] font-black tracking-widest text-blue-500 uppercase bg-blue-500/10 border border-blue-500/30 rounded px-2 py-0.5">
                   FAVORED
                 </span>
               )}
               {isTie && (
-                <span className="inline-block self-end text-[9px] font-black tracking-widest text-gray-500 uppercase bg-gray-500/10 border border-gray-500/20 rounded px-1.5 py-0.5">
+                <span className="inline-block self-end text-[9px] font-black tracking-widest text-gray-500 uppercase bg-gray-500/10 border border-gray-500/20 rounded px-2 py-0.5">
                   EVEN
                 </span>
               )}
             </div>
-          </div>
-
-          {/* Directional bar — no numbers, just visual edge */}
-          <div className="flex h-3 rounded-full overflow-hidden">
-            <div
-              className={`bg-gradient-to-r ${config.barColorA} transition-all duration-700 ease-out`}
-              style={{ width: `${data.red}%` }}
-            />
-            <div
-              className={`bg-gradient-to-l ${config.barColorB} transition-all duration-700 ease-out flex-1`}
-            />
-          </div>
-
-          {/* Edge label centered below bar */}
-          <div className="flex justify-center mt-2.5">
-            <span className="text-[9px] font-black tracking-widest text-gray-600 uppercase">
-              {edgeLabel}
-            </span>
           </div>
         </div>
 
