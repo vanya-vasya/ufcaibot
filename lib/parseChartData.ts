@@ -208,6 +208,34 @@ export const parseWinProbability = (
 };
 
 /**
+ * Determine which fighter is favored based on who appears first in the
+ * opening words of a block (the AI consistently names the favored fighter
+ * first in each section heading / opening sentence).
+ *
+ * Returns "A" | "B" based on whose last name appears earlier in the first
+ * ~120 characters of the block. Returns null when neither name is found.
+ */
+export const detectFavoredFromText = (
+  text: string,
+  fighterA: string,
+  fighterB: string
+): "A" | "B" | null => {
+  if (!text) return null;
+
+  const snippet = text.slice(0, 120).toLowerCase();
+  const lastNameA = (fighterA.split(" ").pop() ?? "").toLowerCase();
+  const lastNameB = (fighterB.split(" ").pop() ?? "").toLowerCase();
+
+  const idxA = lastNameA ? snippet.indexOf(lastNameA) : -1;
+  const idxB = lastNameB ? snippet.indexOf(lastNameB) : -1;
+
+  if (idxA === -1 && idxB === -1) return null;
+  if (idxA !== -1 && idxB === -1) return "A";
+  if (idxB !== -1 && idxA === -1) return "B";
+  return idxA <= idxB ? "A" : "B";
+};
+
+/**
  * Extract basic fight stats for a single fighter from a block of text.
  */
 export const parseFighterStatsFromBlock = (

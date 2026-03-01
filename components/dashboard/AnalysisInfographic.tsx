@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 
+
 interface BarData {
   red: number;
   blue: number;
@@ -11,7 +12,8 @@ interface AnalysisInfographicProps {
   type: "odds" | "fighters" | "sentiment";
   fighterA: string;
   fighterB: string;
-  data?: BarData;
+  /** Which fighter is favored according to the AI block text. null = even/unknown. */
+  favored?: "A" | "B" | null;
 }
 
 // Default analysis data for UFC 326 fights (used when webhook doesn't provide structured data)
@@ -161,21 +163,26 @@ export const AnalysisInfographic = ({
   type,
   fighterA,
   fighterB,
-  data: providedData,
+  favored: providedFavored,
 }: AnalysisInfographicProps) => {
   const fightKey = `${fighterA} VS ${fighterB}`;
   const fightData = FIGHT_ANALYSIS_DATA[fightKey];
 
-  const data = useMemo(() => {
-    if (providedData) return providedData;
-    if (fightData) return fightData[type];
-    return { red: 50, blue: 50 };
-  }, [providedData, fightData, type]);
+  // Resolve who is favored: explicit prop wins; fall back to static data; else null.
+  const resolvedFavored = useMemo<"A" | "B" | null>(() => {
+    if (providedFavored !== undefined && providedFavored !== null) return providedFavored;
+    if (fightData) {
+      const d = fightData[type];
+      if (d.red > d.blue) return "A";
+      if (d.blue > d.red) return "B";
+    }
+    return null;
+  }, [providedFavored, fightData, type]);
 
   const config = TYPE_CONFIG[type];
-  const favoredA = data.red > data.blue;
-  const favoredB = data.blue > data.red;
-  const isTie = data.red === data.blue;
+  const favoredA = resolvedFavored === "A";
+  const favoredB = resolvedFavored === "B";
+  const isTie = resolvedFavored === null;
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">

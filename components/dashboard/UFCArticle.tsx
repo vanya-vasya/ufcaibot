@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { parseContentBlocks } from "@/lib/parseContentBlocks";
-import { parseWinProbability, parseFighterStatsFromBlock } from "@/lib/parseChartData";
+import { detectFavoredFromText, parseFighterStatsFromBlock } from "@/lib/parseChartData";
 import { AnalysisInfographic } from "./AnalysisInfographic";
 import { FighterComparisonInfographic } from "./FighterComparisonInfographic";
 
@@ -63,19 +63,19 @@ export const UFCArticle = ({
   // Parse content into Block 1, Block 2, Block 3
   const contentBlocks = parseContentBlocks(content);
 
-  // Derive chart data by parsing percentages from each block's text
-  const oddsData = useMemo(
-    () => parseWinProbability(contentBlocks.block1, fighterA, fighterB),
+  // Detect favored fighter per block by checking which name appears first
+  const oddsFavored = useMemo(
+    () => detectFavoredFromText(contentBlocks.block1, fighterA, fighterB),
     [contentBlocks.block1, fighterA, fighterB]
   );
 
-  const fightersData = useMemo(
-    () => parseWinProbability(contentBlocks.block2, fighterA, fighterB),
+  const fightersFavored = useMemo(
+    () => detectFavoredFromText(contentBlocks.block2, fighterA, fighterB),
     [contentBlocks.block2, fighterA, fighterB]
   );
 
-  const sentimentData = useMemo(
-    () => parseWinProbability(contentBlocks.block3, fighterA, fighterB),
+  const sentimentFavored = useMemo(
+    () => detectFavoredFromText(contentBlocks.block3, fighterA, fighterB),
     [contentBlocks.block3, fighterA, fighterB]
   );
 
@@ -191,7 +191,7 @@ export const UFCArticle = ({
                 type="odds"
                 fighterA={fighterA}
                 fighterB={fighterB}
-                data={oddsData}
+                favored={oddsFavored}
               />
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -218,12 +218,12 @@ export const UFCArticle = ({
                 parsedStatsA={parsedStatsA}
                 parsedStatsB={parsedStatsB}
               />
-              {/* Win Probability bar */}
+              {/* Win Prediction card */}
               <AnalysisInfographic
                 type="fighters"
                 fighterA={fighterA}
                 fighterB={fighterB}
-                data={fightersData}
+                favored={fightersFavored}
               />
               {contentBlocks.block2 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
@@ -247,7 +247,7 @@ export const UFCArticle = ({
                 type="sentiment"
                 fighterA={fighterA}
                 fighterB={fighterB}
-                data={sentimentData}
+                favored={sentimentFavored}
               />
               {contentBlocks.block3 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
