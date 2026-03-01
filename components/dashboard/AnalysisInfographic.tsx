@@ -76,6 +76,67 @@ const FIGHT_ANALYSIS_DATA: Record<string, { odds: BarData; fighters: BarData; se
     fighters: { red: 52, blue: 48 },
     sentiment: { red: 58, blue: 42 },
   },
+  // UFC Fight Night: Emmett vs Vallejos
+  "JOSH EMMETT VS KEVIN VALLEJOS": {
+    odds: { red: 42, blue: 58 },
+    fighters: { red: 40, blue: 60 },
+    sentiment: { red: 38, blue: 62 },
+  },
+  "AMANDA LEMOS VS GILLIAN ROBERTSON": {
+    odds: { red: 55, blue: 45 },
+    fighters: { red: 58, blue: 42 },
+    sentiment: { red: 52, blue: 48 },
+  },
+  "ION CUTELABA VS OUMAR SY": {
+    odds: { red: 40, blue: 60 },
+    fighters: { red: 42, blue: 58 },
+    sentiment: { red: 38, blue: 62 },
+  },
+  "BOLAJI OKI VS MANOEL SOUSA": {
+    odds: { red: 65, blue: 35 },
+    fighters: { red: 62, blue: 38 },
+    sentiment: { red: 60, blue: 40 },
+  },
+  "MARWAN RAHIKI VS HARRY HARDWICK": {
+    odds: { red: 38, blue: 62 },
+    fighters: { red: 35, blue: 65 },
+    sentiment: { red: 40, blue: 60 },
+  },
+  "CHARLES JOHNSON VS BRUNO SILVA": {
+    odds: { red: 45, blue: 55 },
+    fighters: { red: 48, blue: 52 },
+    sentiment: { red: 42, blue: 58 },
+  },
+  "ANDRE FILI VS JOSE MIGUEL DELGADO": {
+    odds: { red: 60, blue: 40 },
+    fighters: { red: 62, blue: 38 },
+    sentiment: { red: 58, blue: 42 },
+  },
+  "VITOR PETRINO VS STEVEN ASPLUND": {
+    odds: { red: 65, blue: 35 },
+    fighters: { red: 68, blue: 32 },
+    sentiment: { red: 62, blue: 38 },
+  },
+  "PIERA RODRIGUEZ VS SAM HUGHES": {
+    odds: { red: 58, blue: 42 },
+    fighters: { red: 55, blue: 45 },
+    sentiment: { red: 60, blue: 40 },
+  },
+  "ELIJAH SMITH VS SUYOUNG YOU": {
+    odds: { red: 40, blue: 60 },
+    fighters: { red: 38, blue: 62 },
+    sentiment: { red: 42, blue: 58 },
+  },
+  "LUAN LACERDA VS HECHER SOSA": {
+    odds: { red: 70, blue: 30 },
+    fighters: { red: 72, blue: 28 },
+    sentiment: { red: 68, blue: 32 },
+  },
+  "BIA MESQUITA VS MONTSE RENDON": {
+    odds: { red: 45, blue: 55 },
+    fighters: { red: 42, blue: 58 },
+    sentiment: { red: 48, blue: 52 },
+  },
 };
 
 const TYPE_CONFIG: Record<
@@ -105,6 +166,13 @@ const TYPE_CONFIG: Record<
   },
 };
 
+const getEdgeLabel = (gap: number): string => {
+  if (gap <= 2) return "COIN FLIP";
+  if (gap <= 10) return "SLIGHT EDGE";
+  if (gap <= 20) return "MODERATE FAVORITE";
+  return "CLEAR FAVORITE";
+};
+
 export const AnalysisInfographic = ({
   type,
   fighterA,
@@ -123,6 +191,8 @@ export const AnalysisInfographic = ({
   const config = TYPE_CONFIG[type];
   const favoredA = data.red >= data.blue;
   const isTie = data.red === data.blue;
+  const gap = Math.abs(data.red - data.blue);
+  const edgeLabel = isTie ? "COIN FLIP" : getEdgeLabel(gap);
 
   return (
     <div className="w-full max-w-2xl mx-auto mb-8">
@@ -138,63 +208,64 @@ export const AnalysisInfographic = ({
           </span>
         </div>
 
-        {/* Win Probability Header */}
-        <div className="px-6 pt-1 pb-1">
-          <p className="text-[10px] font-black tracking-[0.15em] text-white uppercase pt-4 pb-3">
-            WIN PROBABILITY
+        {/* Fighter names + favored indicator */}
+        <div className="px-6 pt-5 pb-5">
+          <p className="text-[10px] font-black tracking-[0.15em] text-white uppercase mb-5">
+            WIN PREDICTION
           </p>
-        </div>
 
-        {/* Big Percentages */}
-        <div className="px-6 pb-5">
-          <div className="flex items-end justify-between gap-3 mb-5">
+          <div className="flex items-stretch justify-between gap-3 mb-6">
             {/* Fighter A */}
-            <div className="flex-1 min-w-0">
+            <div className={`flex-1 min-w-0 flex flex-col gap-2 transition-opacity duration-300 ${!favoredA && !isTie ? "opacity-35" : "opacity-100"}`}>
               <p
-                className={`text-5xl sm:text-6xl font-black leading-none transition-colors ${
-                  favoredA ? "text-red-400" : "text-gray-500"
+                className={`text-lg sm:text-xl font-black leading-tight truncate ${
+                  favoredA ? "text-red-400" : "text-gray-400"
                 }`}
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                {data.red}%
-              </p>
-              <p className="text-xs text-gray-400 mt-2 truncate font-medium" style={{ fontFamily: "var(--font-ufc-heading)" }}>
                 {fighterA}
               </p>
               {favoredA && !isTie && (
-                <span className="inline-block mt-1.5 text-[9px] font-black tracking-widest text-red-500 uppercase bg-red-500/10 border border-red-500/20 rounded px-1.5 py-0.5">
+                <span className="inline-block self-start text-[9px] font-black tracking-widest text-red-500 uppercase bg-red-500/10 border border-red-500/20 rounded px-1.5 py-0.5">
                   FAVORED
+                </span>
+              )}
+              {isTie && (
+                <span className="inline-block self-start text-[9px] font-black tracking-widest text-gray-500 uppercase bg-gray-500/10 border border-gray-500/20 rounded px-1.5 py-0.5">
+                  EVEN
                 </span>
               )}
             </div>
 
             {/* VS divider */}
-            <div className="flex-shrink-0 pb-6">
-              <span className="text-gray-700 font-black text-base">VS</span>
+            <div className="flex-shrink-0 flex items-center">
+              <span className="text-gray-700 font-black text-sm">VS</span>
             </div>
 
             {/* Fighter B */}
-            <div className="flex-1 min-w-0 text-right">
+            <div className={`flex-1 min-w-0 flex flex-col items-end gap-2 transition-opacity duration-300 ${favoredA && !isTie ? "opacity-35" : "opacity-100"}`}>
               <p
-                className={`text-5xl sm:text-6xl font-black leading-none transition-colors ${
-                  !favoredA ? "text-blue-400" : "text-gray-500"
+                className={`text-lg sm:text-xl font-black leading-tight truncate text-right ${
+                  !favoredA ? "text-blue-400" : "text-gray-400"
                 }`}
+                style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                {data.blue}%
-              </p>
-              <p className="text-xs text-gray-400 mt-2 truncate font-medium text-right" style={{ fontFamily: "var(--font-ufc-heading)" }}>
                 {fighterB}
               </p>
               {!favoredA && !isTie && (
-                <div className="flex justify-end">
-                  <span className="inline-block mt-1.5 text-[9px] font-black tracking-widest text-blue-500 uppercase bg-blue-500/10 border border-blue-500/20 rounded px-1.5 py-0.5">
-                    FAVORED
-                  </span>
-                </div>
+                <span className="inline-block self-end text-[9px] font-black tracking-widest text-blue-500 uppercase bg-blue-500/10 border border-blue-500/20 rounded px-1.5 py-0.5">
+                  FAVORED
+                </span>
+              )}
+              {isTie && (
+                <span className="inline-block self-end text-[9px] font-black tracking-widest text-gray-500 uppercase bg-gray-500/10 border border-gray-500/20 rounded px-1.5 py-0.5">
+                  EVEN
+                </span>
               )}
             </div>
           </div>
 
-          {/* Split Bar — always fills 100%, no gray gaps */}
+          {/* Directional bar — no numbers, just visual edge */}
           <div className="flex h-3 rounded-full overflow-hidden">
             <div
               className={`bg-gradient-to-r ${config.barColorA} transition-all duration-700 ease-out`}
@@ -205,11 +276,11 @@ export const AnalysisInfographic = ({
             />
           </div>
 
-          {/* Percentage ticks */}
-          <div className="flex justify-between mt-1.5">
-            <span className="text-[9px] text-gray-700">0%</span>
-            <span className="text-[9px] text-gray-700">50%</span>
-            <span className="text-[9px] text-gray-700">100%</span>
+          {/* Edge label centered below bar */}
+          <div className="flex justify-center mt-2.5">
+            <span className="text-[9px] font-black tracking-widest text-gray-600 uppercase">
+              {edgeLabel}
+            </span>
           </div>
         </div>
 
@@ -224,7 +295,7 @@ export const AnalysisInfographic = ({
             }`}
             style={{ fontFamily: "var(--font-ufc-heading)" }}
           >
-            {isTie ? "50 / 50" : favoredA ? fighterA : fighterB}
+            {isTie ? "EVEN MATCHUP" : favoredA ? fighterA : fighterB}
           </span>
         </div>
       </div>
