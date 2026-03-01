@@ -27,6 +27,10 @@ export const UFCArticle = ({
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  // Show analysis content only after the fighter image has fully loaded.
+  // If no imageUrl is provided (generation skipped/failed), show immediately.
+  const showAnalysis = !imageUrl || imageLoaded;
+
   useEffect(() => {
     // Trigger animation after mount
     const timer = setTimeout(() => setIsVisible(true), 50);
@@ -173,8 +177,8 @@ export const UFCArticle = ({
             </div>
           )}
 
-          {/* Article Content - Three Blocks with Infographics */}
-          <div className="space-y-12">
+          {/* Article Content - shown only after the fighter image is fully loaded */}
+          <div className={`space-y-12 transition-opacity duration-500 ${showAnalysis ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
             {/* Block 1 - Odds Analysis */}
             <section>
               <h2

@@ -194,15 +194,14 @@ export const AnalysisInfographic = ({
             </div>
           </div>
 
-          {/* Split Bar */}
-          <div className="flex h-3 rounded-full overflow-hidden bg-gray-800/80">
+          {/* Split Bar — always fills 100%, no gray gaps */}
+          <div className="flex h-3 rounded-full overflow-hidden">
             <div
               className={`bg-gradient-to-r ${config.barColorA} transition-all duration-700 ease-out`}
               style={{ width: `${data.red}%` }}
             />
             <div
-              className={`bg-gradient-to-l ${config.barColorB} transition-all duration-700 ease-out`}
-              style={{ width: `${data.blue}%` }}
+              className={`bg-gradient-to-l ${config.barColorB} transition-all duration-700 ease-out flex-1`}
             />
           </div>
 

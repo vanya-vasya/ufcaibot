@@ -147,31 +147,27 @@ export const parseWinProbability = (
     }
   }
 
+  // Helper: clamp red to [1,99] then derive blue as 100-red so they always sum to 100
+  const makeBar = (rawRed: number): BarData => {
+    const r = Math.min(Math.max(Math.round(rawRed), 1), 99);
+    return { red: r, blue: 100 - r };
+  };
+
   if (percentA !== null && percentB !== null) {
     const sum = percentA + percentB;
-    const divisor = sum > 105 ? sum : 100;
-    return {
-      red: Math.round((percentA / divisor) * 100),
-      blue: Math.round((percentB / divisor) * 100),
-    };
+    const divisor = sum > 0 ? sum : 100;
+    return makeBar((percentA / divisor) * 100);
   }
 
-  if (percentB !== null) {
-    const b = Math.min(Math.max(Math.round(percentB), 1), 99);
-    return { red: 100 - b, blue: b };
-  }
-
-  if (percentA !== null) {
-    const a = Math.min(Math.max(Math.round(percentA), 1), 99);
-    return { red: a, blue: 100 - a };
-  }
+  if (percentB !== null) return makeBar(100 - percentB);
+  if (percentA !== null) return makeBar(percentA);
 
   // Adjacent pair summing ≈ 100 as last resort
   for (let i = 0; i < allMatches.length - 1; i++) {
     const p1 = parseFloat(allMatches[i][1]);
     const p2 = parseFloat(allMatches[i + 1][1]);
     if (p1 > 0 && p2 > 0 && Math.abs(p1 + p2 - 100) <= 5) {
-      return { red: Math.round(p1), blue: Math.round(p2) };
+      return makeBar(p1);
     }
   }
 
