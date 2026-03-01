@@ -3,6 +3,12 @@
 import { useMemo } from "react";
 import type { ParsedFighterStats } from "@/lib/parseChartData";
 import { UFC326_FIGHTER_STATS, type FighterMatchupStats } from "@/data/ufc326-fighter-stats";
+import { UFC_FN_EMMETT_VS_VALLEJOS_FIGHTER_STATS } from "@/data/ufc-fn-emmett-vs-vallejos-fighter-stats";
+
+const ALL_FIGHTER_STATS = {
+  ...UFC326_FIGHTER_STATS,
+  ...UFC_FN_EMMETT_VS_VALLEJOS_FIGHTER_STATS,
+};
 
 interface FighterComparisonProps {
   fighterA: string;
@@ -85,7 +91,7 @@ export const FighterComparisonInfographic = ({
   parsedStatsB,
 }: FighterComparisonProps) => {
   const fightKey = `${fighterA} VS ${fighterB}`;
-  const matchup = UFC326_FIGHTER_STATS[fightKey];
+  const matchup = ALL_FIGHTER_STATS[fightKey];
 
   const statsA = useMemo<FighterMatchupStats>(() => {
     const base = matchup?.fighterA ?? DEFAULT_STATS;
