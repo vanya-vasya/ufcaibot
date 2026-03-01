@@ -4,10 +4,12 @@ import { useMemo } from "react";
 import type { ParsedFighterStats } from "@/lib/parseChartData";
 import { UFC326_FIGHTER_STATS, type FighterMatchupStats } from "@/data/ufc326-fighter-stats";
 import { UFC_FN_EMMETT_VS_VALLEJOS_FIGHTER_STATS } from "@/data/ufc-fn-emmett-vs-vallejos-fighter-stats";
+import { UFC_FN_EVLOEV_VS_MURPHY_FIGHTER_STATS } from "@/data/ufc-fn-evloev-vs-murphy-fighter-stats";
 
 const ALL_FIGHTER_STATS = {
   ...UFC326_FIGHTER_STATS,
   ...UFC_FN_EMMETT_VS_VALLEJOS_FIGHTER_STATS,
+  ...UFC_FN_EVLOEV_VS_MURPHY_FIGHTER_STATS,
 };
 
 interface FighterComparisonProps {
