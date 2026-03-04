@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -44,7 +44,6 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
   const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
   const [email, setEmail] = useState(customerEmail || '');
 
-  // Function to create payment token
   const createPaymentToken = async () => {
     if (!email) {
       toast.error('Please enter email to continue');
@@ -56,16 +55,8 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
     try {
       const response = await fetch('/api/payment/networx', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          amount,
-          currency,
-          orderId,
-          description,
-          customerEmail: email,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount, currency, orderId, description, customerEmail: email }),
       });
 
       const data: PaymentResponse = await response.json();
@@ -73,7 +64,6 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
       if (data.success && data.token && data.payment_url) {
         setPaymentToken(data.token);
         setPaymentUrl(data.payment_url);
-        
         toast.success('Payment token created successfully');
       } else {
         console.error('Payment token creation failed:', data);
@@ -89,18 +79,12 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
     }
   };
 
-  // Function to redirect to hosted payment page
   const openPaymentWidget = () => {
     if (!paymentUrl) return;
-
     toast('Redirecting to payment page...');
-    
-    // Direct redirect to Networx Pay hosted payment page
-    // This is the official recommended approach
     window.location.href = paymentUrl;
   };
 
-  // Function to check payment status
   const checkPaymentStatus = async () => {
     if (!paymentToken) return;
 
@@ -110,7 +94,6 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
 
       if (data.success) {
         const status = data.transaction?.status;
-        console.log('Payment status:', status);
 
         switch (status) {
           case 'success':
@@ -136,37 +119,39 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white border-gray-200" style={{fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"}}>
+    <Card className="w-full max-w-md mx-auto bg-white border-border">
       <CardHeader>
-        <CardTitle className="text-gray-900">Payment via Networx</CardTitle>
-        <CardDescription className="text-gray-600">
-          Amount to pay: {amount} {currency}
+        <CardTitle className="text-foreground font-heading">Secure Payment</CardTitle>
+        <CardDescription className="text-muted-foreground">
+          Amount to pay: {amount.toFixed(2)} {currency}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {!paymentToken ? (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700">Email for notifications</Label>
+              <Label htmlFor="payment-email" className="text-foreground">
+                Email for notifications
+              </Label>
               <Input
-                id="email"
+                id="payment-email"
                 type="email"
                 placeholder="your-email@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
                 required
-                className="bg-white border-gray-300 text-gray-900"
+                className="bg-white border-input text-foreground focus-visible:ring-ring"
               />
             </div>
 
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">
-                <strong>Order:</strong> {orderId}
+            <div className="space-y-1">
+              <p className="text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">Order:</span> {orderId}
               </p>
               {description && (
-                <p className="text-sm text-gray-600">
-                  <strong>Description:</strong> {description}
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">Description:</span> {description}
                 </p>
               )}
             </div>
@@ -174,13 +159,13 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
             <Button
               onClick={createPaymentToken}
               disabled={isLoading || !email}
-              className="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:via-green-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
             >
               {isLoading ? (
-                <>
+                <span className="flex items-center gap-2">
                   <Loader />
                   Creating token...
-                </>
+                </span>
               ) : (
                 'Create Payment Token'
               )}
@@ -188,11 +173,11 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-sm text-green-800">
+            <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <p className="text-sm text-primary font-medium">
                 ✅ Payment token created successfully
               </p>
-              <p className="text-xs text-green-600 mt-1">
+              <p className="text-xs text-muted-foreground mt-1 font-mono">
                 Token: {paymentToken}
               </p>
             </div>
@@ -200,8 +185,8 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
             <div className="space-y-2">
               <Button
                 onClick={openPaymentWidget}
-                className="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:via-green-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                 disabled={!paymentUrl}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 Proceed to Payment
               </Button>
@@ -209,13 +194,13 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
               <Button
                 onClick={checkPaymentStatus}
                 variant="outline"
-                className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="w-full border-input text-foreground hover:bg-accent"
               >
                 Check Payment Status
               </Button>
             </div>
 
-            <div className="text-xs text-gray-600">
+            <div className="text-xs text-muted-foreground space-y-1">
               <p>• You will be redirected to the secure payment page</p>
               <p>• Complete your payment with credit/debit card</p>
               <p>• You will return here after payment completion</p>

@@ -137,10 +137,10 @@ export const ProModal = () => {
 
   return (
     <Dialog open={proModal.isOpen} onOpenChange={handleModalClose}>
-      <DialogContent className="bg-white border-gray-200" style={{fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"}}>
+      <DialogContent className="bg-background border-border">
         <DialogHeader>
-          <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2 bg-white">
-            <div className="flex items-center gap-x-2 font-bold text-xl text-gray-900 bg-white">
+          <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
+            <div className="flex items-center gap-x-2 font-bold text-xl text-foreground">
               {showPaymentWidget ? "Complete Payment" : "Buy More"}
             </div>
           </DialogTitle>
@@ -153,11 +153,11 @@ export const ProModal = () => {
                 onClick={handleBackToForm}
                 variant="outline"
                 size="sm"
-                className="text-black border-gray-300 hover:bg-gray-50"
+                className="text-foreground border-input hover:bg-accent"
               >
                 ← Back to Selection
               </Button>
-              <div className="text-black text-sm">
+              <div className="text-foreground text-sm">
                 {watch("tokens")} Tokens - {(() => {
                   const curr = watch("currency");
                   const symbol = curr === "GBP" ? "£" : curr === "EUR" ? "€" : curr === "USD" ? "$" : "";
@@ -192,32 +192,24 @@ export const ProModal = () => {
                 >
                   <div className="relative">
                     <ListboxButton
-                      className="w-[80px] h-[52px] text-center rounded-lg border-2 text-sm font-medium flex items-center justify-center bg-white transition-all duration-200 appearance-none shadow-sm hover:border-gray-400 focus:outline-none focus:ring-2"
-                      style={{
-                        borderColor: '#000',
-                        color: '#000',
-                        fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                      }}
+                      className="w-[80px] h-[52px] text-center rounded-lg border-2 border-input text-sm font-medium flex items-center justify-center bg-white text-foreground transition-all duration-200 appearance-none shadow-sm hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
                     >
                       {watch("currency")}
                     </ListboxButton>
                     <ListboxOptions className="absolute top-full left-0 z-10 mt-1 grid w-[80px] origin-top gap-0.5 rounded-lg border border-gray-300 bg-white p-1 shadow-lg outline-none">
                       {currencies.map((currency, idx) => (
-                        <ListboxOption
+                            <ListboxOption
                           key={idx}
                           className={({ active }) =>
                             `flex cursor-pointer items-center justify-center rounded-md text-sm transition py-1
-                            bg-white text-black
+                            bg-white text-foreground
                             ${
                               active
-                                ? "bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white font-medium"
-                                : "border border-transparent hover:bg-gray-50"
+                                ? "bg-primary text-primary-foreground font-medium"
+                                : "border border-transparent hover:bg-accent"
                             }`
                           }
                           value={currency}
-                          style={{
-                            fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                          }}
                         >
                           {currency}
                         </ListboxOption>
@@ -227,20 +219,14 @@ export const ProModal = () => {
                 </Listbox>
 
                 {/* Price Display on the Right */}
-                <div 
-                  className="text-4xl font-bold py-2"
-                  style={{
-                    color: '#000',
-                    fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                  }}
-                >
+                <div className="text-4xl font-bold py-2 text-foreground">
                   {calculatePrice(watch("tokens")).toFixed(2)}
                 </div>
               </div>
             </div>
 
             {/* Token Amount Input */}
-            <Label htmlFor="tokens" className="text-black mb-2 block" style={{fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'}}>
+            <Label htmlFor="tokens" className="text-foreground mb-2 block">
               Enter token amount
             </Label>
             <div className="w-full">
@@ -252,34 +238,7 @@ export const ProModal = () => {
                 {...register("tokens", { valueAsNumber: true })}
                 min={0}
                 step={1}
-                className="w-full px-4 py-2 border-2 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white focus:outline-none focus:ring-2"
-                style={{
-                  fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                  borderColor: '#000',
-                  color: '#000',
-                }}
-                onFocus={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  target.style.borderColor = '#000';
-                  target.style.boxShadow = '0 0 0 2px rgba(0, 0, 0, 0.2)';
-                }}
-                onBlur={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  target.style.borderColor = '#000';
-                  target.style.boxShadow = 'none';
-                }}
-                onMouseOver={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  if (document.activeElement !== target) {
-                    target.style.borderColor = 'rgba(0, 0, 0, 0.8)';
-                  }
-                }}
-                onMouseOut={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  if (document.activeElement !== target) {
-                    target.style.borderColor = '#000';
-                  }
-                }}
+                className="w-full px-4 py-2 border-2 border-input rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 focus:border-primary hover:border-primary/50"
               />
             </div>
             {errors.tokens && (
@@ -294,7 +253,7 @@ export const ProModal = () => {
                 {...register("policies")}
                 checked={watch("policies")}
                 onChange={handleCheckboxChange}
-                className="group block w-[1rem] h-[1rem] rounded border border-gray-300 bg-white data-[checked]:bg-gradient-to-r data-[checked]:from-green-400 data-[checked]:via-green-500 data-[checked]:to-green-600"
+                className="group block w-[1rem] h-[1rem] rounded border border-input bg-white data-[checked]:bg-primary"
               >
                 <svg
                   className="stroke-white opacity-0 group-data-[checked]:opacity-100"
@@ -309,21 +268,18 @@ export const ProModal = () => {
                   />
                 </svg>
               </Checkbox>
-              <Label
-                className="text-black mb-2 block"
-                style={{fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'}}
-              >
+              <Label className="text-foreground mb-2 block">
                 I agree to the{" "}
                 <a
                   href="/terms-and-conditions"
-                  className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent hover:underline hover:underline-offset-4"
+                  className="text-primary hover:underline hover:underline-offset-4"
                 >
                   Terms of Service
                 </a>{" "}
                 and{" "}
                 <a
                   href="/privacy-policy"
-                  className="bg-gradient-to-r from-green-400 via-green-500 to-green-600 bg-clip-text text-transparent hover:underline hover:underline-offset-4"
+                  className="text-primary hover:underline hover:underline-offset-4"
                 >
                   Privacy Policy
                 </a>
@@ -344,7 +300,7 @@ export const ProModal = () => {
                 disabled={loading}
                 size="lg"
                 type="submit"
-                className="w-full bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:from-green-500 hover:via-green-600 hover:to-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 Buy Tokens
                 <Zap className="w-4 h-4 ml-2 fill-white" />
@@ -363,8 +319,8 @@ export const ProModal = () => {
               width={2537}
               height={394}
             />
-            <Label className="text-center text-black mb-2 block" style={{fontFamily: 'Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'}}>
-            QUICK FIT LTD - DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA
+            <Label className="text-center text-muted-foreground mb-2 block text-xs">
+            UL. JANA HEWELIUSZA, NR 11, LOK. 819, GDAŃSK, 80-890, POLSKA
             </Label>
           </>
         )}
