@@ -29,7 +29,7 @@ const PaymentSuccessPage = () => {
       const orderId = searchParams.get('order_id');
 
       if (!token && !orderId) {
-        setError('Отсутствуют данные транзакции');
+        setError('Transaction data is missing. Please contact support.');
         setIsLoading(false);
         return;
       }
@@ -42,11 +42,11 @@ const PaymentSuccessPage = () => {
         if (data.success && data.transaction) {
           setTransactionData(data.transaction);
         } else {
-          setError('Не удалось получить данные транзакции');
+          setError('Unable to retrieve transaction details.');
         }
-      } catch (error) {
-        console.error('Error fetching transaction data:', error);
-        setError('Ошибка при получении данных транзакции');
+      } catch (err) {
+        console.error('Error fetching transaction data:', err);
+        setError('An error occurred while fetching transaction details.');
       } finally {
         setIsLoading(false);
       }
@@ -57,10 +57,10 @@ const PaymentSuccessPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="text-center">
           <Loader />
-          <p className="mt-4 text-gray-600">Проверяем статус платежа...</p>
+          <p className="mt-4 text-gray-500 text-sm">Verifying your payment...</p>
         </div>
       </div>
     );
@@ -68,17 +68,17 @@ const PaymentSuccessPage = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Card className="w-full max-w-md">
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <Card className="w-full max-w-md border-gray-200">
           <CardHeader className="text-center">
-            <CardTitle className="text-red-600">Ошибка</CardTitle>
-            <CardDescription>{error}</CardDescription>
+            <CardTitle className="text-gray-900">Something went wrong</CardTitle>
+            <CardDescription className="text-gray-500">{error}</CardDescription>
           </CardHeader>
           <CardContent className="text-center">
             <Link href="/dashboard">
-              <Button>
+              <Button className="bg-black hover:bg-black/85 text-white">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Вернуться в панель управления
+                Back to Dashboard
               </Button>
             </Link>
           </CardContent>
@@ -89,83 +89,84 @@ const PaymentSuccessPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <Card className="w-full max-w-lg">
+      <Card className="w-full max-w-lg border-gray-200">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
-            <CheckCircle className="w-16 h-16 text-green-500" />
+            <CheckCircle className="w-16 h-16 text-black" />
           </div>
-          <CardTitle className="text-2xl text-green-600">
-            Платеж успешно завершен!
+          <CardTitle className="text-2xl text-gray-900">
+            Payment successful!
           </CardTitle>
-          <CardDescription>
-            Спасибо за ваш платеж. Транзакция была обработана успешно.
+          <CardDescription className="text-gray-500">
+            Thank you for your payment. Your transaction has been processed successfully.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {transactionData && (
-            <div className="bg-gray-50 p-4 rounded-lg space-y-3">
-              <h3 className="font-semibold text-gray-900">Детали транзакции:</h3>
-              
+            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-3">
+              <h3 className="font-semibold text-gray-900 text-sm uppercase tracking-wide">
+                Transaction Details
+              </h3>
+
               {transactionData.transaction_id && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">ID транзакции:</span>
-                  <span className="font-mono text-sm">{transactionData.transaction_id}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 text-sm">Transaction ID</span>
+                  <span className="font-mono text-sm text-gray-900">{transactionData.transaction_id}</span>
                 </div>
               )}
-              
+
               {transactionData.order_id && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Номер заказа:</span>
-                  <span className="font-mono text-sm">{transactionData.order_id}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 text-sm">Order ID</span>
+                  <span className="font-mono text-sm text-gray-900">{transactionData.order_id}</span>
                 </div>
               )}
-              
+
               {transactionData.amount && transactionData.currency && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Сумма:</span>
-                  <span className="font-semibold">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 text-sm">Amount</span>
+                  <span className="font-semibold text-gray-900">
                     {transactionData.amount} {transactionData.currency}
                   </span>
                 </div>
               )}
-              
+
               {transactionData.status && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Статус:</span>
-                  <span className="text-green-600 font-semibold capitalize">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 text-sm">Status</span>
+                  <span className="text-black font-semibold capitalize">
                     {transactionData.status}
                   </span>
                 </div>
               )}
-              
+
               {transactionData.customer_email && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Email:</span>
-                  <span className="text-sm">{transactionData.customer_email}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-500 text-sm">Email</span>
+                  <span className="text-sm text-gray-900">{transactionData.customer_email}</span>
                 </div>
               )}
             </div>
           )}
 
           <div className="border-t pt-4">
-            <p className="text-sm text-gray-600 mb-4">
-              Уведомление о платеже было отправлено на ваш email. 
-              Вы можете продолжить использование всех функций платформы.
+            <p className="text-sm text-gray-500">
+              A payment confirmation has been sent to your email. Your tokens are now available in your account.
             </p>
           </div>
 
           <div className="flex flex-col space-y-3">
             <Link href="/dashboard" className="w-full">
-              <Button className="w-full">
+              <Button className="w-full bg-black hover:bg-black/85 text-white">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Вернуться в панель управления
+                Back to Dashboard
               </Button>
             </Link>
-            
+
             <Link href="/dashboard/billing/payment-history" className="w-full">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full border-gray-300 text-gray-900 hover:bg-gray-100">
                 <Receipt className="w-4 h-4 mr-2" />
-                Посмотреть историю платежей
+                View Payment History
               </Button>
             </Link>
           </div>

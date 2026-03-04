@@ -46,7 +46,7 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
 
   const createPaymentToken = async () => {
     if (!email) {
-      toast.error('Please enter email to continue');
+      toast.error('Please enter your email to continue');
       return;
     }
 
@@ -64,15 +64,15 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
       if (data.success && data.token && data.payment_url) {
         setPaymentToken(data.token);
         setPaymentUrl(data.payment_url);
-        toast.success('Payment token created successfully');
+        toast.success('Payment session created. Proceed to checkout.');
       } else {
         console.error('Payment token creation failed:', data);
-        toast.error(data.error || 'Failed to create payment token');
+        toast.error(data.error || 'Failed to create payment session');
         onError?.(data);
       }
     } catch (error) {
       console.error('Payment token creation error:', error);
-      toast.error('Server connection error');
+      toast.error('Connection error. Please try again.');
       onError?.(error);
     } finally {
       setIsLoading(false);
@@ -81,7 +81,7 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
 
   const openPaymentWidget = () => {
     if (!paymentUrl) return;
-    toast('Redirecting to payment page...');
+    toast('Redirecting to secure payment page...');
     window.location.href = paymentUrl;
   };
 
@@ -101,14 +101,14 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
             onSuccess?.(data.transaction);
             break;
           case 'failed':
-            toast.error('Payment failed');
+            toast.error('Payment failed. Please try again.');
             onError?.(data.transaction);
             break;
           case 'pending':
-            toast('Payment processing...');
+            toast('Payment is still processing...');
             break;
           case 'canceled':
-            toast('Payment cancelled');
+            toast('Payment was cancelled.');
             onCancel?.();
             break;
         }
@@ -119,19 +119,19 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-white border-border">
+    <Card className="w-full max-w-md mx-auto bg-white border-gray-200">
       <CardHeader>
-        <CardTitle className="text-foreground font-heading">Secure Payment</CardTitle>
-        <CardDescription className="text-muted-foreground">
-          Amount to pay: {amount.toFixed(2)} {currency}
+        <CardTitle className="text-gray-900">Secure Payment</CardTitle>
+        <CardDescription className="text-gray-500">
+          Amount to pay: <span className="font-semibold text-gray-900">{amount.toFixed(2)} {currency}</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {!paymentToken ? (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="payment-email" className="text-foreground">
-                Email for notifications
+              <Label htmlFor="payment-email" className="text-gray-900 font-medium">
+                Email for receipt
               </Label>
               <Input
                 id="payment-email"
@@ -141,17 +141,17 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
                 required
-                className="bg-white border-input text-foreground focus-visible:ring-ring"
+                className="bg-white border-gray-300 text-gray-900 focus:ring-black focus:border-black"
               />
             </div>
 
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Order:</span> {orderId}
+              <p className="text-sm text-gray-500">
+                <span className="font-medium text-gray-900">Order:</span> {orderId}
               </p>
               {description && (
-                <p className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">Description:</span> {description}
+                <p className="text-sm text-gray-500">
+                  <span className="font-medium text-gray-900">Description:</span> {description}
                 </p>
               )}
             </div>
@@ -159,25 +159,25 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
             <Button
               onClick={createPaymentToken}
               disabled={isLoading || !email}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+              className="w-full bg-black hover:bg-black/85 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
                   <Loader />
-                  Creating token...
+                  Processing...
                 </span>
               ) : (
-                'Create Payment Token'
+                'Continue to Payment'
               )}
             </Button>
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
-              <p className="text-sm text-primary font-medium">
-                ✅ Payment token created successfully
+            <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+              <p className="text-sm text-gray-900 font-medium">
+                ✅ Payment session ready
               </p>
-              <p className="text-xs text-muted-foreground mt-1 font-mono">
+              <p className="text-xs text-gray-500 mt-1 font-mono truncate">
                 Token: {paymentToken}
               </p>
             </div>
@@ -186,24 +186,24 @@ export const NetworkPaymentWidget: React.FC<NetworkPaymentWidgetProps> = ({
               <Button
                 onClick={openPaymentWidget}
                 disabled={!paymentUrl}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                className="w-full bg-black hover:bg-black/85 text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
               >
-                Proceed to Payment
+                Proceed to Checkout
               </Button>
 
               <Button
                 onClick={checkPaymentStatus}
                 variant="outline"
-                className="w-full border-input text-foreground hover:bg-accent"
+                className="w-full border-gray-300 text-gray-900 hover:bg-gray-100"
               >
                 Check Payment Status
               </Button>
             </div>
 
-            <div className="text-xs text-muted-foreground space-y-1">
-              <p>• You will be redirected to the secure payment page</p>
-              <p>• Complete your payment with credit/debit card</p>
-              <p>• You will return here after payment completion</p>
+            <div className="text-xs text-gray-400 space-y-1">
+              <p>• You will be redirected to a secure payment page</p>
+              <p>• Complete your payment with a credit or debit card</p>
+              <p>• You will return here after payment is complete</p>
             </div>
           </div>
         )}
