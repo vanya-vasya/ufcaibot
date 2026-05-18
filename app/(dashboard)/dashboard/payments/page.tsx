@@ -27,10 +27,10 @@ const PaymentsPage = async () => {
 
         {/* Header */}
         <div className="flex flex-col items-center gap-3 mb-10">
-          <div className="w-14 h-14 rounded-full bg-green-500 flex items-center justify-center shadow-md">
+          <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center shadow-md">
             <CreditCard className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-green-500">Payments</h1>
+          <h1 className="text-3xl font-bold text-black">Payments</h1>
           <p className="text-sm text-gray-400">Payment history made easy, all in one place</p>
         </div>
 
