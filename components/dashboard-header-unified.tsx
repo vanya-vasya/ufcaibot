@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useUser, useClerk } from "@clerk/nextjs";
-import { LogOut, ChevronDown, Settings, User, Shield } from "lucide-react";
+import { LogOut, ChevronDown, Settings, User, Shield, CreditCard } from "lucide-react";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import { UsageProgress } from "@/components/usage-progress";
 import {
@@ -134,6 +135,17 @@ const DashboardHeaderUnified = ({
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
 
+                {/* Payments */}
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard/payments"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50"
+                  >
+                    <CreditCard className="w-4 h-4" />
+                    Payments
+                  </Link>
+                </DropdownMenuItem>
+
                 <DropdownMenuSeparator className="bg-gray-100" />
 
                 <DropdownMenuItem
@@ -207,6 +219,17 @@ const DashboardHeaderUnified = ({
                     </DropdownMenuItem>
                   </DropdownMenuSubContent>
                 </DropdownMenuSub>
+
+                {/* Payments */}
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/dashboard/payments"
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50"
+                  >
+                    <CreditCard className="w-4 h-4" />
+                    Payments
+                  </Link>
+                </DropdownMenuItem>
 
                 <DropdownMenuSeparator className="bg-gray-100" />
 
