@@ -50,16 +50,15 @@ const pricingTiers: PricingTier[] = [
   },
   {
     id: "master-nutritionist",
-    name: "Elite UFC Analysis Report",
-    price: "",
-    tokens: "The entire UFC card, distilled for dominance",
-    discount: "",
+    name: "Maximum value package",
+    price: "£75",
+    tokens: "360 Tokens",
+    discount: "20% Token Discount",
     features: [
       "Consulting Generations"
     ],
     popular: false,
     color: "from-blue-600 to-violet-600",
-    isElite: true,
   },
   {
     id: "custom",
