@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useUser, useClerk } from "@clerk/nextjs";
-import { LogOut, ChevronDown } from "lucide-react";
+import { LogOut, ChevronDown, Settings, User, Shield } from "lucide-react";
 import { GuestMobileSidebar } from "@/components/guest-mobile-sidebar";
 import { UsageProgress } from "@/components/usage-progress";
 import {
@@ -12,6 +12,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { fontSizes, fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
@@ -32,7 +35,7 @@ const DashboardHeaderUnified = ({
   initialAvailableGenerations,
 }: DashboardHeaderUnifiedProps) => {
   const { user, isLoaded } = useUser();
-  const { signOut } = useClerk();
+  const { signOut, openUserProfile } = useClerk();
   const router = useRouter();
   const ufcHeadingFont = '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
 
@@ -107,6 +110,32 @@ const DashboardHeaderUnified = ({
 
                 <DropdownMenuSeparator className="bg-gray-100" />
 
+                {/* Manage account sub-menu */}
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50 w-full">
+                    <Settings className="w-4 h-4" />
+                    Manage account
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="bg-white border border-gray-100 shadow-lg p-1 min-w-[160px]">
+                    <DropdownMenuItem
+                      onClick={() => openUserProfile()}
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50"
+                    >
+                      <User className="w-4 h-4" />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => openUserProfile({ routing: "hash" })}
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Security
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+
+                <DropdownMenuSeparator className="bg-gray-100" />
+
                 <DropdownMenuItem
                   onClick={handleSignOut}
                   className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 cursor-pointer rounded-md hover:bg-red-50 focus:bg-red-50 focus:text-red-600"
@@ -155,6 +184,32 @@ const DashboardHeaderUnified = ({
                   </p>
                 </div>
                 <DropdownMenuSeparator className="bg-gray-100" />
+
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50 w-full">
+                    <Settings className="w-4 h-4" />
+                    Manage account
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="bg-white border border-gray-100 shadow-lg p-1 min-w-[160px]">
+                    <DropdownMenuItem
+                      onClick={() => openUserProfile()}
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50"
+                    >
+                      <User className="w-4 h-4" />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => openUserProfile({ routing: "hash" })}
+                      className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 cursor-pointer rounded-md hover:bg-gray-50 focus:bg-gray-50"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Security
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+
+                <DropdownMenuSeparator className="bg-gray-100" />
+
                 <DropdownMenuItem
                   onClick={handleSignOut}
                   className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-red-600 cursor-pointer rounded-md hover:bg-red-50 focus:bg-red-50 focus:text-red-600"
