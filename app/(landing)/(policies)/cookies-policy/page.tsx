@@ -180,6 +180,16 @@ const CookiesPolicy = () => {
                     your ability to use certain features of our website and may
                     impact your experience.
                   </p>
+                  <h4 className="career-page-top__title-3" style={{ color: '#FFFFFF' }}>Contact Us</h4>
+                  <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
+                    If you have any questions about our use of cookies, please contact us at support@ufcaibot.com.
+                  </p>
+                  <p className="career-page-top__text-1 pt-4" style={{ color: '#FFFFFF' }}>
+                    <strong>DIGIARIA SP.Z.O.O</strong><br />
+                    KRS: 0001189469<br />
+                    UL. JANA HEWELIUSZA, NR 11, LOK. 819<br />
+                    GDAŃSK, 80-890, POLSKA
+                  </p>
                 </div>
               </div>
             </div>

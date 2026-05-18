@@ -158,6 +158,12 @@ const ReturnPolicy = () => {
                     any issues or concerns you may have regarding our return
                     policy or any other aspect of our services.
                   </p>
+                  <p className="career-page-top__text-1 pt-4" style={{ color: '#FFFFFF' }}>
+                    <strong>DIGIARIA SP.Z.O.O</strong><br />
+                    KRS: 0001189469<br />
+                    UL. JANA HEWELIUSZA, NR 11, LOK. 819<br />
+                    GDAŃSK, 80-890, POLSKA
+                  </p>
                   <p className="career-page-top__text-1 pt-4">
                     We value your feedback and are dedicated to providing you
                     with the best possible service. Your satisfaction is our

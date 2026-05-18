@@ -212,6 +212,12 @@ const PrivacyPolicy = () => {
                     If you have any questions or concerns about this Privacy
                     Policy, please contact us at support@ufcaibot.com.
                   </p>
+                  <p className="career-page-top__text-1 pt-4" style={{ color: '#FFFFFF' }}>
+                    <strong>DIGIARIA SP.Z.O.O</strong><br />
+                    KRS: 0001189469<br />
+                    UL. JANA HEWELIUSZA, NR 11, LOK. 819<br />
+                    GDAŃSK, 80-890, POLSKA
+                  </p>
                 </div>
               </div>
             </div>

@@ -46,11 +46,10 @@ const TermsAndConditions = () => {
                   <p className="career-page-top__text-1 pt-8" style={{ color: '#FFFFFF' }}>
                     Welcome to ufcaibot.com! These Terms and Conditions
                     (&quot;Terms&quot;) constitute a distance agreement between
-                    QUICK FIT LTD (&quot;Company&quot;), a company registered
-                    under the laws of England and Wales, Company Number:
-                    15995367, with its registered address at DEPT 2, 43 OWSTON ROAD,
-                    CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA, and you
-                    (&quot;Customer&quot;).
+                    DIGIARIA SP.Z.O.O (&quot;Company&quot;), a company registered
+                    under Polish law, KRS: 0001189469, with its registered address at
+                    UL. JANA HEWELIUSZA, NR 11, LOK. 819, GDAŃSK, 80-890, POLSKA,
+                    and you (&quot;Customer&quot;).
                   </p>
                   <p className="career-page-top__text-1 pt-8" style={{ color: '#FFFFFF' }}>
                     By accessing or using ufcaibot.com, you agree to be bound by
