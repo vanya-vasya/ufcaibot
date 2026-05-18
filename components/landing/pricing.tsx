@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 import { fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
 import { useProModal } from "@/hooks/use-pro-modal";
 
@@ -77,6 +79,16 @@ const pricingTiers: PricingTier[] = [
 const Pricing = () => {
   const [customAmount, setCustomAmount] = useState("");
   const proModal = useProModal();
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
+
+  const handleBeginClick = () => {
+    if (isSignedIn) {
+      proModal.onOpen();
+    } else {
+      router.push("/sign-in");
+    }
+  };
 
   return (
     <section
@@ -331,7 +343,7 @@ const Pricing = () => {
                 {/* CTA */}
                 <div className="mt-auto">
                   <button
-                    onClick={proModal.onOpen}
+                    onClick={handleBeginClick}
                     className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
                     style={{
                       fontFamily: UFC_HEADING_FONT,
