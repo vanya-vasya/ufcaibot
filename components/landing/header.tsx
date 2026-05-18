@@ -9,6 +9,10 @@ import { fontSizes, fontWeights, lineHeights, letterSpacing } from "@/config/ufc
 
 const routes = [
   {
+    name: "Home",
+    href: "https://www.ufcaibot.com",
+  },
+  {
     name: "Pricing",
     href: "/#pricing",
   },

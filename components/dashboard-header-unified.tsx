@@ -20,6 +20,7 @@ import {
 import { fontSizes, fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
 
 const routes = [
+  { name: "Home", href: "https://www.ufcaibot.com" },
   { name: "Pricing", href: "/#pricing" },
   { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "/contact" },

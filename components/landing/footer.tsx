@@ -7,6 +7,10 @@ import { getPresetStyles } from "@/config/ufc-font";
 
 const routes = [
   {
+    name: "Home",
+    href: "https://www.ufcaibot.com",
+  },
+  {
     name: "Pricing",
     href: "/#pricing",
   },
