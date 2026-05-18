@@ -87,7 +87,6 @@ interface ArticleData {
   fighterA: string;
   fighterB: string;
   timestamp: string;
-  imageUrl?: string;
 }
 
 export default function HomePage() {
@@ -183,44 +182,12 @@ export default function HomePage() {
           ? responseBody 
           : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
         
-        // Generate AI image of the fighters
-        let imageUrl: string | undefined;
-        try {
-          console.log("[Dashboard] Starting fighter image generation for:", fighterA, "vs", fighterB);
-          const imageResponse = await fetch('/api/generate-fighter-image', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              fighterA,
-              fighterB,
-            }),
-          });
-
-          console.log("[Dashboard] Image API response status:", imageResponse.status);
-
-          if (imageResponse.ok) {
-            const imageData = await imageResponse.json();
-            imageUrl = imageData.imageUrl;
-            console.log("[Dashboard] Fighter image generated successfully:", imageUrl);
-          } else {
-            const errorText = await imageResponse.text();
-            console.error("[Dashboard] Failed to generate fighter image. Status:", imageResponse.status);
-            console.error("[Dashboard] Error response:", errorText);
-          }
-        } catch (imageError) {
-          console.error("[Dashboard] Exception while generating fighter image:", imageError);
-          // Continue without image if generation fails
-        }
-        
         // Set active article to display
         setActiveArticle({
           content,
           fighterA,
           fighterB,
           timestamp,
-          imageUrl,
         });
 
         // Deduct 100 credits and record transaction
@@ -269,7 +236,6 @@ export default function HomePage() {
           fighterA={activeArticle.fighterA}
           fighterB={activeArticle.fighterB}
           timestamp={activeArticle.timestamp}
-          imageUrl={activeArticle.imageUrl}
           onClose={handleCloseArticle}
         />
       )}

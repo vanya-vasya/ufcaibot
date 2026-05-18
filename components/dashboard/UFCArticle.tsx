@@ -12,7 +12,6 @@ interface UFCArticleProps {
   fighterA: string;
   fighterB: string;
   timestamp: string;
-  imageUrl?: string;
   onClose: () => void;
 }
 
@@ -21,32 +20,15 @@ export const UFCArticle = ({
   fighterA,
   fighterB,
   timestamp,
-  imageUrl,
   onClose,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  // Show analysis content only after the fighter image has fully loaded.
-  // If no imageUrl is provided (generation skipped/failed), show immediately.
-  const showAnalysis = !imageUrl || imageLoaded;
 
   useEffect(() => {
     // Trigger animation after mount
     const timer = setTimeout(() => setIsVisible(true), 50);
     return () => clearTimeout(timer);
   }, []);
-
-  useEffect(() => {
-    // Reset image loaded state when imageUrl changes
-    console.log("[UFCArticle] Image URL received:", imageUrl);
-    setImageLoaded(false);
-  }, [imageUrl]);
-
-  const handleImageLoad = () => {
-    console.log("[UFCArticle] Image loaded successfully");
-    setImageLoaded(true);
-  };
 
   const handleClose = () => {
     setIsVisible(false);
@@ -157,28 +139,8 @@ export const UFCArticle = ({
             </h1>
           </header>
 
-          {/* AI Generated Fighter Image - right after header, before all blocks */}
-          {(imageUrl || !imageLoaded) && (
-            <div className="mb-12 relative rounded-2xl overflow-hidden border border-gray-800">
-              {!imageLoaded && (
-                <div className="w-full animate-pulse bg-gray-900 flex items-center justify-center" style={{ height: '420px' }}>
-                  <p className="text-gray-500 text-sm tracking-widest uppercase">Generating fighter image…</p>
-                </div>
-              )}
-              {imageUrl && (
-                <img
-                  src={imageUrl}
-                  alt={`${fighterA} vs ${fighterB} - AI generated matchup`}
-                  className={`w-full h-auto transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0 absolute top-0'}`}
-                  style={{ maxHeight: '420px', objectFit: 'cover' }}
-                  onLoad={handleImageLoad}
-                />
-              )}
-            </div>
-          )}
-
-          {/* Article Content - shown only after the fighter image is fully loaded */}
-          <div className={`space-y-12 transition-opacity duration-500 ${showAnalysis ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+          {/* Article Content */}
+          <div className="space-y-12">
             {/* Block 1 - Odds Analysis */}
             <section>
               <h2
