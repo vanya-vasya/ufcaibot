@@ -9,6 +9,9 @@ import { UFCArticle } from "@/components/dashboard/UFCArticle";
 import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
 import { NewsFeed } from "@/components/dashboard/NewsFeed";
 import { PastEventsList } from "@/components/dashboard/PastEventsList";
+import { useProModal } from "@/hooks/use-pro-modal";
+
+const FIGHT_COST = 25;
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
 
@@ -90,6 +93,7 @@ interface ArticleData {
 }
 
 export default function HomePage() {
+  const proModal = useProModal();
   const [showIntro, setShowIntro] = useState(true);
   // Tab state - default to "upcoming"
   const [activeTab, setActiveTab] = useState<TabValue>("upcoming");
@@ -137,10 +141,20 @@ export default function HomePage() {
    * Does NOT use any data from the Events panel
    */
   const handleFightClick = useCallback(async () => {
-    // Only check for selectedFight - ignoring Events panel
-    if (!selectedFight) {
-      console.log("Please select a fight");
-      return;
+    if (!selectedFight) return;
+
+    // Check balance before doing anything
+    try {
+      const creditsRes = await fetch("/api/user/credits");
+      if (creditsRes.ok) {
+        const { remaining } = await creditsRes.json();
+        if (remaining < FIGHT_COST) {
+          proModal.onOpen();
+          return;
+        }
+      }
+    } catch {
+      // If credits check fails, let the server-side guard handle it
     }
 
     setIsLoading(true);
