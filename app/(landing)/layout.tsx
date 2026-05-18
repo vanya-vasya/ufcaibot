@@ -1,6 +1,7 @@
 import { GuestMobileSidebar } from '@/components/guest-mobile-sidebar';
 import Footer from '@/components/landing/footer';
 import Header from '@/components/landing/header';
+import { ModalProvider } from '@/components/modal-provider';
 import { cn } from '@/lib/utils';
 import { Nunito } from 'next/font/google';
 
@@ -14,11 +15,12 @@ const nunito = Nunito({
 const LandingLayout = ({ children }: { children: React.ReactNode; }) => {
     return (
       <>
-      <main className={cn("bg-white text-[#A1AAC9] overflow-x-hidden h-full flex flex-col justify-between", nunito.className)}>
+        <ModalProvider />
+        <main className={cn("bg-white text-[#A1AAC9] overflow-x-hidden h-full flex flex-col justify-between", nunito.className)}>
           <Header/>
             {children}
           <Footer/> 
-      </main>
+        </main>
       </>
      );
   }

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const UFC_HEADING_FONT = '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
 
@@ -76,6 +76,7 @@ const pricingTiers: PricingTier[] = [
 
 const Pricing = () => {
   const [customAmount, setCustomAmount] = useState("");
+  const proModal = useProModal();
 
   return (
     <section
@@ -329,29 +330,15 @@ const Pricing = () => {
 
                 {/* CTA */}
                 <div className="mt-auto">
-                  {tier.isElite ? (
-                    <Link href="/contact">
-                      <button
-                        className="w-full px-6 py-3 bg-[#d20a0a] border-2 border-[#d20a0a] hover:bg-[#b00808] text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
-                        style={{
-                          fontFamily: UFC_HEADING_FONT,
-                        }}
-                      >
-                        Contact
-                      </button>
-                    </Link>
-                  ) : (
-                    <Link href="/dashboard">
-                      <button
-                        className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
-                        style={{
-                          fontFamily: UFC_HEADING_FONT,
-                        }}
-                      >
-                        {tier.id === "custom" ? "Choose Amount" : "Begin"}
-                      </button>
-                    </Link>
-                  )}
+                  <button
+                    onClick={proModal.onOpen}
+                    className="w-full px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                    style={{
+                      fontFamily: UFC_HEADING_FONT,
+                    }}
+                  >
+                    {tier.id === "custom" ? "Choose Amount" : "Begin"}
+                  </button>
                 </div>
               </div>
             </motion.div>
