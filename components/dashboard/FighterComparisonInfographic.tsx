@@ -117,13 +117,6 @@ export const FighterComparisonInfographic = ({
     };
   }, [matchup, parsedStatsB]);
 
-  const winRateA = statsA.wins + statsA.losses > 0
-    ? Math.round((statsA.wins / (statsA.wins + statsA.losses)) * 100)
-    : 0;
-  const winRateB = statsB.wins + statsB.losses > 0
-    ? Math.round((statsB.wins / (statsB.wins + statsB.losses)) * 100)
-    : 0;
-
   const reachNumA = parseFloat(statsA.reach) || 0;
   const reachNumB = parseFloat(statsB.reach) || 0;
   const heightNumA = parseFloat(statsA.height) || 0;
@@ -226,37 +219,6 @@ export const FighterComparisonInfographic = ({
           />
         </div>
 
-        {/* Win Rate Footer */}
-        <div className="px-6 py-4 border-t border-gray-800 bg-gray-900/40">
-          <div className="flex items-center justify-between">
-            <div className="text-center flex-1">
-              <p className={`text-2xl font-bold ${winRateA >= winRateB ? "text-red-400" : "text-gray-400"}`}>
-                {winRateA}%
-              </p>
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Win Rate</p>
-            </div>
-            <div className="h-10 w-px bg-gray-700 mx-4" />
-            <div className="text-center flex-1">
-              <p className={`text-2xl font-bold ${winRateB >= winRateA ? "text-blue-400" : "text-gray-400"}`}>
-                {winRateB}%
-              </p>
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-0.5">Win Rate</p>
-            </div>
-          </div>
-
-          {/* Win Rate bar */}
-          <div className="mt-3 flex h-2 rounded-full overflow-hidden bg-gray-800">
-            <div
-              className="bg-gradient-to-r from-red-700 to-red-500 transition-all duration-700"
-              style={{ width: `${winRateA}%` }}
-            />
-            <div className="flex-1" />
-            <div
-              className="bg-gradient-to-l from-blue-700 to-blue-500 transition-all duration-700"
-              style={{ width: `${winRateB}%` }}
-            />
-          </div>
-        </div>
       </div>
     </div>
   );
