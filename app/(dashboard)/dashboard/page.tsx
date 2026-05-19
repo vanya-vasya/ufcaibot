@@ -13,7 +13,7 @@ import { useProModal } from "@/hooks/use-pro-modal";
 
 const FIGHT_COST = 25;
 
-const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/7a104f81-c923-49cd-abf4-562204fc06e9";
+const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/2b3cf490-2cd3-4d75-af73-8ba7d6771986";
 
 // Available UFC events for selection
 const UFC_EVENTS = [
