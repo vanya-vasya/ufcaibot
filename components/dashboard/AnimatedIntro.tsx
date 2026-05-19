@@ -45,7 +45,7 @@ export const AnimatedIntro = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
       data-testid="animated-intro"
       style={{
         opacity: isFadingOut ? 0 : 1,

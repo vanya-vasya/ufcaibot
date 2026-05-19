@@ -95,6 +95,7 @@ interface ArticleData {
 export default function HomePage() {
   const proModal = useProModal();
   const [showIntro, setShowIntro] = useState(true);
+  const [contentVisible, setContentVisible] = useState(false);
   // Tab state - default to "upcoming"
   const [activeTab, setActiveTab] = useState<TabValue>("upcoming");
   // Events selector - default to first event
@@ -121,6 +122,10 @@ export default function HomePage() {
 
   const handleIntroComplete = useCallback(() => {
     setShowIntro(false);
+    // Small tick to let React unmount the overlay before fading in content
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setContentVisible(true));
+    });
   }, []);
 
   const handleTabChange = useCallback((tab: TabValue) => {
@@ -242,7 +247,14 @@ export default function HomePage() {
   return (
     <>
       {showIntro && <AnimatedIntro onComplete={handleIntroComplete} />}
-      
+
+      <div
+        style={{
+          opacity: contentVisible ? 1 : 0,
+          transition: "opacity 400ms ease-in",
+          pointerEvents: contentVisible ? "auto" : "none",
+        }}
+      >
       {/* Show Article Overlay when active */}
       {activeArticle && (
         <UFCArticle
@@ -365,6 +377,7 @@ export default function HomePage() {
           --font-ufc-heading: "UFC Sans Condensed", "Arial Narrow", Arial, sans-serif;
         }
       `}</style>
+      </div>
     </>
   );
 }
