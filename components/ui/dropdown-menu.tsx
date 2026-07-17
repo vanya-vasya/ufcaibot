@@ -65,8 +65,9 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        // z-[9999] ensures dropdown appears above fixed header (z-9998)
-        // Position and overflow settings prevent clipping issues
+        // z-[9999] ensures dropdown appears above fixed header (z-9998).
+        // Do NOT force position on this element: Radix positions the menu via
+        // its popper wrapper, and overriding position breaks align="start|end".
         "z-[9999] min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
         // Animation classes for smooth open/close transitions
         "data-[state=open]:animate-in data-[state=closed]:animate-out",
@@ -76,13 +77,6 @@ const DropdownMenuContent = React.forwardRef<
         "data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         className
       )}
-      style={{
-        // Ensure dropdown renders in correct stacking context
-        position: 'absolute',
-        zIndex: 9999,
-        // Prevent transform creating new stacking context
-        willChange: 'transform, opacity',
-      }}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>

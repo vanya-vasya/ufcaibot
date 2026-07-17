@@ -51,19 +51,18 @@ header nav {
  * - Positioned absolutely to avoid layout shift
  */
 
-/* Radix Portal container */
-[data-radix-portal] {
+/* Radix popper wrapper - keep above sticky header (z-index 9998) */
+[data-radix-popper-content-wrapper] {
   z-index: 9999 !important;
-  position: relative !important;
 }
 
-/* DropdownMenu content */
+/* DropdownMenu content
+   IMPORTANT: do not force position/margins here. Radix positions the menu
+   via its popper wrapper; overriding position collapses the wrapper to zero
+   size and breaks align="end" (menu spills off the right edge of screen). */
 [role="menu"],
 [data-radix-dropdown-menu-content] {
   z-index: 9999 !important;
-  position: absolute !important;
-  /* Ensure dropdown appears below header */
-  margin-top: 4px !important;
 }
 
 /* Prevent dropdown from being clipped by overflow: hidden parents */
