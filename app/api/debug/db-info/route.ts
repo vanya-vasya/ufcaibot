@@ -9,20 +9,25 @@ export async function GET() {
     const dbUrl = process.env.DATABASE_URL || "";
     const host = dbUrl.match(/@([^/]+)\//)?.[1] || "unknown";
 
-    const testUser = await prismadb.user.findUnique({
-      where: { email: "testfortests2025@gmail.com" },
-      select: {
-        clerkId: true,
-        email: true,
-        usedGenerations: true,
-        availableGenerations: true,
-        updatedAt: true,
-      },
-    });
+    const [userCount, users] = await Promise.all([
+      prismadb.user.count(),
+      prismadb.user.findMany({
+        select: {
+          email: true,
+          clerkId: true,
+          usedGenerations: true,
+          availableGenerations: true,
+          updatedAt: true,
+        },
+        orderBy: { updatedAt: "desc" },
+        take: 20,
+      }),
+    ]);
 
     return NextResponse.json({
       dbHost: host,
-      testUser,
+      userCount,
+      users,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
