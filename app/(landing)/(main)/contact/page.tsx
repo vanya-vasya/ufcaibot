@@ -115,7 +115,7 @@ const ContactPage = () => {
                     <a 
                       href="mailto:info@ufcaibot.com"
                       className="text-white hover:text-gray-300 font-medium transition-colors duration-200"
-                      aria-label="Send email to UFC AI Bot support"
+                      aria-label="Send email to MMA AI Bot support"
                       style={{ fontFamily: 'var(--contact-font)' }}
                     >
                       info@ufcaibot.com

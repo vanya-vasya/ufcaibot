@@ -30,7 +30,7 @@ export function MainNav({
           href="/dashboard"
           className="hidden items-center space-x-2 md:flex"
         >
-          <Image src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo" width={49} height={20} />
+          <Image src="/logos/ufc-fighter-logo.png" alt="MMA Fighter Logo" width={49} height={20} />
         </Link>
 
         <NavigationMenu>

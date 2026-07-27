@@ -20,7 +20,7 @@ const Hero = () => {
       <div className="absolute inset-0 w-full h-full">
         <Image
           src="/images/products/octagon-arena.webp"
-          alt="UFC Octagon Arena Background"
+          alt="MMA Octagon Arena Background"
           fill
           className="object-cover object-center"
           priority

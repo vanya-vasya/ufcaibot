@@ -122,7 +122,7 @@ describe('Footer Navigation Integration Tests', () => {
       expect(screen.getByText('Company')).toBeInTheDocument();
 
       // Test logo is present
-      expect(screen.getByAltText('UFC Fighter Logo')).toBeInTheDocument();
+      expect(screen.getByAltText('MMA Fighter Logo')).toBeInTheDocument();
 
       // Test company details
       expect(screen.getByText(/QUICK FIT LTD/)).toBeInTheDocument();

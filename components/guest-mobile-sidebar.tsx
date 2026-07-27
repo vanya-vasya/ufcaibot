@@ -81,7 +81,7 @@ export const GuestMobileSidebar = () => {
         <div className="space-y-4 py-6 px-6 flex flex-col h-full bg-white border-r border-black shadow-lg">
           <div className="px-3 py-2 flex-1">
             <Link href="/dashboard" className="flex items-center pl-3 mb-14">
-              <Image width={"75"} height={"30"} className="mr-4" alt="UFC Fighter Logo" src="/logos/ufc-fighter-logo.png" />
+              <Image width={"75"} height={"30"} className="mr-4" alt="MMA Fighter Logo" src="/logos/ufc-fighter-logo.png" />
             </Link>
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-100">

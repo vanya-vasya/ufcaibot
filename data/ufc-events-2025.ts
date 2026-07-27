@@ -48,7 +48,7 @@ export interface UFCEvent {
 export const UFC_EVENTS_2025: UFCEvent[] = [
   {
     id: "ufc-fn-mar-01",
-    name: "UFC Fight Night: Moreno vs Kavanagh",
+    name: "MMA Fight Night: Moreno vs Kavanagh",
     shortName: "Moreno vs Kavanagh",
     date: "2026-03-01",
     venue: "Etihad Arena",
@@ -205,7 +205,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-feb-22",
-    name: "UFC Fight Night: Strickland vs Hernandez",
+    name: "MMA Fight Night: Strickland vs Hernandez",
     shortName: "Strickland vs Hernandez",
     date: "2026-02-22",
     venue: "Etihad Arena",
@@ -376,7 +376,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-feb-08",
-    name: "UFC Fight Night: Bautista vs Oliveira",
+    name: "MMA Fight Night: Bautista vs Oliveira",
     shortName: "Bautista vs Oliveira",
     date: "2026-02-08",
     venue: "Etihad Arena",
@@ -531,7 +531,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-325",
-    name: "UFC 325: Volkanovski vs Lopes",
+    name: "MMA 325: Volkanovski vs Lopes",
     shortName: "Volkanovski vs Lopes",
     date: "2026-02-01",
     venue: "Etihad Arena",
@@ -692,7 +692,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-324",
-    name: "UFC 324: Gaethje vs Pimblett",
+    name: "MMA 324: Gaethje vs Pimblett",
     shortName: "Gaethje vs Pimblett",
     date: "2026-01-25",
     venue: "Etihad Arena",
@@ -833,7 +833,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-dec-14",
-    name: "UFC Fight Night: Royval vs Kape",
+    name: "MMA Fight Night: Royval vs Kape",
     shortName: "Royval vs Kape",
     date: "2025-12-14",
     venue: "Etihad Arena",
@@ -983,7 +983,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-323",
-    name: "UFC 323: Dvalishvili vs Yan 2",
+    name: "MMA 323: Dvalishvili vs Yan 2",
     shortName: "Dvalishvili vs Yan 2",
     date: "2025-12-07",
     venue: "T-Mobile Arena",
@@ -1155,7 +1155,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-nov-22",
-    name: "UFC Fight Night: Tsarukyan vs Hooker",
+    name: "MMA Fight Night: Tsarukyan vs Hooker",
     shortName: "Tsarukyan vs Hooker",
     date: "2025-11-22",
     venue: "Etihad Arena",
@@ -1321,7 +1321,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-322",
-    name: "UFC 322: Della Maddalena vs Makhachev",
+    name: "MMA 322: Della Maddalena vs Makhachev",
     shortName: "Della Maddalena vs Makhachev",
     date: "2025-11-16",
     venue: "Madison Square Garden",
@@ -1494,10 +1494,10 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-nov-08",
-    name: "UFC Fight Night: Bonfim vs Brown",
+    name: "MMA Fight Night: Bonfim vs Brown",
     shortName: "Bonfim vs Brown",
     date: "2025-11-08",
-    venue: "UFC APEX",
+    venue: "MMA APEX",
     location: "Las Vegas, NV",
     country: "United States",
     eventType: "apex",
@@ -1640,10 +1640,10 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-nov-01",
-    name: "UFC Fight Night: Garcia vs Onama",
+    name: "MMA Fight Night: Garcia vs Onama",
     shortName: "Garcia vs Onama",
     date: "2025-11-01",
-    venue: "UFC APEX",
+    venue: "MMA APEX",
     location: "Las Vegas, NV",
     country: "United States",
     eventType: "apex",
@@ -1796,7 +1796,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-321",
-    name: "UFC 321: Aspinall vs Gane",
+    name: "MMA 321: Aspinall vs Gane",
     shortName: "Aspinall vs Gane",
     date: "2025-10-25",
     venue: "Etihad Arena",
@@ -1953,7 +1953,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-oct-18",
-    name: "UFC Fight Night: de Ridder vs Allen",
+    name: "MMA Fight Night: de Ridder vs Allen",
     shortName: "de Ridder vs Allen",
     date: "2025-10-18",
     venue: "Rogers Arena",
@@ -2107,7 +2107,7 @@ export const UFC_EVENTS_2025: UFCEvent[] = [
   },
   {
     id: "ufc-fn-oct-11",
-    name: "UFC Fight Night: Oliveira vs Gamrot",
+    name: "MMA Fight Night: Oliveira vs Gamrot",
     shortName: "Oliveira vs Gamrot",
     date: "2025-10-11",
     venue: "Farmasi Arena",
@@ -2263,7 +2263,7 @@ export const getEventTypeLabel = (eventType: UFCEvent["eventType"]): string => {
     case "fight-night":
       return "Fight Night";
     case "apex":
-      return "UFC APEX";
+      return "MMA APEX";
     default:
       return eventType;
   }

@@ -126,7 +126,7 @@ export function MobileNav({
             <div className="flex justify-between items-center">
               <Image
                 src="/logos/ufc-fighter-logo.png"
-                alt="UFC Fighter Logo"
+                alt="MMA Fighter Logo"
                 width={98}
                 height={39}
               />

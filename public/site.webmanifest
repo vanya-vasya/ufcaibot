@@ -1,6 +1,6 @@
 {
-  "name": "UFC AI Bot",
-  "short_name": "UFC AI Bot",
+  "name": "MMA AI Bot",
+  "short_name": "MMA AI Bot",
   "description": "AI-powered creative tools for everyone",
   "start_url": "/",
   "display": "standalone",

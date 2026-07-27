@@ -83,12 +83,12 @@ const Footer = () => {
             <div className="flex items-start">
               <div className="footer-widget__column footer-widget__about">
                 <div className="flex justify-start mb-6">
-                  <Link href="/" className="inline-block logo-hover-effect" aria-label="UFC AI Bot Homepage">
+                  <Link href="/" className="inline-block logo-hover-effect" aria-label="MMA AI Bot Homepage">
                     <Image 
                       width={49} 
                       height={20} 
                       src="/logos/ufc-fighter-logo.png" 
-                      alt="UFC Fighter Logo"
+                      alt="MMA Fighter Logo"
                     />
                   </Link>
                 </div>

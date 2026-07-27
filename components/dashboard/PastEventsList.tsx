@@ -63,7 +63,7 @@ export const PastEventsList = ({
       case "fight-night":
         return "Fight Night";
       case "apex":
-        return "UFC APEX";
+        return "MMA APEX";
       default:
         return "All Events";
     }
@@ -85,7 +85,7 @@ export const PastEventsList = ({
               className="text-2xl sm:text-3xl font-bold text-white"
               style={{ fontFamily: '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif' }}
             >
-              UFC 2025 RESULTS
+              MMA 2025 RESULTS
             </h2>
             <p className="text-sm text-zinc-400 mt-1 flex items-center gap-2">
               <Calendar className="w-4 h-4" />
@@ -137,7 +137,7 @@ export const PastEventsList = ({
                   badgeClass="bg-blue-500/20 text-blue-400"
                 />
                 <FilterOption
-                  label="UFC APEX"
+                  label="MMA APEX"
                   value="apex"
                   isSelected={eventTypeFilter === "apex"}
                   onClick={() => handleFilterChange("apex")}
@@ -151,7 +151,7 @@ export const PastEventsList = ({
 
       {/* Events List */}
       {displayedEvents.length > 0 ? (
-        <div className="space-y-4" role="list" aria-label="Past UFC events">
+        <div className="space-y-4" role="list" aria-label="Past MMA events">
           {displayedEvents.map((event, index) => (
             <EventAccordion 
               key={event.id} 

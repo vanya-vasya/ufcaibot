@@ -45,7 +45,7 @@ const PrivacyPolicy = () => {
                   <p className="career-page-top__text-1 pt-8" style={{ color: '#FFFFFF' }}>
                     Welcome to ufcaibot.com! This Privacy Policy explains how we
                     collect, use, disclose, and safeguard your information when
-                    you visit our website and use our UFC fight prediction services.
+                    you visit our website and use our MMA fight prediction services.
                     Please read this policy carefully. If you do not agree with
                     the terms of this Privacy Policy, please do not access the
                     site.
@@ -83,7 +83,7 @@ const PrivacyPolicy = () => {
                       <div className="career-page-top__points-shape"></div>
                                               <p style={{ color: '#FFFFFF' }}>
                         <strong>To Provide and Improve Our Services:</strong> We
-                        use your information to provide you with AI-powered UFC fight
+                        use your information to provide you with AI-powered MMA fight
                         predictions, odds analysis, and fighter research tools you request,
                         and to improve the overall performance of our platform.
                       </p>

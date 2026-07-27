@@ -66,7 +66,7 @@ const TermsAndConditions = () => {
                   </p>
                   <h4 className="career-page-top__title-3" style={{ color: '#FFFFFF' }}>Registration</h4>
                   <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
-                    You are required to create an account to access our UFC fight
+                    You are required to create an account to access our MMA fight
                     prediction services. During registration, you must provide
                     accurate and complete information. You are responsible for
                     maintaining the confidentiality of your account credentials
@@ -85,7 +85,7 @@ const TermsAndConditions = () => {
                     AI Fight Prediction Service
                   </h4>
                   <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
-                    We offer a comprehensive AI-powered UFC fight prediction service that
+                    We offer a comprehensive AI-powered MMA fight prediction service that
                     operates across three key directions to provide complete fight analysis.
                     The service requires Tokens to access and includes:
                   </p>
@@ -143,10 +143,10 @@ const TermsAndConditions = () => {
                   </h4>
                   <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
                     All predictions and analysis data generated through our platform
-                    for your personal use remains yours. UFCAIBot does not
+                    for your personal use remains yours. MMA AI Bot does not
                     claim ownership rights to the prediction results or analysis you receive.
                     You retain all rights to use the predictions for your personal
-                    decision-making. UFCAIBot provides you with AI-powered fight
+                    decision-making. MMA AI Bot provides you with AI-powered fight
                     analysis tools, but does not require any rights to how you use
                     the results.
                   </p>
@@ -163,7 +163,7 @@ const TermsAndConditions = () => {
                     6. Limitation of Liability
                   </h4>
                   <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
-                    To the fullest extent permitted by law, UFCAIBot shall
+                    To the fullest extent permitted by law, MMA AI Bot shall
                     not be liable for any indirect, incidental, special,
                     consequential, or punitive damages, or any loss of profits
                     or revenues, whether incurred directly or indirectly, or any
@@ -194,7 +194,7 @@ const TermsAndConditions = () => {
                     7. Indemnification
                   </h4>
                   <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
-                    You agree to indemnify and hold harmless UFCAIBot, its
+                    You agree to indemnify and hold harmless MMA AI Bot, its
                     affiliates, and their respective officers, directors,
                     employees, and agents from and against any claims,
                     liabilities, damages, losses, and expenses, including

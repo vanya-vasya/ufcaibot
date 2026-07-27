@@ -32,7 +32,7 @@ export const Sidebar = ({
             width={"150"}
             height={"60"}
             className="mr-4"
-            alt="UFC Fighter Logo"
+            alt="MMA Fighter Logo"
             src="/logos/ufc-fighter-logo.png"
           />
         </Link>

@@ -91,7 +91,7 @@ const FightCardItem = ({ card, showEventNumber, showUpNext }: { card: FightCard;
                 fontStyle: "italic",
               }}
             >
-              UFC
+              MMA
             </span>
             {/* Event Number */}
             <span
@@ -176,7 +176,7 @@ const Features = () => {
     <section
       id="features"
       className="relative w-full bg-white"
-      aria-label="Upcoming UFC Fights"
+      aria-label="Upcoming MMA Fights"
     >
       <Link href="/dashboard" className="block w-full">
         {/* Container */}

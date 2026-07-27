@@ -35,7 +35,7 @@ const Header = () => {
         {/* Left - Logo (aligned with footer) */}
         <div className="flex items-center">
           <Link href="/" className="logo-hover-effect" aria-label="Go to homepage">
-            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
+            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="MMA Fighter Logo"/>
           </Link>
         </div>
 
@@ -70,7 +70,7 @@ const Header = () => {
                     href="/dashboard"
                     className="nav-link"
                     tabIndex={0}
-                    aria-label="Begin using UFC AI Bot"
+                    aria-label="Begin using MMA AI Bot"
                   >
                     Begin
                   </Link>

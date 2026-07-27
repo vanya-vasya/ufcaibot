@@ -55,7 +55,7 @@ const DashboardHeaderUnified = ({
               width={49}
               height={20}
               src="/logos/ufc-fighter-logo.png"
-              alt="UFC Fighter Logo"
+              alt="MMA Fighter Logo"
             />
           </Link>
         </div>

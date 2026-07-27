@@ -44,7 +44,7 @@ const ReturnPolicy = () => {
 
                   <p className="career-page-top__text-1 pt-8" style={{ color: '#FFFFFF' }}>
                     At ufcaibot.com, we strive to provide high-quality AI-powered
-                    UFC fight prediction services that meet your needs. However, if you
+                    MMA fight prediction services that meet your needs. However, if you
                     are not satisfied with your purchase, we offer a return
                     policy for unused Tokens. This policy is designed to
                     ensure that you have a positive experience with our platform
@@ -69,7 +69,7 @@ const ReturnPolicy = () => {
                         Token has been used, it cannot be returned or
                         refunded. We define &quot;used&quot; Tokens as
                         those that have been utilized in our AI-powered
-                        UFC fight prediction service, which operates across three
+                        MMA fight prediction service, which operates across three
                         directions: AI Fight Predictor, Odds & Value Scanner,
                         and Fighter Research Hub provided on ufcaibot.com.
                       </p>

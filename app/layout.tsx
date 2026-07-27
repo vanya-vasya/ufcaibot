@@ -19,7 +19,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "UFC AI Bot",
+  title: "MMA AI Bot",
   description: "AI-powered creative tools for everyone",
   icons: {
     icon: [

@@ -87,7 +87,7 @@ const DashboardHeader = ({ initialUsedGenerations, initialAvailableGenerations }
         {/* Left - Logo (aligned with footer) */}
         <div className="flex items-center">
           <Link href="/dashboard" className="logo-hover-effect" aria-label="Go to dashboard">
-            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="UFC Fighter Logo"/>
+            <Image width={49} height={20} src="/logos/ufc-fighter-logo.png" alt="MMA Fighter Logo"/>
           </Link>
         </div>
 
