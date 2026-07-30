@@ -31,6 +31,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Processor requires order_amount as an integer (minor units / cents).
+    // amount * 100 alone can produce floats like 1098.9999999999999.
+    const amountInCents = Math.round(Number(amount) * 100);
+
+    if (!Number.isInteger(amountInCents) || amountInCents <= 0) {
+      return NextResponse.json(
+        { error: 'Amount must be a positive number' },
+        { status: 400 }
+      );
+    }
+
     const shopId = process.env.SECURE_PROCESSOR_SHOP_ID || '29959';
     const secretKey = process.env.SECURE_PROCESSOR_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
     const apiUrl = process.env.SECURE_PROCESSOR_API_URL || 'https://checkout.secure-processor.com/ctp/api/checkouts';
@@ -44,7 +55,7 @@ export async function POST(request: NextRequest) {
         test: testMode,
         transaction_type: 'payment',
         order: {
-          amount: amount * 100,
+          amount: amountInCents,
           currency: currency,
           description: description || 'Payment for order',
           tracking_id: orderId,
