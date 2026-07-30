@@ -11,7 +11,7 @@ import { NewsFeed } from "@/components/dashboard/NewsFeed";
 import { PastEventsList } from "@/components/dashboard/PastEventsList";
 import { useProModal } from "@/hooks/use-pro-modal";
 
-const FIGHT_COST = 25;
+const FIGHT_COST = 1;
 
 const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/2b3cf490-2cd3-4d75-af73-8ba7d6771986";
 

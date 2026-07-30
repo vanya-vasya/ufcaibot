@@ -2,7 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import prismadb from "@/lib/prismadb";
 
-const FIGHT_ANALYSIS_COST = 25;
+const FIGHT_ANALYSIS_COST = 1;
 
 export async function POST(req: Request) {
   try {
