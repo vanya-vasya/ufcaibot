@@ -127,7 +127,7 @@ export async function POST(req: Request) {
             to: body.transaction.customer.email,
             subject: `Receipt #${
               String(body.transaction.uid).split("-").pop() || "42f7fj3u48rh"
-            } - Yum-Mi Tokens Purchase`,
+            } - ufcaibot Tokens Purchase`,
             text: `Hi there,
 
 We're excited to welcome you to Yum-Mi — thanks so much for your recent order on yum-mi.com!

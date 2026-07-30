@@ -158,7 +158,7 @@ export const ProModal = () => {
               amount={calculatePrice(watch("tokens"))}
               currency={watch("currency")}
               orderId={`gen_${userId}_${Date.now()}`}
-              description={`Yum-mi Tokens Purchase (${watch("tokens")} Tokens)`}
+              description={`ufcaibot Tokens Purchase (${watch("tokens")} Tokens)`}
               customerEmail={user?.emailAddresses[0].emailAddress || ""}
               onSuccess={handlePaymentSuccess}
               onError={handlePaymentError}
