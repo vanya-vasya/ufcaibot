@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
     const shopId = process.env.SECURE_PROCESSOR_SHOP_ID || '29959';
     const secretKey = process.env.SECURE_PROCESSOR_SECRET_KEY || 'dbfb6f4e977f49880a6ce3c939f1e7be645a5bb2596c04d9a3a7b32d52378950';
     const apiUrl = process.env.SECURE_PROCESSOR_API_URL || 'https://checkout.secure-processor.com/ctp/api/checkouts';
-    const returnUrl = 'https://www.ufcaibot.com/payment/success';
+    const returnUrl = process.env.SECURE_PROCESSOR_RETURN_URL || 'https://www.ufcaibot.com/payment/success';
+    const cancelUrl = process.env.SECURE_PROCESSOR_URL || 'https://www.ufcaibot.com/payment/cancel';
     const notificationUrl = 'https://www.ufcaibot.com/api/webhooks/secure-processor';
     const testMode = process.env.SECURE_PROCESSOR_TEST_MODE === 'true';
 
@@ -53,6 +54,7 @@ export async function POST(request: NextRequest) {
         },
         settings: {
           return_url: returnUrl,
+          cancel_url: cancelUrl,
           notification_url: notificationUrl,
         },
       },
