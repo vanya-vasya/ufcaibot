@@ -75,14 +75,20 @@ export async function POST(req: Request) {
 
     const newUser = await createUser(user);
 
-    // Set public metadata
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser.id,
-        },
+    // Return 500 so Clerk (Svix) retries the delivery instead of silently
+    // dropping the user when the database insert fails.
+    if (!newUser) {
+      return new Response("Error occured -- failed to create user in database", {
+        status: 500,
       });
     }
+
+    // Set public metadata
+    await clerkClient.users.updateUserMetadata(id, {
+      publicMetadata: {
+        userId: newUser.id,
+      },
+    });
 
     return NextResponse.json({ message: "OK", user: newUser });
   }

@@ -7,13 +7,19 @@ import prismadb from "@/lib/prismadb";
 // CREATE
 export async function createUser(user: any) {
   try {
-    const newUser = await prismadb.user.create({
-      data: user,
+    // Upsert keeps webhook retries idempotent: if the row already exists
+    // (e.g. a retry after a partial failure), we don't crash on the unique
+    // clerkId constraint and the webhook can still return 200.
+    const newUser = await prismadb.user.upsert({
+      where: { clerkId: user.clerkId },
+      update: {},
+      create: user,
     });
 
     return newUser;
   } catch (error) {
-    console.error(error);
+    console.error("[createUser] Failed to create user in database:", error);
+    return null;
   }
 }
 
