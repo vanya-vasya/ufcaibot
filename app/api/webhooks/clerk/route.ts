@@ -64,9 +64,18 @@ export async function POST(req: Request) {
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, first_name, last_name } = evt.data;
 
+    // Users without an email (phone-only signups, Clerk dashboard test events)
+    // can't satisfy the DB schema (email is required+unique). Acknowledge with
+    // 200 so Clerk doesn't retry a delivery that can never succeed.
+    const email = email_addresses?.[0]?.email_address;
+    if (!email) {
+      console.warn(`[clerk webhook] user.created ${id} skipped: no email address`);
+      return NextResponse.json({ message: "OK", skipped: "user has no email address" });
+    }
+
     const user = {
       clerkId: id,
-      email: email_addresses[0].email_address,
+      email,
       firstName: first_name,
       lastName: last_name,
       photo: image_url,
