@@ -1,4 +1,5 @@
 import { transporter } from "@/config/nodemailer";
+import { findUserForPayment } from "@/lib/payments";
 import prismadb from "@/lib/prismadb";
 import { generatePdfReceipt } from "@/lib/receiptGeneration";
 import { PUBLIC_KEY } from "@/constants/index";
@@ -48,17 +49,12 @@ export async function POST(req: Request) {
     if (isVerified) {
       const body = JSON.parse(rawBody); // Теперь можем парсить тело
       if (body?.transaction?.status === "successful") {
-        const userId = body?.transaction?.tracking_id;
-
-        const user = await prismadb.user.findUnique({
-          where: {
-            clerkId: userId,
-          },
-          select: {
-            usedGenerations: true,
-            availableGenerations: true,
-          },
-        });
+        // tracking_id is `gen_<clerkId>_<timestamp>`, not a bare clerkId —
+        // resolve the user through the shared helper (email as fallback).
+        const user = await findUserForPayment(
+          body?.transaction?.tracking_id,
+          body?.transaction?.customer?.email
+        );
 
         if (!user) {
           return NextResponse.json(
@@ -80,11 +76,11 @@ export async function POST(req: Request) {
 
         await prismadb.user.update({
           where: {
-            clerkId: userId,
+            clerkId: user.clerkId,
           },
           data: {
             availableGenerations:
-              user?.availableGenerations - user?.usedGenerations + number,
+              user.availableGenerations - user.usedGenerations + number,
             usedGenerations: 0,
           },
         });
@@ -94,7 +90,7 @@ export async function POST(req: Request) {
         await prismadb.transaction.create({
           data: {
             tracking_id: transaction.tracking_id,
-            userId: userId,
+            userId: user.clerkId,
             status: transaction.status,
             amount: transaction.amount,
             currency: transaction.currency,
