@@ -123,7 +123,7 @@ export async function POST(req: Request) {
             } - ufcaibot Tokens Purchase`,
             text: `Hi there,
 
-We're excited to welcome you to ufcaibot — thanks so much for your recent order on ufcaibot.com!
+We're excited to welcome you to ufcaibot — thanks so much for your recent order
 
 You'll find your transaction receipt attached to this message. Be sure to keep it in case you need it later.
 
@@ -132,9 +132,7 @@ If you run into any issues, have questions about your token usage, or need guida
 We're honored to be part of your fight analysis journey.
 
 With appreciation,
-The ufcaibot Team
-ufcaibot.com
-support@ufcaibot.com`,
+The ufcaibot Team`,
             attachments: [
               {
                 filename:
