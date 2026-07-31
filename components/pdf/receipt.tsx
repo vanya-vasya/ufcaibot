@@ -18,9 +18,11 @@ const colors = {
   textColor4: "#687385",
 };
 
+// Absolute URLs: relative ./public paths don't exist inside the Vercel
+// serverless bundle, which made PDF generation (and the receipt email) fail.
 Font.register({
   family: "Nunito",
-  src: `./public/assets/fonts/Nunito-Regular.ttf`,
+  src: "https://www.ufcaibot.com/assets/fonts/Nunito-Regular.ttf",
 });
 
 const styles = StyleSheet.create({
@@ -142,7 +144,7 @@ const company = {
   address: "DEPT 2, 43 OWSTON ROAD, CARCROFT, DONCASTER, UNITED KINGDOM, DN6 8DA",
   website: "ufcaibot.com",
   email: "support@ufcaibot.com",
-  logo: "./public/logos/ufc-fighter-logo.png", // Official company logo
+  logo: "https://www.ufcaibot.com/logos/ufc-fighter-logo.png", // Official company logo
   companyNumber: "15995367",
 };
 
