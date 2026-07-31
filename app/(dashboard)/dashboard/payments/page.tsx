@@ -15,7 +15,12 @@ const formatDate = (date: Date | string | null): string => {
 const formatAmount = (amount: number | null, currency: string | null): string => {
   const value = (amount ?? 0) / 100;
   const symbol = currency === "GBP" ? "£" : currency === "EUR" ? "€" : currency === "USD" ? "$" : currency ?? "";
-  return `-${symbol}${value.toFixed(2)}`;
+  return `${symbol}${value.toFixed(2)}`;
+};
+
+const formatTokens = (description: string | null): string => {
+  const match = String(description ?? "").match(/\((\d+)\sTokens?\)/);
+  return match ? match[1] : "—";
 };
 
 const PaymentsPage = async () => {
@@ -54,6 +59,9 @@ const PaymentsPage = async () => {
                     Payment Amount
                   </th>
                   <th className="px-4 py-4 text-left text-sm font-semibold text-gray-800">
+                    Tokens Purchased
+                  </th>
+                  <th className="px-4 py-4 text-left text-sm font-semibold text-gray-800">
                     Status
                   </th>
                 </tr>
@@ -69,6 +77,9 @@ const PaymentsPage = async () => {
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
                       {formatAmount((tx as any).amount, (tx as any).currency)}
+                    </td>
+                    <td className="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
+                      {formatTokens((tx as any).description)}
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
                       {(tx as any).status

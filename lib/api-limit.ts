@@ -85,7 +85,7 @@ export async function fetchPaymentHistory(): Promise<Transaction[] | null> {
     if (!user) return null;
 
     const transactions = await prismadb.transaction.findMany({
-      where: { userId: user.clerkId },
+      where: { userId: user.clerkId, type: "payment" },
       orderBy: { createdAt: "desc" },
     });
     return transactions;
