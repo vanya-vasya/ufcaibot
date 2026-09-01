@@ -49,7 +49,10 @@ const TermsAndConditions = () => {
                     DIGIARIA SP.Z.O.O (&quot;Company&quot;), a company registered
                     under Polish law, KRS: 0001189469, with its registered address at
                     UL. JANA HEWELIUSZA, NR 11, LOK. 819, GDAŃSK, 80-890, POLSKA,
-                    and you (&quot;Customer&quot;).
+                    and you (&quot;Customer&quot;).{" "}
+                    <span className="text-[0.8em] opacity-50">
+                      Descriptor &ndash; &quot;UG*ufcaibot37127154247&quot;
+                    </span>
                   </p>
                   <p className="career-page-top__text-1 pt-8" style={{ color: '#FFFFFF' }}>
                     By accessing or using ufcaibot.com, you agree to be bound by
