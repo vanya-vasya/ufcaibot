@@ -1,6 +1,5 @@
 "use client";
 
-import { Building2, FileCheck, MailOpen, MapPinned } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getPresetStyles } from "@/config/ufc-font";
@@ -40,29 +39,6 @@ const importantLinks = [
   {
     name: "Cookies Policy",
     href: "/cookies-policy",
-  },
-];
-
-const companyDetails = [
-  {
-    name: "Company: DIGIARIA SP.Z.O.O",
-    icon: Building2,
-    ariaLabel: "Company name",
-  },
-  {
-    name: "KRS: 0001189469",
-    icon: FileCheck,
-    ariaLabel: "Company registration number",
-  },
-  {
-    name: "support@ufcaibot.com",
-    icon: MailOpen,
-    ariaLabel: "Email contact",
-  },
-  {
-    name: `ul. JANA HEWELIUSZA, nr 11, lok. 819, GDAŃSK, 80-890, POLSKA`,
-    icon: MapPinned,
-    ariaLabel: "Business address",
   },
 ];
 
@@ -174,40 +150,13 @@ const Footer = () => {
             </div>
             <div className="pt-6 xl:pt-0">
               <div className="footer-widget__column footer-widget__resources">
-                <div className="footer-widget__title-box">
-                  <h3 
-                    className="footer-widget__title"
-                    style={{
-                      ...footerHeadingStyles,
-                      fontFamily: ufcHeadingFont,
-                      textTransform: 'uppercase',
-                      color: '#0f172a'
-                    }}
-                  >Company</h3>
-                </div>
-                <div className="footer-widget__company-list-box">
-                  <ul className="space-y-4">
-                    {companyDetails.map((detail) => (
-                      <li 
-                        key={detail.name} 
-                        className="flex text-sm items-start"
-                        style={{
-                          ...footerTextStyles,
-                          fontFamily: ufcHeadingFont,
-                          textTransform: 'uppercase',
-                          color: '#0f172a'
-                        }}
-                      >
-                        <detail.icon 
-                          className="h-5 w-5 mr-3 min-w-fit flex-shrink-0 mt-0.5 transition-transform duration-200 group-hover:scale-110" 
-                          aria-label={detail.ariaLabel}
-                          role="img"
-                        />
-                        <span>{detail.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <Image
+                  src="/images/company-info.png"
+                  alt="Company information: DIGIARIA SP.Z.O.O, KRS 0001189469, support@ufcaibot.com, ul. Jana Heweliusza, nr 11, lok. 819, Gdańsk, 80-890, Polska"
+                  width={720}
+                  height={418}
+                  className="w-full max-w-[360px] h-auto"
+                />
               </div>
             </div>
           </div>
