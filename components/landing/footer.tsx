@@ -101,7 +101,7 @@ const Footer = () => {
                     color: '#0f172a'
                   }}
                 >
-                  An AI sidekick that scans live odds, decodes fighter histories and news, and points your lineup toward the most likely winners
+                  An AI sidekick that studies fighter stats, histories, and news, and points you toward the most likely winners
                 </p>
               </div>
             </div>

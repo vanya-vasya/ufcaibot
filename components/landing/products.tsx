@@ -87,10 +87,10 @@ const fighterProfiles = [
 // Standard product sections
 const products = [
   {
-    title: "Live Odds. Real Edge",
-    description: "We stream real-time prices from multiple sportsbooks and regional markets, convert every line into implied probabilities, and expose the hidden overround",
-    subdescription: "Our engine flags line moves, cross-book discrepancies, and mispriced underdogs the moment they appear. So you always know where the value is for upcoming bouts",
-    image: "/images/products/fighter-faceoff-odds.png",
+    title: "Deep Stats. Clear Picture",
+    description: "We combine records, reach, age, recent form, striking and grappling metrics, and methods of victory into a single side-by-side view of every matchup",
+    subdescription: "Our engine highlights stylistic mismatches, trends, and hidden strengths the moment they appear. So you always know what decides upcoming bouts",
+    image: "/images/products/fighters-team-portrait.png",
     type: "image",
     darkTheme: true,
     gradientConfig: {
@@ -100,8 +100,8 @@ const products = [
   },
   {
     title: "Global News. Decoded",
-    description: "A multilingual media sweep tracks camp updates, injuries, weight-cut notes, travel issues, expert picks, and local press sentiment from each fighter's home market",
-    subdescription: "We translate the noise into a live sentiment score and fuse it with odds and history. Delivering a single, confidence-rated call on who's likelier to win (and when to pass)",
+    description: "A multilingual media sweep tracks camp updates, injuries, weight-cut notes, travel issues, expert opinions, and local press sentiment from each fighter's home market",
+    subdescription: "We translate the noise into a live sentiment score and fuse it with fighter stats and history. Delivering a single, confidence-rated call on who's likelier to win",
     image: "/images/products/fighter-press-conference.png",
     type: "image",
     darkTheme: true,
@@ -181,7 +181,7 @@ const Products = () => {
 
   return (
     <section id="products" className="relative">
-      {/* First Product - Live Odds */}
+      {/* First Product - Deep Stats */}
       <div
         className="relative bg-[#0a0a0a] min-h-screen flex items-center overflow-hidden"
       >
@@ -288,7 +288,7 @@ const Products = () => {
                         priority
                         sizes="(max-width: 1024px) 100vw, 60vw"
                       />
-                      {/* Gradient overlay from left - matching Live Odds block style */}
+                      {/* Gradient overlay from left - matching Deep Stats block style */}
                       <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-[rgba(10,10,10,0.72)] lg:via-[rgba(10,10,10,0.54)] to-transparent pointer-events-none" />
                     </div>
                   </motion.div>

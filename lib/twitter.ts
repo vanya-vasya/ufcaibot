@@ -155,7 +155,7 @@ export const sampleTweets: Tweet[] = [
   {
     id: "1868536543210987654",
     author: { username: "ufc", name: "UFC" },
-    text: "⚔️ MIDDLEWEIGHT MAYHEM! @DricusDuPlessis puts his title on the line at #UFC325 in Abu Dhabi! Who should challenge the champion? Drop your picks! 👇",
+    text: "⚔️ MIDDLEWEIGHT MAYHEM! @DricusDuPlessis puts his title on the line at #UFC325 in Abu Dhabi! Who should challenge the champion? Drop your predictions! 👇",
     timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000),
     link: "https://x.com/ufc/status/1868536543210987654",
   },

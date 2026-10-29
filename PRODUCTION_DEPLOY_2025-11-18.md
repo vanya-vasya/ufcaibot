@@ -54,7 +54,7 @@ Tracking: origin/production/ufc-aibot-final-deploy-2025-11-18
 - Fighter input interface with VS emblem
 - N8N webhook integration
 - Three-block analysis display:
-  - Odds Analysis
+  - Matchup Analysis
   - Fighters Analysis
   - Sentiment Analysis
 - Animated intro sequence
@@ -349,7 +349,7 @@ f756db2 - fix: Use Vercel Blob Storage for fighter images in production
    - Clean, professional look
 
 4. **Analysis Display**
-   - Odds Analysis block
+   - Matchup Analysis block
    - Fighters Analysis block
    - Sentiment Analysis block
    - Smooth animations

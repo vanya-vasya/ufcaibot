@@ -34,10 +34,9 @@ export const parseContentBlocks = (text: string): ContentBlocks => {
 
   // Helper function to clean content from metadata markers
   const cleanContent = (content: string): string => {
-    // Remove patterns like ": Odds Data\n", ": Fighters Data\n", etc.
+    // Remove patterns like ": Matchup Data\n", ": Fighters Data\n", etc.
     let cleaned = content
-      .replace(/^\s*:\s*Odds Data\s*/i, '')
-      .replace(/^\s*:\s*Fighters Data\s*/i, '')
+      .replace(/^\s*:\s*[A-Za-z]+ Data\s*/i, '')
       .replace(/^\s*:\s*Sentiment Analysis\s*/i, '')
       .replace(/^\s*:\s*[^\n]+\n/, '') // Remove any other ": Something\n" pattern at start
       .trim();

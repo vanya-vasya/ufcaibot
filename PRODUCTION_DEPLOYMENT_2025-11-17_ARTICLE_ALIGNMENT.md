@@ -17,7 +17,7 @@
 ### What Was Fixed
 
 1. **Left Alignment** - Removed left padding (`pl-8`) from article title and date
-   - Title and date now align with the content blocks (ODDS ANALYSIS, FIGHTER ANALYSIS, SENTIMENT ANALYSIS)
+   - Title and date now align with the content blocks (MATCHUP ANALYSIS, FIGHTER ANALYSIS, SENTIMENT ANALYSIS)
    - Consistent left edge alignment throughout the article
 
 2. **Fighter Names Uppercase** - Applied `.toUpperCase()` transformation

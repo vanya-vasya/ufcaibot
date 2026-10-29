@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
                                               <p style={{ color: '#FFFFFF' }}>
                         <strong>To Provide and Improve Our Services:</strong> We
                         use your information to provide you with AI-powered MMA fight
-                        predictions, odds analysis, and fighter research tools you request,
+                        predictions, matchup analysis, and fighter research tools you request,
                         and to improve the overall performance of our platform.
                       </p>
                     </li>

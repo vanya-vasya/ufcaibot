@@ -87,19 +87,14 @@ const TermsAndConditions = () => {
                   </h4>
                   <p className="career-page-top__text-1" style={{ color: '#FFFFFF' }}>
                     We offer a comprehensive AI-powered MMA fight prediction service that
-                    operates across three key directions to provide complete fight analysis.
+                    operates across two key directions to provide complete fight analysis.
                     The service requires Tokens to access and includes:
                   </p>
                   <ul className="career-page-top__points-list list-unstyled">
                     <li className="mt-[26px]">
                       <div className="career-page-top__points-shape"></div>
-                      <p style={{ color: '#FFFFFF' }}>AI Fight Predictor: Combines live odds, fighter stats, and news to estimate winning chances</p>
+                      <p style={{ color: '#FFFFFF' }}>AI Fight Predictor: Combines fighter stats, fight history, and news to estimate winning chances</p>
                     </li>
-                    <li>
-                      <div className="career-page-top__points-shape"></div>
-                      <p style={{ color: '#FFFFFF' }}>Odds & Value Scanner: Tracks betting lines across bookmakers to identify value opportunities</p>
-                    </li>
-
                     <li>
                       <div className="career-page-top__points-shape"></div>
                       <p style={{ color: '#FFFFFF' }}>Fighter Research Hub: Provides comprehensive matchup analysis with side-by-side comparisons</p>

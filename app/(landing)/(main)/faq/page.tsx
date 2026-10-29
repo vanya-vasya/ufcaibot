@@ -96,37 +96,7 @@ const FaqPage = () => {
                       lineHeight: '1.7'
                     }}
                   >
-                    It&apos;s your smart co-pilot for fight predictions. The AI Fight Predictor combines live odds from multiple sportsbooks, deep fighter stats, and real-time news to estimate each fighter&apos;s true chances of winning. Instead of scrolling through forums and stats for hours, you get a clear, data-driven view of who has the edge in seconds
-                  </dd>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  viewport={{ once: true }}
-                  className="border-b border-zinc-600 pb-8"
-                >
-                  <dt 
-                    className="text-lg font-semibold mb-4"
-                    style={{
-                      fontFamily: 'var(--font-ufc-heading)',
-                      color: '#FFFFFF',
-                      letterSpacing: '0.01em'
-                    }}
-                  >
-                    What is the Odds &amp; Value Scanner?
-                  </dt>
-                  <dd 
-                    className="text-base leading-relaxed"
-                    style={{
-                      fontFamily: 'var(--font-ufc-heading)',
-                      color: '#FFFFFF',
-                      fontWeight: 500,
-                      lineHeight: '1.7'
-                    }}
-                  >
-                    The Odds &amp; Value Scanner constantly tracks betting lines across different bookmakers and highlights where the numbers don&apos;t add up. It spots mispriced underdogs, sharp line moves, and unusual market gaps so you can focus on predictions with real value instead of just chasing low-priced favorites
+                    It&apos;s your smart co-pilot for fight predictions. The AI Fight Predictor combines deep fighter stats, fight history, and real-time news to estimate each fighter&apos;s true chances of winning. Instead of scrolling through forums and stats for hours, you get a clear, data-driven view of who is more likely to win in seconds
                   </dd>
                 </motion.div>
 
@@ -215,7 +185,7 @@ const FaqPage = () => {
                       lineHeight: '1.7'
                     }}
                   >
-                    Each prediction gives you a clear, structured breakdown built around three core pillars. First, the AI scans the news and media sentiment to catch signals like injuries, camp changes, and overall hype. Second, it runs a systematic analysis of historical performance to see how both fighters have performed in past matchups and styles. Third, it reviews current betting lines to understand which side the bookmakers favor and how the market is pricing each fighter. All of this is merged into one easy-to-read answer, so you don&apos;t just see who is more likely to win, but why
+                    Each prediction gives you a clear, structured breakdown built around two core pillars. First, the AI scans the news and media sentiment to catch signals like injuries, camp changes, and overall hype. Second, it runs a systematic analysis of historical performance to see how both fighters have performed in past matchups and styles. All of this is merged into one easy-to-read answer, so you don&apos;t just see who is more likely to win, but why
                   </dd>
                 </motion.div>
               </dl>

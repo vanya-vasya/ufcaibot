@@ -1,7 +1,7 @@
 # Troubleshooting: Fighter Image Not Displaying
 
 ## Проблема
-Изображение бойцов не отображается между header и ODDS ANALYSIS
+Изображение бойцов не отображается между header и MATCHUP ANALYSIS
 
 ## Возможные причины и решения
 

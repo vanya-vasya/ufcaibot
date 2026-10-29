@@ -62,7 +62,7 @@
 └─────────────────────────────────────────────────┘
   ↓ Content scrolls underneath
   
-  ODDS ANALYSIS
+  MATCHUP ANALYSIS
   [Content...]
   
   FIGHTER ANALYSIS

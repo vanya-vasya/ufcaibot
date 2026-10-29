@@ -17,7 +17,7 @@
 ┌──────────────────────────────────────────┐
 │ First Column (About)                     │
 │                                          │
-│ AN AI SIDEKICK THAT SCANS LIVE ODDS,    │
+│ AN AI SIDEKICK THAT STUDIES FIGHTER   │
 │ DECODES FIGHTER HISTORIES AND NEWS,     │
 │ AND POINTS YOUR FANTASY LINEUP TOWARD   │
 │ THE MOST LIKELY WINNERS                 │
@@ -33,7 +33,7 @@
 │               49x20px                    │
 │        (hover: scales to 110%)           │
 │                                          │
-│ AN AI SIDEKICK THAT SCANS LIVE ODDS,    │
+│ AN AI SIDEKICK THAT STUDIES FIGHTER   │
 │ DECODES FIGHTER HISTORIES AND NEWS,     │
 │ AND POINTS YOUR FANTASY LINEUP TOWARD   │
 │ THE MOST LIKELY WINNERS                 │

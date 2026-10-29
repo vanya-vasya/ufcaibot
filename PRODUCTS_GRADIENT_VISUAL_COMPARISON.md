@@ -218,7 +218,7 @@ End:     to-transparent                     /* 0% opaque */
 
 | Product | Gradient Type | Intensity | Reason |
 |---------|---------------|-----------|--------|
-| Live Odds | Standard | 0.9 | Chart data needs maximum contrast |
+| Deep Stats | Standard | 0.9 | Chart data needs maximum contrast |
 | Every Round | Standard | 0.9 | Dense fighter lineup needs clarity |
 | **Global News** | **Soft Edge** | **0.85** | **Natural scene benefits from subtle fade** |
 

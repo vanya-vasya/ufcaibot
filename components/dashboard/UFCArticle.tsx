@@ -46,7 +46,7 @@ export const UFCArticle = ({
   const contentBlocks = parseContentBlocks(content);
 
   // Detect favored fighter per block by checking which name appears first
-  const oddsFavored = useMemo(
+  const matchupFavored = useMemo(
     () => detectFavoredFromText(contentBlocks.block1, fighterA, fighterB),
     [contentBlocks.block1, fighterA, fighterB]
   );
@@ -141,26 +141,26 @@ export const UFCArticle = ({
 
           {/* Article Content */}
           <div className="space-y-12">
-            {/* Block 1 - Odds Analysis */}
+            {/* Block 1 - Matchup Analysis */}
             <section>
               <h2
                 className="text-3xl sm:text-4xl font-bold text-white mb-6"
                 style={{ fontFamily: "var(--font-ufc-heading)" }}
               >
-                ODDS ANALYSIS
+                MATCHUP ANALYSIS
               </h2>
               <AnalysisInfographic
-                type="odds"
+                type="matchup"
                 fighterA={fighterA}
                 fighterB={fighterB}
-                favored={oddsFavored}
+                favored={matchupFavored}
               />
               {contentBlocks.block1 ? (
                 <div className="prose prose-invert prose-lg max-w-none">
                   {renderContentWithBullets(contentBlocks.block1)}
                 </div>
               ) : (
-                <p className="text-gray-500 italic">No content for ODDS ANALYSIS</p>
+                <p className="text-gray-500 italic">No content for MATCHUP ANALYSIS</p>
               )}
             </section>
 

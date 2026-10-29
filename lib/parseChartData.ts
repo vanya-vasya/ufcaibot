@@ -100,8 +100,8 @@ const normaliseText = (raw: string): string => {
  *    last name appears within ±300 chars (large window to handle blocks where
  *    the fighter is named at the start but percentages follow later).
  * 2. Filter collected candidates to "win-probability range" (20–85%).
- *    This removes vig/juice values (typically 3–8%) and other small numbers
- *    that appear near a fighter's name but are not win probabilities.
+ *    This removes small numbers (e.g. 3–8%) that
+ *    appear near a fighter's name but are not win probabilities.
  *    If filtering removes ALL candidates for a fighter, fall back to unfiltered.
  * 3. Take the median of candidates per fighter (robust against outliers).
  * 4. If both found, normalise to sum to exactly 100.

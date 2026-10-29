@@ -46,7 +46,7 @@ f756db2 - fix: Use Vercel Blob Storage for fighter images in production
    - Fighter input interface with VS emblem
    - N8N webhook integration for AI analysis
    - Three-block content structure:
-     - Odds Analysis
+     - Matchup Analysis
      - Fighters Analysis
      - Sentiment Analysis
 

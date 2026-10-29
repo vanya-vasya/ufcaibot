@@ -123,7 +123,7 @@ gradientStops = `from-[#0a0a0a] via-[rgba(10,10,10,0.51)] to-transparent`;
 
 ## Product-Specific Configurations
 
-### 1. Live Odds. Real Edge
+### 1. Deep Stats. Clear Picture
 ```typescript
 gradientConfig: {
   direction: "left",

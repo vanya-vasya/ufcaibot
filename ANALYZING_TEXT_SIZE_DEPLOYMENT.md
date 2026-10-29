@@ -141,7 +141,7 @@
 │  │ UFC AI Bot • Nov 16, 2025  │  │
 │  └─────────────────────────────┘  │
 │                                   │
-│  ODDS ANALYSIS                    │
+│  MATCHUP ANALYSIS                    │
 │  [content...]                     │
 │                                   │
 │  FIGHTER ANALYSIS                 │

@@ -9,7 +9,7 @@ interface BarData {
 }
 
 interface AnalysisInfographicProps {
-  type: "odds" | "fighters" | "sentiment";
+  type: "matchup" | "fighters" | "sentiment";
   fighterA: string;
   fighterB: string;
   /** Which fighter is favored according to the AI block text. null = even/unknown. */
@@ -17,134 +17,134 @@ interface AnalysisInfographicProps {
 }
 
 // Default analysis data for UFC 326 fights (used when webhook doesn't provide structured data)
-const FIGHT_ANALYSIS_DATA: Record<string, { odds: BarData; fighters: BarData; sentiment: BarData }> = {
+const FIGHT_ANALYSIS_DATA: Record<string, { matchup: BarData; fighters: BarData; sentiment: BarData }> = {
   "MAX HOLLOWAY VS CHARLES OLIVEIRA": {
-    odds: { red: 45, blue: 55 },
+    matchup: { red: 45, blue: 55 },
     fighters: { red: 48, blue: 52 },
     sentiment: { red: 52, blue: 48 },
   },
   "CODY GARBRANDT VS XIAO LONG": {
-    odds: { red: 50, blue: 50 },
+    matchup: { red: 50, blue: 50 },
     fighters: { red: 48, blue: 52 },
     sentiment: { red: 52, blue: 48 },
   },
   "CAIO BORRALHO VS REINIER DE RIDDER": {
-    odds: { red: 62, blue: 38 },
+    matchup: { red: 62, blue: 38 },
     fighters: { red: 60, blue: 40 },
     sentiment: { red: 58, blue: 42 },
   },
   "ROB FONT VS RAUL ROSAS JR.": {
-    odds: { red: 40, blue: 60 },
+    matchup: { red: 40, blue: 60 },
     fighters: { red: 42, blue: 58 },
     sentiment: { red: 38, blue: 62 },
   },
   "GREGORY RODRIGUES VS BRUNNO FERREIRA": {
-    odds: { red: 58, blue: 42 },
+    matchup: { red: 58, blue: 42 },
     fighters: { red: 60, blue: 40 },
     sentiment: { red: 55, blue: 45 },
   },
   "DREW DOBER VS MICHAEL JOHNSON": {
-    odds: { red: 55, blue: 45 },
+    matchup: { red: 55, blue: 45 },
     fighters: { red: 52, blue: 48 },
     sentiment: { red: 50, blue: 50 },
   },
   "RICKY TURCIOS VS ALBERTO MONTES": {
-    odds: { red: 65, blue: 35 },
+    matchup: { red: 65, blue: 35 },
     fighters: { red: 68, blue: 32 },
     sentiment: { red: 62, blue: 38 },
   },
   "DONTE JOHNSON VS DUŠKO TODOROVIĆ": {
-    odds: { red: 45, blue: 55 },
+    matchup: { red: 45, blue: 55 },
     fighters: { red: 48, blue: 52 },
     sentiment: { red: 50, blue: 50 },
   },
   "CODY DURDEN VS NYAMJARGAL TUMENDEMBEREL": {
-    odds: { red: 52, blue: 48 },
+    matchup: { red: 52, blue: 48 },
     fighters: { red: 50, blue: 50 },
     sentiment: { red: 55, blue: 45 },
   },
   "SUMUDAERJI VS JESUS AGUILAR": {
-    odds: { red: 60, blue: 40 },
+    matchup: { red: 60, blue: 40 },
     fighters: { red: 58, blue: 42 },
     sentiment: { red: 62, blue: 38 },
   },
   "LUKE FERNANDEZ VS RODOLFO BELLATO": {
-    odds: { red: 38, blue: 62 },
+    matchup: { red: 38, blue: 62 },
     fighters: { red: 40, blue: 60 },
     sentiment: { red: 42, blue: 58 },
   },
   "JOOSANG YOO VS GASTON BOLANOS": {
-    odds: { red: 55, blue: 45 },
+    matchup: { red: 55, blue: 45 },
     fighters: { red: 52, blue: 48 },
     sentiment: { red: 58, blue: 42 },
   },
   // UFC Fight Night: Emmett vs Vallejos
   "JOSH EMMETT VS KEVIN VALLEJOS": {
-    odds: { red: 42, blue: 58 },
+    matchup: { red: 42, blue: 58 },
     fighters: { red: 40, blue: 60 },
     sentiment: { red: 38, blue: 62 },
   },
   "AMANDA LEMOS VS GILLIAN ROBERTSON": {
-    odds: { red: 55, blue: 45 },
+    matchup: { red: 55, blue: 45 },
     fighters: { red: 58, blue: 42 },
     sentiment: { red: 52, blue: 48 },
   },
   "ION CUTELABA VS OUMAR SY": {
-    odds: { red: 40, blue: 60 },
+    matchup: { red: 40, blue: 60 },
     fighters: { red: 42, blue: 58 },
     sentiment: { red: 38, blue: 62 },
   },
   "BOLAJI OKI VS MANOEL SOUSA": {
-    odds: { red: 65, blue: 35 },
+    matchup: { red: 65, blue: 35 },
     fighters: { red: 62, blue: 38 },
     sentiment: { red: 60, blue: 40 },
   },
   "MARWAN RAHIKI VS HARRY HARDWICK": {
-    odds: { red: 38, blue: 62 },
+    matchup: { red: 38, blue: 62 },
     fighters: { red: 35, blue: 65 },
     sentiment: { red: 40, blue: 60 },
   },
   "CHARLES JOHNSON VS BRUNO SILVA": {
-    odds: { red: 45, blue: 55 },
+    matchup: { red: 45, blue: 55 },
     fighters: { red: 48, blue: 52 },
     sentiment: { red: 42, blue: 58 },
   },
   "ANDRE FILI VS JOSE MIGUEL DELGADO": {
-    odds: { red: 60, blue: 40 },
+    matchup: { red: 60, blue: 40 },
     fighters: { red: 62, blue: 38 },
     sentiment: { red: 58, blue: 42 },
   },
   "VITOR PETRINO VS STEVEN ASPLUND": {
-    odds: { red: 65, blue: 35 },
+    matchup: { red: 65, blue: 35 },
     fighters: { red: 68, blue: 32 },
     sentiment: { red: 62, blue: 38 },
   },
   "PIERA RODRIGUEZ VS SAM HUGHES": {
-    odds: { red: 58, blue: 42 },
+    matchup: { red: 58, blue: 42 },
     fighters: { red: 55, blue: 45 },
     sentiment: { red: 60, blue: 40 },
   },
   "ELIJAH SMITH VS SUYOUNG YOU": {
-    odds: { red: 40, blue: 60 },
+    matchup: { red: 40, blue: 60 },
     fighters: { red: 38, blue: 62 },
     sentiment: { red: 42, blue: 58 },
   },
   "LUAN LACERDA VS HECHER SOSA": {
-    odds: { red: 70, blue: 30 },
+    matchup: { red: 70, blue: 30 },
     fighters: { red: 72, blue: 28 },
     sentiment: { red: 68, blue: 32 },
   },
   "BIA MESQUITA VS MONTSE RENDON": {
-    odds: { red: 45, blue: 55 },
+    matchup: { red: 45, blue: 55 },
     fighters: { red: 42, blue: 58 },
     sentiment: { red: 48, blue: 52 },
   },
 };
 
 const TYPE_CONFIG: Record<string, { label: string; sublabel: string; accentClass: string }> = {
-  odds: {
-    label: "ODDS BREAKDOWN",
-    sublabel: "Implied win probability from betting lines",
+  matchup: {
+    label: "MATCHUP BREAKDOWN",
+    sublabel: "Win probability based on the overall matchup",
     accentClass: "text-amber-400",
   },
   fighters: {
@@ -198,7 +198,7 @@ export const AnalysisInfographic = ({
           </span>
         </div>
 
-        {/* Fighter names + FAVORED badges */}
+        {/* Fighter names + likely winner badges */}
         <div className="px-6 pt-6 pb-6">
           <p className="text-[10px] font-black tracking-[0.15em] text-white uppercase mb-5">
             WIN PREDICTION
@@ -217,7 +217,7 @@ export const AnalysisInfographic = ({
               </p>
               {favoredA && (
                 <span className="inline-block self-start text-[9px] font-black tracking-widest text-red-500 uppercase bg-red-500/10 border border-red-500/30 rounded px-2 py-0.5">
-                  FAVORED
+                  LIKELY WINNER
                 </span>
               )}
               {isTie && (
@@ -244,7 +244,7 @@ export const AnalysisInfographic = ({
               </p>
               {favoredB && (
                 <span className="inline-block self-end text-[9px] font-black tracking-widest text-blue-500 uppercase bg-blue-500/10 border border-blue-500/30 rounded px-2 py-0.5">
-                  FAVORED
+                  LIKELY WINNER
                 </span>
               )}
               {isTie && (

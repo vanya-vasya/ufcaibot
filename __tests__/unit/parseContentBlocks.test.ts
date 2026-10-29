@@ -426,7 +426,7 @@ content`;
     it('should handle metadata markers with escaped newlines', () => {
       const content = `
         Block 1
-        : Odds Data\\nSome content\\nwith escaped newlines
+        : Matchup Data\\nSome content\\nwith escaped newlines
         
         Block 2
         : Fighters Data\\nMore\\ncontent
@@ -437,7 +437,7 @@ content`;
 
       const result = parseContentBlocks(content);
 
-      expect(result.block1).not.toContain(': Odds Data');
+      expect(result.block1).not.toContain(': Matchup Data');
       expect(result.block1).not.toContain('\\n');
       expect(result.block1).toContain('Some content with escaped newlines');
       
@@ -452,7 +452,7 @@ content`;
     it('should produce clean single-line output with all normalizations', () => {
       const content = `
         Block 1
-        : Odds Data\\n"This\\nis\\na\\ntest\\nwith   multiple    issues"}
+        : Matchup Data\\n"This\\nis\\na\\ntest\\nwith   multiple    issues"}
         
         Block 2
         : Fighters Data\\n""Content\\nwith\\nall\\nproblems"}"}
@@ -467,7 +467,7 @@ content`;
       expect(result.block1).not.toContain('\\n');
       expect(result.block1).not.toContain('\n');
       expect(result.block1).not.toContain('"}');
-      expect(result.block1).not.toContain(': Odds Data');
+      expect(result.block1).not.toContain(': Matchup Data');
       expect(result.block1).not.toMatch(/\s{2,}/);
       expect(result.block1).toContain('This is a test with multiple issues');
       
@@ -490,13 +490,13 @@ content`;
     it('should handle real-world example with " } pattern', () => {
       const content = `
         Block 1
-        Some odds analysis content here
+        Some matchup analysis content here
         
         Block 2
         Some fighters analysis content here
         
         Block 3
-        "Media and expert sentiment in the supplied material heavily favored Carlos Prates both before and after the contest with roughly sixty to seventy percent of narrative coverage framing him as the rising knockout specialist and a legitimate threat to Leon Edwards, common pre fight themes were Prates momentum, power, and stylistic upside while Edwards was framed as more vulnerable than in prior championship runs and carrying narrative baggage about recent setbacks, after the fight the tone became decisively pro Prates with many outlets describing a brutal knockout and questioning Edwards future standing, public perception mirrored that split with bettors and writers tilting toward Prates in the run up and celebrating his finishing result afterward, neutral takes were a minority and focused on tactical explanations and implications for rankings and future matchmaking" }
+        "Media and expert sentiment in the supplied material heavily favored Carlos Prates both before and after the contest with roughly sixty to seventy percent of narrative coverage framing him as the rising knockout specialist and a legitimate threat to Leon Edwards, common pre fight themes were Prates momentum, power, and stylistic upside while Edwards was framed as more vulnerable than in prior championship runs and carrying narrative baggage about recent setbacks, after the fight the tone became decisively pro Prates with many outlets describing a brutal knockout and questioning Edwards future standing, public perception mirrored that split with fans and writers tilting toward Prates in the run up and celebrating his finishing result afterward, neutral takes were a minority and focused on tactical explanations and implications for rankings and future matchmaking" }
       `;
 
       const result = parseContentBlocks(content);

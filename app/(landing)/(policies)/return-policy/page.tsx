@@ -69,8 +69,8 @@ const ReturnPolicy = () => {
                         Token has been used, it cannot be returned or
                         refunded. We define &quot;used&quot; Tokens as
                         those that have been utilized in our AI-powered
-                        MMA fight prediction service, which operates across three
-                        directions: AI Fight Predictor, Odds & Value Scanner,
+                        MMA fight prediction service, which operates across two
+                        directions: AI Fight Predictor
                         and Fighter Research Hub provided on ufcaibot.com.
                       </p>
                     </li>

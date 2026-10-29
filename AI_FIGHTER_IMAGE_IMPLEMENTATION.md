@@ -12,7 +12,7 @@ This implementation adds AI-generated fighter images to the UFC AI Bot analysis 
 4. API route generates an AI image using OpenAI's DALL-E 3 API
 5. Image is saved to `public/generated-fighters/` directory
 6. Image URL is passed to UFCArticle component
-7. Image is displayed after the header but before Block 1 (ODDS ANALYSIS)
+7. Image is displayed after the header but before Block 1 (MATCHUP ANALYSIS)
 
 ### Components Modified
 
@@ -151,7 +151,7 @@ dramatic lighting, high quality, realistic, photorealistic.
 3. Enter two fighter names (e.g., "Conor McGregor" and "Khabib Nurmagomedov")
 4. Click the VS button
 5. Observe loading skeleton while image generates
-6. Verify image appears after header, before ODDS ANALYSIS
+6. Verify image appears after header, before MATCHUP ANALYSIS
 7. Verify smooth fade-in animation
 8. Check browser console for success/error messages
 

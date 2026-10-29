@@ -11,12 +11,12 @@ Added 4th block "Final Recommendation" to N8N response parsing and updated Block
 ### Block Structure
 
 **Before (3 blocks):**
-1. Block 1 → ODDS ANALYSIS
+1. Block 1 → MATCHUP ANALYSIS
 2. Block 2 → FIGHTER ANALYSIS
 3. Block 3 → SENTIMENT ANALYSIS
 
 **After (4 blocks):**
-1. Block 1 → ODDS ANALYSIS
+1. Block 1 → MATCHUP ANALYSIS
 2. Block 2 → FIGHTERS ANALYSIS (added "S")
 3. Block 3 → SENTIMENT ANALYSIS
 4. Block 4 → FINAL RECOMMENDATION (new)
@@ -149,7 +149,7 @@ Tests:       13 passed, 13 total
 
 ```
 Block 1
-[Odds data — review & discrepancies]
+[Matchup data — review]
 Market signal: Islam Makhachev is consistently priced as a strong favorite...
 
 Block 2
@@ -161,9 +161,9 @@ Block 3
 Social media trends show heavy support for...
 
 Block 4
-[Final recommendation with betting advice]
-Based on the combined analysis of odds, fighters' records, and sentiment...
-Recommendation: Back Makhachev at current odds if -185 or better...
+[Final recommendation]
+Based on the combined analysis of matchup data, fighters' records, and sentiment...
+Recommendation: Makhachev is the likelier winner...
 ```
 
 ### Parsing Behavior:
@@ -193,7 +193,7 @@ Recommendation: Back Makhachev at current odds if -185 or better...
 └────────────────────────────────────────┘
 
 ┌────────────────────────────────────────┐
-│  ODDS ANALYSIS                         │
+│  MATCHUP ANALYSIS                         │
 │  [Block 1 content...]                  │
 └────────────────────────────────────────┘
 
@@ -254,7 +254,7 @@ Recommendation: Back Makhachev at current odds if -185 or better...
 
 ```json
 {
-  "content": "Block 1\n[odds analysis]\n\nBlock 2\n[fighters analysis]\n\nBlock 3\n[sentiment analysis]\n\nBlock 4\n[final recommendation]",
+  "content": "Block 1\n[matchup analysis]\n\nBlock 2\n[fighters analysis]\n\nBlock 3\n[sentiment analysis]\n\nBlock 4\n[final recommendation]",
   "fighterA": "Islam Makhachev",
   "fighterB": "Jack Della Maddalena"
 }
@@ -309,7 +309,7 @@ Recommendation: Back Makhachev at current odds if -185 or better...
 1. **Update N8N prompt** to generate 4 blocks:
    ```
    Generate analysis in 4 blocks:
-   - Block 1: Odds Analysis
+   - Block 1: Matchup Analysis
    - Block 2: Fighters Analysis  
    - Block 3: Sentiment Analysis
    - Block 4: Final Recommendation
@@ -318,7 +318,7 @@ Recommendation: Back Makhachev at current odds if -185 or better...
 2. **Add block labels** in N8N output:
    ```
    Block 1
-   [odds content]
+   [matchup content]
    
    Block 2
    [fighters content]
@@ -338,7 +338,7 @@ Recommendation: Back Makhachev at current odds if -185 or better...
 
 ### User Experience:
 - **Clear Structure**: 4 distinct analysis sections
-- **Final Recommendation**: Dedicated section for betting advice
+- **Final Recommendation**: Dedicated section for the final recommendation
 - **Professional**: Matches UFC.com article format
 - **Scannable**: Easy to find specific information
 

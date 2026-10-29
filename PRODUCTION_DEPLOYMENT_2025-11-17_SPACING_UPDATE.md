@@ -37,7 +37,7 @@ User requested to adjust the article layout so that:
 - **Changed:** H1 `mb-2` → `mb-6`
 - **Result:** Consistent spacing (0.5rem → 1.5rem / 8px → 24px)
 
-#### 3. Equal Spacing Between Date and "ODDS ANALYSIS"
+#### 3. Equal Spacing Between Date and "MATCHUP ANALYSIS"
 - **Changed:** Added `mb-12` to date div
 - **Result:** 3rem (48px) spacing matching content sections
 
@@ -54,7 +54,7 @@ Fighters' Names (H1):      [MADDALENA VS MAKHACHEV]
   ↓ 24px (mb-6)
 Date:                      [November 17, 2025]
   ↓ 48px (mb-12)
-ODDS ANALYSIS Header:      [ODDS ANALYSIS]
+MATCHUP ANALYSIS Header:      [MATCHUP ANALYSIS]
   ↓ 24px (mb-6)
 Content Block 1:           [Content...]
   ↓ 48px (space-y-12)
@@ -226,7 +226,7 @@ https://ufcaibot-jjxleno1m-vladis-projects-8c520e18.vercel.app
 - [x] Fighters' names header displays correctly
 - [x] Date appears directly below fighters' names
 - [x] Equal spacing between all header elements
-- [x] "ODDS ANALYSIS" header has proper top spacing
+- [x] "MATCHUP ANALYSIS" header has proper top spacing
 - [x] No content overlap or shifting
 - [x] Responsive layout works on all devices
 
@@ -251,14 +251,14 @@ https://ufcaibot-jjxleno1m-vladis-projects-8c520e18.vercel.app
 ```
 Top Margin: 32px
 H1 → Date: 8px
-Date → ODDS ANALYSIS: (inherited from header pb-6 = 24px)
+Date → MATCHUP ANALYSIS: (inherited from header pb-6 = 24px)
 ```
 
 ### After (Current Deployment)
 ```
 Top Margin: 80px      (+48px improvement)
 H1 → Date: 24px       (+16px improvement)
-Date → ODDS ANALYSIS: 48px (+24px improvement)
+Date → MATCHUP ANALYSIS: 48px (+24px improvement)
 ```
 
 ## Notes
