@@ -9,6 +9,8 @@
  *  1. New upcoming event: add an object to UPCOMING_EVENTS, soonest first
  *     (event name + list of fights, fighter A vs fighter B).
  *     The first event in the array is selected by default in the dashboard.
+ *     Add a `banner` block to show it in the Home page top strip (the first
+ *     two events with a banner are shown, left to right).
  *  2. Event is over: cut the object out of UPCOMING_EVENTS and add its
  *     results (cards, winners, methods) to the top of PAST_EVENTS.
  *  3. Fighter comparison stats for a new fight live in
@@ -32,7 +34,20 @@ export interface UpcomingEvent {
   name: string;
   /** Optional ISO date (YYYY-MM-DD) */
   date?: string;
+  /** Home page banner (top strip). Events without it are not shown there. */
+  banner?: UpcomingEventBanner;
   fights: UpcomingFight[];
+}
+
+export interface UpcomingEventBanner {
+  /** Number shown in the badge, e.g. "334" */
+  eventNumber: string;
+  datetime: string;
+  venue: string;
+  location: string;
+  /** Portrait images for the main event, in /public */
+  imageA: string;
+  imageB: string;
 }
 
 export const UPCOMING_EVENTS: UpcomingEvent[] = [
@@ -77,6 +92,15 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
   {
     id: "mma-334",
     name: "MMA 334",
+    date: "2026-11-15",
+    banner: {
+      eventNumber: "334",
+      datetime: "Sun, Nov 15 / 9:00 AM GMT+7 / Main Card",
+      venue: "Madison Square Garden",
+      location: "New York, NY United States",
+      imageA: "/images/fighters/fighter-gane.jpg",
+      imageB: "/images/fighters/fighter-hokit.jpg",
+    },
     fights: [
       { fighterA: "Ciryl Gane", fighterB: "Josh Hokit" },
       { fighterA: "Kayla Harrison", fighterB: "Amanda Nunes" },
@@ -110,6 +134,15 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
   {
     id: "mma-335",
     name: "MMA 335",
+    date: "2026-12-13",
+    banner: {
+      eventNumber: "335",
+      datetime: "Sun, Dec 13 / 9:00 AM GMT+7 / Main Card",
+      venue: "T-Mobile Arena",
+      location: "Las Vegas, NV United States",
+      imageA: "/images/fighters/fighter-oliveira.jpg",
+      imageB: "/images/fighters/fighter-diego-lopes.jpg",
+    },
     fights: [
       { fighterA: "Charles Oliveira", fighterB: "Diego Lopes" },
       { fighterA: "Sergei Pavlovich", fighterB: "Alex Pereira" },

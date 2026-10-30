@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { UPCOMING_EVENTS } from "@/data/fight-events";
 import { fontSizes, fontWeights, lineHeights, letterSpacing } from "@/config/ufc-font";
 
 // Fight card data type
@@ -18,33 +19,27 @@ type FightCard = {
   eventNumber: string;
 };
 
-// Placeholder fight cards data
-const fightCards: FightCard[] = [
-  {
-    id: 1,
-    fighter1Name: "Gaethje",
-    fighter2Name: "Pimblett",
-    title: "GAETHJE VS PIMBLETT",
-    datetime: "Sun, Jan 25 / 6:00 AM GMT+4 / Main Card",
-    venue: "T-Mobile Arena",
-    location: "Las Vegas, NV United States",
-    fighter1Image: "/images/fighters/fighter-324.png",
-    fighter2Image: "/images/fighters/fighter-325.png",
-    eventNumber: "324",
-  },
-  {
-    id: 2,
-    fighter1Name: "Volkanovski",
-    fighter2Name: "Lopes",
-    title: "VOLKANOVSKI VS LOPES 2",
-    datetime: "Sun, Feb 1 / 6:00 AM GMT+4 / Main Card",
-    venue: "Qudos Bank Arena",
-    location: "Sydney Olympic Park NSW  Australia",
-    fighter1Image: "/images/fighters/fighter-volkanovski.png",
-    fighter2Image: "/images/fighters/fighter-lopes.png",
-    eventNumber: "325",
-  },
-];
+const lastName = (fullName: string) => fullName.trim().split(/\s+/).slice(-1)[0];
+
+// Banner cards come from data/fight-events.ts: the first two upcoming events with a `banner`
+const fightCards: FightCard[] = UPCOMING_EVENTS.filter((event) => event.banner)
+  .slice(0, 2)
+  .map((event, index) => {
+    const banner = event.banner!;
+    const mainEvent = event.fights[0];
+    return {
+      id: index + 1,
+      fighter1Name: lastName(mainEvent.fighterA),
+      fighter2Name: lastName(mainEvent.fighterB),
+      title: `${lastName(mainEvent.fighterA)} VS ${lastName(mainEvent.fighterB)}`.toUpperCase(),
+      datetime: banner.datetime,
+      venue: banner.venue,
+      location: banner.location,
+      fighter1Image: banner.imageA,
+      fighter2Image: banner.imageB,
+      eventNumber: banner.eventNumber,
+    };
+  });
 
 // Fighter image component
 const FighterImage = ({ src, alt }: { src: string; alt: string }) => {
@@ -187,12 +182,12 @@ const Features = () => {
             <div className="flex-1 h-full flex items-center bg-white overflow-hidden">
               {/* Left fight card */}
               <div className="flex-1 h-full flex items-center relative">
-                <FightCardItem card={fightCards[0]} showEventNumber={true} showUpNext={true} />
+                {fightCards[0] && <FightCardItem card={fightCards[0]} showEventNumber={true} showUpNext={true} />}
               </div>
 
               {/* Right fight card */}
               <div className="flex-1 h-full flex items-center relative">
-                <FightCardItem card={fightCards[1]} showEventNumber={true} showUpNext={true} />
+                {fightCards[1] && <FightCardItem card={fightCards[1]} showEventNumber={true} showUpNext={true} />}
               </div>
             </div>
           </div>
