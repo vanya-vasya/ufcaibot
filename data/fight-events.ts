@@ -6,7 +6,7 @@
  *  - Dashboard > Past and Home > Past (results, stats)  <- PAST_EVENTS
  *
  * HOW TO UPDATE
- *  1. New upcoming event: add an object to the top of UPCOMING_EVENTS
+ *  1. New upcoming event: add an object to UPCOMING_EVENTS, soonest first
  *     (event name + list of fights, fighter A vs fighter B).
  *     The first event in the array is selected by default in the dashboard.
  *  2. Event is over: cut the object out of UPCOMING_EVENTS and add its
@@ -52,6 +52,26 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
       { fighterA: "Nick Klein", fighterB: "Joe Kropschot" },
       { fighterA: "Talita Alencar", fighterB: "Piera Rodriguez" },
       { fighterA: "Lucia Szabová", fighterB: "Tainara Lisboa" },
+    ],
+  },
+  {
+    id: "mma-fight-night-bonfim-vs-brady",
+    name: "MMA FIGHT NIGHT: BONFIM VS BRADY",
+    fights: [
+      { fighterA: "Gabriel Bonfim", fighterB: "Sean Brady" },
+      { fighterA: "Tatiana Suarez", fighterB: "Virna Jandiroba" },
+      { fighterA: "Davey Grant", fighterB: "Elijah Smith" },
+      { fighterA: "Seokhyeon Ko", fighterB: "Wellington Turman" },
+      { fighterA: "Billy Elekana", fighterB: "Lucas Fernando" },
+      { fighterA: "Mantas Kondratavičius", fighterB: "Andre Petroski" },
+      { fighterA: "Gabriel Lorenco", fighterB: "Alvin Hines" },
+      { fighterA: "Karine Silva", fighterB: "Gabriella Fernandes" },
+      { fighterA: "Mitch Raposo", fighterB: "Marcos Degli" },
+      { fighterA: "Jose Delano", fighterB: "Murtazali Magomedov" },
+      { fighterA: "Keiichiro Nakamura", fighterB: "Ollie Schmid" },
+      { fighterA: "Austin Bashi", fighterB: "Lucas Brennan" },
+      { fighterA: "Priscila Cachoeira", fighterB: "Nina Milošević" },
+      { fighterA: "Jonny Parsons", fighterB: "José Souza" },
     ],
   },
 ];
