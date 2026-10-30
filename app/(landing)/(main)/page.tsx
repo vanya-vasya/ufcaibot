@@ -8,9 +8,9 @@ import Pricing from "@/components/landing/pricing";
 const LandingPage = () => {
   return (
     <div className="bg-slate-50">
+      <HomeEvents />
       <Hero />
       <Features />
-      <HomeEvents />
       <Products />
       <TwitterSlider />
       <Pricing />
