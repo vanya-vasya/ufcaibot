@@ -92,6 +92,21 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
       { fighterA: "Nazim Sadykhov", fighterB: "Jefferson Nascimento" },
     ],
   },
+  {
+    id: "mma-fight-night-prochazka-vs-stirling",
+    name: "MMA FIGHT NIGHT: PROCHAZKA VS STIRLING",
+    fights: [
+      { fighterA: "Jiří Procházka", fighterB: "Navajo Stirling" },
+      { fighterA: "Aljamain Sterling", fighterB: "Kevin Vallejos" },
+      { fighterA: "Dan Hooker", fighterB: "Brian Ortega" },
+      { fighterA: "Jared Cannonier", fighterB: "Ikram Aliskerov" },
+      { fighterA: "Shamil Gaziev", fighterB: "Tallison Teixeira" },
+      { fighterA: "Jake Matthews", fighterB: "Tahir Abdullayev" },
+      { fighterA: "Aleksandre Topuria", fighterB: "Santiago Luna" },
+      { fighterA: "Asu Almabayev", fighterB: "Kyoji Horiguchi" },
+      { fighterA: "Amir Albazi", fighterB: "Alessandro Costa" },
+    ],
+  },
 ];
 
 /** "Max Holloway" + "Charles Oliveira" -> "MAX HOLLOWAY VS CHARLES OLIVEIRA" */
