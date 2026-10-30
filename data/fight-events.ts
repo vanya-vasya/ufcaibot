@@ -74,6 +74,24 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
       { fighterA: "Jonny Parsons", fighterB: "José Souza" },
     ],
   },
+  {
+    id: "mma-334",
+    name: "MMA 334",
+    fights: [
+      { fighterA: "Ciryl Gane", fighterB: "Josh Hokit" },
+      { fighterA: "Kayla Harrison", fighterB: "Amanda Nunes" },
+      { fighterA: "Caio Borralho", fighterB: "Yousri Belgaroui" },
+      { fighterA: "Uroš Medić", fighterB: "Kevin Holland" },
+      { fighterA: "Bilal Hasan", fighterB: "Luis Gurule" },
+      { fighterA: "Stephen Thompson", fighterB: "Charles Radtke" },
+      { fighterA: "Drew Dober", fighterB: "Chris Duncan" },
+      { fighterA: "Jim Miller", fighterB: "Terrance McKinney" },
+      { fighterA: "Donte Johnson", fighterB: "Cesar Almeida" },
+      { fighterA: "Macy Chiasson", fighterB: "Bia Mesquita" },
+      { fighterA: "Adrian Yanez", fighterB: "Juan Diaz" },
+      { fighterA: "Nazim Sadykhov", fighterB: "Jefferson Nascimento" },
+    ],
+  },
 ];
 
 /** "Max Holloway" + "Charles Oliveira" -> "MAX HOLLOWAY VS CHARLES OLIVEIRA" */
