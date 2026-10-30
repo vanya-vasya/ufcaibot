@@ -107,6 +107,17 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
       { fighterA: "Amir Albazi", fighterB: "Alessandro Costa" },
     ],
   },
+  {
+    id: "mma-335",
+    name: "MMA 335",
+    fights: [
+      { fighterA: "Charles Oliveira", fighterB: "Diego Lopes" },
+      { fighterA: "Sergei Pavlovich", fighterB: "Alex Pereira" },
+      { fighterA: "Brandon Moreno", fighterB: "Charles Johnson" },
+      { fighterA: "Quentin Pasley", fighterB: "Junior Tafa" },
+      { fighterA: "Joe Pyfer", fighterB: "Bo Nickal" },
+    ],
+  },
 ];
 
 /** "Max Holloway" + "Charles Oliveira" -> "MAX HOLLOWAY VS CHARLES OLIVEIRA" */
