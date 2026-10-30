@@ -2,14 +2,14 @@
 
 import { useState, useCallback, useRef, KeyboardEvent } from "react";
 import { ChevronDown, Calendar, MapPin, Trophy, Zap } from "lucide-react";
-import type { UFCEvent, FightCard } from "@/data/ufc-events-2025";
+import type { UFCEvent, FightCard } from "@/data/fight-events";
 import { 
   formatEventDate, 
   getEventTypeLabel, 
   getCardTypeLabel,
   getTotalFights,
   getFinishCount 
-} from "@/data/ufc-events-2025";
+} from "@/data/fight-events";
 import { FightResultCard } from "./FightResultCard";
 
 interface EventAccordionProps {

@@ -1,7 +1,7 @@
 "use client";
 
 import { Trophy, Crown, Award } from "lucide-react";
-import type { FightResult } from "@/data/ufc-events-2025";
+import type { FightResult } from "@/data/fight-events";
 
 interface FightResultCardProps {
   fight: FightResult;

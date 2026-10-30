@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { Calendar, Filter, ChevronDown } from "lucide-react";
-import { UFC_EVENTS_2025, type UFCEvent } from "@/data/ufc-events-2025";
+import { PAST_EVENTS, type UFCEvent } from "@/data/fight-events";
 import { EventAccordion } from "./EventAccordion";
 
 type EventTypeFilter = "all" | "ppv" | "fight-night" | "apex";
@@ -29,9 +29,9 @@ export const PastEventsList = ({
   // Filter events based on selected type
   const filteredEvents = useMemo(() => {
     if (eventTypeFilter === "all") {
-      return UFC_EVENTS_2025;
+      return PAST_EVENTS;
     }
-    return UFC_EVENTS_2025.filter((event) => event.eventType === eventTypeFilter);
+    return PAST_EVENTS.filter((event) => event.eventType === eventTypeFilter);
   }, [eventTypeFilter]);
 
   // Events to display (limited)

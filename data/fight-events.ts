@@ -1,8 +1,136 @@
 /**
- * UFC 2025 Events Data
- * Parsed from https://www.ufc.com/events#events-list-past
- * Only includes 2025 events with fight results
+ * FIGHT EVENTS - SINGLE SOURCE OF TRUTH
+ *
+ * Every screen that shows events or fights reads from this file:
+ *  - Dashboard > Upcoming  (Events / Fights selectors)  <- UPCOMING_EVENTS
+ *  - Dashboard > Past and Home > Past (results, stats)  <- PAST_EVENTS
+ *
+ * HOW TO UPDATE
+ *  1. New upcoming event: add an object to the top of UPCOMING_EVENTS
+ *     (event name + list of fights, fighter A vs fighter B).
+ *     The first event in the array is selected by default in the dashboard.
+ *  2. Event is over: cut the object out of UPCOMING_EVENTS and add its
+ *     results (cards, winners, methods) to the top of PAST_EVENTS.
+ *  3. Fighter comparison stats for a new fight live in
+ *     data/*-fighter-stats.ts and are keyed by "FIGHTER A VS FIGHTER B"
+ *     (uppercase). `npm test fight-events` checks that every upcoming
+ *     fight has an entry.
  */
+
+// ---------------------------------------------------------------------------
+// Upcoming events
+// ---------------------------------------------------------------------------
+
+export interface UpcomingFight {
+  fighterA: string;
+  fighterB: string;
+}
+
+export interface UpcomingEvent {
+  id: string;
+  /** Tournament name exactly as it should appear in the Events selector */
+  name: string;
+  /** Optional ISO date (YYYY-MM-DD) */
+  date?: string;
+  fights: UpcomingFight[];
+}
+
+export const UPCOMING_EVENTS: UpcomingEvent[] = [
+  {
+    id: "mma-326",
+    name: "MMA 326",
+    fights: [
+      { fighterA: "Max Holloway", fighterB: "Charles Oliveira" },
+      { fighterA: "Cody Garbrandt", fighterB: "Xiao Long" },
+      { fighterA: "Caio Borralho", fighterB: "Reinier de Ridder" },
+      { fighterA: "Rob Font", fighterB: "Raul Rosas Jr." },
+      { fighterA: "Gregory Rodrigues", fighterB: "Brunno Ferreira" },
+      { fighterA: "Drew Dober", fighterB: "Michael Johnson" },
+      { fighterA: "Ricky Turcios", fighterB: "Alberto Montes" },
+      { fighterA: "Donte Johnson", fighterB: "Duško Todorović" },
+      { fighterA: "Cody Durden", fighterB: "Nyamjargal Tumendemberel" },
+      { fighterA: "Sumudaerji", fighterB: "Jesus Aguilar" },
+      { fighterA: "Luke Fernandez", fighterB: "Rodolfo Bellato" },
+      { fighterA: "Joosang Yoo", fighterB: "Gaston Bolanos" },
+    ],
+  },
+  {
+    id: "mma-fight-night-emmett-vs-vallejos",
+    name: "MMA FIGHT NIGHT: EMMETT VS VALLEJOS",
+    fights: [
+      { fighterA: "Josh Emmett", fighterB: "Kevin Vallejos" },
+      { fighterA: "Amanda Lemos", fighterB: "Gillian Robertson" },
+      { fighterA: "Ion Cutelaba", fighterB: "Oumar Sy" },
+      { fighterA: "Bolaji Oki", fighterB: "Manoel Sousa" },
+      { fighterA: "Marwan Rahiki", fighterB: "Harry Hardwick" },
+      { fighterA: "Charles Johnson", fighterB: "Bruno Silva" },
+      { fighterA: "Andre Fili", fighterB: "Jose Miguel Delgado" },
+      { fighterA: "Vitor Petrino", fighterB: "Steven Asplund" },
+      { fighterA: "Piera Rodriguez", fighterB: "Sam Hughes" },
+      { fighterA: "Elijah Smith", fighterB: "Suyoung You" },
+      { fighterA: "Luan Lacerda", fighterB: "Hecher Sosa" },
+      { fighterA: "Bia Mesquita", fighterB: "Montse Rendon" },
+    ],
+  },
+  {
+    id: "mma-fight-night-evloev-vs-murphy",
+    name: "MMA FIGHT NIGHT: EVLOEV VS MURPHY",
+    fights: [
+      { fighterA: "Movsar Evloev", fighterB: "Lerone Murphy" },
+      { fighterA: "Luke Riley", fighterB: "Michael Aswell Jr." },
+      { fighterA: "Michael Page", fighterB: "Sam Patterson" },
+      { fighterA: "Iwo Baraniewski", fighterB: "Austen Lane" },
+      { fighterA: "Roman Dolidze", fighterB: "Christian Leroy Duncan" },
+      { fighterA: "Kurtis Campbell", fighterB: "Danny Silva" },
+      { fighterA: "Mason Jones", fighterB: "Axel Sola" },
+      { fighterA: "Nathaniel Wood", fighterB: "Losene Keita" },
+      { fighterA: "Louie Sutherland", fighterB: "Brando Peričić" },
+      { fighterA: "Mantas Kondratavicius", fighterB: "Antonio Trocoli" },
+      { fighterA: "Mario Pinto", fighterB: "Felipe Franco" },
+      { fighterA: "Shem Rock", fighterB: "Abdul-Kareem Al-Selwady" },
+      { fighterA: "Shanelle Dyer", fighterB: "Ravena Oliveira" },
+      { fighterA: "Melissa Mullins", fighterB: "Luana Carolina" },
+    ],
+  },
+  {
+    id: "mma-fight-night-adesanya-vs-pyfer",
+    name: "MMA FIGHT NIGHT: ADESANYA VS PYFER",
+    fights: [
+      { fighterA: "Israel Adesanya", fighterB: "Joe Pyfer" },
+      { fighterA: "Alexa Grasso", fighterB: "Maycee Barber" },
+      { fighterA: "Marcin Tybura", fighterB: "Valter Walker" },
+      { fighterA: "Chase Hooper", fighterB: "Lance Gibson Jr." },
+      { fighterA: "Michael Chiesa", fighterB: "Carlston Harris" },
+      { fighterA: "Mansur Abdul-Malik", fighterB: "Yousri Belgaroui" },
+      { fighterA: "Casey O'Neill", fighterB: "Gabriella Fernandes" },
+      { fighterA: "Terrance McKinney", fighterB: "Kyle Nelson" },
+      { fighterA: "Navajo Stirling", fighterB: "Bruno Lopes" },
+      { fighterA: "Carol Foro", fighterB: "Stephanie Luciano" },
+      { fighterA: "Zhu Kangjie", fighterB: "Marcio Barbosa" },
+      { fighterA: "Julian Erosa", fighterB: "Lerryan Douglas" },
+    ],
+  },
+];
+
+/** "Max Holloway" + "Charles Oliveira" -> "MAX HOLLOWAY VS CHARLES OLIVEIRA" */
+export const getFightLabel = (fight: UpcomingFight): string =>
+  `${fight.fighterA} VS ${fight.fighterB}`.toUpperCase();
+
+/** Event names in selector order */
+export const UPCOMING_EVENT_NAMES: string[] = UPCOMING_EVENTS.map((event) => event.name);
+
+/** Fight labels grouped by event name, e.g. { "MMA 326": ["MAX HOLLOWAY VS ..."] } */
+export const UPCOMING_FIGHTS_BY_EVENT: Record<string, string[]> = Object.fromEntries(
+  UPCOMING_EVENTS.map((event) => [event.name, event.fights.map(getFightLabel)])
+);
+
+/** Tournament a given fight belongs to (undefined if the fight is not scheduled) */
+export const getEventNameForFight = (fightLabel: string): string | undefined =>
+  UPCOMING_EVENTS.find((event) => event.fights.some((fight) => getFightLabel(fight) === fightLabel))?.name;
+
+// ---------------------------------------------------------------------------
+// Past events (results)
+// ---------------------------------------------------------------------------
 
 export interface Fighter {
   name: string;
@@ -43,9 +171,9 @@ export interface UFCEvent {
 }
 
 /**
- * UFC 2025 Events Data (most recent first)
+ * Past events with results (most recent first)
  */
-export const UFC_EVENTS_2025: UFCEvent[] = [
+export const PAST_EVENTS: UFCEvent[] = [
   {
     id: "ufc-fn-mar-01",
     name: "MMA Fight Night: Moreno vs Kavanagh",
