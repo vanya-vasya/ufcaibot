@@ -13,8 +13,8 @@
  *     results (cards, winners, methods) to the top of PAST_EVENTS.
  *  3. Fighter comparison stats for a new fight live in
  *     data/*-fighter-stats.ts and are keyed by "FIGHTER A VS FIGHTER B"
- *     (uppercase). `npm test fight-events` checks that every upcoming
- *     fight has an entry.
+ *     (uppercase). Fights without an entry still work and show default
+ *     placeholders in the comparison block.
  */
 
 // ---------------------------------------------------------------------------
@@ -37,77 +37,21 @@ export interface UpcomingEvent {
 
 export const UPCOMING_EVENTS: UpcomingEvent[] = [
   {
-    id: "mma-326",
-    name: "MMA 326",
+    id: "mma-fight-night-moicano-vs-nolan",
+    name: "MMA FIGHT NIGHT: MOICANO VS NOLAN",
     fights: [
-      { fighterA: "Max Holloway", fighterB: "Charles Oliveira" },
-      { fighterA: "Cody Garbrandt", fighterB: "Xiao Long" },
-      { fighterA: "Caio Borralho", fighterB: "Reinier de Ridder" },
-      { fighterA: "Rob Font", fighterB: "Raul Rosas Jr." },
-      { fighterA: "Gregory Rodrigues", fighterB: "Brunno Ferreira" },
-      { fighterA: "Drew Dober", fighterB: "Michael Johnson" },
-      { fighterA: "Ricky Turcios", fighterB: "Alberto Montes" },
-      { fighterA: "Donte Johnson", fighterB: "Duško Todorović" },
-      { fighterA: "Cody Durden", fighterB: "Nyamjargal Tumendemberel" },
-      { fighterA: "Sumudaerji", fighterB: "Jesus Aguilar" },
-      { fighterA: "Luke Fernandez", fighterB: "Rodolfo Bellato" },
-      { fighterA: "Joosang Yoo", fighterB: "Gaston Bolanos" },
-    ],
-  },
-  {
-    id: "mma-fight-night-emmett-vs-vallejos",
-    name: "MMA FIGHT NIGHT: EMMETT VS VALLEJOS",
-    fights: [
-      { fighterA: "Josh Emmett", fighterB: "Kevin Vallejos" },
-      { fighterA: "Amanda Lemos", fighterB: "Gillian Robertson" },
-      { fighterA: "Ion Cutelaba", fighterB: "Oumar Sy" },
-      { fighterA: "Bolaji Oki", fighterB: "Manoel Sousa" },
-      { fighterA: "Marwan Rahiki", fighterB: "Harry Hardwick" },
-      { fighterA: "Charles Johnson", fighterB: "Bruno Silva" },
-      { fighterA: "Andre Fili", fighterB: "Jose Miguel Delgado" },
-      { fighterA: "Vitor Petrino", fighterB: "Steven Asplund" },
-      { fighterA: "Piera Rodriguez", fighterB: "Sam Hughes" },
-      { fighterA: "Elijah Smith", fighterB: "Suyoung You" },
-      { fighterA: "Luan Lacerda", fighterB: "Hecher Sosa" },
-      { fighterA: "Bia Mesquita", fighterB: "Montse Rendon" },
-    ],
-  },
-  {
-    id: "mma-fight-night-evloev-vs-murphy",
-    name: "MMA FIGHT NIGHT: EVLOEV VS MURPHY",
-    fights: [
-      { fighterA: "Movsar Evloev", fighterB: "Lerone Murphy" },
-      { fighterA: "Luke Riley", fighterB: "Michael Aswell Jr." },
-      { fighterA: "Michael Page", fighterB: "Sam Patterson" },
-      { fighterA: "Iwo Baraniewski", fighterB: "Austen Lane" },
-      { fighterA: "Roman Dolidze", fighterB: "Christian Leroy Duncan" },
-      { fighterA: "Kurtis Campbell", fighterB: "Danny Silva" },
-      { fighterA: "Mason Jones", fighterB: "Axel Sola" },
-      { fighterA: "Nathaniel Wood", fighterB: "Losene Keita" },
-      { fighterA: "Louie Sutherland", fighterB: "Brando Peričić" },
-      { fighterA: "Mantas Kondratavicius", fighterB: "Antonio Trocoli" },
-      { fighterA: "Mario Pinto", fighterB: "Felipe Franco" },
-      { fighterA: "Shem Rock", fighterB: "Abdul-Kareem Al-Selwady" },
-      { fighterA: "Shanelle Dyer", fighterB: "Ravena Oliveira" },
-      { fighterA: "Melissa Mullins", fighterB: "Luana Carolina" },
-    ],
-  },
-  {
-    id: "mma-fight-night-adesanya-vs-pyfer",
-    name: "MMA FIGHT NIGHT: ADESANYA VS PYFER",
-    fights: [
-      { fighterA: "Israel Adesanya", fighterB: "Joe Pyfer" },
-      { fighterA: "Alexa Grasso", fighterB: "Maycee Barber" },
-      { fighterA: "Marcin Tybura", fighterB: "Valter Walker" },
-      { fighterA: "Chase Hooper", fighterB: "Lance Gibson Jr." },
-      { fighterA: "Michael Chiesa", fighterB: "Carlston Harris" },
-      { fighterA: "Mansur Abdul-Malik", fighterB: "Yousri Belgaroui" },
-      { fighterA: "Casey O'Neill", fighterB: "Gabriella Fernandes" },
-      { fighterA: "Terrance McKinney", fighterB: "Kyle Nelson" },
-      { fighterA: "Navajo Stirling", fighterB: "Bruno Lopes" },
-      { fighterA: "Carol Foro", fighterB: "Stephanie Luciano" },
-      { fighterA: "Zhu Kangjie", fighterB: "Marcio Barbosa" },
-      { fighterA: "Julian Erosa", fighterB: "Lerryan Douglas" },
+      { fighterA: "Renato Moicano", fighterB: "Tom Nolan" },
+      { fighterA: "Randy Brown", fighterB: "Jacobe Smith" },
+      { fighterA: "Ode' Osbourne", fighterB: "Cody Durden" },
+      { fighterA: "Yana Santos", fighterB: "Luana Santos" },
+      { fighterA: "Jean-Paul Lebosnoyani", fighterB: "Farman Hasanov" },
+      { fighterA: "Francis Marshall", fighterB: "Dakota Hope" },
+      { fighterA: "Rodrigo Sezinando", fighterB: "Theodor Berggren" },
+      { fighterA: "Julian Erosa", fighterB: "Jeongyeong Lee" },
+      { fighterA: "Zachary Reese", fighterB: "Mickey Gall" },
+      { fighterA: "Nick Klein", fighterB: "Joe Kropschot" },
+      { fighterA: "Talita Alencar", fighterB: "Piera Rodriguez" },
+      { fighterA: "Lucia Szabová", fighterB: "Tainara Lisboa" },
     ],
   },
 ];
