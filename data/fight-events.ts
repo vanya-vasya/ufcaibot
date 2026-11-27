@@ -98,10 +98,13 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
     },
     fights: [
       { fighterA: "Charles Oliveira", fighterB: "Diego Lopes" },
-      { fighterA: "Sergei Pavlovich", fighterB: "Alex Pereira" },
+      { fighterA: "Alex Pereira", fighterB: "Sergei Pavlovich" },
       { fighterA: "Brandon Moreno", fighterB: "Charles Johnson" },
+      { fighterA: "Damian Pinas", fighterB: "Baisangur Susurkaev" },
+      { fighterA: "Kyler Phillips", fighterB: "Ethyn Ewing" },
+      { fighterA: "Jacqueline Cavalcanti", fighterB: "Michelle Montague" },
       { fighterA: "Quentin Pasley", fighterB: "Junior Tafa" },
-      { fighterA: "Joe Pyfer", fighterB: "Bo Nickal" },
+      { fighterA: "Roque Conceicao", fighterB: "Nilson Rojas" },
     ],
   },
 ];
