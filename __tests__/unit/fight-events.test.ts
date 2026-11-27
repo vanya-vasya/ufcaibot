@@ -30,7 +30,7 @@ describe("fight-events (single source of truth)", () => {
   });
 
   it("maps a fight back to its tournament", () => {
-    expect(getEventNameForFight("AMIR ALBAZI VS ALESSANDRO COSTA")).toBe("MMA FIGHT NIGHT: PROCHAZKA VS STIRLING");
+    expect(getEventNameForFight("CHARLES OLIVEIRA VS DIEGO LOPES")).toBe("MMA 335");
     expect(getEventNameForFight("NOBODY VS NOBODY")).toBeUndefined();
   });
 
