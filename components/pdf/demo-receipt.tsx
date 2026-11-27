@@ -132,13 +132,11 @@ const styles = StyleSheet.create({
   },
   testBanner: {
     marginTop: 16,
-    padding: 8,
     textAlign: "center",
-    fontSize: 12,
-    fontWeight: 700,
-    color: "#b45309",
-    backgroundColor: "#fef3c7",
-    borderRadius: 4,
+    fontSize: 11,
+    letterSpacing: 1,
+    textTransform: "uppercase",
+    color: "#a1aac0",
   },
   legal: {
     marginTop: 20,
