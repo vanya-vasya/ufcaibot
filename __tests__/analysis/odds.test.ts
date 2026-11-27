@@ -5,6 +5,14 @@ jest.mock("@/lib/analysis/cache", () => ({
   getOrSetCache: jest.fn((_key: string, _ttl: number, loader: () => Promise<unknown>) => loader()),
 }));
 
+jest.mock("@/lib/analysis/odds-table", () => ({
+  fetchTableOdds: jest.fn().mockResolvedValue(null),
+}));
+
+import { fetchTableOdds } from "@/lib/analysis/odds-table";
+
+const mockTable = fetchTableOdds as jest.Mock;
+
 const event = {
   id: "1",
   commence_time: "2026-12-06T22:00:00Z",
@@ -42,6 +50,7 @@ const event = {
 
 describe("fetchOddsData", () => {
   beforeEach(() => {
+    mockTable.mockReset().mockResolvedValue(null);
     process.env.ODDS_API_KEY = "test-key";
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
@@ -79,5 +88,30 @@ describe("fetchOddsData", () => {
     expect(requested).toContain("apiKey=test-key");
     expect(requested).toContain("oddsFormat=decimal");
     expect(requested).toContain("mma_mixed_martial_arts");
+  });
+
+  it("uses the odds table first and never calls the API when the fight is in it", async () => {
+    const tableOdds = { source: "odds-table", fighters: [] };
+    mockTable.mockResolvedValue(tableOdds);
+
+    expect(await fetchOddsData("Max Holloway", "Charles Oliveira")).toBe(tableOdds);
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("falls back to the odds API when the table has no row", async () => {
+    const data = await fetchOddsData("Max Holloway", "Charles Oliveira");
+
+    expect(mockTable).toHaveBeenCalledWith("Max Holloway", "Charles Oliveira");
+    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(data?.source).toBe("the-odds-api");
+  });
+
+  it("falls back to the odds API when the table lookup fails", async () => {
+    jest.spyOn(console, "error").mockImplementation(() => undefined);
+    mockTable.mockRejectedValue(new Error("relation FightOdds does not exist"));
+
+    const data = await fetchOddsData("Max Holloway", "Charles Oliveira");
+
+    expect(data?.source).toBe("the-odds-api");
   });
 });

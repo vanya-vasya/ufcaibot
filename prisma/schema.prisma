@@ -127,3 +127,25 @@ model AnalysisCache {
 
   @@index([expiresAt])
 }
+
+/// Bookmaker moneyline odds (American format) entered by hand per fight.
+/// This is the PRIMARY odds source: the analysis only calls the odds API when a fight is not here.
+model FightOdds {
+  id          String   @id @default(cuid())
+  eventName   String
+  fighterA    String
+  fighterB    String
+  /// normalizeName(fighterA / fighterB), used for lookups
+  fighterAKey String
+  fighterBKey String
+  /// American moneyline, e.g. -170 or +140
+  oddsA       Int
+  oddsB       Int
+  source      String   @default("ufc.com")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([fighterAKey, fighterBKey])
+  @@index([fighterAKey])
+  @@index([fighterBKey])
+}

@@ -1,5 +1,6 @@
 import { getOrSetCache, ONE_HOUR_MS } from "./cache";
 import { namesMatch } from "./names";
+import { fetchTableOdds } from "./odds-table";
 
 const ODDS_ENDPOINT =
   "https://api.the-odds-api.com/v4/sports/mma_mixed_martial_arts/odds/";
@@ -24,13 +25,18 @@ interface RawEvent {
 
 export interface FighterOdds {
   fighter: string;
+  /** Only present for odds coming from the FightOdds table. */
+  americanOdds?: number;
   averageDecimalOdds: number;
   bestDecimalOdds: number;
   impliedProbabilityPct: number;
 }
 
 export interface OddsData {
-  commenceTime: string;
+  /** "odds-table" (hand-maintained FightOdds table) or "the-odds-api". */
+  source: string;
+  eventName?: string;
+  commenceTime: string | null;
   bookmakerCount: number;
   fighters: [FighterOdds, FighterOdds];
   bookmakers: { bookmaker: string; prices: Record<string, number> }[];
@@ -100,6 +106,7 @@ const summarizeEvent = (event: RawEvent, fighterA: string, fighterB: string): Od
   const ordered = namesMatch(names[0], fighterA) ? [0, 1] : [1, 0];
 
   return {
+    source: "the-odds-api",
     commenceTime: event.commence_time,
     bookmakerCount: pricesByFighter[0].length,
     fighters: [toFighterOdds(ordered[0]), toFighterOdds(ordered[1])],
@@ -110,11 +117,26 @@ const summarizeEvent = (event: RawEvent, fighterA: string, fighterB: string): Od
   };
 };
 
-/** Fetches (and caches for one hour) the whole MMA market, then picks this fight. */
+const fetchTableOddsSafely = async (fighterA: string, fighterB: string): Promise<OddsData | null> => {
+  try {
+    return await fetchTableOdds(fighterA, fighterB);
+  } catch (error) {
+    console.error("[analysis] odds table lookup failed, falling back to the odds API", error);
+    return null;
+  }
+};
+
+/**
+ * The FightOdds table is the primary source. Only when the fight is not in it do we call
+ * the odds API (whole MMA board cached for one hour), then pick this fight.
+ */
 export const fetchOddsData = async (
   fighterA: string,
   fighterB: string
 ): Promise<OddsData | null> => {
+  const tableOdds = await fetchTableOddsSafely(fighterA, fighterB);
+  if (tableOdds) return tableOdds;
+
   const events = await getOrSetCache(ODDS_CACHE_KEY, ONE_HOUR_MS, fetchAllEvents);
   const event = findEvent(events, fighterA, fighterB);
   return event ? summarizeEvent(event, fighterA, fighterB) : null;

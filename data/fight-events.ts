@@ -13,7 +13,11 @@
  *     two events with a banner are shown, left to right).
  *  2. Event is over: cut the object out of UPCOMING_EVENTS and add its
  *     results (cards, winners, methods) to the top of PAST_EVENTS.
- *  3. Fighter comparison stats for a new fight live in
+ *  3. Bookmaker odds for the new fights go into prisma/data/fight-odds.csv
+ *     (American moneyline), then run `npm run db:seed-odds`. That FightOdds
+ *     table is the primary odds source; the odds API is only used for fights
+ *     that are not in it.
+ *  4. Fighter comparison stats for a new fight live in
  *     data/*-fighter-stats.ts and are keyed by "FIGHTER A VS FIGHTER B"
  *     (uppercase). Fights without an entry still work and show default
  *     placeholders in the comparison block.
@@ -51,6 +55,35 @@ export interface UpcomingEventBanner {
 }
 
 export const UPCOMING_EVENTS: UpcomingEvent[] = [
+  {
+    id: "mma-fight-night-adesanya-vs-magomedov",
+    name: "MMA FIGHT NIGHT: ADESANYA VS MAGOMEDOV",
+    date: "2026-12-06",
+    banner: {
+      eventNumber: "NIGHT",
+      datetime: "Sun, Dec 6 / 1:00 AM GMT+7 / Main Card",
+      venue: "The Venue",
+      location: "Riyadh Saudi Arabia",
+      imageA: "/images/fighters/fighter-adesanya.jpg",
+      imageB: "/images/fighters/fighter-magomedov.jpg",
+    },
+    fights: [
+      { fighterA: "Israel Adesanya", fighterB: "Shara Magomedov" },
+      { fighterA: "Ian Machado Garry", fighterB: "Yaroslav Amosov" },
+      { fighterA: "Levan Chokheli", fighterB: "Islam Dulatov" },
+      { fighterA: "Serghei Spivac", fighterB: "Mario Pinto" },
+      { fighterA: "Mairon Santos", fighterB: "Akbar Abdullaev" },
+      { fighterA: "Magomed Tuchalov", fighterB: "Ion Cutelaba" },
+      { fighterA: "Luke Riley", fighterB: "Gabriel Santos" },
+      { fighterA: "Bruno Silva", fighterB: "Jafel Filho" },
+      { fighterA: "Uran Satybaldiev", fighterB: "Ivan Gnizditskiy" },
+      { fighterA: "Marco Tulio", fighterB: "Junyong Park" },
+      { fighterA: "Pavel Andrusca", fighterB: "Mahammadali Osmanli" },
+      { fighterA: "Modestino Rodrigues", fighterB: "Matthieu Duclos" },
+      { fighterA: "Abdul Hussein", fighterB: "Hecher Sosa" },
+      { fighterA: "Mateusz Rębecki", fighterB: "Elves Brener" },
+    ],
+  },
   {
     id: "mma-335",
     name: "MMA 335",
