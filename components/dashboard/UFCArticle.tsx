@@ -3,9 +3,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { X } from "lucide-react";
 import { parseContentBlocks } from "@/lib/parseContentBlocks";
-import { detectFavoredFromText, parseFighterStatsFromBlock } from "@/lib/parseChartData";
+import { detectFavoredFromText } from "@/lib/parseChartData";
 import { AnalysisInfographic } from "./AnalysisInfographic";
-import { FighterComparisonInfographic } from "./FighterComparisonInfographic";
 import { ALL_SECTIONS, type AnalysisSection } from "@/lib/analysis/products";
 
 interface UFCArticleProps {
@@ -66,17 +65,6 @@ export const UFCArticle = ({
   const sentimentFavored = useMemo(
     () => detectFavoredFromText(contentBlocks.block3, fighterA, fighterB),
     [contentBlocks.block3, fighterA, fighterB]
-  );
-
-  // Parse fighter stats from block 2 for the comparison infographic
-  const parsedStatsA = useMemo(
-    () => parseFighterStatsFromBlock(contentBlocks.block2, fighterA),
-    [contentBlocks.block2, fighterA]
-  );
-
-  const parsedStatsB = useMemo(
-    () => parseFighterStatsFromBlock(contentBlocks.block2, fighterB),
-    [contentBlocks.block2, fighterB]
   );
 
   // Function to render content as plain text (no bullet points)
@@ -192,13 +180,6 @@ export const UFCArticle = ({
                   FIGHTERS ANALYSIS
                 </h2>
 
-                {/* Fighter Comparison Infographic */}
-                <FighterComparisonInfographic
-                  fighterA={fighterA}
-                  fighterB={fighterB}
-                  parsedStatsA={parsedStatsA}
-                  parsedStatsB={parsedStatsB}
-                />
                 {/* Win Prediction card */}
                 <AnalysisInfographic
                   type="fighters"
