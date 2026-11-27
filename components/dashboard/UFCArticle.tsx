@@ -5,7 +5,7 @@ import { X } from "lucide-react";
 import { parseContentBlocks } from "@/lib/parseContentBlocks";
 import { detectFavoredFromText } from "@/lib/parseChartData";
 import { AnalysisInfographic } from "./AnalysisInfographic";
-import { ALL_SECTIONS, type AnalysisSection } from "@/lib/analysis/products";
+import { ALL_SECTIONS, SECTION_META, type AnalysisSection } from "@/lib/analysis/products";
 
 interface UFCArticleProps {
   content: string;
@@ -17,6 +17,8 @@ interface UFCArticleProps {
   sections?: readonly AnalysisSection[];
   /** Optional banner shown above the report (for example, "you were not charged"). */
   notice?: string;
+  /** Product name used in the PDF subtitle and file name, e.g. "ULTIMATE". */
+  productLabel?: string;
 }
 
 export const UFCArticle = ({
@@ -27,8 +29,10 @@ export const UFCArticle = ({
   onClose,
   sections = ALL_SECTIONS,
   notice,
+  productLabel,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     // Trigger animation after mount
@@ -66,6 +70,57 @@ export const UFCArticle = ({
     () => detectFavoredFromText(contentBlocks.block3, fighterA, fighterB),
     [contentBlocks.block3, fighterA, fighterB]
   );
+
+  const handleDownloadPdf = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    try {
+      const [{ pdf }, { default: AnalysisReport }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("@/components/pdf/analysis-report"),
+      ]);
+
+      const blocksBySection: Record<AnalysisSection, string> = {
+        odds: contentBlocks.block1,
+        stats: contentBlocks.block2,
+        news: contentBlocks.block3,
+      };
+
+      const blob = await pdf(
+        <AnalysisReport
+          fighterA={fighterA}
+          fighterB={fighterB}
+          productLabel={productLabel}
+          timestamp={timestamp}
+          sections={sections.map((section) => ({
+            heading: SECTION_META[section].heading,
+            text: blocksBySection[section].replace(/•/g, "").trim(),
+          }))}
+        />
+      ).toBlob();
+
+      const slug = (value: string) =>
+        value
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      const fileName = [productLabel, fighterA, "vs", fighterB]
+        .filter(Boolean)
+        .map((part) => slug(String(part)))
+        .join("-");
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `ufcaibot-${fileName}.pdf`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    } catch (error) {
+      console.error("[UFCArticle] Failed to generate PDF:", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   // Function to render content as plain text (no bullet points)
   const renderContentWithBullets = (text: string) => {
@@ -233,13 +288,27 @@ export const UFCArticle = ({
                   Powered by advanced AI and real-time data analysis
                 </p>
               </div>
-              <button
-                onClick={handleClose}
-                className="px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
-                style={{ fontFamily: "var(--font-ufc-heading)" }}
-              >
-                New Analysis
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={handleDownloadPdf}
+                  disabled={isDownloading}
+                  aria-busy={isDownloading}
+                  aria-label="Download analysis as PDF"
+                  data-testid="download-pdf"
+                  className="px-6 py-3 bg-red-600 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                  style={{ fontFamily: "var(--font-ufc-heading)" }}
+                >
+                  {isDownloading ? "Preparing PDF..." : "Download PDF"}
+                </button>
+                <button
+                  onClick={handleClose}
+                  className="px-6 py-3 bg-black border-2 border-white hover:bg-gray-900 text-white font-bold uppercase tracking-wider rounded transition-colors duration-200"
+                  style={{ fontFamily: "var(--font-ufc-heading)" }}
+                >
+                  New Analysis
+                </button>
+              </div>
             </div>
           </footer>
         </article>
