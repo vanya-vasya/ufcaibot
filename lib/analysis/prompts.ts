@@ -25,7 +25,7 @@ const FORMAT_RULES = `CRITICAL FORMATTING RULES:
 
 const BLOCK_GUIDANCE: Record<AnalysisSection, (matchup: string) => string> = {
   odds: (matchup) =>
-    `Block 1: It is necessary to indicate in one short sentence which fighter is favored for the upcoming fight between ${matchup}. Next, it should describe bookmaker pricing behavior, discrepancies, and what the implied probabilities suggest about why this fighter is likely to win. It must include statistical analysis and numerical data.`,
+    `Block 1: It is necessary to indicate in one short sentence which fighter is favored for the upcoming fight between ${matchup}. Next, it should describe bookmaker pricing behavior, discrepancies, and what the implied probabilities suggest about why this fighter is likely to win. It must include statistical analysis and numerical data. When bookmakerCount is 1 the prices are a single bookmaker consensus, so do not describe discrepancies between bookmakers.`,
   stats: (matchup) =>
     `Block 2: It is necessary to indicate in one short sentence which fighter is favored for the upcoming fight between ${matchup}. Next, it should compare fighter statistics, strengths, weaknesses, style tendencies, and likely paths to victory to explain why this fighter is likely to win. It must include statistical analysis and numerical data. The history dataset ends on the date given in datasetLastFightDate, so treat later fights as unknown.`,
   news: (matchup) =>
