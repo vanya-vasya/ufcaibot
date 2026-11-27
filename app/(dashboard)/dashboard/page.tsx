@@ -31,6 +31,7 @@ interface ArticleData {
   timestamp: string;
   sections: readonly AnalysisSection[];
   notice?: string;
+  productLabel: string;
 }
 
 interface AnalyzeResponse {
@@ -141,6 +142,7 @@ export default function HomePage() {
           timestamp: new Date().toISOString(),
           sections: result.sections,
           notice: result.charged ? undefined : NOT_CHARGED_NOTICE,
+          productLabel: ANALYSIS_PRODUCTS[product].label,
         });
 
         if (result.charged) {
@@ -182,6 +184,7 @@ export default function HomePage() {
           timestamp={activeArticle.timestamp}
           sections={activeArticle.sections}
           notice={activeArticle.notice}
+          productLabel={activeArticle.productLabel}
           onClose={handleCloseArticle}
         />
       )}
