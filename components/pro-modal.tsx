@@ -15,6 +15,12 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { GENERATIONS_PRICE } from "@/constants";
+import {
+  amountToTokens,
+  normalizeTokens,
+  sanitizeAmountInput,
+  tokensToAmount,
+} from "@/lib/token-pricing";
 import { useRouter } from "next/navigation";
 import { currencies, currenciesRate, Currency } from "@/constants/index";
 import Image from "next/image";
@@ -50,6 +56,8 @@ export const ProModal = () => {
   const [loading, setLoading] = useState(false);
   const [tokenPrice, setTokenPrice] = useState(GENERATIONS_PRICE);
   const [showPaymentWidget, setShowPaymentWidget] = useState(false);
+  /** Text being typed in the amount field; null means the field mirrors the token count. */
+  const [amountDraft, setAmountDraft] = useState<string | null>(null);
 
   const {
     register,
@@ -79,6 +87,7 @@ export const ProModal = () => {
 
   const handleCurrencyChange = (currency: Currency) => {
     setValue("currency", currency);
+    setAmountDraft(null);
     setTokenPrice(GENERATIONS_PRICE * currenciesRate[currency]);
   };
 
@@ -86,14 +95,28 @@ export const ProModal = () => {
     setValue("policies", checked);
   };
 
-  const calculatePrice = (tokens: number): number => {
-    const currentCurrency = watch("currency");
-    if (currentCurrency === "GBP") {
-      return tokens * GENERATIONS_PRICE;
-    }
-    const priceInEUR = GENERATIONS_PRICE / currenciesRate["GBP"];
-    return tokens * priceInEUR * currenciesRate[currentCurrency];
+  const calculatePrice = (tokens: number): number =>
+    tokensToAmount(tokens, watch("currency"));
+
+  const tokensRegistration = register("tokens", { valueAsNumber: true });
+
+  const handleTokensChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmountDraft(null);
+    tokensRegistration.onChange(event);
   };
+
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const draft = sanitizeAmountInput(event.target.value);
+    setAmountDraft(draft);
+    setValue("tokens", amountToTokens(Number(draft), watch("currency")), {
+      shouldValidate: true,
+    });
+  };
+
+  const handleAmountBlur = () => setAmountDraft(null);
+
+  const amountDisplay =
+    amountDraft ?? calculatePrice(normalizeTokens(watch("tokens"))).toFixed(2);
 
   const handlePaymentSuccess = (transactionData: any) => {
     proModal.onClose();
@@ -201,9 +224,20 @@ export const ProModal = () => {
                     </div>
                   </Listbox>
 
-                  <div className="text-4xl font-bold py-2 text-gray-900">
-                    {calculatePrice(watch("tokens")).toFixed(2)}
-                  </div>
+                  <input
+                    type="text"
+                    id="amount"
+                    inputMode="decimal"
+                    autoComplete="off"
+                    aria-label="Amount"
+                    maxLength={10}
+                    disabled={loading}
+                    value={amountDisplay}
+                    onChange={handleAmountChange}
+                    onBlur={handleAmountBlur}
+                    onFocus={(event) => event.target.select()}
+                    className="w-44 text-4xl font-bold py-2 text-gray-900 bg-transparent border-b-2 border-transparent hover:border-gray-300 focus:border-black focus:outline-none transition-colors"
+                  />
                 </div>
               </div>
 
@@ -216,7 +250,8 @@ export const ProModal = () => {
                   type="number"
                   id="tokens"
                   placeholder="0"
-                  {...register("tokens", { valueAsNumber: true })}
+                  {...tokensRegistration}
+                  onChange={handleTokensChange}
                   min={0}
                   step={1}
                   className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg text-center text-2xl font-bold transition-all duration-200 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1 focus:border-black hover:border-gray-500"
