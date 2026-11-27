@@ -4,17 +4,21 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { AnimatedIntro } from "@/components/dashboard/AnimatedIntro";
 import { EventSelector } from "@/components/dashboard/EventSelector";
 import { FightSelector } from "@/components/dashboard/FightSelector";
-import { VSEmblem } from "@/components/dashboard/VSEmblem";
+import { AnalysisProductButtons } from "@/components/dashboard/AnalysisProductButtons";
 import { UFCArticle } from "@/components/dashboard/UFCArticle";
 import { DashboardTabs, type TabValue } from "@/components/dashboard/DashboardTabs";
 import { NewsFeed } from "@/components/dashboard/NewsFeed";
 import { PastEventsList } from "@/components/dashboard/PastEventsList";
 import { useProModal } from "@/hooks/use-pro-modal";
 import { UPCOMING_EVENT_NAMES, UPCOMING_FIGHTS_BY_EVENT } from "@/data/fight-events";
+import {
+  ANALYSIS_PRODUCTS,
+  type AnalysisProductId,
+  type AnalysisSection,
+} from "@/lib/analysis/products";
 
-const FIGHT_COST = 25;
-
-const N8N_WEBHOOK_URL = "https://vanya-vasya.app.n8n.cloud/webhook/2b3cf490-2cd3-4d75-af73-8ba7d6771986";
+const NOT_CHARGED_NOTICE =
+  "We could not find enough data for this matchup, so no tokens were charged.";
 
 // Events and fights come from the single source of truth: data/fight-events.ts
 const UFC_EVENTS = UPCOMING_EVENT_NAMES;
@@ -25,6 +29,14 @@ interface ArticleData {
   fighterA: string;
   fighterB: string;
   timestamp: string;
+  sections: readonly AnalysisSection[];
+  notice?: string;
+}
+
+interface AnalyzeResponse {
+  content: string;
+  sections: AnalysisSection[];
+  charged: boolean;
 }
 
 export default function HomePage() {
@@ -37,7 +49,7 @@ export default function HomePage() {
   const [selectedEvent, setSelectedEvent] = useState(UFC_EVENTS[0]);
   // Fights selector - will be populated based on selected event
   const [selectedFight, setSelectedFight] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [activeProduct, setActiveProduct] = useState<AnalysisProductId | null>(null);
   const [activeArticle, setActiveArticle] = useState<ArticleData | null>(null);
 
   // Get available fights for the currently selected event
@@ -76,101 +88,72 @@ export default function HomePage() {
   }, []);
 
   /**
-   * Handle Fight button click
-   * IMPORTANT: Only uses data from the Fights panel (selectedFight)
-   * Does NOT use any data from the Events panel
+   * Handle a product button click (ODDS / STATS / NEWS / ULTIMATE).
+   * Only uses data from the Fights panel (selectedFight); the server checks and
+   * deducts credits, so the client-side balance check is just an early exit.
    */
-  const handleFightClick = useCallback(async () => {
-    if (!selectedFight) return;
+  const handleAnalyze = useCallback(
+    async (product: AnalysisProductId) => {
+      if (!selectedFight || activeProduct) return;
 
-    // Check balance before doing anything
-    try {
-      const creditsRes = await fetch("/api/user/credits");
-      if (creditsRes.ok) {
-        const { remaining } = await creditsRes.json();
-        if (remaining < FIGHT_COST) {
+      const { cost } = ANALYSIS_PRODUCTS[product];
+
+      try {
+        const creditsRes = await fetch("/api/user/credits");
+        if (creditsRes.ok) {
+          const { remaining } = await creditsRes.json();
+          if (remaining < cost) {
+            proModal.onOpen();
+            return;
+          }
+        }
+      } catch {
+        // If the credits check fails, the server-side guard decides.
+      }
+
+      setActiveProduct(product);
+
+      try {
+        const [fighterA = "", fighterB = ""] = selectedFight
+          .split(" VS ")
+          .map((name) => name.trim());
+
+        const response = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ product, fighterA, fighterB }),
+        });
+
+        if (response.status === 402) {
           proModal.onOpen();
           return;
         }
-      }
-    } catch {
-      // If credits check fails, let the server-side guard handle it
-    }
-
-    setIsLoading(true);
-
-    try {
-      // ONLY use the selected fight - ignore Events panel entirely
-      const message = selectedFight;
-
-      // Parse fighters from the fight string (format: "FIGHTER A VS FIGHTER B")
-      const fighters = selectedFight.split(" VS ");
-      const fighterA = fighters[0]?.trim() || "";
-      const fighterB = fighters[1]?.trim() || "";
-
-      console.log("[Dashboard] Sending fight analysis for:", message);
-      console.log("[Dashboard] Fighter A:", fighterA);
-      console.log("[Dashboard] Fighter B:", fighterB);
-
-      // Send to N8N webhook - ONLY fight data, no event data
-      const response = await fetch(N8N_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message,
-          fight: selectedFight,
-          fighterA,
-          fighterB,
-        }),
-      });
-
-      // Capture HTTP 200 OK responses
-      if (response.status === 200) {
-        const responseBody = await response.json();
-        const timestamp = new Date().toISOString();
-        
-        // Extract content from response
-        const content = typeof responseBody === 'string' 
-          ? responseBody 
-          : responseBody.content || responseBody.analysis || JSON.stringify(responseBody, null, 2);
-        
-        // Set active article to display
-        setActiveArticle({
-          content,
-          fighterA,
-          fighterB,
-          timestamp,
-        });
-
-        // Deduct 100 credits and record transaction
-        try {
-          const deductRes = await fetch("/api/user/deduct-credits", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ fight: selectedFight, fighterA, fighterB }),
-          });
-          if (deductRes.ok) {
-            // Notify UsageProgress to re-fetch balance
-            window.dispatchEvent(new CustomEvent("credits:updated"));
-          }
-        } catch (deductErr) {
-          console.error("[Dashboard] Failed to deduct credits:", deductErr);
+        if (!response.ok) {
+          throw new Error(`Analysis request failed: ${response.status}`);
         }
 
-        console.log("[Dashboard] Analysis completed successfully for:", message);
-      } else {
-        throw new Error(`Webhook request failed: ${response.status} ${response.statusText}`);
+        const result: AnalyzeResponse = await response.json();
+
+        setActiveArticle({
+          content: result.content,
+          fighterA,
+          fighterB,
+          timestamp: new Date().toISOString(),
+          sections: result.sections,
+          notice: result.charged ? undefined : NOT_CHARGED_NOTICE,
+        });
+
+        if (result.charged) {
+          window.dispatchEvent(new CustomEvent("credits:updated"));
+        }
+      } catch (error) {
+        console.error("[Dashboard] Failed to run analysis:", error);
+      } finally {
+        setActiveProduct(null);
       }
-      
-    } catch (error) {
-      console.error("Failed to start fight analysis:", error);
-      
-    } finally {
-      setIsLoading(false);
-    }
-  }, [selectedFight]);
+    },
+    [selectedFight, activeProduct, proModal]
+  );
 
   const handleCloseArticle = useCallback(() => {
     setActiveArticle(null);
@@ -197,6 +180,8 @@ export default function HomePage() {
           fighterA={activeArticle.fighterA}
           fighterB={activeArticle.fighterB}
           timestamp={activeArticle.timestamp}
+          sections={activeArticle.sections}
+          notice={activeArticle.notice}
           onClose={handleCloseArticle}
         />
       )}
@@ -230,36 +215,9 @@ export default function HomePage() {
               }`}
               aria-label="Fight Selection"
             >
-              <div className="w-full max-w-6xl mx-auto">
-                {/* Mobile: Stack vertically */}
-                <div className="flex flex-col lg:hidden space-y-4 items-center">
-                  <EventSelector
-                    label="Events"
-                    events={UFC_EVENTS}
-                    value={selectedEvent}
-                    onChange={handleEventChange}
-                    widthClass="w-[300px]"
-                  />
-                  
-                  <VSEmblem 
-                    className="mx-auto my-2" 
-                    onClick={handleFightClick}
-                    disabled={isLoading || !selectedFight}
-                    isLoading={isLoading}
-                  />
-                  
-                  <FightSelector
-                    label="Fights"
-                    fights={availableFights}
-                    value={selectedFight}
-                    onChange={handleFightChange}
-                    widthClass="w-[300px]"
-                  />
-                </div>
-
-                {/* Desktop: Side by side */}
-                <div className="hidden lg:flex items-start justify-center gap-8">
-                  <div className="w-[340px] flex-shrink-0">
+              <div className="w-full max-w-6xl mx-auto space-y-10">
+                <div className="flex flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-center lg:gap-8">
+                  <div className="w-[300px] lg:w-[340px] flex-shrink-0">
                     <EventSelector
                       label="Events"
                       events={UFC_EVENTS}
@@ -269,14 +227,7 @@ export default function HomePage() {
                     />
                   </div>
 
-                  <VSEmblem 
-                    className="flex-shrink-0 px-4 mt-8 w-[180px]" 
-                    onClick={handleFightClick}
-                    disabled={isLoading || !selectedFight}
-                    isLoading={isLoading}
-                  />
-
-                  <div className="w-[340px] flex-shrink-0">
+                  <div className="w-[300px] lg:w-[340px] flex-shrink-0">
                     <FightSelector
                       label="Fights"
                       fights={availableFights}
@@ -286,6 +237,12 @@ export default function HomePage() {
                     />
                   </div>
                 </div>
+
+                <AnalysisProductButtons
+                  onSelect={handleAnalyze}
+                  disabled={!selectedFight}
+                  activeProduct={activeProduct}
+                />
               </div>
             </section>
           </div>

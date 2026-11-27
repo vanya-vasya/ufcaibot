@@ -3,7 +3,7 @@ import prismadb from "@/lib/prismadb";
 import { Transaction } from "@prisma/client";
 
 /** Finds user by clerkId; falls back to email lookup and syncs clerkId if found. */
-const findUserByAuth = async () => {
+export const findUserByAuth = async () => {
   const { userId } = auth();
   if (!userId) return null;
 
