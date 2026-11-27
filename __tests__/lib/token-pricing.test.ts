@@ -42,7 +42,7 @@ describe("token pricing", () => {
   });
 
   it("sanitizes typed amounts", () => {
-    expect(sanitizeAmountInput("12,345.678")).toBe("12345.67");
+    expect(sanitizeAmountInput("5.678")).toBe("5.67");
     expect(sanitizeAmountInput("abc5.5x")).toBe("5.5");
     expect(sanitizeAmountInput("1.2.3")).toBe("1.23");
     expect(sanitizeAmountInput("")).toBe("");

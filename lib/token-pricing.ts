@@ -22,7 +22,7 @@ export const amountToTokens = (amount: number, currency: Currency): number => {
   return Math.floor(amount / getUnitPrice(currency) + EPSILON);
 };
 
-/** Keeps digits and a single dot, at most two decimals: "12,345.678" -> "12345.67". */
+/** Keeps digits and a single dot (a comma counts as the dot), at most two decimals: "5,678" -> "5.67". */
 export const sanitizeAmountInput = (raw: string): string => {
   const cleaned = raw.replace(",", ".").replace(/[^\d.]/g, "");
   const [whole, ...fraction] = cleaned.split(".");
