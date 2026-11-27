@@ -6,6 +6,7 @@ import { parseContentBlocks } from "@/lib/parseContentBlocks";
 import { detectFavoredFromText, parseFighterStatsFromBlock } from "@/lib/parseChartData";
 import { AnalysisInfographic } from "./AnalysisInfographic";
 import { FighterComparisonInfographic } from "./FighterComparisonInfographic";
+import { ALL_SECTIONS, type AnalysisSection } from "@/lib/analysis/products";
 
 interface UFCArticleProps {
   content: string;
@@ -13,6 +14,10 @@ interface UFCArticleProps {
   fighterB: string;
   timestamp: string;
   onClose: () => void;
+  /** Which report sections to show. Defaults to the full three-section report. */
+  sections?: readonly AnalysisSection[];
+  /** Optional banner shown above the report (for example, "you were not charged"). */
+  notice?: string;
 }
 
 export const UFCArticle = ({
@@ -21,6 +26,8 @@ export const UFCArticle = ({
   fighterB,
   timestamp,
   onClose,
+  sections = ALL_SECTIONS,
+  notice,
 }: UFCArticleProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -141,84 +148,99 @@ export const UFCArticle = ({
 
           {/* Article Content */}
           <div className="space-y-12">
-            {/* Block 1 - Matchup Analysis */}
-            <section>
-              <h2
-                className="text-3xl sm:text-4xl font-bold text-white mb-6"
-                style={{ fontFamily: "var(--font-ufc-heading)" }}
+            {notice && (
+              <p
+                role="status"
+                className="rounded border border-red-600/60 bg-red-950/30 px-4 py-3 text-sm text-red-100"
               >
-                MATCHUP ANALYSIS
-              </h2>
-              <AnalysisInfographic
-                type="matchup"
-                fighterA={fighterA}
-                fighterB={fighterB}
-                favored={matchupFavored}
-              />
-              {contentBlocks.block1 ? (
-                <div className="prose prose-invert prose-lg max-w-none">
-                  {renderContentWithBullets(contentBlocks.block1)}
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">No content for MATCHUP ANALYSIS</p>
-              )}
-            </section>
+                {notice}
+              </p>
+            )}
+
+            {/* Block 1 - Matchup Analysis */}
+            {sections.includes("odds") && (
+              <section>
+                <h2
+                  className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                  style={{ fontFamily: "var(--font-ufc-heading)" }}
+                >
+                  MATCHUP ANALYSIS
+                </h2>
+                <AnalysisInfographic
+                  type="matchup"
+                  fighterA={fighterA}
+                  fighterB={fighterB}
+                  favored={matchupFavored}
+                />
+                {contentBlocks.block1 ? (
+                  <div className="prose prose-invert prose-lg max-w-none">
+                    {renderContentWithBullets(contentBlocks.block1)}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 italic">No content for MATCHUP ANALYSIS</p>
+                )}
+              </section>
+            )}
 
             {/* Block 2 - Fighters Analysis */}
-            <section>
-              <h2
-                className="text-3xl sm:text-4xl font-bold text-white mb-6"
-                style={{ fontFamily: "var(--font-ufc-heading)" }}
-              >
-                FIGHTERS ANALYSIS
-              </h2>
+            {sections.includes("stats") && (
+              <section>
+                <h2
+                  className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                  style={{ fontFamily: "var(--font-ufc-heading)" }}
+                >
+                  FIGHTERS ANALYSIS
+                </h2>
 
-              {/* Fighter Comparison Infographic */}
-              <FighterComparisonInfographic
-                fighterA={fighterA}
-                fighterB={fighterB}
-                parsedStatsA={parsedStatsA}
-                parsedStatsB={parsedStatsB}
-              />
-              {/* Win Prediction card */}
-              <AnalysisInfographic
-                type="fighters"
-                fighterA={fighterA}
-                fighterB={fighterB}
-                favored={fightersFavored}
-              />
-              {contentBlocks.block2 ? (
-                <div className="prose prose-invert prose-lg max-w-none">
-                  {renderContentWithBullets(contentBlocks.block2)}
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">No content for FIGHTERS ANALYSIS</p>
-              )}
-            </section>
+                {/* Fighter Comparison Infographic */}
+                <FighterComparisonInfographic
+                  fighterA={fighterA}
+                  fighterB={fighterB}
+                  parsedStatsA={parsedStatsA}
+                  parsedStatsB={parsedStatsB}
+                />
+                {/* Win Prediction card */}
+                <AnalysisInfographic
+                  type="fighters"
+                  fighterA={fighterA}
+                  fighterB={fighterB}
+                  favored={fightersFavored}
+                />
+                {contentBlocks.block2 ? (
+                  <div className="prose prose-invert prose-lg max-w-none">
+                    {renderContentWithBullets(contentBlocks.block2)}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 italic">No content for FIGHTERS ANALYSIS</p>
+                )}
+              </section>
+            )}
 
             {/* Block 3 - Sentiment Analysis */}
-            <section>
-              <h2
-                className="text-3xl sm:text-4xl font-bold text-white mb-6"
-                style={{ fontFamily: "var(--font-ufc-heading)" }}
-              >
-                SENTIMENT ANALYSIS
-              </h2>
-              {/* Sentiment Infographic - Before text */}
-              <AnalysisInfographic
-                type="sentiment"
-                fighterA={fighterA}
-                fighterB={fighterB}
-                favored={sentimentFavored}
-              />
-              {contentBlocks.block3 ? (
-                <div className="prose prose-invert prose-lg max-w-none">
-                  {renderContentWithBullets(contentBlocks.block3)}
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
-              )}
-            </section>
+            {sections.includes("news") && (
+              <section>
+                <h2
+                  className="text-3xl sm:text-4xl font-bold text-white mb-6"
+                  style={{ fontFamily: "var(--font-ufc-heading)" }}
+                >
+                  SENTIMENT ANALYSIS
+                </h2>
+                {/* Sentiment Infographic - Before text */}
+                <AnalysisInfographic
+                  type="sentiment"
+                  fighterA={fighterA}
+                  fighterB={fighterB}
+                  favored={sentimentFavored}
+                />
+                {contentBlocks.block3 ? (
+                  <div className="prose prose-invert prose-lg max-w-none">
+                    {renderContentWithBullets(contentBlocks.block3)}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 italic">No content for SENTIMENT ANALYSIS</p>
+                )}
+              </section>
+            )}
           </div>
 
           {/* Footer */}

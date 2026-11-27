@@ -57,3 +57,73 @@ model Prediction {
   // Index for efficient querying by user and sorting by date
   @@index([userId, createdAt(sort: Desc)])
 }
+
+model FightHistory {
+  id                String    @id @default(cuid())
+  redFighter        String
+  blueFighter       String
+  date              DateTime  @db.Date
+  location          String?
+  country           String?
+  winner            String?
+  titleBout         Boolean   @default(false)
+  weightClass       String?
+  gender            String?
+  numberOfRounds    Int?
+  redOdds           Int?
+  blueOdds          Int?
+  finish            String?
+  finishDetails     String?
+  finishRound       Int?
+  finishRoundTime   String?
+  totalFightTimeSecs Int?
+  /// Every other column of the source CSV row (pre-fight career averages, ranks, etc.)
+  details           Json
+
+  @@index([redFighter])
+  @@index([blueFighter])
+  @@index([date(sort: Desc)])
+}
+
+model FighterProfile {
+  fighterId      String  @id
+  fullName       String
+  nickname       String?
+  heightFt       Float?
+  weightLbs      Float?
+  stance         String?
+  wins           Int?
+  losses         Int?
+  draws          Int?
+  belt           Boolean @default(false)
+  avgRounds      Float?
+  avgFightTime   Float?
+  knockdowns     Float?
+  strikes        Float?
+  takedowns      Float?
+  submissions    Float?
+  control        Float?
+  sigStrPct      Float?
+  headPct        Float?
+  bodyPct        Float?
+  legPct         Float?
+  distancePct    Float?
+  clinchPct      Float?
+  groundPct      Float?
+  subAttempts    Float?
+  reversals      Float?
+  weightClass    String?
+  gender         String?
+  fightingStyle  String?
+
+  @@index([fullName])
+}
+
+model AnalysisCache {
+  key       String   @id
+  payload   Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([expiresAt])
+}

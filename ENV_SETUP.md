@@ -67,3 +67,25 @@ For production (Vercel), you need a proper database service. SQLite files don't 
 2. Replace placeholder values with your actual keys
 3. Run `npx prisma generate` to generate the client
 4. Run `npx prisma migrate dev` to create/update the database
+
+## Analysis products (ODDS / STATS / NEWS / ULTIMATE)
+
+The dashboard no longer calls n8n. `POST /api/analyze` runs the analysis in-app and needs:
+
+| Variable | Used for |
+|---|---|
+| `OPENAI_API_KEY` | Report generation (`OPENAI_MODEL` optionally overrides the default `gpt-5-mini`) |
+| `ODDS_API_KEY` | the-odds-api.com bookmaker lines (cached 1 hour) |
+| `NEWS_API_KEY` | newsapi.org coverage of both fighters (cached 6 hours) |
+| `DATABASE_URL` / `DIRECT_URL` | Neon Postgres holding users, credits and the fight history tables |
+
+Prices in tokens: ODDS 10, STATS 5, NEWS 15, ULTIMATE 25 (see `lib/analysis/products.ts`).
+
+### Loading the historical data
+
+1. Apply `prisma/migrations/20261127150000_add_fight_data_tables/migration.sql` (creates `FightHistory`, `FighterProfile`, `AnalysisCache` and the `pg_trgm` extension).
+2. Seed the CSVs from `prisma/data/`:
+
+```bash
+DATABASE_URL=... DIRECT_URL=... npm run db:seed-fights
+```

@@ -9,6 +9,7 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "db:init": "node scripts/init-db.js",
+    "db:seed-fights": "node scripts/seed-fight-data.js",
     "db:push": "prisma db push",
     "favicon:generate": "node scripts/generate-favicons.js",
     "deploy": "vercel --yes",
