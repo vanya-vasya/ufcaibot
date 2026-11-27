@@ -13,13 +13,19 @@ import {
 
 import { cn } from "@/lib/utils";
 import { currencies, type Currency } from "@/constants/index";
+import {
+  ACTIVITY_TOOLS,
+  MIN_TOOL_COST,
+  formatDate,
+  generateActivity,
+  getSpendableTokens,
+  randomInt,
+  type ActivityRow,
+} from "@/lib/admin-activity";
 
 const UFC_HEADING_FONT =
   '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
 const ufcFontStyle = { fontFamily: UFC_HEADING_FONT } as const;
-
-const GENERATION_NAME = "Fight Analysis";
-const GENERATION_COST = 25;
 
 const PAGE_SIZE = 20;
 const MAX_PAYMENT_ROWS = 500;
@@ -44,15 +50,6 @@ const STATUS_BADGE_STYLES: Record<PaymentStatus, string> = {
 };
 
 type SortDirection = "asc" | "desc";
-
-interface ActivityRow {
-  seq: number;
-  ts: number;
-  date: string;
-  tool: string;
-  tokensUsed: number;
-  tokensTotal: number;
-}
 
 interface PaymentRow {
   id: string;
@@ -100,9 +97,6 @@ const UfcButton = ({
   />
 );
 
-const rand = (min: number, max: number): number =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
-
 const parseDate = (value: string): Date | null => {
   const parts = value.trim().split(".");
   if (parts.length !== 3) return null;
@@ -118,75 +112,12 @@ const parseDate = (value: string): Date | null => {
   return date;
 };
 
-const formatDate = (date: Date): string => {
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  return `${day}.${month}.${date.getFullYear()}`;
-};
-
 const generateId = (): string =>
   "cmp" +
   Array.from(
     { length: 22 },
-    () => ROW_ID_CHARS[rand(0, ROW_ID_CHARS.length - 1)],
+    () => ROW_ID_CHARS[randomInt(0, ROW_ID_CHARS.length - 1)],
   ).join("");
-
-const generateActivity = (
-  tokensTarget: number,
-  startDate: Date,
-  endDate: Date,
-): ActivityRow[] => {
-  const totalUses = Math.floor(tokensTarget / GENERATION_COST);
-  if (totalUses <= 0) return [];
-
-  const sessions: number[] = [];
-  let remainingUses = totalUses;
-  while (remainingUses > 0) {
-    const uses = Math.min(rand(1, 4), remainingUses);
-    sessions.push(uses);
-    remainingUses -= uses;
-  }
-
-  const startMs = startDate.getTime();
-  const endMs = new Date(
-    endDate.getFullYear(),
-    endDate.getMonth(),
-    endDate.getDate(),
-    23,
-    59,
-    59,
-  ).getTime();
-  const rangeMs = Math.max(endMs - startMs, 60_000);
-  const slotMs = rangeMs / sessions.length;
-  const maxStartMinutes = Math.max(0, Math.floor((slotMs * 0.25) / 60_000));
-
-  const timestamps: number[] = [];
-  sessions.forEach((uses, sessionIndex) => {
-    const slotStart = startMs + sessionIndex * slotMs;
-    let cursor =
-      slotStart + rand(0, maxStartMinutes) * 60_000 + rand(0, 59) * 1000;
-
-    for (let use = 0; use < uses; use++) {
-      timestamps.push(Math.min(cursor + rand(0, 59) * 1000, endMs));
-      cursor += rand(2, 25) * 60_000;
-    }
-  });
-
-  timestamps.sort((a, b) => a - b);
-
-  let runningTotal = 0;
-  return timestamps.map((ts, seq) => {
-    runningTotal += GENERATION_COST;
-    return {
-      seq,
-      ts,
-      date: formatDate(new Date(ts)),
-      tool: GENERATION_NAME,
-      tokensUsed: GENERATION_COST,
-      tokensTotal: runningTotal,
-    };
-  });
-};
 
 const getPageNumbers = (page: number, total: number): (number | "…")[] => {
   if (total <= 6) return Array.from({ length: total }, (_, i) => i + 1);
@@ -322,6 +253,15 @@ const AdminDashboardPage = () => {
     parsedEnd !== null &&
     parsedEnd.getTime() >= parsedStart.getTime();
 
+  const spendableTokens = getSpendableTokens(tokensTarget);
+  const activityTotalTokens = activityRows.reduce(
+    (total, row) => total + row.tokensUsed,
+    0,
+  );
+  const toolPricesLabel = ACTIVITY_TOOLS.map(
+    (tool) => `${tool.label} ${tool.cost}`,
+  ).join(" · ");
+
   const parsedRowsCount = Number(rowsCount);
   const canGenerateRows =
     Number.isFinite(parsedRowsCount) && parsedRowsCount > 0;
@@ -356,9 +296,9 @@ const AdminDashboardPage = () => {
       setActivityError("Tokens spend must be greater than 0.");
       return;
     }
-    if (tokensTarget < GENERATION_COST) {
+    if (tokensTarget < MIN_TOOL_COST) {
       setActivityError(
-        `Tokens spend must be at least ${GENERATION_COST} (one generation).`,
+        `Tokens spend must be at least ${MIN_TOOL_COST} (cheapest tool).`,
       );
       return;
     }
@@ -557,6 +497,16 @@ const AdminDashboardPage = () => {
                 />
               </LabeledInput>
             </div>
+
+            <p
+              className="text-xs text-white/50"
+              data-testid="activity-tools-hint"
+            >
+              Random tools: {toolPricesLabel} tokens.
+              {tokensTarget >= MIN_TOOL_COST &&
+                spendableTokens !== Math.floor(tokensTarget) &&
+                ` Spend is rounded down to ${spendableTokens} so the total matches exactly.`}
+            </p>
 
             {activityError && (
               <p role="alert" className="text-sm text-red-400">
@@ -901,7 +851,8 @@ const AdminDashboardPage = () => {
                   className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white"
                   style={ufcFontStyle}
                 >
-                  {activityRows.length} rows · {trimmedEmail}
+                  {activityRows.length} rows · {activityTotalTokens} tokens ·{" "}
+                  {trimmedEmail}
                 </span>
               )}
             </div>
