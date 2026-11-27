@@ -10,7 +10,8 @@ export async function generatePdfReceipt(
   tokens: number,
   description: string,
   amount: number,
-  currency: string
+  currency: string,
+  isTestData = false
 ): Promise<Buffer> {
   const pdfBuffer = await renderToBuffer(
     <Receipt
@@ -21,6 +22,7 @@ export async function generatePdfReceipt(
       description={description}
       amount={amount}
       currency={currency}
+      isTestData={isTestData}
     />
   );
   return pdfBuffer;

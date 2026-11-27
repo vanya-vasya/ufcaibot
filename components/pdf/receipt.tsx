@@ -130,6 +130,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textDecoration: "none",
   },
+  testBanner: {
+    marginTop: 16,
+    padding: 8,
+    textAlign: "center",
+    fontSize: 12,
+    fontWeight: 700,
+    color: "#b45309",
+    backgroundColor: "#fef3c7",
+    borderRadius: 4,
+  },
   legal: {
     marginTop: 20,
     fontSize: 12,
@@ -156,6 +166,7 @@ const Receipt = ({
   description,
   amount,
   currency,
+  isTestData = false,
 }: {
   receiptId?: string;
   email: string;
@@ -164,6 +175,7 @@ const Receipt = ({
   description: string;
   amount: number;
   currency: string;
+  isTestData?: boolean;
 }) => (
   <Document>
     <Page size="A4" style={styles.page}>
@@ -172,6 +184,12 @@ const Receipt = ({
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
           <Image src={company.logo} style={styles.headerImage} />
         </View>
+
+        {isTestData && (
+          <Text style={styles.testBanner}>
+            TEST DATA - NOT A REAL PAYMENT
+          </Text>
+        )}
 
         <View style={styles.titleSection}>
           <Text style={styles.title}>Receipt from {company.name}</Text>
