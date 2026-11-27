@@ -7,25 +7,22 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  FileText,
+  Loader2,
 } from "lucide-react";
 
-import { FeatureContainer } from "@/components/feature-container";
-import { inputStyles, contentStyles } from "@/components/ui/feature-styles";
 import { cn } from "@/lib/utils";
 import { currencies, type Currency } from "@/constants/index";
 
-type ModelKey = "toolA" | "toolB" | "toolC";
+const UFC_HEADING_FONT =
+  '"UFC Sans Condensed", "Arial Narrow", Arial, sans-serif';
+const ufcFontStyle = { fontFamily: UFC_HEADING_FONT } as const;
 
-const MODELS: Record<ModelKey, { name: string; tokens: number }> = {
-  toolA: { name: "Fight Analysis", tokens: 25 },
-  toolB: { name: "Face-off Image", tokens: 10 },
-  toolC: { name: "Fighter Stats Infographic", tokens: 5 },
-};
-const ALL_MODELS = Object.keys(MODELS) as ModelKey[];
+const GENERATION_NAME = "Fight Analysis";
+const GENERATION_COST = 25;
 
 const PAGE_SIZE = 20;
 const MAX_PAYMENT_ROWS = 500;
-const MAX_TOKENS_SPEND = 100000;
 const DEFAULT_TOKENS_SPEND = "1500";
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ROW_ID_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -41,9 +38,9 @@ const PAYMENT_STATUSES = ["successful", "failed", "pending"] as const;
 type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
 const STATUS_BADGE_STYLES: Record<PaymentStatus, string> = {
-  successful: "bg-emerald-50 text-emerald-700 border-emerald-100",
-  failed: "bg-red-50 text-red-600 border-red-100",
-  pending: "bg-amber-50 text-amber-700 border-amber-100",
+  successful: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  failed: "bg-red-500/15 text-red-400 border-red-500/30",
+  pending: "bg-amber-500/15 text-amber-400 border-amber-500/30",
 };
 
 type SortDirection = "asc" | "desc";
@@ -66,45 +63,45 @@ interface PaymentRow {
   status: PaymentStatus;
 }
 
-interface SessionEntry {
-  tool: string;
-  tokensUsed: number;
-}
-
-interface TimedEntry extends SessionEntry {
-  ts: number;
-}
-
 const cardStyle: CSSProperties = {
   boxShadow:
-    "0 0 0 1px rgba(16,185,129,0.15), 0 4px 6px -1px rgba(0,0,0,0.05)",
+    "0 0 0 1px rgba(255,255,255,0.3), 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)",
 };
+const cardClassName = "rounded-2xl bg-[#1a1a1a] shadow-lg";
 
-const cardClassName = "rounded-xl border border-gray-200 bg-white shadow-sm";
-const primaryButtonClassName =
-  "inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm";
-const accentButtonClassName =
-  "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md hover:from-green-400 hover:to-emerald-500 hover:shadow-emerald-500/30 font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]";
-const outlineButtonClassName =
-  "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:text-black font-medium transition-colors";
-const disabledButtonClassName =
-  "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none";
+const fieldInputClassName =
+  "w-full bg-[#2a2a2a] border-2 border-[#666] rounded-lg px-4 py-2 text-sm text-white outline-none focus:border-[#888] focus:shadow-[0_0_0_2px_rgba(255,255,255,0.2)] transition-colors";
 const cellInputClassName =
-  "w-full bg-gray-100 border border-gray-200 rounded-md px-2 py-1.5 text-sm text-gray-900 outline-none focus:border-emerald-500";
+  "w-full bg-[#2a2a2a] border-2 border-[#666] rounded-md px-2 py-1.5 text-sm text-white outline-none focus:border-[#888] transition-colors";
 const headerCellClassName =
-  "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500";
+  "px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-white/60";
+
+interface UfcButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "solid" | "outline";
+}
+
+const UfcButton = ({
+  variant = "solid",
+  className,
+  style,
+  ...props
+}: UfcButtonProps) => (
+  <button
+    style={{ ...ufcFontStyle, ...style }}
+    className={cn(
+      "inline-flex items-center justify-center gap-2 rounded bg-black border-2 font-bold uppercase tracking-wider transition-colors duration-200",
+      variant === "solid"
+        ? "border-white text-white hover:bg-gray-900"
+        : "border-[#666] bg-transparent text-white hover:border-white",
+      "disabled:cursor-not-allowed",
+      className,
+    )}
+    {...props}
+  />
+);
 
 const rand = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min + 1)) + min;
-
-const shuffle = <T,>(items: T[]): T[] => {
-  const copy = [...items];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = rand(0, i);
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-};
 
 const parseDate = (value: string): Date | null => {
   const parts = value.trim().split(".");
@@ -131,33 +128,23 @@ const generateId = (): string =>
   "cmp" +
   Array.from(
     { length: 22 },
-    () => ROW_ID_CHARS[rand(0, ROW_ID_CHARS.length - 1)]
+    () => ROW_ID_CHARS[rand(0, ROW_ID_CHARS.length - 1)],
   ).join("");
 
 const generateActivity = (
   tokensTarget: number,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ): ActivityRow[] => {
-  let remaining = tokensTarget;
-  const sessions: SessionEntry[][] = [];
+  const totalUses = Math.floor(tokensTarget / GENERATION_COST);
+  if (totalUses <= 0) return [];
 
-  while (remaining > 0) {
-    const sessionTools = shuffle(ALL_MODELS).slice(0, rand(1, 3));
-    const session: SessionEntry[] = [];
-
-    for (const toolKey of sessionTools) {
-      const model = MODELS[toolKey];
-      const uses = rand(1, 4);
-      for (let use = 0; use < uses && remaining > 0; use++) {
-        const tokensUsed = Math.min(model.tokens, remaining);
-        remaining -= tokensUsed;
-        session.push({ tool: model.name, tokensUsed });
-      }
-      if (remaining <= 0) break;
-    }
-
-    if (session.length > 0) sessions.push(session);
+  const sessions: number[] = [];
+  let remainingUses = totalUses;
+  while (remainingUses > 0) {
+    const uses = Math.min(rand(1, 4), remainingUses);
+    sessions.push(uses);
+    remainingUses -= uses;
   }
 
   const startMs = startDate.getTime();
@@ -167,36 +154,35 @@ const generateActivity = (
     endDate.getDate(),
     23,
     59,
-    59
+    59,
   ).getTime();
   const rangeMs = Math.max(endMs - startMs, 60_000);
   const slotMs = rangeMs / sessions.length;
   const maxStartMinutes = Math.max(0, Math.floor((slotMs * 0.25) / 60_000));
 
-  const timedEntries: TimedEntry[] = [];
-  sessions.forEach((session, sessionIndex) => {
+  const timestamps: number[] = [];
+  sessions.forEach((uses, sessionIndex) => {
     const slotStart = startMs + sessionIndex * slotMs;
     let cursor =
       slotStart + rand(0, maxStartMinutes) * 60_000 + rand(0, 59) * 1000;
 
-    session.forEach((entry) => {
-      const ts = Math.min(cursor + rand(0, 59) * 1000, endMs);
-      timedEntries.push({ ...entry, ts });
+    for (let use = 0; use < uses; use++) {
+      timestamps.push(Math.min(cursor + rand(0, 59) * 1000, endMs));
       cursor += rand(2, 25) * 60_000;
-    });
+    }
   });
 
-  timedEntries.sort((a, b) => a.ts - b.ts);
+  timestamps.sort((a, b) => a - b);
 
   let runningTotal = 0;
-  return timedEntries.map((entry, seq) => {
-    runningTotal += entry.tokensUsed;
+  return timestamps.map((ts, seq) => {
+    runningTotal += GENERATION_COST;
     return {
       seq,
-      ts: entry.ts,
-      date: formatDate(new Date(entry.ts)),
-      tool: entry.tool,
-      tokensUsed: entry.tokensUsed,
+      ts,
+      date: formatDate(new Date(ts)),
+      tool: GENERATION_NAME,
+      tokensUsed: GENERATION_COST,
       tokensTotal: runningTotal,
     };
   });
@@ -224,8 +210,8 @@ const Pagination = ({ page, total, onChange }: PaginationProps) => {
   const isLastPage = page === total;
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
-      <span className="text-xs text-gray-400">
+    <div className="flex items-center justify-between border-t border-white/10 px-4 py-3">
+      <span className="text-xs text-white/50">
         Page {page} of {total}
       </span>
       <div className="flex items-center gap-1">
@@ -237,7 +223,7 @@ const Pagination = ({ page, total, onChange }: PaginationProps) => {
           onClick={() => onChange(page - 1)}
           className={cn(
             pageButtonClassName,
-            "text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+            "text-white/70 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent",
           )}
         >
           <ChevronLeft className="h-4 w-4" />
@@ -247,7 +233,7 @@ const Pagination = ({ page, total, onChange }: PaginationProps) => {
             return (
               <span
                 key={`ellipsis-${index}`}
-                className="flex h-8 w-8 items-center justify-center text-sm text-gray-400"
+                className="flex h-8 w-8 items-center justify-center text-sm text-white/40"
               >
                 …
               </span>
@@ -264,8 +250,8 @@ const Pagination = ({ page, total, onChange }: PaginationProps) => {
               className={cn(
                 pageButtonClassName,
                 isActive
-                  ? "bg-emerald-600 text-white"
-                  : "text-gray-600 hover:bg-gray-100"
+                  ? "bg-white text-black"
+                  : "text-white/70 hover:bg-white/10",
               )}
             >
               {item}
@@ -280,7 +266,7 @@ const Pagination = ({ page, total, onChange }: PaginationProps) => {
           onClick={() => onChange(page + 1)}
           className={cn(
             pageButtonClassName,
-            "text-gray-500 hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
+            "text-white/70 hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent",
           )}
         >
           <ChevronRight className="h-4 w-4" />
@@ -297,10 +283,8 @@ interface LabeledInputProps {
 
 const LabeledInput = ({ label, children }: LabeledInputProps) => (
   <label className="block space-y-1.5">
-    <span className="text-sm font-medium text-gray-700">{label}</span>
-    <div className={cn(inputStyles.container, "p-0 px-3 py-2.5 md:px-4")}>
-      {children}
-    </div>
+    <span className="text-sm font-medium text-white/70">{label}</span>
+    {children}
   </label>
 );
 
@@ -322,6 +306,7 @@ const AdminDashboardPage = () => {
   const [paymentRows, setPaymentRows] = useState<PaymentRow[]>([]);
   const [paymentLocked, setPaymentLocked] = useState(false);
   const [paymentPage, setPaymentPage] = useState(1);
+  const [receiptBusyId, setReceiptBusyId] = useState<string | null>(null);
 
   const trimmedEmail = email.trim();
   const isEmailValid = EMAIL_PATTERN.test(trimmedEmail);
@@ -333,7 +318,6 @@ const AdminDashboardPage = () => {
     isEmailValid &&
     Number.isFinite(tokensTarget) &&
     tokensTarget > 0 &&
-    tokensTarget <= MAX_TOKENS_SPEND &&
     parsedStart !== null &&
     parsedEnd !== null &&
     parsedEnd.getTime() >= parsedStart.getTime();
@@ -345,18 +329,18 @@ const AdminDashboardPage = () => {
   const sortedActivityRows = useMemo(
     () =>
       [...activityRows].sort((a, b) =>
-        activitySortDir === "asc" ? a.seq - b.seq : b.seq - a.seq
+        activitySortDir === "asc" ? a.seq - b.seq : b.seq - a.seq,
       ),
-    [activityRows, activitySortDir]
+    [activityRows, activitySortDir],
   );
 
   const visibleActivityRows = sortedActivityRows.slice(
     (activityPage - 1) * PAGE_SIZE,
-    activityPage * PAGE_SIZE
+    activityPage * PAGE_SIZE,
   );
   const visiblePaymentRows = paymentRows.slice(
     (paymentPage - 1) * PAGE_SIZE,
-    paymentPage * PAGE_SIZE
+    paymentPage * PAGE_SIZE,
   );
 
   const handleGenerateActivity = () => {
@@ -372,14 +356,16 @@ const AdminDashboardPage = () => {
       setActivityError("Tokens spend must be greater than 0.");
       return;
     }
-    if (tokensTarget > MAX_TOKENS_SPEND) {
-      setActivityError(`Tokens spend must not exceed ${MAX_TOKENS_SPEND}.`);
+    if (tokensTarget < GENERATION_COST) {
+      setActivityError(
+        `Tokens spend must be at least ${GENERATION_COST} (one generation).`,
+      );
       return;
     }
 
     setActivityError("");
     setActivityRows(
-      generateActivity(Math.floor(tokensTarget), parsedStart, parsedEnd)
+      generateActivity(Math.floor(tokensTarget), parsedStart, parsedEnd),
     );
     setActivityGenerated(true);
     setActivityPage(1);
@@ -406,7 +392,7 @@ const AdminDashboardPage = () => {
 
     const count = Math.min(
       Math.max(Math.floor(parsedRowsCount), 1),
-      MAX_PAYMENT_ROWS
+      MAX_PAYMENT_ROWS,
     );
     const today = formatDate(new Date());
 
@@ -418,7 +404,7 @@ const AdminDashboardPage = () => {
         currency: DEFAULT_PAYMENT.currency,
         tokens: DEFAULT_PAYMENT.tokens,
         status: DEFAULT_PAYMENT.status,
-      }))
+      })),
     );
     setPaymentPage(1);
     setPaymentLocked(false);
@@ -427,13 +413,13 @@ const AdminDashboardPage = () => {
   const handleUpdateRow = <K extends keyof PaymentRow>(
     globalIndex: number,
     field: K,
-    value: PaymentRow[K]
+    value: PaymentRow[K],
   ) => {
     if (globalIndex < 0) return;
     setPaymentRows((rows) =>
       rows.map((row, index) =>
-        index === globalIndex ? { ...row, [field]: value } : row
-      )
+        index === globalIndex ? { ...row, [field]: value } : row,
+      ),
     );
   };
 
@@ -442,24 +428,67 @@ const AdminDashboardPage = () => {
     setPaymentPage(1);
   };
 
+  const handleGenerateReceipt = async (row: PaymentRow) => {
+    if (receiptBusyId) return;
+    setReceiptBusyId(row.id);
+    try {
+      const [{ pdf }, { default: DemoReceipt }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("@/components/pdf/demo-receipt"),
+      ]);
+      const blob = await pdf(
+        <DemoReceipt
+          receiptId={row.id}
+          email={trimmedEmail}
+          date={row.date}
+          tokens={Number(row.tokens) || 0}
+          description={`ufcaibot Tokens Purchase (${row.tokens} Tokens)`}
+          amount={(Number(row.amount) || 0) * 100}
+          currency={row.currency}
+        />,
+      ).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `receipt-${row.id}.pdf`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    } catch (error) {
+      console.error("[Generate PDF]", error);
+    } finally {
+      setReceiptBusyId(null);
+    }
+  };
+
   const showPaymentEditor =
     configVisible && paymentRows.length > 0 && !paymentLocked;
   const showPaymentHistory = paymentLocked && paymentRows.length > 0;
   const showActivity = activityGenerated;
 
   return (
-    <FeatureContainer
-      title="Account Overview"
-      description="View account activity, usage history, and transaction records for the selected user."
-      iconName="SlidersHorizontal"
-      gradient="from-green-500 to-emerald-600"
-    >
-      <div className={cn(contentStyles.base, "mx-auto max-w-5xl space-y-8")}>
+    <div className="rounded-2xl bg-[#0a0a0a] px-4 py-12 md:py-16">
+      <div className="mx-auto max-w-5xl space-y-8">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <h1
+            className="text-3xl font-bold leading-tight text-white md:text-4xl"
+            style={ufcFontStyle}
+          >
+            Account Overview
+          </h1>
+          <p
+            className="max-w-2xl text-sm leading-relaxed text-white/70 md:text-base"
+            style={ufcFontStyle}
+          >
+            View account activity, usage history, and transaction records for
+            the selected user.
+          </p>
+        </div>
+
         <div className="text-center">
           <Link
             href="/dashboard"
             aria-label="Back to dashboard"
-            className="text-sm text-gray-400 transition-colors hover:text-black"
+            className="text-sm text-white/50 transition-colors hover:text-white"
           >
             ← Dashboard
           </Link>
@@ -471,14 +500,14 @@ const AdminDashboardPage = () => {
             style={cardStyle}
           >
             <div className="flex items-center justify-between">
-              <h2 className="font-heading font-semibold text-gray-900">
+              <h2 className="text-xl font-bold text-white" style={ufcFontStyle}>
                 Activity configuration
               </h2>
               <button
                 type="button"
                 aria-label="Hide configuration"
                 onClick={() => setConfigVisible(false)}
-                className="text-sm text-gray-400 transition-colors hover:text-gray-900"
+                className="text-sm text-white/50 transition-colors hover:text-white"
               >
                 Hide
               </button>
@@ -492,7 +521,7 @@ const AdminDashboardPage = () => {
                   placeholder="user@example.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  className={cn(inputStyles.base, "w-full")}
+                  className={fieldInputClassName}
                 />
               </LabeledInput>
               <LabeledInput label="Tokens spend">
@@ -502,7 +531,7 @@ const AdminDashboardPage = () => {
                   aria-label="Tokens spend"
                   value={tokensSpend}
                   onChange={(event) => setTokensSpend(event.target.value)}
-                  className={cn(inputStyles.base, "w-full")}
+                  className={fieldInputClassName}
                 />
               </LabeledInput>
               <LabeledInput label="First date">
@@ -513,7 +542,7 @@ const AdminDashboardPage = () => {
                   placeholder="DD.MM.YYYY"
                   value={firstDate}
                   onChange={(event) => setFirstDate(event.target.value)}
-                  className={cn(inputStyles.base, "w-full")}
+                  className={fieldInputClassName}
                 />
               </LabeledInput>
               <LabeledInput label="Last date">
@@ -524,41 +553,41 @@ const AdminDashboardPage = () => {
                   placeholder="DD.MM.YYYY"
                   value={lastDate}
                   onChange={(event) => setLastDate(event.target.value)}
-                  className={cn(inputStyles.base, "w-full")}
+                  className={fieldInputClassName}
                 />
               </LabeledInput>
             </div>
 
             {activityError && (
-              <p role="alert" className="text-sm text-red-500">
+              <p role="alert" className="text-sm text-red-400">
                 {activityError}
               </p>
             )}
 
             <div className="flex flex-wrap gap-3">
-              <button
+              <UfcButton
                 type="button"
                 aria-label="Generate activity"
                 aria-disabled={!canGenerateActivity}
                 disabled={!canGenerateActivity}
                 onClick={handleGenerateActivity}
                 className={cn(
-                  primaryButtonClassName,
-                  canGenerateActivity
-                    ? accentButtonClassName
-                    : disabledButtonClassName
+                  "px-6 py-3",
+                  !canGenerateActivity &&
+                    "border-white/30 bg-black/40 text-white/40 hover:bg-black/40",
                 )}
               >
                 Generate activity
-              </button>
-              <button
+              </UfcButton>
+              <UfcButton
                 type="button"
+                variant="outline"
                 aria-label="Reset activity"
                 onClick={handleResetActivity}
-                className={cn(primaryButtonClassName, outlineButtonClassName)}
+                className="px-6 py-3"
               >
                 Reset
-              </button>
+              </UfcButton>
             </div>
           </section>
         )}
@@ -568,46 +597,38 @@ const AdminDashboardPage = () => {
             className={cn(cardClassName, "space-y-5 p-6")}
             style={cardStyle}
           >
-            <h2 className="font-heading font-semibold text-gray-900">
+            <h2 className="text-xl font-bold text-white" style={ufcFontStyle}>
               Payment configuration
             </h2>
             <div className="flex flex-wrap items-end gap-4">
               <label className="block space-y-1.5">
-                <span className="text-sm font-medium text-gray-700">
+                <span className="text-sm font-medium text-white/70">
                   Rows count
                 </span>
-                <div
-                  className={cn(
-                    inputStyles.container,
-                    "w-32 p-0 px-3 py-2.5 md:px-3"
-                  )}
-                >
-                  <input
-                    type="number"
-                    min={1}
-                    max={MAX_PAYMENT_ROWS}
-                    aria-label="Rows count"
-                    value={rowsCount}
-                    onChange={(event) => setRowsCount(event.target.value)}
-                    className={cn(inputStyles.base, "w-full")}
-                  />
-                </div>
+                <input
+                  type="number"
+                  min={1}
+                  max={MAX_PAYMENT_ROWS}
+                  aria-label="Rows count"
+                  value={rowsCount}
+                  onChange={(event) => setRowsCount(event.target.value)}
+                  className={cn(fieldInputClassName, "w-32")}
+                />
               </label>
-              <button
+              <UfcButton
                 type="button"
                 aria-label="Generate rows"
                 aria-disabled={!canGenerateRows}
                 disabled={!canGenerateRows}
                 onClick={handleGenerateRows}
                 className={cn(
-                  primaryButtonClassName,
-                  canGenerateRows
-                    ? accentButtonClassName
-                    : disabledButtonClassName
+                  "px-6 py-3",
+                  !canGenerateRows &&
+                    "border-white/30 bg-black/40 text-white/40 hover:bg-black/40",
                 )}
               >
                 Generate rows
-              </button>
+              </UfcButton>
             </div>
           </section>
         )}
@@ -618,24 +639,22 @@ const AdminDashboardPage = () => {
             style={cardStyle}
           >
             <div className="flex items-center justify-between p-6">
-              <h2 className="font-heading font-semibold text-gray-900">
+              <h2 className="text-xl font-bold text-white" style={ufcFontStyle}>
                 Payment rows —{" "}
-                <span className="text-emerald-600">
-                  {paymentRows.length} rows
-                </span>
+                <span className="text-white">{paymentRows.length} rows</span>
               </h2>
-              <button
+              <UfcButton
                 type="button"
                 aria-label="Create table"
                 onClick={handleCreateTable}
-                className={cn(primaryButtonClassName, accentButtonClassName)}
+                className="px-6 py-3"
               >
                 Create table
-              </button>
+              </UfcButton>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-100">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-white/10">
+                <thead className="bg-white/5">
                   <tr>
                     <th className={headerCellClassName}>Date</th>
                     <th className={headerCellClassName}>Amount</th>
@@ -644,10 +663,10 @@ const AdminDashboardPage = () => {
                     <th className={headerCellClassName}>Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-white/10">
                   {visiblePaymentRows.map((row) => {
                     const globalIndex = paymentRows.findIndex(
-                      (paymentRow) => paymentRow.id === row.id
+                      (paymentRow) => paymentRow.id === row.id,
                     );
                     return (
                       <tr key={row.id}>
@@ -660,7 +679,7 @@ const AdminDashboardPage = () => {
                               handleUpdateRow(
                                 globalIndex,
                                 "date",
-                                event.target.value
+                                event.target.value,
                               )
                             }
                             className={cellInputClassName}
@@ -676,7 +695,7 @@ const AdminDashboardPage = () => {
                               handleUpdateRow(
                                 globalIndex,
                                 "amount",
-                                event.target.value
+                                event.target.value,
                               )
                             }
                             className={cellInputClassName}
@@ -691,12 +710,12 @@ const AdminDashboardPage = () => {
                                 handleUpdateRow(
                                   globalIndex,
                                   "currency",
-                                  event.target.value as Currency
+                                  event.target.value as Currency,
                                 )
                               }
                               className={cn(
                                 cellInputClassName,
-                                "appearance-none pr-7"
+                                "appearance-none pr-7",
                               )}
                             >
                               {currencies.map((currency) => (
@@ -705,7 +724,7 @@ const AdminDashboardPage = () => {
                                 </option>
                               ))}
                             </select>
-                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
                           </div>
                         </td>
                         <td className="px-4 py-2">
@@ -717,7 +736,7 @@ const AdminDashboardPage = () => {
                               handleUpdateRow(
                                 globalIndex,
                                 "tokens",
-                                event.target.value
+                                event.target.value,
                               )
                             }
                             className={cellInputClassName}
@@ -732,12 +751,12 @@ const AdminDashboardPage = () => {
                                 handleUpdateRow(
                                   globalIndex,
                                   "status",
-                                  event.target.value as PaymentStatus
+                                  event.target.value as PaymentStatus,
                                 )
                               }
                               className={cn(
                                 cellInputClassName,
-                                "appearance-none pr-7"
+                                "appearance-none pr-7",
                               )}
                             >
                               {PAYMENT_STATUSES.map((status) => (
@@ -746,7 +765,7 @@ const AdminDashboardPage = () => {
                                 </option>
                               ))}
                             </select>
-                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
                           </div>
                         </td>
                       </tr>
@@ -770,23 +789,29 @@ const AdminDashboardPage = () => {
           >
             <div className="flex flex-wrap items-center justify-between gap-3 p-6">
               <div>
-                <h2 className="font-heading font-semibold text-gray-900">
+                <h2
+                  className="text-xl font-bold text-white"
+                  style={ufcFontStyle}
+                >
                   Payment History —{" "}
-                  <span className="text-emerald-600">
+                  <span className="text-white">
                     {paymentRows.length} records
                   </span>
                 </h2>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-white/50" style={ufcFontStyle}>
                   Payment transactions linked to this account
                 </p>
               </div>
-              <span className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
+              <span
+                className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white"
+                style={ufcFontStyle}
+              >
                 {trimmedEmail}
               </span>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-100">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-white/10">
+                <thead className="bg-white/5">
                   <tr>
                     <th className={headerCellClassName}>ID</th>
                     <th className={headerCellClassName}>Date</th>
@@ -794,38 +819,60 @@ const AdminDashboardPage = () => {
                     <th className={headerCellClassName}>Currency</th>
                     <th className={headerCellClassName}>Tokens</th>
                     <th className={headerCellClassName}>Status</th>
+                    <th className={headerCellClassName}>Receipt</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y divide-white/10">
                   {visiblePaymentRows.map((row) => (
                     <tr
                       key={row.id}
-                      className="transition-colors hover:bg-gray-50"
+                      className="transition-colors hover:bg-white/5"
                     >
-                      <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-gray-500">
+                      <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-white/50">
                         {row.id}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                      <td className="whitespace-nowrap px-4 py-3 text-sm text-white/80">
                         {row.date}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                      <td className="whitespace-nowrap px-4 py-3 text-sm text-white/80">
                         {(Number(row.amount) || 0).toFixed(2)}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                      <td className="whitespace-nowrap px-4 py-3 text-sm text-white/80">
                         {row.currency}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                      <td className="whitespace-nowrap px-4 py-3 text-sm text-white/80">
                         {row.tokens}
                       </td>
                       <td className="whitespace-nowrap px-4 py-3">
                         <span
                           className={cn(
                             "inline-block rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize",
-                            STATUS_BADGE_STYLES[row.status]
+                            STATUS_BADGE_STYLES[row.status],
                           )}
                         >
                           {row.status}
                         </span>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3">
+                        {row.status === "successful" ? (
+                          <UfcButton
+                            type="button"
+                            aria-label={`Generate PDF receipt for payment ${row.id}`}
+                            aria-disabled={receiptBusyId === row.id}
+                            disabled={receiptBusyId === row.id}
+                            onClick={() => handleGenerateReceipt(row)}
+                            className="px-3 py-1.5 text-xs"
+                          >
+                            {receiptBusyId === row.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <FileText className="h-3.5 w-3.5" />
+                            )}
+                            Generate PDF
+                          </UfcButton>
+                        ) : (
+                          <span className="text-sm text-white/30">—</span>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -846,26 +893,29 @@ const AdminDashboardPage = () => {
             style={cardStyle}
           >
             <div className="flex flex-wrap items-center justify-between gap-3 p-6">
-              <h2 className="font-heading font-semibold text-gray-900">
+              <h2 className="text-xl font-bold text-white" style={ufcFontStyle}>
                 User activity
               </h2>
               {activityRows.length > 0 && (
-                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                <span
+                  className="rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white"
+                  style={ufcFontStyle}
+                >
                   {activityRows.length} rows · {trimmedEmail}
                 </span>
               )}
             </div>
 
             {activityRows.length === 0 ? (
-              <p className="px-6 pb-6 text-sm text-gray-500">
+              <p className="px-6 pb-6 text-sm text-white/60">
                 No activity could be generated. Try a wider date range or more
                 tokens.
               </p>
             ) : (
               <>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-100">
-                    <thead className="bg-gray-50">
+                  <table className="min-w-full divide-y divide-white/10">
+                    <thead className="bg-white/5">
                       <tr>
                         <th className={headerCellClassName}>#</th>
                         <th
@@ -880,7 +930,8 @@ const AdminDashboardPage = () => {
                             type="button"
                             aria-label="Sort by date"
                             onClick={handleToggleActivitySort}
-                            className="inline-flex items-center gap-1 uppercase tracking-wide hover:text-gray-900"
+                            className="inline-flex items-center gap-1 uppercase tracking-wider hover:text-white"
+                            style={ufcFontStyle}
                           >
                             Date
                             {activitySortDir === "asc" ? (
@@ -895,27 +946,30 @@ const AdminDashboardPage = () => {
                         <th className={headerCellClassName}>Total spent</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100">
+                    <tbody className="divide-y divide-white/10">
                       {visibleActivityRows.map((row, index) => (
                         <tr
                           key={row.seq}
-                          className="transition-colors hover:bg-gray-50"
+                          className="transition-colors hover:bg-white/5"
                         >
-                          <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-400">
+                          <td className="whitespace-nowrap px-4 py-3 text-sm text-white/40">
                             {(activityPage - 1) * PAGE_SIZE + index + 1}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                          <td className="whitespace-nowrap px-4 py-3 text-sm text-white/80">
                             {row.date}
                           </td>
                           <td className="whitespace-nowrap px-4 py-3">
-                            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
+                            <span
+                              className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium text-white"
+                              style={ufcFontStyle}
+                            >
                               {row.tool}
                             </span>
                           </td>
-                          <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
+                          <td className="whitespace-nowrap px-4 py-3 text-sm text-white/80">
                             {row.tokensUsed}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-emerald-600">
+                          <td className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-white">
                             {row.tokensTotal}
                           </td>
                         </tr>
@@ -933,7 +987,7 @@ const AdminDashboardPage = () => {
           </section>
         )}
       </div>
-    </FeatureContainer>
+    </div>
   );
 };
 
