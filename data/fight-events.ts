@@ -93,8 +93,8 @@ export const UPCOMING_EVENTS: UpcomingEvent[] = [
       datetime: "Sun, Dec 13 / 9:00 AM GMT+7 / Main Card",
       venue: "T-Mobile Arena",
       location: "Las Vegas, NV United States",
-      imageA: "/images/fighters/fighter-oliveira.jpg",
-      imageB: "/images/fighters/fighter-diego-lopes.jpg",
+      imageA: "/images/fighters/fighter-oliveira-335.jpg",
+      imageB: "/images/fighters/fighter-lopes-335.jpg",
     },
     fights: [
       { fighterA: "Charles Oliveira", fighterB: "Diego Lopes" },
