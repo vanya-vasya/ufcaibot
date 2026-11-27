@@ -7,18 +7,10 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronUp,
-  Database,
-  FileText,
-  Loader2,
-  Trash2,
 } from "lucide-react";
 
 import { FeatureContainer } from "@/components/feature-container";
-import {
-  inputStyles,
-  buttonStyles,
-  contentStyles,
-} from "@/components/ui/feature-styles";
+import { inputStyles, contentStyles } from "@/components/ui/feature-styles";
 import { cn } from "@/lib/utils";
 import { currencies, type Currency } from "@/constants/index";
 
@@ -83,20 +75,22 @@ interface TimedEntry extends SessionEntry {
   ts: number;
 }
 
-type SaveFeedback = { kind: "success" | "error"; message: string } | null;
-
 const cardStyle: CSSProperties = {
   boxShadow:
-    "0 0 0 1px rgba(129,140,248,0.15), 0 4px 6px -1px rgba(0,0,0,0.05)",
+    "0 0 0 1px rgba(16,185,129,0.15), 0 4px 6px -1px rgba(0,0,0,0.05)",
 };
 
 const cardClassName = "rounded-xl border border-gray-200 bg-white shadow-sm";
 const primaryButtonClassName =
   "inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm";
+const accentButtonClassName =
+  "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-md hover:from-green-400 hover:to-emerald-500 hover:shadow-emerald-500/30 font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]";
+const outlineButtonClassName =
+  "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:text-black font-medium transition-colors";
 const disabledButtonClassName =
   "bg-gray-200 text-gray-400 cursor-not-allowed shadow-none";
 const cellInputClassName =
-  "w-full bg-gray-100 border border-gray-200 rounded-md px-2 py-1.5 text-sm text-gray-900 outline-none focus:border-indigo-500";
+  "w-full bg-gray-100 border border-gray-200 rounded-md px-2 py-1.5 text-sm text-gray-900 outline-none focus:border-emerald-500";
 const headerCellClassName =
   "px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500";
 
@@ -270,7 +264,7 @@ const Pagination = ({ page, total, onChange }: PaginationProps) => {
               className={cn(
                 pageButtonClassName,
                 isActive
-                  ? "bg-indigo-600 text-white"
+                  ? "bg-emerald-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               )}
             >
@@ -310,12 +304,6 @@ const LabeledInput = ({ label, children }: LabeledInputProps) => (
   </label>
 );
 
-const TestDataBadge = () => (
-  <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700">
-    Test data
-  </span>
-);
-
 const getTotalPages = (count: number): number =>
   Math.max(1, Math.ceil(count / PAGE_SIZE));
 
@@ -329,15 +317,11 @@ const AdminDashboardPage = () => {
   const [activityError, setActivityError] = useState("");
   const [activityGenerated, setActivityGenerated] = useState(false);
   const [activityPage, setActivityPage] = useState(1);
-  const [activitySortDir, setActivitySortDir] =
-    useState<SortDirection>("desc");
+  const [activitySortDir, setActivitySortDir] = useState<SortDirection>("desc");
   const [rowsCount, setRowsCount] = useState("5");
   const [paymentRows, setPaymentRows] = useState<PaymentRow[]>([]);
   const [paymentLocked, setPaymentLocked] = useState(false);
   const [paymentPage, setPaymentPage] = useState(1);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [saveFeedback, setSaveFeedback] = useState<SaveFeedback>(null);
 
   const trimmedEmail = email.trim();
   const isEmailValid = EMAIL_PATTERN.test(trimmedEmail);
@@ -355,19 +339,8 @@ const AdminDashboardPage = () => {
     parsedEnd.getTime() >= parsedStart.getTime();
 
   const parsedRowsCount = Number(rowsCount);
-  const canGenerateRows = Number.isFinite(parsedRowsCount) && parsedRowsCount > 0;
-
-  const purchasedTokens = paymentRows
-    .filter((row) => row.status === "successful")
-    .reduce((sum, row) => sum + (Number(row.tokens) || 0), 0);
-  const spentTokens = activityRows.reduce((sum, row) => sum + row.tokensUsed, 0);
-
-  const canSaveToDatabase =
-    isEmailValid &&
-    paymentLocked &&
-    paymentRows.length > 0 &&
-    activityGenerated &&
-    !isSaving;
+  const canGenerateRows =
+    Number.isFinite(parsedRowsCount) && parsedRowsCount > 0;
 
   const sortedActivityRows = useMemo(
     () =>
@@ -385,11 +358,6 @@ const AdminDashboardPage = () => {
     (paymentPage - 1) * PAGE_SIZE,
     paymentPage * PAGE_SIZE
   );
-
-  const invalidateSavedState = () => {
-    setIsSaved(false);
-    setSaveFeedback(null);
-  };
 
   const handleGenerateActivity = () => {
     if (!parsedStart || !parsedEnd) {
@@ -415,7 +383,6 @@ const AdminDashboardPage = () => {
     );
     setActivityGenerated(true);
     setActivityPage(1);
-    invalidateSavedState();
   };
 
   const handleResetActivity = () => {
@@ -427,7 +394,6 @@ const AdminDashboardPage = () => {
     setActivityError("");
     setActivityGenerated(false);
     setActivityPage(1);
-    invalidateSavedState();
   };
 
   const handleToggleActivitySort = () => {
@@ -456,7 +422,6 @@ const AdminDashboardPage = () => {
     );
     setPaymentPage(1);
     setPaymentLocked(false);
-    invalidateSavedState();
   };
 
   const handleUpdateRow = <K extends keyof PaymentRow>(
@@ -475,106 +440,6 @@ const AdminDashboardPage = () => {
   const handleCreateTable = () => {
     setPaymentLocked(true);
     setPaymentPage(1);
-    invalidateSavedState();
-  };
-
-  const handleSaveToDatabase = async () => {
-    const invalidRow = paymentRows.find(
-      (row) =>
-        parseDate(row.date) === null ||
-        !Number.isFinite(Number(row.amount)) ||
-        Number(row.amount) < 0 ||
-        !Number.isInteger(Number(row.tokens)) ||
-        Number(row.tokens) < 0
-    );
-    if (invalidRow) {
-      setSaveFeedback({
-        kind: "error",
-        message: `Payment ${invalidRow.id} has an invalid date, amount or tokens value.`,
-      });
-      return;
-    }
-    if (spentTokens > purchasedTokens) {
-      setSaveFeedback({
-        kind: "error",
-        message: `Tokens spent (${spentTokens}) exceed tokens from successful payments (${purchasedTokens}).`,
-      });
-      return;
-    }
-
-    setIsSaving(true);
-    setSaveFeedback(null);
-    try {
-      const response = await fetch("/api/admin/test-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: trimmedEmail,
-          payments: paymentRows.map((row) => ({
-            id: row.id,
-            date: row.date,
-            amount: Number(row.amount),
-            currency: row.currency,
-            tokens: Number(row.tokens),
-            status: row.status,
-          })),
-          activity: activityRows.map((row) => ({
-            ts: row.ts,
-            tool: row.tool,
-            tokensUsed: row.tokensUsed,
-          })),
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        setSaveFeedback({
-          kind: "error",
-          message: result.error ?? `Request failed (${response.status}).`,
-        });
-        return;
-      }
-
-      setIsSaved(true);
-      setSaveFeedback({
-        kind: "success",
-        message: `Saved ${result.paymentsSaved} payments and ${result.activitySaved} activity rows. Balance: ${result.remaining} of ${result.available} tokens left.`,
-      });
-    } catch {
-      setSaveFeedback({ kind: "error", message: "Network error." });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handlePurgeTestUser = async () => {
-    setIsSaving(true);
-    setSaveFeedback(null);
-    try {
-      const response = await fetch(
-        `/api/admin/test-data?email=${encodeURIComponent(trimmedEmail)}`,
-        { method: "DELETE" }
-      );
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        setSaveFeedback({
-          kind: "error",
-          message: result.error ?? `Request failed (${response.status}).`,
-        });
-        return;
-      }
-
-      setIsSaved(false);
-      setSaveFeedback({
-        kind: "success",
-        message: `Test user removed with ${result.deletedTransactions} transactions.`,
-      });
-    } catch {
-      setSaveFeedback({ kind: "error", message: "Network error." });
-    } finally {
-      setIsSaving(false);
-    }
   };
 
   const showPaymentEditor =
@@ -587,7 +452,7 @@ const AdminDashboardPage = () => {
       title="Account Overview"
       description="View account activity, usage history, and transaction records for the selected user."
       iconName="SlidersHorizontal"
-      gradient="from-cyan-400 via-blue-500 to-indigo-600"
+      gradient="from-green-500 to-emerald-600"
     >
       <div className={cn(contentStyles.base, "mx-auto max-w-5xl space-y-8")}>
         <div className="text-center">
@@ -680,7 +545,7 @@ const AdminDashboardPage = () => {
                 className={cn(
                   primaryButtonClassName,
                   canGenerateActivity
-                    ? buttonStyles.base
+                    ? accentButtonClassName
                     : disabledButtonClassName
                 )}
               >
@@ -690,7 +555,7 @@ const AdminDashboardPage = () => {
                 type="button"
                 aria-label="Reset activity"
                 onClick={handleResetActivity}
-                className={cn(primaryButtonClassName, buttonStyles.outline)}
+                className={cn(primaryButtonClassName, outlineButtonClassName)}
               >
                 Reset
               </button>
@@ -736,7 +601,9 @@ const AdminDashboardPage = () => {
                 onClick={handleGenerateRows}
                 className={cn(
                   primaryButtonClassName,
-                  canGenerateRows ? buttonStyles.base : disabledButtonClassName
+                  canGenerateRows
+                    ? accentButtonClassName
+                    : disabledButtonClassName
                 )}
               >
                 Generate rows
@@ -746,11 +613,14 @@ const AdminDashboardPage = () => {
         )}
 
         {showPaymentEditor && (
-          <section className={cn(cardClassName, "overflow-hidden")} style={cardStyle}>
+          <section
+            className={cn(cardClassName, "overflow-hidden")}
+            style={cardStyle}
+          >
             <div className="flex items-center justify-between p-6">
               <h2 className="font-heading font-semibold text-gray-900">
                 Payment rows —{" "}
-                <span className="text-indigo-600">
+                <span className="text-emerald-600">
                   {paymentRows.length} rows
                 </span>
               </h2>
@@ -758,7 +628,7 @@ const AdminDashboardPage = () => {
                 type="button"
                 aria-label="Create table"
                 onClick={handleCreateTable}
-                className={cn(primaryButtonClassName, buttonStyles.base)}
+                className={cn(primaryButtonClassName, accentButtonClassName)}
               >
                 Create table
               </button>
@@ -787,7 +657,11 @@ const AdminDashboardPage = () => {
                             aria-label={`Date for payment ${row.id}`}
                             value={row.date}
                             onChange={(event) =>
-                              handleUpdateRow(globalIndex, "date", event.target.value)
+                              handleUpdateRow(
+                                globalIndex,
+                                "date",
+                                event.target.value
+                              )
                             }
                             className={cellInputClassName}
                           />
@@ -799,7 +673,11 @@ const AdminDashboardPage = () => {
                             aria-label={`Amount for payment ${row.id}`}
                             value={row.amount}
                             onChange={(event) =>
-                              handleUpdateRow(globalIndex, "amount", event.target.value)
+                              handleUpdateRow(
+                                globalIndex,
+                                "amount",
+                                event.target.value
+                              )
                             }
                             className={cellInputClassName}
                           />
@@ -816,7 +694,10 @@ const AdminDashboardPage = () => {
                                   event.target.value as Currency
                                 )
                               }
-                              className={cn(cellInputClassName, "appearance-none pr-7")}
+                              className={cn(
+                                cellInputClassName,
+                                "appearance-none pr-7"
+                              )}
                             >
                               {currencies.map((currency) => (
                                 <option key={currency} value={currency}>
@@ -833,7 +714,11 @@ const AdminDashboardPage = () => {
                             aria-label={`Tokens for payment ${row.id}`}
                             value={row.tokens}
                             onChange={(event) =>
-                              handleUpdateRow(globalIndex, "tokens", event.target.value)
+                              handleUpdateRow(
+                                globalIndex,
+                                "tokens",
+                                event.target.value
+                              )
                             }
                             className={cellInputClassName}
                           />
@@ -850,7 +735,10 @@ const AdminDashboardPage = () => {
                                   event.target.value as PaymentStatus
                                 )
                               }
-                              className={cn(cellInputClassName, "appearance-none pr-7")}
+                              className={cn(
+                                cellInputClassName,
+                                "appearance-none pr-7"
+                              )}
                             >
                               {PAYMENT_STATUSES.map((status) => (
                                 <option key={status} value={status}>
@@ -875,78 +763,16 @@ const AdminDashboardPage = () => {
           </section>
         )}
 
-        {configVisible && (
+        {showPaymentHistory && (
           <section
-            className={cn(cardClassName, "space-y-4 p-6")}
+            className={cn(cardClassName, "overflow-hidden")}
             style={cardStyle}
           >
-            <div className="flex items-center gap-2">
-              <Database className="h-4 w-4 text-indigo-600" />
-              <h2 className="font-heading font-semibold text-gray-900">
-                Database
-              </h2>
-            </div>
-            <p className="text-sm text-gray-500">
-              Saves the locked payment table and generated activity as a test
-              user in the database (credits, used tokens, transactions). Test
-              records are tagged{" "}
-              <code className="rounded bg-gray-100 px-1">TEST_DATA</code> and
-              receipts carry a test-data banner. Real users are never touched.
-            </p>
-            {saveFeedback && (
-              <p
-                role="status"
-                className={cn(
-                  "text-sm",
-                  saveFeedback.kind === "success"
-                    ? "text-emerald-600"
-                    : "text-red-500"
-                )}
-              >
-                {saveFeedback.message}
-              </p>
-            )}
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                aria-label="Save test data to database"
-                aria-disabled={!canSaveToDatabase}
-                disabled={!canSaveToDatabase}
-                onClick={handleSaveToDatabase}
-                className={cn(
-                  primaryButtonClassName,
-                  canSaveToDatabase ? buttonStyles.base : disabledButtonClassName
-                )}
-              >
-                {isSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-                Save to database
-              </button>
-              <button
-                type="button"
-                aria-label="Remove test user from database"
-                aria-disabled={!isEmailValid || isSaving}
-                disabled={!isEmailValid || isSaving}
-                onClick={handlePurgeTestUser}
-                className={cn(
-                  primaryButtonClassName,
-                  buttonStyles.outline,
-                  "disabled:cursor-not-allowed disabled:opacity-50"
-                )}
-              >
-                <Trash2 className="h-4 w-4" />
-                Remove test user
-              </button>
-            </div>
-          </section>
-        )}
-
-        {showPaymentHistory && (
-          <section className={cn(cardClassName, "overflow-hidden")} style={cardStyle}>
             <div className="flex flex-wrap items-center justify-between gap-3 p-6">
               <div>
                 <h2 className="font-heading font-semibold text-gray-900">
                   Payment History —{" "}
-                  <span className="text-indigo-600">
+                  <span className="text-emerald-600">
                     {paymentRows.length} records
                   </span>
                 </h2>
@@ -954,7 +780,9 @@ const AdminDashboardPage = () => {
                   Payment transactions linked to this account
                 </p>
               </div>
-              <TestDataBadge />
+              <span className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-medium text-gray-600">
+                {trimmedEmail}
+              </span>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-100">
@@ -966,12 +794,14 @@ const AdminDashboardPage = () => {
                     <th className={headerCellClassName}>Currency</th>
                     <th className={headerCellClassName}>Tokens</th>
                     <th className={headerCellClassName}>Status</th>
-                    {isSaved && <th className={headerCellClassName}>Receipt</th>}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {visiblePaymentRows.map((row) => (
-                    <tr key={row.id} className="transition-colors hover:bg-gray-50">
+                    <tr
+                      key={row.id}
+                      className="transition-colors hover:bg-gray-50"
+                    >
                       <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-gray-500">
                         {row.id}
                       </td>
@@ -997,22 +827,6 @@ const AdminDashboardPage = () => {
                           {row.status}
                         </span>
                       </td>
-                      {isSaved && (
-                        <td className="whitespace-nowrap px-4 py-3 text-sm">
-                          {row.status === "successful" && (
-                            <a
-                              href={`/api/admin/test-data/receipt?id=${row.id}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label={`Open PDF receipt for payment ${row.id}`}
-                              className="inline-flex items-center gap-1 text-indigo-600 hover:underline"
-                            >
-                              <FileText className="h-4 w-4" />
-                              PDF
-                            </a>
-                          )}
-                        </td>
-                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -1027,19 +841,19 @@ const AdminDashboardPage = () => {
         )}
 
         {showActivity && (
-          <section className={cn(cardClassName, "overflow-hidden")} style={cardStyle}>
+          <section
+            className={cn(cardClassName, "overflow-hidden")}
+            style={cardStyle}
+          >
             <div className="flex flex-wrap items-center justify-between gap-3 p-6">
               <h2 className="font-heading font-semibold text-gray-900">
                 User activity
               </h2>
-              <div className="flex flex-wrap items-center gap-2">
-                {activityRows.length > 0 && (
-                  <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
-                    {activityRows.length} rows · {trimmedEmail}
-                  </span>
-                )}
-                <TestDataBadge />
-              </div>
+              {activityRows.length > 0 && (
+                <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                  {activityRows.length} rows · {trimmedEmail}
+                </span>
+              )}
             </div>
 
             {activityRows.length === 0 ? (
@@ -1057,7 +871,9 @@ const AdminDashboardPage = () => {
                         <th
                           className={headerCellClassName}
                           aria-sort={
-                            activitySortDir === "asc" ? "ascending" : "descending"
+                            activitySortDir === "asc"
+                              ? "ascending"
+                              : "descending"
                           }
                         >
                           <button
@@ -1092,14 +908,14 @@ const AdminDashboardPage = () => {
                             {row.date}
                           </td>
                           <td className="whitespace-nowrap px-4 py-3">
-                            <span className="rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
+                            <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700">
                               {row.tool}
                             </span>
                           </td>
                           <td className="whitespace-nowrap px-4 py-3 text-sm text-gray-700">
                             {row.tokensUsed}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-indigo-600">
+                          <td className="whitespace-nowrap px-4 py-3 text-sm font-semibold text-emerald-600">
                             {row.tokensTotal}
                           </td>
                         </tr>
