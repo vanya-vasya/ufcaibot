@@ -30,7 +30,7 @@ describe("fight-events (single source of truth)", () => {
   });
 
   it("maps a fight back to its tournament", () => {
-    expect(getEventNameForFight("RENATO MOICANO VS TOM NOLAN")).toBe("MMA FIGHT NIGHT: MOICANO VS NOLAN");
+    expect(getEventNameForFight("GABRIEL BONFIM VS SEAN BRADY")).toBe("MMA FIGHT NIGHT: BONFIM VS BRADY");
     expect(getEventNameForFight("NOBODY VS NOBODY")).toBeUndefined();
   });
 
