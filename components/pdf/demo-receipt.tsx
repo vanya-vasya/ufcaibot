@@ -182,8 +182,6 @@ const DemoReceipt = ({
           <Image src={company.logo} style={styles.headerImage} />
         </View>
 
-        <Text style={styles.testBanner}>TEST DATA - NOT A REAL PAYMENT</Text>
-
         <View style={styles.titleSection}>
           <Text style={styles.title}>Receipt from {company.name}</Text>
           <Text style={styles.subtitle}>Receipt #{receiptId}</Text>
